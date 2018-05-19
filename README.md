@@ -61,10 +61,8 @@ Plotting classes and function for a better batch plotting scripts, while still l
 Hightlights of this package includes:
 
 -   Constants for more intuitive declaration of plotting objects and styles.
--   new Canvas class (inherited from TCanvas), with compile time object plotting options warnings.
--   new RatioCanvas class (based on new Canvas class) for easy ratio plot handling.
--   new RooFrame class (inherited from RooPlot) for easy object plotting and inner object accesses.
--   Additional to assist with plot object generation (ratio objects) and plot range determination.
+-   new Canvas class (inherited from TCanvas),  to contain strictly pads. Objects on now plotted on the pads, instead of individual Draw calls
+-   Specialised classes for 1D plotting.
 
 ---
 

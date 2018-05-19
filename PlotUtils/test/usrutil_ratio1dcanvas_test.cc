@@ -144,6 +144,8 @@ main( int argc, char* argv[] )
 
     c.BottomPad().Yaxis().SetTitle("Data/Fit");
 
+    c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
+    c.DrawLuminosity( 133.7 );
     c.SaveAsPDF("ratio1dcanvas_roofit_test.pdf");
   }
 
