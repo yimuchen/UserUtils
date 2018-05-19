@@ -1,0 +1,10 @@
+<use name="roofit"/> <!--- For Graphics related libraries --->
+<use name="boost"/>
+
+<use name="UserUtils/Common"/>
+
+<flags CXXFLAGS="-g"/>
+
+<export>
+   <lib name="1"/>
+</export>
