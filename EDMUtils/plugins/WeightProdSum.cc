@@ -1,9 +1,7 @@
 /**
  * @file    WeightProdSum.cc
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
- * @details Storing the product of a list of events weights (doubles) as
- * as single weight (also double). Summing the product and caching it at
- * run level.
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   product of listed weights with run level caching
  */
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/Run.h"
@@ -20,9 +18,18 @@
 #include <string>
 #include <vector>
 
-/*-----------------------------------------------------------------------------
- *  Class definition
-   --------------------------------------------------------------------------*/
+/**
+ * @brief class for calculating the product of weight.
+ * @ingroup EDMUtils
+ *
+ * @details
+ * In HEP analysis, simulated events are typically weighted by various scale
+ * factors. and the actual "number of events" represented by a single simulated
+ * event would be product of all the various scale events. This plugin does
+ * just that: given a list of weight to use, calculated the product of all
+ * the weights, storing the per-event weight product, and also saving the
+ * sum of the weight product per run.
+ */
 class WeightProdSum :
   public edm::one::EDProducer<edm::one::WatchRuns, edm::EndRunProducer>
 {
@@ -44,9 +51,13 @@ private:
   double _weightsum;
 };
 
-/*-----------------------------------------------------------------------------
- *  Constructor and destructor
-   --------------------------------------------------------------------------*/
+/**
+ * Construction expects the a parameter of type vInputTag, listing the
+ * doubles to be used in the product calculation. The weight product
+ * per-event would be stored under the label "WeightProd", and the sum of
+ * weight products stored at run level would be under the object label
+ * "WeightSum" (requires the usr::Counter class to read).
+ */
 WeightProdSum::WeightProdSum( const edm::ParameterSet& iConfig )
 {
   const auto taglist

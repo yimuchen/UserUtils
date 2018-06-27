@@ -1,8 +1,7 @@
 /**
  * @file    Filesystem.hpp
- * @brief   Common functions for filesystem enhance ments
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
- * @details Detailed descriptions
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Defining functions for helping with file system interaction
  */
 #ifndef USERUTILS_COMMON_STLUTILS_FILESYSTEM_HPP
 #define USERUTILS_COMMON_STLUTILS_FILESYSTEM_HPP
@@ -11,14 +10,18 @@
 #include <vector>
 #include <experimental/filesystem>
 
-
 namespace usr {
 
 namespace fs=std::experimental::filesystem;
 
+/**
+ * @defgroup filesys Filesystem helper
+ * @brief Simplification for the std::filesystem data structure.
+ * @ingroup Common
+ * @{
+ */
 /*-----------------------------------------------------------------------------
- *  Constant global variables (Implemented as parameterless functions)
- *  and commonly used paths
+ *  Commonly used paths.
    --------------------------------------------------------------------------*/
 extern fs::path cmssw_src();
 extern fs::path pkgpath( const std::string& );
@@ -27,17 +30,16 @@ extern fs::path datapath( const std::string&, const std::string& );
 extern fs::path resultpath( const std::string&, const std::string& );
 
 /*-----------------------------------------------------------------------------
- *  Globbing functions
+ *  Globbing
    --------------------------------------------------------------------------*/
 extern std::vector<fs::path> GlobLocal( const std::string& );
 
 /*-----------------------------------------------------------------------------
  *  File checking functions
- *  MakeParent -- returns false if not all parents directories could be
- *  created
    --------------------------------------------------------------------------*/
 extern bool MakeParent( const fs::path& );
 
+/** @*/
 }
 
 #endif /* end of include guard: USERUTILS_COMMON_STLUTILS_FILESYSTEM_HPP */

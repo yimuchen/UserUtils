@@ -1,9 +1,10 @@
-# `Maths` package
+# `MathUtils` package
 
 This package is a contains classes to help with mathematical operations. Especially to help with calculations of measurements with uncertainty
 
-# `Measurement` class
-Defined in [`Measurement.hpp`](./interface/Measurement.hpp), it is a class which is a representation of a measured parameter with (potentially asymmetric) error. Basic arithmetic, as well as access to central value, absolute and relative errors is defined in this class. The treatment of asymmetric error here is wrong! The correct functions for treating asymmetric error is currently under construction.
+## Known issues.
 
-## `Measurement` formatting
-Defining function that help represent the `Measurement` class in string formats. Function are defined in the in [`MeasurementFormat.hpp`](./interface//MeasurementFormat.hpp) class. Note that most is designed for raw latex style strings.
+ - [ ] Minos uncertainty for a binomial measurement fails when the inputs is an
+   all-pass and all-fail. (special cases needed)
+ - [ ] Minos uncertainties for a binomial measurement fails when input has a
+   numerator much smaller than the denominator, ex (0.01/10000)

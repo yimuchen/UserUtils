@@ -1,24 +1,53 @@
 /**
  * @file    Ratio1DCanvas.cc
  * @brief   Implementation of the Ratio1DCanvas functions.
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
+#else
+#include "UserUtils/PlotUtils/Ratio1DCanvas.hpp"
+#endif
 
 namespace usr  {
 
 namespace plt {
 
+/**
+ * @class PadRatio
+ * @details. The pad ratio contains two variable, the ratio between the height
+ * of the top and bottom pads; and the gap between the two axis frames relative
+ * to the entire canvas.
+ */
 
-/*-----------------------------------------------------------------------------
- *  Constructor and destructor
-   --------------------------------------------------------------------------*/
+/**
+ * @brief default ratio canvas would have smallist bottom pad, so it is
+ * informative but not intrusive.
+ */
 float PadRatio::default_ratio         = 4;
+
+/**
+ * @brief default gap would be small such that the two pad having equal x
+ * axis scale is immediately obvious, but still look distinct.
+ */
 float PadRatio::default_gap           = 0.005;
+
+/**
+ * @{
+ * @brief default dimesion for the ratio plots would be a half-page width plot (
+ * 0.45 times the full textwidth to be exact), with the top pad remaining
+ * having a square frame. And a font size of 8.
+ */
 length_t Ratio1DCanvas::default_width = 0.45*len::a4textwidth_default();
 length_t Ratio1DCanvas::default_height
   = ( 5./4. )*0.45*len::a4textwidth_default();
+FontSet Ratio1DCanvas::default_font  = FontSet( 8 );
+/** @} */
 
+/**
+ * @brief Construct a Ratio1DCanvas without specific @ROOT{RooRealVar} to
+ * define x axis of both pads.
+ */
 Ratio1DCanvas::Ratio1DCanvas(
   const length_t  width,
   const length_t  height,
@@ -31,6 +60,10 @@ Ratio1DCanvas::Ratio1DCanvas(
   _init_margin( pad.gap );
 }
 
+/**
+ * @brief Construct a Ratio1DCanvas with specific @ROOT{RooRealVar} to define x
+ * axis of both pads.
+ */
 Ratio1DCanvas::Ratio1DCanvas(
   const RangeByVar& range,
   const length_t    width,
@@ -48,27 +81,33 @@ Ratio1DCanvas::Ratio1DCanvas(
 
 Ratio1DCanvas::~Ratio1DCanvas(){}
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief helper function for calculating how to define the PadSize constructor
+ * parameter for top and bottom pads.
+ */
 float
 Ratio1DCanvas::_splitNDC( const float x ) const
 {
-  return ( 1-3.5*LineHeight()/Height() )/( x+1. )
-         + 3.*LineHeight()/Height();
+  return ( 1-3.5*Font().lineheight()/Height() )/( x+1. )
+         + 3.*Font().lineheight()/Height();
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Initialization the margins of the two pads.
+ *
+ * @param gap
+ */
 void
 Ratio1DCanvas::_init_margin( const float gap )
 {
-  SetTopMargin( 1.5*LineHeight()/Height() );
-  SetLeftMargin( 3.5*LineHeight()/Width() );
-  SetBottomMargin( 2.0*LineHeight()/Height() );
+  SetTopMargin(    1.5*Font().lineheight()/Height() );
+  SetLeftMargin(   3.5*Font().lineheight()/Width() );
+  SetBottomMargin( 2.0*Font().lineheight()/Height() );
   SetRightMargin(
     std::max(
-      ( 3.5*LineHeight()/Height() - ( 3.5*LineHeight()/Width() ) ),
-      ( 0.6*LineHeight()/Width() ) )
+      ( 3.5*Font().lineheight()/Height() - ( 3.5*Font().lineheight()/Width() ) )
+      ,
+      ( 0.6*Font().lineheight()/Width() ) )
     );
 
   // Additional margin setting for gap
@@ -76,9 +115,11 @@ Ratio1DCanvas::_init_margin( const float gap )
   BottomPad().SetTopMargin( 0.5 * gap * Height() / BottomPad().AbsHeight() );
 }
 
-/*-----------------------------------------------------------------------------
- *  Margin Setting functions
-   --------------------------------------------------------------------------*/
+/**
+ * @{
+ * @brief  Margin setting overload to ensure canvas and two pads have common
+ * margins for left/right/top/bottom.
+ */
 void
 Ratio1DCanvas::SetTopMargin( const float x )
 {
@@ -108,10 +149,13 @@ Ratio1DCanvas::SetBottomMargin( const float x )
   BottomPad().SetBottomMargin( x * Height() / BottomPad().AbsHeight() );
   TCanvas::SetBottomMargin( x );
 }
+/** @} */
 
-/*-----------------------------------------------------------------------------
- *  Top/Bottom pad Axis font setting re-setting;
-   --------------------------------------------------------------------------*/
+/**
+ * @brief New font settings for the bottom pad.
+ * @details includes hiding the text of the x axis and enlarging the y axis
+ * text offset (to account for the smaller default image-size and text size).
+ */
 void
 Top1DPad::SetAxisFont()
 {
@@ -121,6 +165,13 @@ Top1DPad::SetAxisFont()
   Yaxis().SetTitleOffset( 2.0 );
 }
 
+/**
+ * @brief New font settings for the bottom pad.
+ *
+ * Include large x/y axis text offsets (smaller image size and text size), and
+ * changing the Y axis tick marker density for the typical use cases of
+ * pull/ratio plots.
+ */
 void
 Bottom1DPad::SetAxisFont()
 {
@@ -130,10 +181,14 @@ Bottom1DPad::SetAxisFont()
   Yaxis().SetTitleOffset( 2.0 );
 }
 
-
-/*-----------------------------------------------------------------------------
- *  Plotting bottom pad functions
-   --------------------------------------------------------------------------*/
+/**
+ * @details
+ * Given a numerator and denominator histogram, this function generates
+ * the scale division results to the two histograms (see static method for
+ * details); and claims ownership of the newly generated histogram. The
+ * new histogram is then plotted on the bottom pad, with additional plotting
+ * method available.
+ */
 TH1D&
 Ratio1DCanvas::PlotScale(
   const TH1D&                   num,
@@ -143,7 +198,7 @@ Ratio1DCanvas::PlotScale(
   TH1D* ans = ScaleDivide( &num, &den );
   BottomPad().FrameObj().addObject( ans );
 
-  // Pargin arguments.
+  // Parsing arguments.
   const RooArgContainer args( arglist );
   const RooCmdArg pltopt =
     args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
@@ -158,6 +213,14 @@ Ratio1DCanvas::PlotScale(
   return *ans;
 }
 
+/**
+ * @details
+ * Given a numerator and denominator graph, this function generates
+ * the scale division results to the two graphs (see static method for
+ * details); and claims ownership of the newly generated graph. The
+ * new graph is then plotted on the bottom pad, with additional plotting
+ * method available.
+ */
 TGraphAsymmErrors&
 Ratio1DCanvas::PlotScale(
   const TGraph&                 num,
@@ -181,10 +244,22 @@ Ratio1DCanvas::PlotScale(
   return *ans;
 }
 
-
-/*-----------------------------------------------------------------------------
- *  Static functions - Scale divide
-   --------------------------------------------------------------------------*/
+/**
+ * @brief dividing a histogram a/b by scaling the numerator by the denominator
+ *
+ * This function assumes that the numerator and denominator histogram objects
+ * have identical binning. The bin content and the bin error of the numerator
+ * histogram is then scale to the bin content of the denominator histogram.
+ * Bin error of the numerator is ignored.
+ *
+ * If the bin content of the numerator or the denominator is 0, then the bin
+ * content of the resulting histogram would be set to the value cen (1) by
+ * default for aesthetic reasons.
+ *
+ * The output histogram would copy it's styling from the numerator histogram,
+ * and the user is responsible for handling the pointer ownership of the
+ * generated histogram.
+ */
 TH1D*
 Ratio1DCanvas::ScaleDivide(
   const TH1D*  num,
@@ -210,8 +285,21 @@ Ratio1DCanvas::ScaleDivide(
   return ans;
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Dividing a graph by another graph by scaling the numerator by the
+ *        denominator
+ *
+ * The resulting graph would have the same number of data points as the
+ * numerator graph with each of the points y-value scaled by the denominator
+ * graph's y-values (linearly interpolated if the two graph's x values doesn't
+ * exactly match). The y-errors of the numerator graph will also be scaled but
+ * the x-errors and x-value would be left unchanged. The error bars of the
+ * denominator graph would be ignored.
+ *
+ * The output graph would copy it's styling from the numerator graph, and the
+ * user is responsible for handling the pointer ownership of the generated
+ * graph.
+ */
 TGraphAsymmErrors*
 Ratio1DCanvas::ScaleDivide(
   const TGraph* num,

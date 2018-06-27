@@ -1,7 +1,7 @@
 /**
  * @file    roofit_kstest.cc
  * @brief   Testing functionalities of Proper implementation of KS test using RooFit objects
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
 

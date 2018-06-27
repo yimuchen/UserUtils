@@ -1,7 +1,7 @@
 /**
  * @file    pathutil_test.cc
  * @brief   Unit test for the path utility functions
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  * @details Detailed descriptions
  */
 
@@ -18,7 +18,7 @@ main( int argc, char* argv[] )
 {
   cout << usr::cmssw_src() << endl;
   cout << usr::pkgpath( "UserUtils" ) << endl;
-  cout << usr::subpkgpath( "UserUtils", "Common" ) << endl;
+  cout << usr::subpkgpath( "UserUtils", "UserUtils/Common" ) << endl;
 
   cout << usr::separator() << endl
        << "Local globbing test!" << endl;

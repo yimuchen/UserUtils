@@ -1,12 +1,10 @@
 #!/bin/env  python
-#*******************************************************************************
- #
- #  Filename    : dumpLumiCount.py
- #  Description : Dumping number of Events, Lumi and Runs in a list of
- #                input files
- #  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
- #
-#*******************************************************************************
+
+##
+#  @file
+#  @brief   dumping the number of events in a list of input files.
+#  @ingroup EDMUtils
+#
 import ROOT
 import argparse
 import sys
@@ -40,8 +38,11 @@ def main( argv ):
             inputfile
              )
 
-    print fmtstr.format( numofevts,  numoflumis, numofruns, "total({} files)".format(len(args.inputfiles)) )
-
+    print fmtstr.format( numofevts,
+        numoflumis,
+        numofruns,
+        "total({} files)".format(len(args.inputfiles))
+    )
 
 if __name__ == "__main__":
-    main( 'hello' )
+    main()

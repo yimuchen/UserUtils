@@ -1,10 +1,19 @@
-/*******************************************************************************
-*
-*  Filename    : DumpLHEContent.cc
-*  Description : Simple script for dumping LHE config file content
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    DumpLHERunInfo.cc
+ * @ingroup EDMUtils
+ * @brief   Dumping contents of the LHE production information on screen.
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @details
+ * This is meant to be used with a single EDM file:
+ * ```
+ * DumpLHERunInfo file.root
+ * ```
+ * The LHE production information of the first run would be printed out.
+ * Notice that the "tag" (type of prodution information) would be printed
+ * before each line, so you can combine with grep commands to get specific
+ * parts of the production information.
+ */
+
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/FWLite/interface/Run.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"

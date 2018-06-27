@@ -1,45 +1,145 @@
 /**
- * @file    Units.hpp
+ * @file    Constants.cc
  * @brief   Defining the constants and extended constants
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 
-#include "UserUtils/Common/interface/STLUtils/MinMax.hpp"
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
+#else
+#include "UserUtils/PlotUtils/Constants.hpp"
+#endif
+
 #include <vector>
 
 namespace usr  {
 
 namespace plt  {
 
+/**
+ * Plotting length in ROOT is defined using pixels (usually), with the
+ * conversion of pixels into printable formats using the old standard of 72DPI.
+ *
+ * Here we provide functionsfor convert from printing units (inches, mm... etc),
+ * to the standard ROOT length units, as well as commonly used dimension in
+ * CMS documents.
+ */
 namespace len {
-/*-----------------------------------------------------------------------------
- *  Length constants
-   --------------------------------------------------------------------------*/
-const unsigned ROOTDPI = 72;
-const float INCHTOCM   = 2.54;
 
-unsigned
+extern const unsigned ROOT_DPI = 72;
+extern const float INCH_TO_CM   = 2.54;
+
+/**
+ * @{
+ * @brief Converting conventional units into ROOT standard length units.
+ */
+extern length_t
+inch( const float x ){ return std::round( ROOT_DPI*x ); }
+
+extern length_t
+cm( const float x ){ return inch( x/INCH_TO_CM ); }
+
+extern length_t
+mm( const float x ){ return cm( x/10 ); }
+/** @} */
+
+extern unsigned
 a4paperwidth(){ return mm( 210 ); }
-unsigned
+
+extern unsigned
 a4paperheight(){ return mm( 297 ); }
-unsigned
-a4textwidth_default(){ return mm( 160 ); }// Taken from cms-tdr.cls
-unsigned
+
+/**
+ * @{
+ * @brief Document dimensions taken from cms-tdr.cls
+ */
+extern unsigned
+a4textwidth_default(){ return mm( 160 ); }
+
+extern unsigned
 a4textheight_default(){ return mm( 235 ); }
+/** @} */
 
-}/* size */
+}/* len */
 
-namespace font {
+
+/**
+ * @class usr::plt::font
+ * Since font setting are more commonly copied around, implemenation of font
+ * conversion functions would be a class to enable storage of variables.
+ *
+ * Fonts in ROOT (when using precision greater than 3) are defined in pixels,
+ * which, when used together with the ROOT DPI of 72, makes it the common
+ * unit of pts.
+ */
+
+/** @brief default font setting for CMS documents */
+float font::default_basesize = 11;
+
+/** @brief Recommended plot font for CMS documents */
+font::face font::default_face = font::helvetica;
+
+/** @brief default font line spacing multiplier */
+float font::default_lineheight = 1.2;
+
+/**
+ * @brief Defining a font setting.
+ * @param basesize   The base size of the font
+ * @param face       The type-face of the font to use.
+ * @param lineheight The lineheight **multipler** to use.
+ */
+font::font( float basesize,
+            face  face,
+            float lineheight ) :
+  _basesize( basesize ),
+  _face( face ),
+  _lineheight( em( lineheight ) )
+{
+}
+
+/** @brief returning base size */
+float
+font::size() const { return _basesize; }
+
+/** @brief returning line height (absolute, not relative to basesize) */
+float
+font::lineheight() const { return _lineheight; }
+
+/** @brief returning the font face as standard ROOT font type */
+short
+font::fontface() const
+{
+  return ( _face * 10 )/10 + 3;
+}
+
+/** @brief returning scaled font size */
+float
+font::em( const float x ) const
+{
+  return x * _basesize;
+}
+
 /*-----------------------------------------------------------------------------
- *  Fontsize conversion
- *  cmstdr uses the 'article' and 'report' document classes
- *  predefined conversion could be found here
- *  https://en.wikibooks.org/wiki/LaTeX/Fonts#Built-in_sizes
+ *  Font-size conversion helper variables.
    --------------------------------------------------------------------------*/
-float normalsize = 11;// cmstdr uses 11 base font
+static const float scaletable[7][4] = {
+  // 10      11          12             others
+  {
+    5/10,     6/11.,      6/12.,         0.5// tiny
+  },{
+    8/10,     9/11.,      10/12.,        0.75// footnote
+  },{
+    9/10,     10/11.,     10.95/12.,     0.9// small
+  },{
+    12/10,    12/11.,     14.4/12.,      1.2// large
+  },{
+    14.4/10,  14.4/11.,   17.28/12.,     14.4// Large
+  },{
+    17.28/10, 17.28/11.,  20.74/12.,     1.72// LARGE
+  },{
+    20.7/10,  20.7/11.,   24.8/12.,      2   }// huge
+};
 
-// Static helpers for size conversion
 enum e_size : short
 {
   e_tiny,
@@ -52,117 +152,117 @@ enum e_size : short
 };
 
 static unsigned
-getcol( const float x = normalsize )
+getcol( const float x )
 {
-  return fontsize( x ) == 10 ? 0 :
-         fontsize( x ) == 11 ? 1 :
-         fontsize( x ) == 12 ? 2 :
+  return x == 10 ? 0 :
+         x == 11 ? 1 :
+         x == 12 ? 2 :
          3;
 }
 
-static const std::vector<std::vector<float> > scaletable = {
-  // 10      11          12             others
-  {5/10,     6/11.,      6/12.,         0.5            },// tiny
-  {8/10,     9/11.,      10/12.,        0.75           },// footnote
-  {9/10,     10/11.,     10.95/12.,     0.9            },// small
-  {12/10,    12/11.,     14.4/12.,      1.2            },// large
-  {14.4/10,  14.4/11.,   17.28/12.,     14.4           },// Large
-  {17.28/10, 17.28/11.,  20.74/12.,     1.72           },// LARGE
-  {20.7/10,  20.7/11.,   24.8/12.,      2              }// huge
-};
-
-unsigned
-tiny(){ return fontsize( normalsize*scaletable[e_tiny][getcol()] ); }
-
-unsigned
-footnote(){ return fontsize( normalsize*scaletable[e_footnote][getcol()] );}
-
-unsigned
-small(){ return fontsize( normalsize*scaletable[e_small][getcol()] ); }
-
-unsigned
-large(){ return fontsize( normalsize*scaletable[e_large][getcol()] );}
-
-unsigned
-Large(){ return fontsize( normalsize*scaletable[e_llarge][getcol()] );}
-
-unsigned
-LARGE(){ return fontsize( normalsize*scaletable[e_lllarge][getcol()] );}
-
-unsigned
-huge(){ return fontsize( normalsize*scaletable[e_huge][getcol()] );}
-
-/*----------------------------------------------------------------------------*/
+/** @{
+ * @brief conversion to LateX [in-build font sizes](https://en.wikibooks.org/wiki/LaTeX/Fonts#Built-in_sizes)
+ */
+float
+font::tiny() const
+{ return _basesize*scaletable[e_tiny][getcol( _basesize )]; }
 
 float
-mult_tiny(){ return scaletable[e_tiny][getcol()]; }
+font::footnote() const
+{ return _basesize*scaletable[e_footnote][getcol( _basesize )]; }
 
 float
-mult_footnote(){ return scaletable[e_footnote][getcol()];}
+font::small() const
+{ return _basesize*scaletable[e_small][getcol( _basesize )]; }
 
 float
-mult_small(){ return scaletable[e_small][getcol()]; }
+font::large() const
+{ return _basesize*scaletable[e_large][getcol( _basesize )]; }
 
 float
-mult_large(){ return scaletable[e_large][getcol()];}
+font::Large() const
+{ return _basesize*scaletable[e_llarge][getcol( _basesize )]; }
 
 float
-mult_Large(){ return scaletable[e_llarge][getcol()];}
+font::LARGE() const
+{ return _basesize*scaletable[e_lllarge][getcol( _basesize )]; }
 
 float
-mult_LARGE(){ return scaletable[e_lllarge][getcol()];}
+font::huge() const
+{ return _basesize*scaletable[e_huge][getcol( _basesize )]; }
 
-float
-mult_huge(){ return scaletable[e_huge][getcol()];}
+/** @} */
 
-}/* font */
 
-/*-----------------------------------------------------------------------------
- *  Constant strings for common units and latex tags
-   --------------------------------------------------------------------------*/
+/**
+ * Notice that these strings are to be used in the ROOT plotting functions,
+ * so it will be using the ROOT style '#' for latex commands rather than
+ * backslashes
+ */
 namespace unit  {
 const std::string GeV   = "GeV";
 const std::string GeVc  = "GeV/#it{c}";
 const std::string GeVcc = "GeV/#it{c}^{2}";
 }/* unit  */
 
-namespace cap  {
 
+namespace cap  {
 const std::string prelim = "Preliminary";
 const std::string sim    = "Simulation";
-
 }/* cap  */
 
-/*-----------------------------------------------------------------------------
- *  Common styling options
-   --------------------------------------------------------------------------*/
+/**
+ * @details  Probably one of the worst offenders of magic number use, the that
+ * of the styling variables. Unless you have memorised the contents of the
+ * documentation, you would probably have no idea what someone else code is
+ * doing to stylise the plots.
+ */
 namespace sty {
+
+/**
+ * @{
+ * @brief common settings used by @ROOT{TAttrFill}.
+ * */
 const short fillnone      = 0;
 const short fillsolid     = 1001;
 const short filldotdense  = 3001;
 const short filldot       = 3002;
 const short filldotsparse = 3003;
+/** @} */
 
+/**
+ * @brief  A human readable interface to hash-fill styles in @ROOT{TAttrFill}.
+ *
+ * To be used with the distmm(), angle1(), and angle2() functions to make what
+ * the hash is suppose to look like look more natural.
+ *
+ * @param  distance distance between hash lines
+ * @param  angle1   angle of first hash lines
+ * @param  angle2   angle of second hash lines
+ * @return          the value corresponding to the angle code.
+ */
 const short
 fillhash( unsigned short distance,
           unsigned short angle1,
           unsigned short angle2 )
 {
-  distance = usr::max( distance, 1 );
-  distance = usr::min( distance, 9 );
-  angle1   = usr::min( angle1,   9 );
-  angle2   = usr::min( angle2,   9 );
+  distance = std::max( distance, (unsigned short)1 );
+  distance = std::min( distance, (unsigned short)9 );
+  angle1   = std::min( angle1,  (unsigned short)9 );
+  angle2   = std::min( angle2,  (unsigned short)9 );
   return 3000 + 100*distance+10*angle1+1*angle2;
 }
 
-
-const short anglenone = 5;
-
+/**
+ * @brief Converting actual hash distances in millimeters into the unit
+ * used by the distance string.
+ *
+ * @ROOT{TAttrFill} only defines 0.5mm converts to 1 , and 6mm converts to 9.
+ * There we assume a linear relation, rounding to the closest value.
+ */
 const short
 distmm( const float x )
 {
-  // TAttrFill only defines 1 = 0.5 mm and 9 = 6mm
-  // assuming linear relation, rounding to the closest value.
   return x < 0.84375 ? 1 :
          x < 1.53125 ? 2 :
          x < 2.21875 ? 3 :
@@ -174,10 +274,15 @@ distmm( const float x )
          9;
 }
 
+/**
+ * @brief Converting the first angle of the hash in degrees into defined digits.
+ *
+ * Angles are defined in 10 degrees increments (with the exception of the 45
+ * degree mark), rounding to closest defined value.
+ */
 const short
 angle1( const float x )
 {
-  // Rounding to the nearest defined value ( in increaments to 10 degrees )
   return x < 0    ? anglenone :
          x < 5    ? 0 :
          x < 15   ? 1 :
@@ -191,6 +296,12 @@ angle1( const float x )
          anglenone;
 }
 
+/**
+ * @brief Converting the first angle of the hash in degrees into defined digits.
+ *
+ * Angles are defined in 10 degrees increments (with the exception of the 45
+ * degree mark), rounding to closest defined value.
+ */
 const short
 angle2( const float x )
 {
@@ -205,8 +316,10 @@ angle2( const float x )
          x > 95    ? 8 :
          x >= 90   ? 9 :
          anglenone;
-
 }
+
+/** @brief Flag to use if you want to diplay a certain angle display */
+const short anglenone = 5;
 
 }/* sty */
 

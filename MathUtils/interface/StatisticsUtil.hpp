@@ -1,22 +1,30 @@
-/*******************************************************************************
-*
-*  Filename    : StatisticsUtil.hpp
-*  Description : General purpose Statistics related utility functions
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    StatisticsUtil.hpp
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Calculating statistics routines using GSL objects.
+ */
+
 #ifndef USERUTILS_MATHUTILS_STATISTICUTIL_HPP
 #define USERUTILS_MATHUTILS_STATISTICUTIL_HPP
 
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/GSLUtil.hpp"
+#else
+#include "UserUtils/MathUtils/GSLUtil.hpp"
+#endif
 
 namespace usr {
 
 namespace stat {
 
-/*******************************************************************************
-*   Sigma interval -- Confidence level conversion.
-*******************************************************************************/
+/**
+ * @addtogroup StatUtils
+ * @{
+ */
+
+/*-----------------------------------------------------------------------------
+ *  Sigma interval -- confidence level conversion.
+   --------------------------------------------------------------------------*/
 extern double NormalCDF( const double x );
 extern double GetConfidenceLevel( const double sigmainterval );
 extern double GetSigmaInterval( const double confidencelevel );
@@ -24,9 +32,9 @@ extern double GetSigmaInterval( const double confidencelevel );
 extern const double onesigma_level;
 extern const double twosigma_level;
 
-/*******************************************************************************
-*   General purpose Minos error computation
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  General calculation routines for Minos uncertainties.
+   --------------------------------------------------------------------------*/
 extern double DeltaNLLFromSigma( const double sigma );
 extern double DeltaNLLFromConfidence( const double confidence );
 
@@ -38,7 +46,6 @@ extern int MinosError(
   double&       max,
   const double  confidencelevel = onesigma_level
   );
-
 
 extern int MinosError(
   usr::gsl::gsl_multifunc* nllfunction,
@@ -52,27 +59,13 @@ extern int MinosError(
   gsl_vector*              lowerguess = nullptr
   );
 
-/*******************************************************************************
-*   Common Distribution NLLs
-*   Defined in standard gsl_function format
-*******************************************************************************/
-
-/*******************************************************************************
-*   double params[0] - mean,
-*   double params[1] - sigma
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  Common single variable NLL functions
+   --------------------------------------------------------------------------*/
 extern double GaussianNLL( double, void* params );
-
-/*******************************************************************************
-*   double param[0] - passed
-*   double param[1] - total
-*******************************************************************************/
 extern double BinomialNLL( double, void* params );
-
-/*******************************************************************************
-*   double param[0] - observed
-*******************************************************************************/
 extern double PoissonNLL( double, void* params );
+/** @} */
 
 }/* stat */
 

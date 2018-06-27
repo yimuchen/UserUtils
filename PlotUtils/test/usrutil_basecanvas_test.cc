@@ -1,7 +1,7 @@
 /**
  * @file    singlecanvas_test.cc
  * @brief   Testing the default styling of single canvas and saving functions
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
@@ -20,8 +20,8 @@ main( int argc, char* argv[] )
 {
   { // base functionality test
     plt::Canvas c( 600, 600 );
-    auto& pad1 = c.Add<plt::PadBase>( plt::PadSize( 0, 0, 0.5, 0.5 ) );
-    auto& pad2 = c.Add<plt::PadBase>( plt::PadSize( 0.4, 0.4, 1, 1 ) );
+    auto& pad1 = c.Add<plt::Pad1D>( plt::PadSize( 0, 0, 0.5, 0.5 ) );
+    auto& pad2 = c.Add<plt::Pad1D>( plt::PadSize( 0.4, 0.4, 1, 1 ) );
 
     TH1D hist( "h", "h", 21, -10, 10 );
     TRandom3 r;
@@ -30,8 +30,8 @@ main( int argc, char* argv[] )
       hist.Fill( r.Gaus( 0, 2 ) );
     }
 
-    pad1.PlotObj( hist, "HIST" );
-    pad2.PlotObj( hist, "HIST" );
+    pad1.PlotHist( hist );
+    pad2.PlotHist( hist );
 
     c.SaveAsPDF( "testfig/basecanvas_test.pdf" );
 

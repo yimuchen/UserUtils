@@ -1,11 +1,20 @@
 /**
  * @file    Pad1D.hpp
  * @brief   A pad designed for 1D data plotting.
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
-
 #ifndef USERUTILS_PLOTUTILS_PAD1D_HPP
 #define USERUTILS_PLOTUTILS_PAD1D_HPP
+
+#ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
+#include "UserUtils/PlotUtils/interface/Canvas.hpp"
+#include "UserUtils/PlotUtils/interface/Constants.hpp"
+#else
+#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
+#include "UserUtils/PlotUtils/Canvas.hpp"
+#include "UserUtils/PlotUtils/Constants.hpp"
+#endif
 
 #include "RooAbsData.h"
 #include "RooAbsPdf.h"
@@ -22,9 +31,6 @@
 #include "TLegend.h"
 #include "TLine.h"
 
-#include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
-#include "UserUtils/PlotUtils/interface/Canvas.hpp"
-#include "UserUtils/PlotUtils/interface/Constants.hpp"
 
 #include <vector>
 
@@ -42,9 +48,8 @@ class Roo1DFrame;// simple access for Roo1DFrame;
 class RooArgContainer;// Helper class for simple RooCmdArg parsing.
 
 /**
- * An simple wrapper object designed to expose additional features of the
- * RooPlot class (the internal TH1 used for axis plotting) and a feature for
- * allow the creation objects directly under the ownership of a RooPlot instance
+ * @brief Simple class for exposing additional variables and functions of the
+ * @ROOT{RooPlot} object
  */
 class Roo1DFrame : public RooPlot
 {
@@ -57,20 +62,40 @@ public:
   virtual
   ~Roo1DFrame();
 
+  /**
+   * @brief returning the internal histogram object used for axis plotting.
+   */
   inline TH1*
   AxisHistPtr(){ return RooPlot::_hist; }
+
+  /**
+   * @brief returning reference to internal histogram object used for axis
+   * plotting (no null protection)
+   */
   inline TH1&
   AxisHist(){ return *AxisHistPtr(); }
 
+  /**
+   * Making a Root object under the ownership of the RooPlot object.
+   * Using the variadic interface to allow for any sort of declaration type.
+   * @tparam ObjType The type of object you which to create (must be explicitly
+   *                 specified)
+   * @tparam Args    the arguments could be of any type nessesary.
+   * @param  args    any arguments required for a TObject inherited object.
+   * @return         Reference to the newly created object.
+   */
   template<typename ObjType, typename ... Args>
-  ObjType& MakeObj( Args ... );
-  template<typename ObjType>
-  ObjType& MakeClone( ObjType& );
+  ObjType&
+  MakeObj( Args ... args )
+  {
+    ObjType* ptr = new ObjType( args ... );
+    RooPlot::addObject( ptr );
+    return *ptr;
+  }
 };
 
-
 /**
- * Specialised pad for plotting 1 dimensional ROOT and ROOFIT objects.
+ * @brief Specialized class for 1D data plotting.
  */
 class Pad1D : public PadBase
 {
@@ -85,10 +110,9 @@ protected:
   friend class Canvas;
 
 public:
-  /** @addtogroup
-   *  Helper function for calculating the maximum and minimum y values for a
-   *  plotting entity (including the error bars.)
-   *  @{
+  /**
+   * @{
+   * @brief Getting the min/max y values of a plotting object
    */
   static double GetYmax( const TH1D* );
   static double GetYmin( const TH1D* );
@@ -96,6 +120,12 @@ public:
   static double GetYmin( const TGraph* );
   static double GetYmin( const THStack* );
   static double GetYmax( const THStack* );
+  /** @} */
+
+  /**
+   * @{
+   * @brief Getting the min/max y values of a plotting object
+   */
   inline static double
   GetYmax( const TH1D& x ){ return GetYmax( &x ); }
   inline static double
@@ -120,33 +150,61 @@ public:
   inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }          \
   inline RET_TYPE FUNC_NAME( TYPE* x ){ return FUNC_NAME( x, {} ); }          \
   template<typename ... Args>                                                 \
-  inline RET_TYPE FUNC_NAME( TYPE& x, const RooCmdArg &arg1, Args ... args ){ \
-    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
+  inline RET_TYPE FUNC_NAME( TYPE& x, const RooCmdArg & arg1, Args ... args ){ \
+    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );           \
   }                                                                           \
   template<typename ... Args>                                                 \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const RooCmdArg &arg1, Args ... args ){ \
+  inline RET_TYPE FUNC_NAME( TYPE* x, const RooCmdArg & arg1, Args ... args ){ \
     return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );           \
   }
 
-  DECLARE_PLOT_FUNCTIONS( PlotHist,  TH1D,       TH1D& );
-  DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph,     TGraph& );
-  DECLARE_PLOT_FUNCTIONS( PlotData,  RooAbsData, TGraphAsymmErrors& );
-  DECLARE_PLOT_FUNCTIONS( PlotPdf,   RooAbsPdf,  TGraph& );
+  /** @{
+   * @brief
+   * Plotting 1D histogram objects
+   */
+  DECLARE_PLOT_FUNCTIONS( PlotHist, TH1D, TH1D& );
+  /** @} */
+
+
+  /** @{
+   * @brief
+   * Plotting x-y scatter graph objects
+   */
+  DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph, TGraph& );
+  /** @} */
+
+  /** @{
+   * @brief
+   * Plotting RooFit's @ROOT{RooAbsData}s
+   */
+  DECLARE_PLOT_FUNCTIONS( PlotData, RooAbsData, TGraphAsymmErrors& );
+  /** @} */
+
+  /** @{
+   * @brief
+   * Plotting RooFit's @ROOT{RooAbsPdf}s
+   */
+  DECLARE_PLOT_FUNCTIONS( PlotPdf, RooAbsPdf, TGraph& );
+  /** @} */
 #undef DECLARE_PLOT_FUNCTIONS
 
-  // Additional plotting utilities
-  // - Line drawing, note that the lines will be destroyed when the Pad is.
-  //   Passing back reference to allow for additional styling;
   TLine& DrawHLine( const double  y,
                     const Color_t c,
                     const Style_t s = 1,
                     const Width_t w = 1 );
   TLine& DrawVLine( const double  x,
                     const Color_t c,
-                    const Style_t s = 1,
-                    const Width_t w = 1 );
+                    const Style_t s          = 1,
+                    const Width_t w          = 1 );
+  void DrawCMSLabel( const std::string&      = cap::prelim,
+                     const std::string& main = "CMS" );
+  void DrawLuminosity( const double luminosity );
+  void DrawLuminosity( const std::string& string );
 
   // Axis and Range setting function
+  TObject*     GetAxisObject() const;
+  virtual void SetAxisFont();
+
   TAxis&       Xaxis();
   TAxis&       Yaxis();
   const TAxis& Xaxis() const;
@@ -172,111 +230,113 @@ public:
     const double       forcebinwidth = autobinwidth
     );
 
-  // Automatic adjustment of Y range, with various different types:
-  // - histogram will assume a positive definite input, and the y axis minimum
-  //   value will be directly set at the data minimum value (if only histograms
-  //   are used to generate the plot, the data mimimum value would be clipped
-  //   at 0.3)
-  // - graph will actively move the y axis minimum away from the data minimum
-  // - ratio would keep the axis range centered at 1 extending outwards by
-  //   to a maximum of 0-2;
-  // - pull will keep the axis ragne centered at 0, extending outwards to a
-  //   maximum of -5 -- 5;
-  // - aut will automatically determine the range based on the objects in the
-  //   pad, If the pad has be adjusted previously by and options, it will use
-  //   that options. Otherwise, if any histogram type object exist in the pad,
-  //   it will use the histogram options, otherwise it would use the graph
-  //   options.
+  /**
+   * @brief enum for specifying y range adjustment type.
+   */
   enum rangetype { hist, graph, ratio, pull, aut };
   void AutoSetYRange( const rangetype = aut );
-
-  // Additional Latex drawing functions
-  // Drawing CMS label at top left of the pad (interia of frame)
-  // Defaulting to the preliminary tag.
-  void DrawCMSLabel( const std::string& = cap::prelim,
-                     const std::string& main = "CMS" );
-  // Drawing the luminosity on the top right. Explicit string could
-  // be added,otherwise assuming 13TeV format. Expected luminosity units
-  // is fb-1
-  void DrawLuminosity( const double luminosity );
-  void DrawLuminosity( const std::string& string );
-
-  // Opening function for setting log scale on y axis and re-adjusting
-  // scale accordingly
   void SetLogy( int );
 
-  // Get axis object.
-  // This will either be the axis object in the RooPlot instance
-  // or the first plotted axis object.
-  TObject*     GetAxisObject() const;
-  virtual void SetAxisFont();
 
-
-  // Flushing the contents of the Legend stack and adjusting Legend box size
   void MakeLegend();
+
+  /** @brief returning reference to internal legend object. */
   inline TLegend&
   Legend(){ return _legend; }
 
-  // Direct access functions
+  /** @brief returning reference to internal Roo1DFrame object. */
   inline Roo1DFrame&
   FrameObj(){ return _frame; }
+
+  /** @brief returning the stored y range adjustment type */
   inline rangetype&
   RangeType(){ return _prevrangetype; }
 
 protected:
+
+  /**
+   * @brief RooPlot object used for generating graphs for ROOFIT objects
+   */
   Roo1DFrame _frame;
 
-  // temporary storage for TStack plotting
+  /**
+   * @brief Internal @ROOT{THStack} object for assisting with stacked histogram
+   * plots.
+   */
   THStack* _workingstack;
 
-  // Tracking of the maximum and minimum value of plotted data.
-  // and helper functions used for adjusting the weights
+  /** @{ @brief  tracking the min/max values of the data plotted on the pad  */
   double _datamax;
   double _datamin;
-  rangetype _prevrangetype;
-  void AutoSetYRangeHist();
-  void AutoSetYRangeGraph();
-  void AutoSetYRangeRatio();
-  void AutoSetYRangePull();
+  /** @} */
 
-  // TLegend object.
-  // An issue with ROOT object drawing is that the first object to be
-  // drawn has a smaller z index (placed towards the back), when usually the
-  // plotted towards the foreground are more 'important' (should be higher on
-  // the Legend entries). So we will be using a stack to temporary store
-  // the legend entry and flushing it's content when a save function is called.
-  // When the flushing is called, additional method would also be used to
-  // determine the size of the legend, and the size of the legend would be
-  // adjusted accordlingly.
+  /** @brief
+   * The range type used to adjust the Y axis range on the previous adjustment
+   * call
+   */
+  rangetype _prevrangetype;
+
+  /** @brief the Legend object */
   TLegend _legend;
+
+  /** @brief simple class for storing legend entry. */
   struct legentry
   {
     TObject*    obj;
     std::string entry;
     std::string legopt;
   };
+
+  /** @brief legend entry stack */
   std::stack<legentry> _legstack;
-  void _init_legend();
-  void AddLegendEntry( TH1D&, const std::string&, const RooCmdArg& );
-  void AddLegendEntry( TGraph&, const std::string&, const RooCmdArg& );
 
-  // Miscelleneous helper functions
-
-  // Helper function for RooFit plotOn generated  objects
+  /**
+   * @brief generating @ROOT{TGraph}s for RooFit object.
+   *
+   * Generating a TGraphs instance based on the data/pdf object with argument
+   * list using the underlying RooPlot object. In the case that the plotting
+   * fails, and exception is raised.
+   * @tparam Ret     Return type. Could be any TGraph children types, though
+   *                 casting could fail.
+   * @tparam Arg     Supposedly any RooFit object with the plotOn function
+   *                 could be used.
+   * @param  obj     RooFit object for plotting.
+   * @param  arglist List of RooCmdArgs objects
+   * @return         Generated TGraph object.
+   * */
   template<typename Ret = TGraph, typename Arg>
-  Ret& GenRoofitGraph( Arg&, RooLinkedList& );
+  Ret&
+  GenRoofitGraph( Arg& obj, RooLinkedList& arglist )
+  {
+    RooPlot* test = obj.plotOn( &_frame, arglist );
+    if( !test ){
+      throw std::invalid_argument(
+        "Bad argument list or object, plotting failed" );
+    }
+    Ret& ans = *( dynamic_cast<Ret*>(
+                    _frame.getObject( _frame.numItems() -1 ) ) );
+    return ans;
+  }
 
-  // Static axis title setting function.
   static
   void SetAxisTitle(
     TAxis&,
     const std::string& title,
     const std::string& unit = "" );
+
+  void AutoSetYRangeHist();
+  void AutoSetYRangeGraph();
+  void AutoSetYRangeRatio();
+  void AutoSetYRangePull();
+
+  void _init_legend();
+  void AddLegendEntry( TH1D&, const std::string&, const RooCmdArg& );
+  void AddLegendEntry( TGraph&, const std::string&, const RooCmdArg& );
 };
 
-/*-----------------------------------------------------------------------------
- *  Container for constructor arguments
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Constructor argument container for Pad1D
+ */
 struct RangeByVar
 {
   const RooRealVar* var;
@@ -300,44 +360,41 @@ private:
   static const double find_default;
 };
 
-/*-----------------------------------------------------------------------------
- *  New RooArgCmd options for unified plotting interface, along with
- *  enum for defining the options. Here we are using inheritence for
- *  better namespace control
-   --------------------------------------------------------------------------*/
-enum plottype// Putting this type in global plt namespace to reduce
-{// verbosity (you probably wouldn't have a variabe called
- // plt::scatter)
-  dummy_start = 10000,// Choosing an arbitrary starting point to void 0
-                      // integer collision
-  scatter,// for both graphs and histograms
-  hist,// hist boxes
-  histerr,// error boxes  (both graph and histograms),
-  histstack,// Adding histogram to internal THStack, (histogram only)
-  histnewstack,// Forcing a new stack to be created.
-  simplefunc,// for graphs representing a function
-  fittedfunc// for graphs representing a function with fitting uncertainty
+/**
+ * @brief Enum for defining plot types. Putting this in global plt namespace
+ * to reduce verbosity.
+ */
+enum plottype
+{
+  dummy_start = 10000, //< start at non-zero to avoid value collision.
+  scatter,//< Plot both graphs and histograms as scatter points.
+  hist,//< Plot histogram as boxes
+  histerr,//<  error boxes  (both graph and histograms),
+  histstack,//< Adding histogram to internal THStack, (histogram only)
+  histnewstack,//< Forcing a new stack to be created.
+  simplefunc,//< for graphs representing a function
+  fittedfunc//< for graphs representing a function with fitting uncertainty
 };
 
-class PlotType : public RooCmdArg// only overloading the consturctor
+/**
+ * @brief Plot argument to specify how data should be presented.
+ */
+class PlotType : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  /** @brief Enum interface for plottype input */
   PlotType( const int i );
-  // Enum interface.
+
+  /** @brief specifying raw ROOT style string */
   PlotType( const std::string& );
-  // passing raw ROOT style string.
-  // Addition option parsing (or axis/same... etc) would be peformed.
   virtual
   ~PlotType(){}
 };
 
-
-/*-----------------------------------------------------------------------------
- *  Y range tracking options:
- *  if set to aut, the functions in the Pad1D will override the flag to
- *  something suitable.
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Plot argument to specify which edges of data to keep track of.
+ */
 class TrackY : public RooCmdArg
 {
 public:
@@ -351,10 +408,9 @@ public:
   ~TrackY(){}
 };
 
-/*-----------------------------------------------------------------------------
- *  EntryText :
- *  Flag for setting the object to be added to the Legend in the pad
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Argument for defining text to place in legend.
+ */
 class EntryText : public RooCmdArg
 {
 public:
@@ -363,11 +419,9 @@ public:
   virtual ~EntryText(){}
 };
 
-
-/*-----------------------------------------------------------------------------
- *  Class for simple argument parsing (Guaranteeing uniquess and simple getting
- *  and existence detection.
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Simple container for helping with RooCmdArg parsing.
+ */
 class RooArgContainer : public std::vector<RooCmdArg>
 {
 public:
@@ -379,11 +433,8 @@ public:
   bool             Has( const std::string& name ) const;
 };
 
-
 }/* plt */
 
 }/* usr  */
-
-#include "UserUtils/PlotUtils/src/Pad1D.ipp"
 
 #endif/* end of include guard: USERUTILS_PLOTUTILS_PADFRAME1D_HPP */

@@ -1,5 +1,7 @@
 <use name="UserUtils/Common"/>
 
+<flags CXXFLAGS="-g -I$CMSSW_BASE/src/UserUtils/Common/interface/"/>
+
 <bin name="ptree_test"            file="ptree_test.cc"   />
 <bin name="pathutil_test"         file="pathutil_test.cc"/>
 <bin name="format_test"           file="format_test.cc"  />

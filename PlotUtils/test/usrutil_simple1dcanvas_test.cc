@@ -1,7 +1,7 @@
 /**
  * @file    pad1d_test.cc
  * @brief   Testing the simple 1d Canvas.
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
@@ -39,22 +39,22 @@ main( int argc, char* argv[] )
     c.PlotHist( h1, plt::PlotType( plt::scatter ), plt::EntryText( "Bkg. 1" ) );
     c.PlotHist( h2, plt::PlotType( plt::hist ), plt::EntryText( "Bkg_{2}" ) );
     c.PlotHist( h3, plt::PlotType( plt::histerr ), plt::EntryText( "Signal" ) );
-    c.DrawCMSLabel( "ROOTOBJ TEST" );
+    c.DrawCMSLabel( "ROOTOBJ TEST", "CWS" );
     c.DrawLuminosity( 133.7 );
     c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
 
-    c.SaveAsPDF( "testfig/simple1dcanvas_test.pdf" );
+    c.SaveAsPNG( "testfig/simple1dcanvas_test.png", 144 );
     c.SetLogy( 1 );
-    c.SaveAsPDF( "testfig/simple1dcanvas_log_test.pdf" );
+    c.SaveAsPNG( "testfig/simple1dcanvas_log_test.png", 144 );
   }
 
   {// Stacking test
     plt::Simple1DCanvas c;
-    c.PlotHist( h1, plt::PlotType( plt::histstack ) );
-    c.PlotHist( h2, plt::PlotType( plt::histstack ) );
-    c.PlotHist( h3, plt::PlotType( plt::hist ) );
+    c.PlotHist( h1, plt::PlotType( plt::histstack ), plt::EntryText("Bkg. 1") );
+    c.PlotHist( h2, plt::PlotType( plt::histstack ), plt::EntryText("Bkg. 2") );
+    c.PlotHist( h3, plt::PlotType( plt::hist ), plt::EntryText("Sig") );
 
-    c.DrawCMSLabel( "STACK TEST" );
+    c.DrawCMSLabel( "STACK TEST", "CWS" );
     c.DrawLuminosity( 133.7 );
     c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
 
@@ -63,10 +63,9 @@ main( int argc, char* argv[] )
     h1.SetFillColor( kCyan );
     h2.SetFillColor( kPink );
 
-    c.SaveAsPDF( "testfig/simple1dcanvas_stack_test.pdf" );
+    c.SaveAsPNG( "testfig/simple1dcanvas_stack_test.png", 144 );
     c.SetLogy( 1 );
-    c.SaveAsPDF( "testfig/simple1dcanvas_stack_log_test.pdf" );
-
+    c.SaveAsPNG( "testfig/simple1dcanvas_stack_log_test.png", 144 );
   }
 
 
@@ -75,7 +74,7 @@ main( int argc, char* argv[] )
   RooRealVar m( "m", "m", 0.3, -5, 5 );
   RooRealVar s( "s", "s", 2, 0, 5 );
   RooGaussian g( "g", "g", x, m, s );
-  RooDataSet* d     = g.generate( RooArgSet( x ), 5000 );
+  RooDataSet* d     = g.generate( RooArgSet( x ), 800 );
   RooFitResult* fit = g.fitTo( *d,
     RooFit::Save(),
     RooFit::Verbose( false ),
@@ -89,20 +88,18 @@ main( int argc, char* argv[] )
     auto& dgraph = c2.PlotData( d );
     auto& fgraph = c2.PlotPdf( g, RooFit::VisualizeError( *fit, 1, false ) );
 
-    // SetDataStyle( dgraph ) ;
-    // Styling
-    dgraph.SetMarkerSize( plt::sty::mkrpixels( 6 ) );
+    dgraph.SetMarkerSize( 0.05 );
     dgraph.SetLineColor( kBlack );
     fgraph.SetLineColor( kBlue );
     fgraph.SetFillColor( kCyan );
 
-    c2.DrawCMSLabel( "ROOFIT test" );
+    c2.DrawCMSLabel( "ROOFIT test", "CWS" );
     c2.DrawLuminosity( 133.7 );
     c2.SetHistAxisTitles( "M_{HHHHH}", plt::unit::GeVcc );
 
-    c2.SaveAsPDF( "testfig/simple1dcanvas_roofit_test.pdf" );
+    c2.SaveAsPNG( "testfig/simple1dcanvas_roofit_test.png", 144 );
     c2.SetLogy( 1 );
-    c2.SaveAsPDF( "testfig/simple1dcanvas_roofit_log_test.pdf" );
+    c2.SaveAsPNG( "testfig/simple1dcanvas_roofit_log_test.png", 144 );
 
     c2.SaveAsCPP( "testfig/roofittest.cxx" );
     // should at least have internal axis

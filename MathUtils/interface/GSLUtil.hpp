@@ -1,10 +1,9 @@
-/*******************************************************************************
-*
-*  Filename    : GSLUtil.hpp
-*  Description : Helper Utility functions using GSL
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    GSLUtil.hpp
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Listing GSL operation functions and variables.
+ */
+
 #ifndef USERUTILS_MATHUTILS_GSLSETTINGS_HPP
 #define USERUTILS_MATHUTILS_GSLSETTINGS_HPP
 
@@ -17,6 +16,17 @@
 namespace usr {
 
 namespace gsl {
+/**
+ * @defgroup GSLUtils GSLUtils
+ * @brief   Default settings and routines for using GSL objects.
+ * @ingroup MathUtils
+ * @details
+ * Simplifying commonly used GSL routines used in various calculation routines
+ * to single functions that should converge in for most of the use cases.
+ * Extreme cases would always need specific processing, but this collections
+ * of functions is still useful for development.
+ * @{
+ */
 
 /*-----------------------------------------------------------------------------
  *  GSL setting constants
@@ -26,17 +36,17 @@ extern const double rel_epsilon;
 extern const double mch_epsilon;
 extern const unsigned max_iteration;
 
-/*******************************************************************************
-*   GSL iterator solver
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  Default GSL iterators
+   --------------------------------------------------------------------------*/
 extern void IterateSolver( gsl_multiroot_fsolver* solver );
 extern void IterateSolver( gsl_root_fsolver* solver );
 extern void IterateSolver( gsl_min_fminimizer* solver );
 extern void IterateSolver( gsl_multimin_fminimizer* solver );
 
-/*******************************************************************************
-*   Solving a one dimension gsl_function func at func(x) = a
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  Auto-iteration for solving one-dimensional function at f(x)=a
+   --------------------------------------------------------------------------*/
 extern double Solve1D(
   gsl_function* function,
   double        yval,
@@ -44,24 +54,24 @@ extern double Solve1D(
   double        ymax
 );
 
-/*******************************************************************************
-*   Multi variable functions
-*   Using same wrapper as gsl minimizer function:
-*    - double (* f) (const gsl_vector * x, void * params)
-*    - size_t n
-*    - void* params
-*******************************************************************************/
+/**
+ * @brief defining a new name for the \f$R^{n}\rightarrow R\f$ function.
+ * @details basically the function used for the gsl minimizers:
+ * - double (* f)( const gsl_vector* x, void* params)
+ * - size_t n
+ * - void* params
+ */
 typedef gsl_multimin_function gsl_multifunc;
 
-/*******************************************************************************
-*   Handy parameter-less gsl_multi_function function pointers
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  Handy parameter-less mult variable functions.
+   --------------------------------------------------------------------------*/
 double sum( const gsl_vector* x, void* params);
 double product( const gsl_vector* x, void* params);
 
-/*******************************************************************************
-*   Partial derivative - Wrapper for gsl_deriv function
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  Partial derivative function
+   --------------------------------------------------------------------------*/
 extern int partial_deriv(
   gsl_multifunc* function,
   gsl_vector*    x,
@@ -71,7 +81,6 @@ extern int partial_deriv(
   double&        error
   );
 
-// Simpler interface for self improving derivative intervals
 extern double deriv(
   gsl_function* function,
   double        x
@@ -83,8 +92,9 @@ extern double partial_deriv(
   size_t         varidx
 );
 
-};/* gsl */
+/** @} */
 
+};/* gsl */
 
 }/* usr */
 

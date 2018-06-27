@@ -1,6 +1,6 @@
 /**
  * @file    argumentextender_test.cc
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"

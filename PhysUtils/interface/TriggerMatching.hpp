@@ -9,7 +9,7 @@
 /**
  * @file    TriggerMatching.hpp
  * @brief   Trigger object matching functions.
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  *
  *  @details Attempts to match a reco::Candidate object to a trigger object in
  *  a list of trigger objects with a specified trigger within a given cone
@@ -34,11 +34,14 @@
 
 namespace usr {
 
-/*-----------------------------------------------------------------------------
- *  HasTriggerMatch:
- *   Check if a reco::Candidate object matches any trigger objects in the list
- *   with the given trigger name, label name and delta r requirements.
-   --------------------------------------------------------------------------*/
+
+/**
+ * @defgroup triggermatching Trigger Matching
+ * @brief Functions for performing trigger matching.
+ * @ingroup PhysUtils
+ *
+ * @{
+ */
 extern bool HasTriggerMatch(
   const reco::Candidate&                        recoobj,
   const pat::TriggerObjectStandAloneCollection& trgobjlist,
@@ -48,12 +51,7 @@ extern bool HasTriggerMatch(
   const double                                  mindelta_r = 0.1
   );
 
-/*-----------------------------------------------------------------------------
- *  TriggerMatchP4
- *   Attempt to return the four momentum of the trigger object. If the trigger
- *   object doesn't exist. It will return a (0,0,0,0) four momentum.
-   --------------------------------------------------------------------------*/
-TLorentzVector TriggerMatchP4(
+extern TLorentzVector TriggerMatchP4(
   const reco::Candidate&                        recoobj,
   const pat::TriggerObjectStandAloneCollection& trgobjlist,
   const std::string&                            reqtrigger,
@@ -91,7 +89,7 @@ extern bool TrigObjMatchPathFilter(
   const std::string&                  filter
   );
 
-
+/** @} */
 
 }/* usr */
 

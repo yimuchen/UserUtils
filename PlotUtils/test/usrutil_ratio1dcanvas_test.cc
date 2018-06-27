@@ -1,7 +1,7 @@
 /**
  * @file    ratiocanvas_test.cc
  * @brief   Testing the default value settings of the ratiocanvas class
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
 
@@ -97,7 +97,7 @@ main( int argc, char* argv[] )
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
-    c.SaveAsPDF( "testfig/ratio1dcanvas_test.pdf" );
+    c.SaveAsPNG( "testfig/ratio1dcanvas_test.png", 144 );
     c.SaveAsCPP( "testfig/ratio1dcanvas_test.cc" );
   }
   {// RooFit Testing
@@ -128,7 +128,7 @@ main( int argc, char* argv[] )
     auto& datgraph = c.PlotData( d, plt::EntryText("Fake Data") );
 
     datgraph.SetMarkerStyle( 20 );
-    datgraph.SetMarkerSize( 0.5 );
+    datgraph.SetMarkerSize( 0.1 );
     datgraph.SetLineColor( kBlack );
     fitgraph.SetLineColor( kBlue );
     fitgraph.SetFillColor( kCyan );
@@ -146,7 +146,7 @@ main( int argc, char* argv[] )
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
-    c.SaveAsPDF("ratio1dcanvas_roofit_test.pdf");
+    c.SaveAsPNG("testfig/ratio1dcanvas_roofit_test.png",144);
   }
 
   return 0;

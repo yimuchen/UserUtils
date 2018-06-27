@@ -1,10 +1,9 @@
-/*******************************************************************************
-*
-*  Filename    : OStreamUtils.hpp
-*  Description : Handful of helpful all public classes to enhance ostream usage.
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    OStreamUtils.hpp
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief  Simple classes for ostream manipulation
+ */
+
 #ifndef USERUTILS_COMMON_STLUTILS_OSTREAMUTILS_HPP
 #define USERUTILS_COMMON_STLUTILS_OSTREAMUTILS_HPP
 
@@ -12,9 +11,19 @@
 
 namespace usr {
 
-/*-----------------------------------------------------------------------------
- *  Clearing the output of one line (returning carrage and printing whitespace)
-   --------------------------------------------------------------------------*/
+/**
+ * @defgroup ostreamutils ostream Helpers
+ * @brief    classes for output stream manipulation.
+ * @ingroup  Common
+ * @details
+ * Collections of classes with a operator<< with the std::ostream overloaded
+ * to allow for nicer output manipulation.
+ * @{
+ */
+
+/**
+ * @brief simples for clearing the current line in the screen outputs.
+ */
 class clearline
 {
 public:
@@ -23,9 +32,9 @@ public:
   friend std ::ostream& operator<<( std::ostream&, const clearline& );
 };
 
-/*-----------------------------------------------------------------------------
- *  Printing the same character multiple times for output splitting
-   --------------------------------------------------------------------------*/
+/**
+ * @brief class for printing a ling of characters on the screen.
+ */
 class separator
 {
 private:
@@ -39,7 +48,7 @@ public:
   friend std ::ostream& operator<<( std::ostream&, const separator& );
 };
 
-
+/** @} */
 
 }/* usr */
 

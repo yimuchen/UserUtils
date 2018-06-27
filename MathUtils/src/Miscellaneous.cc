@@ -1,17 +1,20 @@
-/*******************************************************************************
-*
-*  Filename    : Common.cc
-*  Description : Implementation for generic function calculations
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    Miscellaneous.cc
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief  Implementing miscellaneous mathematical functions
+ */
+
 #include <cmath>
 
 namespace usr {
 
-
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returning the intersect points of two segments if exists.
+ *
+ * Given four points \f$A(p1x,p1y)\f$, \f$B(p2x,p2y)\f$, \f$C(p3x,p3y)\f$,
+ * and \f$D(p4x,p4y)\f$. The function checks if segments AB and CD intersect.
+ * If yes, store results in intx, and inty return true; return false otherwise.
+ */
 bool
 Intersect(
   const double p1x, const double p1y,

@@ -1,0 +1,23 @@
+@defgroup PlotUtils PlotUtils
+@brief Better plotting functions and classes.
+
+This subpackage is a collections of classes and functions intended to enhance
+the plotting experience for analysis level plots by augmenting the existing
+@ROOT classes.
+
+Due to the complexity of the issues with root. This package is further divided
+into the following subpackages:
+
+- [PlotUtilsCore](@ref PlotUtilsCore):
+  Are the key wrapper classes that *restricts* the usage of ROOT plotting
+  objects, wrapping the plotting APIs of ROOT into more intuitive methods,
+  which hopefully improves code readability. Also includes classes for
+  conventional styling conventions used by the CMS collaboration.
+
+- [PlotUtilsConvert](@ref PlotUtilsConvert)
+  Translation of the many magic numbers used in ROOTs plotting API to human
+  readable constants and functions.
+
+- [PlotUtilsUser](@ref PlotUtilsUser)
+  User level classes to allow for presentation ready plots with minimal user
+  code.

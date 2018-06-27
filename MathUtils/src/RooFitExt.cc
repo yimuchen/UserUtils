@@ -1,11 +1,14 @@
-/*******************************************************************************
-*
-*  Filename    : RooFitExt.hpp
-*  Description : Implementation for RooFitExt.hpp defined functions
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    RooFitExt.cc
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Implementing extended RooFit functions
+ */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
+#else
+#include "UserUtils/MathUtils/RooFitExt.hpp"
+#endif
+
 #include <RooAbsData.h>
 #include <RooAbsPdf.h>
 #include <RooDataSet.h>
@@ -17,22 +20,34 @@
 
 namespace usr {
 
-/*-----------------------------------------------------------------------------
- *  Helper structure and function for extracting the dataset as a list of
- *  numbers with potential weights
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Helper structure for expressing a 1D data set (RooDataSet) simply
+ *        as a list of numbers with weights.
+ *
+ * Additional helper rountines are used for caching anc calculating the numbers
+ * required for performing the Kolmogorov-Smirov test. One in particular is the
+ * "EffectiveNum" method, as the number of data points is required for the
+ * calculation of the KS test, the "number of data points" for weighted data
+ * sets would follow the "sum squared over sum of squared" approach:
+ *
+ * \f[
+ *  N_\mathrm{eff} = \frac{\left(\sum w_i\right)^2 }{\sum w_i^2}
+ * \f]
+ *
+ * The data set is also simplified to a list of doubles (with weights), with
+ * the list ordered to make it simpler to calculated the KS test.
+ */
 struct SimplifiedData
 {
   typedef std::pair<double, double> Evt;
-  double           sum;
-  double           sumsq;
+  double           sum;   /**< @brief Sum of weights */
+  double           sumsq; /**< @brief Sum of squared weights */
   std::vector<Evt> dataset;
 
   inline static bool
   Compare( const Evt& x, const Evt& y )
   { return x.first < y.first; }
 
-  // Complicated member function implemented at end of file.
   double EffectiveNum() const;
 
   SimplifiedData(
@@ -43,8 +58,44 @@ struct SimplifiedData
     );
 };
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Helper structure for expressing a CDF object, and helping with
+ *        adjusting the normalization of the CDF function when the Kolmogorov--
+ *        Smirov test is asked to be performed on certain regions of the
+ *        variable range.
+ *
+ * The construction of the CDF functions as a RooFit RooAbsRel object handles
+ * the normalization of the CDF function across the maximum range of the
+ * variable used to constructed the CDF function. In the case that a range
+ * is requested when calculating the KS test would require the effective CDF is
+ * 0/1 at the edges of the range, so effectively:
+ * \f[
+ *     \mathrm{CDF}_{\mathrm{eff}}(x)
+ *      = \frac{\mathrm{CDF}(x) -\mathrm{CDF}(x_\mathrm{min})}
+ *             {\mathrm{CDF}(x_\mathrm{max})-\mathrm{CDF}(x_\mathrm{max})}
+ * \f]
+ *
+ * In the case that two ranges is requested (say to test the goodness-of-fit
+ * for a side band fit result), the effective CDF is construted such that CDF
+ * is continuous for all values of \f$x\f$, an returns values 0/1 at the far
+ * edges of the ranges. So effectively, given the two ranges \f$[a,b]\f$ and
+ * \f$[c,d]\f$:
+ *
+ * \f[
+ *  \mathrm{CDF}_\mathrm{eff}(x < b)
+ *      = \frac{\mathrm{CDF}(x) - \mathrm{CDF}(a)}
+ *      {\mathrm{CDF}(b)-\mathrm{CDF}(a) + \mathrm{CDF}(d)-\mathrm{CDF}(c)};
+ *
+ *  \mathrm{CDF}_\mathrm{eff}(x > c)
+ *      = \frac
+ *      {\mathrm{CDF}(x)-\mathrm{CDF}(c) + \mathrm{CDF}(b)-\mathrm{CDF}(a)}
+ *      {\mathrm{CDF}(b)-\mathrm{CDF}(a) + \mathrm{CDF}(d)-\mathrm{CDF}(c)}
+ * \f]
+ *
+ *
+ * While this scheme readily extends to arbitrarily many ranges, our
+ * implementation, would only allow for two ranges.
+ */
 struct SimplifiedCDF
 {
   std::unique_ptr<RooAbsReal>             rawcdf;
@@ -52,7 +103,6 @@ struct SimplifiedCDF
   std::vector<std::pair<double, double> > rangelist;
   double                                  norm;
 
-  // Returning the effective CDF value
   double operator()( const double x );
   double rawval( const double x );
 
@@ -73,9 +123,17 @@ struct SimplifiedCDF
 bool CheckCutCmd( const RooCmdArg& cmd, RooRealVar& x );
 
 
-/*-----------------------------------------------------------------------------
- *  Kolmongorov-Smirov Test implementation functions for Data---PDF comparison
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Calculating the Kolmogorov--Smirov distance of a RooDataSet and a
+ *        RooAbsPdf in term of a variable.
+ *
+ * The calculation routine supports:
+ *  - weighted data sets. To see how the number of data is calculated for
+ *    weighted data sets, see the helper class SimplifiedData.
+ *  - Up to two cuts in the data set. Currently you can only cut by specifying
+ *    a range already declared in the variable of comparison. To see how
+ *    the cumulative PDF is handled, see the helper class SimplifiedCDF.
+ */
 double
 KSDistance(
   RooDataSet&      dataset,
@@ -103,8 +161,13 @@ KSDistance(
   return sqrt( sim.EffectiveNum() ) * maxdist;
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Returning the corresponding KS probablity after calculating the KS
+ *        distance of between a data set and PDF.
+ *
+ * The probability function is already implemented in the
+ * TMath::KolmogorovProb() function, will not attempt to recreate.
+ */
 double
 KSProb(
   RooDataSet&      dataset,
@@ -118,9 +181,15 @@ KSProb(
   return TMath::KolmogorovProb( dist );
 }
 
-/*-----------------------------------------------------------------------------
- *  KS-Test data--data comparison
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Calculating the Kolmogorov-Smirov distance between two data sets.
+ *
+ * The code for looping though the two data set is based on the ROOT
+ * implementation found in the TMath::KolmorogovTest() functions.
+ * Supporting up to two range cuts and weighted data sets. For the calculation
+ * of the effective number of events in a weighted data set, see the helper
+ * class SimplifiedData.
+ */
 double
 KSDistance(
   RooDataSet&      set1,
@@ -137,8 +206,6 @@ KSDistance(
   double empcdf2 = 0;
   double maxdist = 0;
 
-  // Max distance mimiced from the ROOT implementation of TMath::KolmogorovTest
-  // https://root.cern.ch/doc/v608/namespaceTMath.html#a2dcadfdb80ed8b7413ca84b71cb56434
   for( auto evt1 = sim1.dataset.begin(), evt2 = sim2.dataset.begin();
        evt1 != sim1.dataset.end() && evt2 != sim2.dataset.end(); ){
     if( evt1->first < evt2->first ){
@@ -170,7 +237,11 @@ KSDistance(
 
 }
 
-/*----------------------------------------------------------------------------*/
+/**
+ * @brief Returning the KS probablity of two data sets
+ * @details this takes the KS distance of the two datasets and pass it directly
+ * to the TMath::KolmogorovProb() functions.
+ */
 double
 KSProb(
   RooDataSet&      set1,
@@ -180,12 +251,17 @@ KSProb(
   const RooCmdArg& cut2 )
 {
   const double dist = KSDistance( set1, set2, var, cut1, cut2 );
-  return  TMath::KolmogorovProb( dist );
+  return TMath::KolmogorovProb( dist );
 }
 
-/*----------------------------------------------------------------------------*/
-
-double KSProbAlt(
+/**
+ * @brief An alternative, effective p-value of the KS test for two data set.
+ * @details the alternative calculation is descibed in
+  [this]( https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test) page.
+  Hard limiting the calculation output to 1 for a more "sane" output value
+ */
+double
+KSProbAlt(
   RooDataSet&      set1,
   RooDataSet&      set2,
   RooRealVar&      var,
@@ -195,8 +271,6 @@ double KSProbAlt(
   const double dist = KSDistance( set1, set2, var, cut1, cut2 );
 
   // Alternative calculation of p-value as described in wiki page
-  // https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test
-  // Hard clipping the output to 1 for a more sane output value
   return std::min( exp( -2. * dist * dist ) * 2., 1. );
 }
 
@@ -211,14 +285,14 @@ SimplifiedData::SimplifiedData(
   sum( 0 ),
   sumsq( 0 )
 {
-  RooDataSet* op_set  = 0 ;
-  RooDataSet* tmp_set = 0 ;
+  RooDataSet* op_set  = 0;
+  RooDataSet* tmp_set = 0;
   if( !CheckCutCmd( cut1, x ) && !CheckCutCmd( cut2, x ) ){
-    op_set = &data;
+    op_set = (RooDataSet*)( data.reduce( RooFit::SelectVars(x) ));
   } else if( CheckCutCmd( cut1, x ) && !CheckCutCmd( cut2, x ) ){
-    op_set = (RooDataSet*)(data.reduce( RooFit::SelectVars( x ), cut1 ));
+    op_set = (RooDataSet*)( data.reduce( RooFit::SelectVars( x ), cut1 ) );
   } else if( CheckCutCmd( cut2, x ) && !CheckCutCmd( cut1, x ) ){
-    op_set = (RooDataSet*)(data.reduce( RooFit::SelectVars( x ), cut2 ));
+    op_set = (RooDataSet*)( data.reduce( RooFit::SelectVars( x ), cut2 ) );
   } else {
     op_set  = (RooDataSet*)( data.reduce( RooFit::SelectVars( x ), cut1 ) );
     tmp_set = (RooDataSet*)( data.reduce( RooFit::SelectVars( x ), cut2 ) );
@@ -241,7 +315,7 @@ SimplifiedData::SimplifiedData(
     }
   }
 
-  if( op_set != &data ){ delete op_set; }
+  delete op_set;
   if( tmp_set ){ delete tmp_set; }
 
   std::sort( dataset.begin(), dataset.end(), Compare );
@@ -300,7 +374,11 @@ SimplifiedCDF::SimplifiedCDF(
            + ( rawval( max( 1 ) ) - rawval( min( 1 ) ) );
   }
 }
-/*----------------------------------------------------------------------------*/
+
+/**
+ * @brief Returning the effective CDF value with the cut ranges taken into
+ *        account.
+ */
 double
 SimplifiedCDF::operator()( const double x )
 {
@@ -324,8 +402,9 @@ SimplifiedCDF::operator()( const double x )
   }
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returning the raw CDF functions value as constructed by RooFit.
+ */
 double
 SimplifiedCDF::rawval( const double x )
 {
@@ -339,8 +418,8 @@ void
 SimplifiedCDF::AddRange( const RooCmdArg& cmd )
 {
   rangelist.push_back( std::pair<double, double>(
-      var.getMin( cmd.getString( 0 ) ),
-      var.getMax( cmd.getString( 0 ) ) )
+    var.getMin( cmd.getString( 0 ) ),
+    var.getMax( cmd.getString( 0 ) ) )
     );
 }
 

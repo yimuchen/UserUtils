@@ -1,7 +1,7 @@
 /**
  * @file    weight_ratio.cc
  * @brief   Testing the weight ratio information stored in the LHEEventProducts
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/FWLite/interface/Event.h"

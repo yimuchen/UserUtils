@@ -2,25 +2,23 @@
  * @file    Ratio1DCanvas.hpp
  * @brief   Canvas containing two Pad1Ds, with the top for main plotting
  *          while the bottom is designed for ratio plotting.
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  * @details
  *
- * By default the Plot<Obj> function would plot directly onto the top
- * pad. Instance function for generating new plots for the bottom canvas would
- * be owned by the canvas object, ensuring that they are deleted when the
- * canvas goes out of scope, allowing for less user level memeroy handling.
- * By default, the generated objects have their attributes bound to the
- * numerator, copying all the attributs at *SAVE TIME* such that the objects
- * would have identical styling. This behaviour could be overwritten by a
- * Unbind option that could be passed when plotting the bottom canvas objects.
  */
 
 #ifndef USERUTILS_PLOTUTILS_RATIO1DCANVAS_HPP
 #define USERUTILS_PLOTUTILS_RATIO1DCANVAS_HPP
 
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
+#else
+#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
+#include "UserUtils/PlotUtils/Canvas.hpp"
+#include "UserUtils/PlotUtils/Pad1D.hpp"
+#endif
 
 #include <memory>
 #include <vector>
@@ -30,9 +28,9 @@ namespace usr  {
 namespace plt  {
 
 
-/*-----------------------------------------------------------------------------
- *  Constructor helper classes
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Constructor container class for defining Pad dimension ratios
+ */
 struct PadRatio
 {
   static float default_ratio;
@@ -45,10 +43,9 @@ struct PadRatio
   const float gap;
 };
 
-/*-----------------------------------------------------------------------------
- *  Specializing for Top and bottom Pad, mainly for overloading the
- *  SetAxisFont options
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Specialized Pad1D for additional axis/font settings.
+ */
 class Top1DPad : public Pad1D
 {
 public:
@@ -65,8 +62,9 @@ public:
   virtual void SetAxisFont();
 };
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Specialized Pad1D for additional axis/font settings.
+ */
 class Bottom1DPad : public Pad1D
 {
 public:
@@ -90,14 +88,6 @@ public:
 class Ratio1DCanvas : public Canvas
 {
 public:
-  // Static member functions for simple divide operations, these generate
-  // objects where the user will have to handle the plotting and object
-  // ownership all by themselves.
-
-  // Scaling division
-  // Scaling division is simple scaling the numerator object by the central
-  // value of the denominator. The scaling includes the uncertainties of the
-  // numerator and the uncertainties in the denominator object is ignored.
   static TH1D* ScaleDivide(
     const TH1D*  num,
     const TH1D*  den,
@@ -108,30 +98,33 @@ public:
     const TGraph* den,
     const double  cen = 1. );
 
-  // Default setting are hidden away in cpp file for simpler compilation
   static length_t default_width;
   static length_t default_height;
+  static FontSet  default_font;
 
 public:
   Ratio1DCanvas(
     const length_t width  = default_width,
     const length_t height = default_height,
     const PadRatio& = PadRatio(),
-    const FontSet&  = HalfPageFont
+    const FontSet&  = default_font
     );
   Ratio1DCanvas(
     const RangeByVar&,
     const length_t width  = default_width,
     const length_t height = default_height,
     const PadRatio& = PadRatio(),
-    const FontSet&  = HalfPageFont
+    const FontSet&  = default_font
     );
 
   virtual
   ~Ratio1DCanvas();
 
+  /** @brief returning reference to top pad object */
   inline Top1DPad&
   TopPad(){ return GetPad<Top1DPad>( 0 ); }
+
+  /** @brief returning reference to bottom pad object */
   inline Bottom1DPad&
   BottomPad(){ return GetPad<Bottom1DPad>( 1 ); }
 
@@ -147,10 +140,15 @@ public:
   inline RET_TYPE &FUNC_NAME( PLOT_TYPE* obj, Args ... args )     \
   { return TopPad().FUNC_NAME( obj, args ... ); }
 
+  /**
+   * @{
+   * @brief 'plotting data on canvas' is actually plotting to Top pad on canvas.
+   */
   PASSTHROUGH_TOPPLOTFUNC( PlotHist,  TH1D,       TH1D );
   PASSTHROUGH_TOPPLOTFUNC( PlotGraph, TGraph,     TGraph );
   PASSTHROUGH_TOPPLOTFUNC( PlotData,  RooAbsData, TGraphAsymmErrors );
   PASSTHROUGH_TOPPLOTFUNC( PlotPdf,   RooAbsPdf,  TGraph );
+  /** @} */
 #undef PASSTHROUGH_TOPPLOTFUNC
 
 #define PASSTHOUGH_TOPVOIDFUNC( FUNC_NAME ) \
@@ -158,13 +156,17 @@ public:
   inline void FUNC_NAME( Args ... args )    \
   { TopPad().FUNC_NAME( args ... ); }
 
+  /**
+   * @{
+   * @brief Common plot styling functions are also setting top pad properties
+   *        only.
+   */
   PASSTHOUGH_TOPVOIDFUNC( DrawCMSLabel );
   PASSTHOUGH_TOPVOIDFUNC( DrawLuminosity );
   PASSTHOUGH_TOPVOIDFUNC( SetLogy );
+  /** @} */
 #undef PASSTHOUGH_TOPVOIDFUNC
 
-  // Instance divide functions, using marco expansion multiple interface
-  // generation. Allowing for pointer and reference interface for everything
 #define DIVIDE_FUNCTION( FUNC_NAME, RET_TYPE, NUM_TYPE, DEN_TYPE )           \
   RET_TYPE& FUNC_NAME(                                                       \
     const NUM_TYPE&, const DEN_TYPE&, const std::vector<RooCmdArg> & );      \
@@ -197,20 +199,31 @@ public:
     const RooCmdArg &arg1, Args ... args )                                   \
   { return FUNC_NAME( *num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); }
 
+  /**
+   * @{
+   * @brief plotting the scale division of two histogram onto bottom pad,
+   * returning reference to the newly constructed histogram.
+   */
   DIVIDE_FUNCTION( PlotScale, TH1D,              TH1D,   TH1D );
+  /** @} */
+
+
+  /**
+   * @{
+   * @brief plotting the scale division of two graphs onto bottom pad,
+   * returning reference to the newly constructed histogram.
+   */
   DIVIDE_FUNCTION( PlotScale, TGraphAsymmErrors, TGraph, TGraph );
+  /** @} */
 
 #undef DIVIDE_FUNCTION
 
-  // Overloading marging setting functions to ensure marging matching
-  // of top and bottom cavasis
   void SetTopMargin( const float x );
   void SetLeftMargin( const float x );
   void SetRightMargin( const float x );
   void SetBottomMargin( const float x );
 
 protected:
-  // Constructor helper functions
   float _splitNDC( const float ratio ) const;
   void  _init_margin( const float gap );
 };

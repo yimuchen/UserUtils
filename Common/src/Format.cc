@@ -1,16 +1,22 @@
 /**
  * @file    Format.cc
- * @brief   Implementatin of double formatting strings
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @brief   Implementation of double formatting strings
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
+#else
+#include "UserUtils/Common/Format.hpp"
+#include "UserUtils/Common/Maths.hpp"
+#endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
+#include <cmath>
 #include <regex>
 #include <string>
-#include <cmath>
 
 namespace usr {
 
@@ -21,21 +27,44 @@ namespace base {
 /*-----------------------------------------------------------------------------
  *  Default settings control variables
    --------------------------------------------------------------------------*/
-int precision_default        = 8;
-unsigned spacesep_default    = 3;
+
+/**
+ * @details default precision is set such that loss of precision due to IO would
+ * not be of too much concern, while avoiding artifacts in decimal--binary
+ * conversions (ex. 1.7=1.6999999999999999556 )
+ */
+int precision_default = 8;
+
+/**
+ * @details spacing between digits should be universal (i.e. three digits), but
+ * can be changed if publishing to journal using another number system.
+ */
+unsigned spacesep_default = 3;
+
+/**
+ * @details Defaults to none, as it is easier on the eyes when testing code with
+ * screen I/O, but you might want to set it to the latex "\," string when
+ * mass producing numbers for publication.
+ */
 std::string spacestr_default = "";
+
+/**
+ * @details library specifically doesn't allow more digits then 27 to be
+ * printed after the decimal point. This is pretty close to the recommended
+ * precision limit of doubles anyway.
+ */
 const unsigned max_precision = 27;
 
-/*-----------------------------------------------------------------------------
- *  Decimal represenation functions
-   --------------------------------------------------------------------------*/
+/**
+ * @brief generating string to represent double as a string in decimal.
+ */
 std::string
 decimal::str() const
 {
-  const unsigned op_precision = std::min( abs(_precision) , abs(max_precision) );
-  std::string retstr =
-    boost::    str( boost::format(
-        boost::str( boost::format( "%%.%df" )% op_precision )
+  const unsigned op_precision = std::min( abs( _precision ), abs( max_precision ) );
+  std::string retstr          =
+    boost::str( boost::format(
+      boost::str( boost::format( "%%.%df" )% op_precision )
       )% _input );
 
   // stripping trailing zero after decimal point
@@ -70,31 +99,35 @@ decimal::str() const
   return retstr;
 }
 
-/*-----------------------------------------------------------------------------
- *  scientific represenation of a double
-   --------------------------------------------------------------------------*/
-scientific::scientific( const double x , const unsigned p )
+
+/**
+ * @brief Requires explicit specification of precision (cannot be negative)
+ */
+scientific::scientific( const double x, const unsigned p )
 {
-  precision(p);
-  _mant = x ;
-  _exp  = ReduceToMant(_mant) ;
+  precision( p );
+  _mant = x;
+  _exp  = ReduceToMant( _mant );
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Generating string to represent double as string in scientific
+ *  notations.
+ */
 std::string
 scientific::str() const
 {
-  const std::string base = decimal( _mant, _precision ).dupsetting(*this).str();
+  const std::string base = decimal( _mant, _precision ).dupsetting( *this ).str();
   // largest exponent should be around ~300
   // no need of additional formatting.
-  const std::string ans = ( _exp == 0) ?  base :
-    boost::str( boost::format( "%s \\times 10^{%d}") % base % _exp );
+  const std::string ans
+    = ( _exp == 0 ) ?  base :
+      boost::str( boost::format( "%s \\times 10^{%d}" ) % base % _exp );
   return ans;
 }
 
-} /* base */
+}/* base */
 
-} /* fmt */
+}/* fmt */
 
 }/* usr */

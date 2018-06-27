@@ -1,11 +1,13 @@
-/*******************************************************************************
-*
-*  Filename    : StatisticsUtil.cc
-*  Description : Implementation of statistics utility functions
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    StatisticsUtil.cc
+ * @brief   Implementation of common statistical number and functions.
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/GSLUtil.hpp"
+#else
+#include "UserUtils/MathUtils/GSLUtil.hpp"
+#endif
 
 #include <gsl/gsl_min.h>
 #include <gsl/gsl_roots.h>
@@ -18,28 +20,44 @@ namespace usr {
 
 namespace stat {
 
-/*-----------------------------------------------------------------------------
- *  Sigma interval -- confidenc level conversion functions
- *  The definition of the GSL error function:
- *   > https://www.gnu.org/software/gsl/manual/html_node/
- *   > Error-Function.html#Error-Function
- *       erf(x) = (2/\sqrt(\pi)) \int_0^x dt \exp(-t^2)
- *  Conversion to CDF of Normal distribution:
- *   > https://en.wikipedia.org/wiki/Normal_distribution
- *       CDF(x) = 1/2 * ( 1 + erf(x/sqrt(2)))
-   --------------------------------------------------------------------------*/
+/**
+ * @brief CDF of the normal distribution.
+ *
+ * Strictly, [GSL's error function](https://www.gnu.org/software/gsl/manual/html_node/Error-Function.html#Error-Function) is defined according to the standard definition of the error
+ * function
+ *
+ * \f[
+ *      \mathrm{erf}(x) = \frac{2}{\sqrt(\pi)} \int_0^x dt e^{-t^2}
+ * \f]
+ *
+ * Conversion to CDF of a normal distribution would be:
+ *
+ * \f[
+ *  \mathrm{CDF}(x)
+ *      = \frac{1}{2} + \frac{1}{2}\mathrm{erf}\left(\frac{x}{\sqrt{2}}\right)
+ * \f]
+ */
 double
 NormalCDF( const double x )
 {
   return 0.5 * ( 1 + gsl_sf_erf( x/sqrt( 2. ) ) );
 }
-/*----------------------------------------------------------------------------*/
+
+
+/**
+ * @brief Translating the informal but common phrase of "x sigmas" into
+ *        actual confidence levels.
+ */
 double
 GetConfidenceLevel( const double sigmainterval )
 {
   return NormalCDF( sigmainterval ) - NormalCDF( -sigmainterval );
 }
-/*----------------------------------------------------------------------------*/
+
+/**
+ * @brief Translatign the more formal term of "a confidence level of x", into a
+ *        more immediately understandable "x sigma interval"
+ */
 double
 GetSigmaInterval( const double confidencelevel )
 {
@@ -67,23 +85,39 @@ extern const double onesigma_level = GetConfidenceLevel( 1 );
 extern const double twosigma_level = GetConfidenceLevel( 2 );
 
 
-/*******************************************************************************
-*   General MinosError computing functions
-*******************************************************************************/
+/**
+ * @brief getting the difference in NLL required for a given sigma interval.
+ * @details Essentially calculating the difference in NLL from the normal
+ * distribution: for a sigma interval of \f$x\f$, the return value would be
+ *  \f$x^{2}/2\f$
+ */
 double
 DeltaNLLFromSigma( const double sigma )
 {
   return sigma*sigma/2;
 }
 
+/**
+ * @brief getting the difference in NLL required for a certain confidence level.
+ * @details First convert the confidence interval into a sigma interval, then
+ * returning the answer.
+ */
 double
 DeltaNLLFromConfidence( const double confidence )
 {
   return DeltaNLLFromSigma( GetSigmaInterval( confidence ) );
 }
 
-/******************************************************************************/
-
+/**
+ * @brief Generic routine for calculating minos uncertainties for 1D functions.
+ *
+ * Given a 1D gsl function acting as the @NLL function for some parameter, the
+ * MinosError will use the guess and min/max brackets to return the central
+ * value (where the @NLL function was minimized) and the upper and lower
+ * uncertainty edges (where the @NLL function deviates from the minimum value
+ * by some number K). The number K is determined by the working "confidence
+ * level" of the function.
+ */
 int
 MinosError(
   gsl_function* nllfunction,
@@ -118,8 +152,20 @@ MinosError(
   return 0;
 }
 
-/******************************************************************************/
-
+/**
+ * @brief Generic routine for calculating the minos uncertainty of a N
+ *        parameter system.
+ *
+ * Given an N dimensional parameter system governed by a @NLL function
+ * `nllfunction`, the MinosError routine will attempt to calculate the
+ * minos uncertainty of the extended parameter defined by the `varfunction`.
+ *
+ * The `initguess` is mandatory for initializing the parameter guessing, while
+ * the `central`, `min`, `max` parameters are no longer used for initializing
+ * or bracketting, but rather for storing the return result. The use can
+ * provide the parameter inputs for a higher or lower guess if needed, otherwise
+ * the guess is simply stepping the minimum value by a value of 0.01.
+ */
 int
 MinosError(
   usr::gsl::gsl_multifunc* nllfunction,
@@ -133,7 +179,6 @@ MinosError(
   gsl_vector*              lowerguess
   )
 {
-  // Static constant setups
   static const double defaultstep = 0.01;
 
   // Step 1: Finding the minimum value
@@ -265,9 +310,11 @@ MinosError(
 }
 
 
-/*******************************************************************************
-*   Common NLL functions
-*******************************************************************************/
+/**
+ * @brief GSL compatible function for the @NLL of a Gaussian function.
+ * @param x      the estimated parameter value.
+ * @param params params[0]=mean, params[1]=sigma
+ */
 double
 GaussianNLL( double x, void* params )
 {
@@ -276,8 +323,11 @@ GaussianNLL( double x, void* params )
   return ( x-mean )*( x-mean )/( 2*sigma*sigma );
 }
 
-/******************************************************************************/
-
+/**
+ * @brief GSL compatible function for the @NLL of a binomial measurement.
+ * @param x      the estimated parameter value (\f$\epsilon\f$)
+ * @param params param[0] = passed, param[1]=total
+ */
 double
 BinomialNLL( double x, void* params )
 {
@@ -286,8 +336,11 @@ BinomialNLL( double x, void* params )
   return -passed* log( x ) - ( total-passed ) * log( 1 - x );
 }
 
-/******************************************************************************/
-
+/**
+ * @brief GSL compatible function for the @NLL of a poisson measurement.
+ * @param x      the estimated parameter value (\f$n\f$)
+ * @param params param[0] = number of observed events.
+ */
 double
 PoissonNLL( double x, void* params )
 {

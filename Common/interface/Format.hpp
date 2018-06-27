@@ -1,21 +1,13 @@
 /**
- * @file    Format.hpp
- * @brief   Better formatter for floating point objects
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
- * @details
- *  "Better" includes a better interface for defining precision, and
- *  adding separation strings every n digits, handy for mass producing
- *  numbers in journal format.
- *  Also includes a more latex compatible scientific notation format
- *  (i.e. A.BCD\times 10^{+E}).
- *  Notice that the classes force clips the numbers after the decimal
- *  point to 27 digits.
+ * @file
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Classes for better floating point string/ostream outputs
  */
 #ifndef USERUTILS_COMMON_FORMAT_HPP
 #define USERUTILS_COMMON_FORMAT_HPP
 
-#include <string>
 #include <ostream>
+#include <string>
 
 namespace usr {
 
@@ -23,60 +15,94 @@ namespace fmt {
 
 namespace base {
 
+/**
+ * @addtogroup ostreamutils
+ * @{
+ */
+
 extern int precision_default;
-extern std::string spacestr_default;
 extern unsigned spacesep_default;
+extern std::string spacestr_default;
 extern const unsigned max_precision;
 
+/**
+ * @brief Base class for defining float formatting operations.
+ * @details Pretty much an all settings class. with all settings function
+ *          returning 'this reference' to allow for setting chaining.
+ */
 class format
 {
 public:
-  format() : _precision( precision_default ),
-    _spacestr( spacestr_default ),
-    _spacesep( spacesep_default ){}
-  virtual ~format(){
-  };
+  virtual ~format(){};
 
-  // Flag setting functions
+  /**
+   * @brief number of digits to display after the decimal point.
+   */
   inline format&
-  precision( int x ){ _precision = x; return *this;}
+  precision( int x ){ _precision = x; return *this; }
+
+  /**
+   * @brief string to add between digit seperations.
+   */
   inline format&
   spacestr( const std::string& x ){ _spacestr = x; return *this; }
+
+  /**
+   * @brief number of digits between seperator string.
+   */
   inline format&
   spacesep( unsigned x ){ _spacesep = x; return *this; }
 
-  // Setting duplication
-  format& operator=( const format& ) = default ; // Member-wise copy
-  inline format& dupsetting( const format& x ) { *this = x; return *this;}
+
+  format& operator=( const format& ) = default;// Member-wise copy
+
+  /**
+   * @brief duplicating all settings to reference format.
+   */
+  inline format&
+  dupsetting( const format& x ){ *this = x; return *this;}
 
 
-  // conversion and output interfacing
+  /**
+   * @brief Pure virtual function for determining how an type should be
+   * represented as a string.
+   */
+  virtual std::string str() const = 0;
+
+  /**
+   * @brief conversion operator to string.
+   */
   inline operator std::string(){
     return str();
   }
 
-  // pure virtual function for returning string representation of something.
-  virtual std::string str() const = 0;
-
 protected:
-  // Flag setting variables.
   int _precision;
   std::string _spacestr;
   unsigned _spacesep;
+
+  /**
+   * @brief constructor can only be called by childern classes.
+   * @details intentionally hidden to stop user usage.
+   */
+  format() : _precision( precision_default ),
+    _spacestr( spacestr_default ),
+    _spacesep( spacesep_default ){}
 };
 
-// Default interfacing
+/**
+ * Calling the pure-virtual str() method of the format for output.
+ */
 inline std::ostream&
 operator<<( std::ostream& os, const format& x )
-{ os << x.str(); return os; }
+{
+  os << x.str();
+  return os;
+}
 
-
-/*-----------------------------------------------------------------------------
- *  decimal representation, in the that the precision is set to
- *  negative, the absolute value of the given precision will be used
- *  with the exception that the trailing zeros after the decimal point will be
- *  stripped off.
-   --------------------------------------------------------------------------*/
+/**
+ * @brief decimal representation of double.
+ */
 class decimal : public format
 {
 public:
@@ -91,15 +117,15 @@ public:
   virtual
   ~decimal (){}
 
-  virtual std::string str() const;// Explicit function call
+  virtual std::string str() const;
 
 private:
   double _input;
 };
 
-/*-----------------------------------------------------------------------------
- *  Scientific represenation of a double. Precision must be explicitly set.
-   --------------------------------------------------------------------------*/
+/**
+ * @brief scientific notation of double.
+ */
 class scientific : public format
 {
 public:
@@ -114,9 +140,11 @@ private:
   int _exp;
 };
 
-} /* base */
-} /* fmt */
+/** @} */
 
+}/* base */
+
+}/* fmt */
 
 }/* usr */
 

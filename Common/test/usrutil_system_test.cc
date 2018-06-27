@@ -1,7 +1,7 @@
 /**
  * @file    system_test.cc
  * @brief   Testing system interaction functions
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #include "UserUtils/Common/interface/SystemUtils/Command.hpp"
 #include "UserUtils/Common/interface/SystemUtils/Time.hpp"

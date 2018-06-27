@@ -1,11 +1,13 @@
-/*******************************************************************************
-*
-*  Filename    : ArgumentExtender.cc
-*  Description : Implementations for ArgumentExtender class
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    ArgumentExtender.cc
+ * @brief   Implementations for the ArgumentExtender class
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#else
+#include "UserUtils/Common/ArgumentExtender.hpp"
+#endif
 
 #include <boost/exception/diagnostic_information.hpp>
 #include <boost/foreach.hpp>
@@ -22,9 +24,20 @@ namespace opt = boost::program_options;
 
 namespace usr {
 
-/*-----------------------------------------------------------------------------
- *  Constructor and destructor -- "help" Argument is manditorily added.
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Construction of the class property tree with a list of files.
+ *
+ * The constructor will ensure that the json structure for each entry under a
+ * given options is uniformed in the json file. Notice that the options listed
+ * in the json file will be considered a required arguments (hence the support
+ * for multiple json files).
+ *
+ * An execption would be thrown if any parsing error occurs. Multiple options
+ * with the same name would also be considered an exception.
+ *
+ * After sucessfully parsing the json file. The option `help/h` would be added
+ * to for use (if used, the class will diplay the defined options and exit).
+ */
 void
 ArgumentExtender::_init( const std::vector<std::string>& filelist )
 {
@@ -102,13 +115,19 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
   ;
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief default destructor (nothing, relying on member auto cleaning)
+ */
 ArgumentExtender::~ArgumentExtender(){}
 
-/*-----------------------------------------------------------------------------
- *  Option loading function
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Adding more options definition to the class.
+ *
+ * Currently the only way of adding more options is to manually define
+ * a new options_description instance, and adding that to the class.
+ * The internal options_description instance would only directly contain
+ * the options definition of "help/h".
+ */
 ArgumentExtender&
 ArgumentExtender::AddOptions( const opt::options_description& desc )
 {
@@ -116,8 +135,27 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
   return *this;
 }
 
-/*----------------------------------------------------------------------------*/
+// Parse the program input given the standard argc, argv interface.
+// Throw exception when parse error or exit the program if "help" options
+// is recieved.
+// All functions listed under the json files would be listed as mandetory.
+// and a parse error would be thrown if input is not detected.
 
+/**
+ * @brief parsing the rpgoram input with the standard argc, argv interface.
+ *
+ * Raising exception if there is any error in parsing. Additional criterias
+ * that counts as an error in parsing includes:
+ * 1. The json file contains an options not listed in the final
+ *     options_description instance.
+ * 2. A option listed in the json does not have a corresponding user input.
+ * 3. The user input for an option listed in the json file doesn't match
+ *    any of inputs listed in the json file.
+ *
+ * After all parsing is complete, the function will check for the "help/h"
+ * input. If it exists, the function will print the options_description and
+ * terminate the program.
+ */
 void
 ArgumentExtender::ParseOptions( int argc, char** argv )
 {
@@ -145,7 +183,7 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
       throw;
     }
 
-    if( !CheckInput( optname ) ){
+    if( !CheckArg( optname ) ){
       std::cerr << "Missing options for [" << optname << "]" << std::endl
                 << Description()
                 << std::endl;
@@ -153,9 +191,9 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
     }
 
     std::vector<std::string> validoptionlist;
-    if( !CheckQuery( Tree(), optname, GetInput<std::string>( optname ) ) ){
+    if( !CheckQuery( Tree(), optname, Arg<std::string>( optname ) ) ){
       std::cerr << "Extended values for options for [" << optname << "] "
-                << " with value [" << GetInput<std::string>( optname ) << "] "
+                << " with value [" << Arg<std::string>( optname ) << "] "
                 << " is not defined!"
                 << std::endl
                 << "Available values: " << std::flush;
@@ -165,21 +203,22 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
       }
       std::cerr << std::endl;
 
-      throw std::invalid_argument( GetInput<std::string>( optname ) );
+      throw std::invalid_argument( Arg<std::string>( optname ) );
     }
   }
 
-  if( CheckInput( "help" ) ){// Early exit in
+  if( CheckArg( "help" ) ){// Early exit in case of help option
     std::cerr << Description() << std::endl;
     std::exit( EXIT_SUCCESS );
   }
 }
 
-/*******************************************************************************
-*   Input access functions
-*******************************************************************************/
+/**
+ * @brief Checking if the user input exists for an option.
+ * @details Should be called after the ParseOptions() method has been called.
+ */
 bool
-ArgumentExtender::CheckInput( const std::string& opt ) const
+ArgumentExtender::CheckArg( const std::string& opt ) const
 {
   return Args().count( opt );
 }

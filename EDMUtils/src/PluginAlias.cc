@@ -1,7 +1,7 @@
 /**
  * @file    PluginAlias.cc
  * @brief   Implementation of non plugin alias functions
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 
 #include "UserUtils/EDMUtils/interface/PluginAlias.hpp"
@@ -13,18 +13,23 @@
 
 namespace usr {
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returing the string to a path in the parameterset if an
+ *        EDM::FileInPath was used.
+ */
 std::string
 PluginAlias::GetFilePath(
-  const edm::ParameterSet& config,
-  const std::string&       filetag )
+ const edm::ParameterSet& config,
+ const std::string& filetag )
 {
   return config.getParameter<edm::FileInPath>( filetag ).fullPath();
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Given a file path in the form of an EDM::FileInPath, and a object tag
+ *        as a parameter set string. This function return a clone to the
+ *        object stored in a file for analysis use.
+ */
 TObject*
 PluginAlias::GetFileObj(
   const edm::ParameterSet& config,
@@ -38,7 +43,5 @@ PluginAlias::GetFileObj(
   file->Close();
   return ans;
 }
-
-/*----------------------------------------------------------------------------*/
 
 }/* usr */

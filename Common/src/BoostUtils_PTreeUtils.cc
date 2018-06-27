@@ -1,13 +1,13 @@
-/*******************************************************************************
-*
-*  Filename    : BoostUtils_PTreeUtils.cc
-*  Description : Implementation of non template functions
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*
-*******************************************************************************/
+/**
+ * @file   BoostUtils_PTreeUtils.cc
+ * @author [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief  Implementing boost property tree operations
+ */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
-#include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
+#else
+#include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
+#endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
@@ -18,9 +18,9 @@
 
 namespace usr {
 
-/*-----------------------------------------------------------------------------
- *  Construction from Json files.
-   --------------------------------------------------------------------------*/
+/**
+ * @brief populating a property tree from a json file.
+ */
 pt::ptree
 FromJsonFile( const std::string& filename )
 {
@@ -29,8 +29,11 @@ FromJsonFile( const std::string& filename )
   return ans;
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief populating a property tree from a list of json files.
+ * @details Calls the MergeTrees() functions for tree created by the different
+ * files.
+ */
 pt::ptree
 FromJsonFiles( const std::vector<std::string>& filelist )
 {
@@ -45,19 +48,22 @@ FromJsonFiles( const std::vector<std::string>& filelist )
   return ans;
 }
 
-/*-----------------------------------------------------------------------------
- *  Merging
-   --------------------------------------------------------------------------*/
+/**
+ * @brief merging the contents of two property trees
+ *
+ * Main reference from [here](https://paste.tbee-clan.de/TX2Vm).
+ * The second tree is traversed using BFS algorithm and have it's contents
+ * pushed accordingly. Conflicting entries may have undesirable behaviour.
+ * Currently untested.
+ */
 pt::ptree
 MergeTrees( const pt::ptree& first, const pt::ptree& second )
 {
-  // From https://paste.tbee-clan.de/TX2Vm
   pt::ptree merged = first;
 
-  // Traversing over second tree using BFS
   std::queue<pt::ptree> qvalues;
   qvalues.push( second );
-  std::queue<std::string> qkeys;// Keep track of keys for pt::ptree query
+  std::queue<std::string> qkeys;
 
   while( !qvalues.empty() ){
     pt::ptree current = qvalues.front();
@@ -90,8 +96,13 @@ MergeTrees( const pt::ptree& first, const pt::ptree& second )
   return merged;
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief printing a property tree using recursive algorithms. The level
+ *        automatically increments by 1 each level into the tree.
+ *
+ * The user can specify a level greater than 0, but the only result is the
+ * the screen output is shifted to the right.
+ */
 void
 PrintPTree( const pt::ptree& tree, unsigned level )
 {
@@ -106,17 +117,22 @@ PrintPTree( const pt::ptree& tree, unsigned level )
   }
 }
 
-/*-----------------------------------------------------------------------------
- *  Basic query functions
-   --------------------------------------------------------------------------*/
+/**
+ * @brief creating a query string based on a list of sub-level tags.
+ *
+ * Given a list of strings {string1, string2, string3}, the return
+ * string will concat the strings into a single property tree query as:
+ * "string1.string2.string3".
+ */
 std::string
 MakeQueryString( const std::vector<std::string>& list )
 {
   return boost::join( list, "." );
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief checking if anything exists in the property tree at the query point.
+ */
 bool
 CheckQuery( const pt::ptree& tree, const std::string& query )
 {
@@ -128,8 +144,9 @@ CheckQuery( const pt::ptree& tree, const std::string& query )
   }
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returning the sub-tree at the query point.
+ */
 pt::ptree
 GetSubTree( const pt::ptree& tree, const std::string& query )
 {

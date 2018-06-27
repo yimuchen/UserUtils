@@ -1,57 +1,71 @@
 /**
  * @file    STLUtils_Filesystem.cc
  * @brief   Implementation of filesystem enhancement functions
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/Filesystem.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/Filesystem.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#endif
 
 #include <glob.h>
 #include <iostream>
 
 namespace usr  {
 
-/*-----------------------------------------------------------------------------
- *  Global constants and common path implementation functions
-   --------------------------------------------------------------------------*/
+/**
+ * @brief returning path to the CMSSW/src directory.
+ */
 fs::path
 cmssw_src(){ return GetEnv( "CMSSW_BASE" ) + "/src/";  }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returning path to a main package directory.
+ */
 fs::path
 pkgpath( const std::string& x )
 {
   return cmssw_src() / fs::path( x );
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returning path to a sub-pacakge directory
+ */
 fs::path
 subpkgpath( const std::string& x, const std::string& y )
 {
   return pkgpath( x )/fs::path( y );
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returning path to the data directory of a sub-package.
+ */
 fs::path
 datapath( const std::string& x, const std::string& y )
 {
   return subpkgpath( x, y )/fs::path( "data" );
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief returning path to the reulst directory of a sub-package (unofficial)
+ */
 fs::path
 resultpath( const std::string& x, const std::string& y )
 {
   return subpkgpath( x, y )/fs::path( "result" );
 }
 
-/*-----------------------------------------------------------------------------
- *  Local Globing function
-   --------------------------------------------------------------------------*/
+/**
+ * @brief returning the globbing results of a query string.
+ *
+ * Currently using the POSIX glob.h library, which is always available for the
+ * CMSSW environment. This functions is simple used for translating to the
+ * std::filesystem format.
+ */
 std::vector<fs::path>
 GlobLocal( const std::string& query )
 {
@@ -68,11 +82,13 @@ GlobLocal( const std::string& query )
 }
 
 
-/*-----------------------------------------------------------------------------
- *  File checking functions
- *  Note: this functions is explicitly noisy to allow for better
- *  tracking in case of bad input
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Checking if the parent directory of the filepath exists, and
+ *        attempting to create if it doesn't exists.
+ *
+ * This functions is intentionally noisy when creating the parent directories
+ * as this calls system commands and is potentially dangerous.
+ */
 bool
 MakeParent( const fs::path& filepath )
 {

@@ -1,17 +1,19 @@
-/*******************************************************************************
-*
-*  Filename    : Measurement.hh
-*  Description : Storage class for handling measurements with uncertainties
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*  Includes support for systematic and statistical uncertainties
-*
-*******************************************************************************/
+/**
+ * @file
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Defining the Measurement container class.
+ */
 #ifndef USERUTILS_MATHUTILS_MEASUREMENT_PARAMETER_HPP
 #define USERUTILS_MATHUTILS_MEASUREMENT_PARAMETER_HPP
 
 namespace usr {
 
+/**
+ * @brief Class for containing a measurement with asymmetric uncertainties as
+ *        well as performing basic arithmetics with quick-and-dirty uncertainty
+ *        propagation.
+ * @ingroup StatUtils
+ */
 class Measurement
 {
 public:

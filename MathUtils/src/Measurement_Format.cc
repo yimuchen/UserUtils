@@ -1,14 +1,15 @@
-/*******************************************************************************
-*
-*  Filename    : Measurement_Formatting.cc
-*  Description : String Formatting functions for Measurement class
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*  Using boost::format and std::regex for proper styling
-*
-*******************************************************************************/
+/**
+ * @file
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Implementing measurement ostream interaction.
+ */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
+#else
+#include "UserUtils/Common/Maths.hpp"
+#include "UserUtils/MathUtils/Measurement.hpp"
+#endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
@@ -20,9 +21,13 @@ namespace usr
 
 namespace fmt {
 
-/*-----------------------------------------------------------------------------
- *  Decimal representation implementation functions
-   --------------------------------------------------------------------------*/
+/**
+ * @brief reimplementing a double input such that a common interface could be
+ *        achieved.
+ *
+ * This construction means that the measreument without uncertainty would
+ * output the same values as if using a double.
+ */
 decimal::decimal( const double input, const int p ) :
   _central( input ),
   _upper( 0 ),
@@ -31,6 +36,9 @@ decimal::decimal( const double input, const int p ) :
   precision( p );
 }
 
+/**
+ * @brief normal construction for typical measurements.
+ */
 decimal::decimal( const Measurement& input, const int p ) :
   _central( input.CentralValue() ),
   _upper( input.AbsUpperError() ),
@@ -43,8 +51,14 @@ decimal::decimal( const Measurement& input, const int p ) :
   }
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief main operation for creating a latex string.
+ *
+ * @details Note that this function essentially calles the base::decimal
+ * methods for creating the string representation of a double three times,
+ * meaning that if the cental value and uncertainties are of wildly different
+ * orders of maganitude, the output could look very weird.
+ */
 std::string
 decimal::str() const
 {
@@ -66,8 +80,10 @@ decimal::str() const
   }
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Base precision overloaded to allow for autoamtic precision setting
+ *        with negative settings.
+ */
 decimal&
 decimal::precision( const int p )
 {
@@ -79,8 +95,12 @@ decimal::precision( const int p )
   return *this;
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief automatic precision setting for the decimal representation.
+ * @details The precision is set such that the larger uncertain would display
+ *          at least two significant digits (0 if larger uncertainty is greater
+ *          than 1).
+ */
 void
 decimal::SetPrecision()
 {
@@ -96,6 +116,14 @@ decimal::SetPrecision()
 /*-----------------------------------------------------------------------------
  *  Scientific notation implementation functions
    --------------------------------------------------------------------------*/
+
+
+/**
+ * @brief allowing double input to avoid multiple interfaces for double input.
+ *
+ * This construction means that the measreument without uncertainty would
+ * output the same values as if using a double.
+ */
 scientific::scientific( const double input, const unsigned p ) :
   _central( input ),
   _upper( 0 ),
@@ -106,8 +134,9 @@ scientific::scientific( const double input, const unsigned p ) :
   SetExponent();
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief simple construction with a measurement with uncertainties.
+ */
 scientific::scientific( const Measurement& input, const int p ) :
   _central( input.CentralValue() ),
   _upper( input.AbsUpperError() ),
@@ -122,7 +151,12 @@ scientific::scientific( const Measurement& input, const int p ) :
   }
 }
 
-/*----------------------------------------------------------------------------*/
+/**
+ * @brief implementing the virtual function.
+ *
+ * The function attempts to use the simplest form to represent the uncertainty,
+ * using as little latex symbols as possible.
+ */
 std::string
 scientific::str() const
 {
@@ -148,7 +182,10 @@ scientific::str() const
   return ans;
 }
 
-/*----------------------------------------------------------------------------*/
+/**
+ * @brief overloading base implementation to allow for precision autodetection
+ *        with a negative input.
+ */
 scientific&
 scientific::precision( const int i )
 {
@@ -160,10 +197,16 @@ scientific::precision( const int i )
   return *this;
 }
 
-
-/*-----------------------------------------------------------------------------
- *  Scinetific notation, helper private functions
-   --------------------------------------------------------------------------*/
+/**
+ * @brief reducing/magifying the central value and uncertainties by a common
+ *        exponent value.
+ *
+ * If the central value is none-zero, then extracting the exponent of the
+ * central value such that \f$1 < |\mathrm{central}_\mathrm{man}| < 10\f$;
+ * If the central value is zero, then the exponent is determined by the
+ * larger of the uncertainties, if it is non-zero.
+ * If everything is zero, then the exponent is not set.
+ */
 void
 scientific::SetExponent()
 {
@@ -179,7 +222,17 @@ scientific::SetExponent()
     _lower   /= IntPower( 10, _exp );
   }
 }
-/*----------------------------------------------------------------------------*/
+
+/**
+ * @brief autoamtically determining the precision to use.
+ *
+ * If the central value is smaller than the larger uncertainty, then at most
+ * the precision is 1 (if the uncertainty after the exponent has been factored
+ * out smaller than 10).
+ * if the central value is larger than the larger uncertainty, the precision
+ * is set such that two significant digits of the larger uncertainty is
+ * displayed.
+ */
 void
 scientific::SetPrecision()
 {
@@ -202,14 +255,25 @@ scientific::SetPrecision()
 
 }/* fmt */
 
-/*-----------------------------------------------------------------------------
- *  Input specialization
- *  PTreeUtils template specialization
-   --------------------------------------------------------------------------*/
+
+/**
+ * @brief template specialization for a boost property tree helper function.
+ *
+ * reading a list of doubles with 1-3 parameters as a measurement class.
+ * * If only an empty list exists at the address, then the unit measrument
+ *   (1+-0), * is returned.
+ * * If only the list is only a single double long, a measurement with no
+ *   uncertainty is returned.
+ * * If only two double exist, then a measurement with symmetric uncertainty is
+ *   returned. (x[0] +- x[1])
+ * * If more than three doubles exists, then the first three doubles will be
+ *   used to construct a measurement with asymmetic uncertainty:
+ *   (x[0] +x[1] -x[2] )
+ */
 template<>
 Measurement
 GetSingle<Measurement>(
-  const boost::property_tree::pt::ptree& tree,
+  const pt::ptree& tree,
   const std::string& query )
 {
   const std::vector<double> input = GetList<double>( tree, query );
@@ -219,7 +283,7 @@ GetSingle<Measurement>(
     return Measurement(input.at(0),0,0);
   } else if( input.size() == 2 ){
     return Measurement(input.at(0),input.at(1),input.at(1));
-  } else { // Ignoring all inputs after the 3 inputs
+  } else {
     return Measurement( input[0], input[1], input[2] );
   }
 }

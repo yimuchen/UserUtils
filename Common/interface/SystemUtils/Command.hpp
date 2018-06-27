@@ -1,7 +1,7 @@
 /**
  * @file    Command.hpp
  * @brief   Functions for command-line interaction
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 
 #ifndef USERUTILS_COMMON_SYSTEMUTILS_COMMAND_HPP
@@ -11,39 +11,36 @@
 
 namespace usr {
 
+/**
+ * @defgroup SystemCommands System Commands
+ * @brief    Helper functions for interacting with system commands.
+ * @ingroup  Common
+ * @{
+ */
+
+/*-----------------------------------------------------------------------------
+ *  General helper functions
+   --------------------------------------------------------------------------*/
 extern unsigned NumOfThreads();
 
 /*-----------------------------------------------------------------------------
- *  GetCMDOutput
- *  Storing the stdout/stderr of a shell command <x> to a return string
- *  Notice that non of the output will be displayed on scree, so the user
- *  is responsible to ensure that the input command <x> will terminate without
- *  user intervention
+ *  Execute command and output results.
    --------------------------------------------------------------------------*/
-extern std::string GetCMDSTDOutput( const std::string& x );
-extern std::string GetCMDERROutput( const std::string& x );
 extern std::string GetCMDOutput( const std::string& );
-
-
-/*-----------------------------------------------------------------------------
-*   * HasProcess( x, exclude )
-*   Returns the number of processes containing the string <x>, wile excluding
-*   processes containing string <exclude>. If <exclude> is left blank, no
-*   exclusion will be processed.
-   --------------------------------------------------------------------------*/
-extern int HasProcess( const std::string& x, const std::string& exclude = "" );
+extern std::string GetCMDSTDOutput( const std::string& );
+extern std::string GetCMDERROutput( const std::string& );
 
 /*-----------------------------------------------------------------------------
- *  WaitProcess
- *  Sleep the thread until the return value of HasProcess reaches zero.
- *  During this time, the system-time information will be refreshed on the
- *  screen for easier monitoring.
+ *  Existing process detection and waiting.
    --------------------------------------------------------------------------*/
+extern int HasProcess( const std::string&, const std::string& = "" );
+
 extern void WaitProcess(
   const std::string& process_tag,
   const std::string& exclude = "",
   const unsigned     waitmills = 100
   );
+/* @} */
 
 
 } /* usr */

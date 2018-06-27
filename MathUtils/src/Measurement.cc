@@ -1,11 +1,13 @@
-/*******************************************************************************
-*
-*  Filename    : Measurement.cc
-*  Description : Implmentation of arithmetics for Measurement class
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file   Measurement.cc
+ * @author [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief  Basic functions for Measurement class
+ */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
+#else
+#include "UserUtils/MathUtils/Measurement.hpp"
+#endif
 
 #include <iostream>
 
@@ -13,9 +15,10 @@ using namespace std;
 
 namespace usr {
 
-/*******************************************************************************
-*   Constructor And Destructor
-*******************************************************************************/
+/**
+ * Default constructor makes an all-zero measurement (may cause issues with
+ * callculation... currently un-tested)
+ */
 Measurement::Measurement()
 {
   _central_value = 0;
@@ -23,8 +26,14 @@ Measurement::Measurement()
   _error_down   = 0;
 }
 
-/******************************************************************************/
-
+/**
+ * @brief Typical construction involving the assignment of the central value,
+ *        the absolute higher uncertainty, and absolute lower uncertainty.
+ *
+ * Currently the class can only operated with aboth uncertainties being larger
+ * than 0, so if a negtive value is passed for the uncertainty, the sign will
+ * be automatically flipped.
+ */
 Measurement::Measurement(
   const double c,
   const double error_up,
@@ -47,21 +56,23 @@ Measurement::Measurement(
   }
 }
 
-/******************************************************************************/
-
+/**
+ * @brief Assignment operator calls the assignment operator.
+ */
 Measurement::Measurement( const Measurement& x )
 {
   *this = x;
 }
 
-/******************************************************************************/
-
+/**
+ * @brief Nothing to do for the destructor....
+ */
 Measurement::~Measurement(){}
 
 
-/*******************************************************************************
-*   Assignment operator
-*******************************************************************************/
+/**
+ * @brief Strict member wise copy constructor.
+ */
 Measurement&
 Measurement::operator=( const Measurement& x )
 {

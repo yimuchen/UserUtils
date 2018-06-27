@@ -1,11 +1,8 @@
-#*******************************************************************************
- #
- #  Filename    : EDMFileList.py
- #  Description : Utility functions for listing EDM Files
- #  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
- #
- #  Powered by subprocess and EDM command line utilities
- #
+##
+#  @file    EDMFileList.py
+#  @brief   Utility functions for listing EDM Files
+#  @author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
+#
 #*******************************************************************************
 import subprocess, shlex
 

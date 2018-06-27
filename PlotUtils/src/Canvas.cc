@@ -1,11 +1,17 @@
 /**
  * @file    Canvas.cc
  * @brief   Better Canvas saving implementations
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
+#else
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/PlotUtils/Canvas.hpp"
+#include "UserUtils/PlotUtils/Constants.hpp"
+#endif
 
 #include "TFile.h"
 
@@ -18,19 +24,13 @@ namespace usr  {
 
 namespace plt  {
 
-/*-----------------------------------------------------------------------------
- *  Static variables
-   --------------------------------------------------------------------------*/
-float FontSet::default_size       = font::normalsize;
-font::face FontSet::default_face  = font::helvetica;
-float FontSet::default_lineheight = font::em( 1.1 );
-
-FontSet FullPageFont = FontSet();
-FontSet HalfPageFont = FontSet( font::footnote() );
-
-/*-----------------------------------------------------------------------------
- *  Canvas constructor and destructors
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Construct a new canvas with specific width height and font settings.
+ *
+ * The width and height parameters are in the standard ROOT dimensions units
+ * (pixels). For publication dimensions like inches and centimeters, see
+ * the functions defined in [PlotUtilsConvert](@ref PlotUtilsConvert).
+ */
 Canvas::Canvas(
   const length_t width,
   const length_t height,
@@ -40,6 +40,9 @@ Canvas::Canvas(
   _fontset( fontset )
 {}
 
+/**
+ * @brief Clears all the pad instances from memory stack.
+ */
 Canvas::~Canvas()
 {
   for( auto pad : _padlist ){
@@ -47,9 +50,14 @@ Canvas::~Canvas()
   }
 }
 
-/*-----------------------------------------------------------------------------
- *  Saving functions - These are dileberately made to be noisy.
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Common subroutines for before the Canvas object is saved.
+ *
+ * This step includes:
+ * - Creating the parent directory of the desired stored path.
+ * - Looping through all the pads and calling their finalization function
+ * @param finalpath [description]
+ */
 void
 Canvas::Finalize( const fs::path& finalpath )
 {
@@ -60,17 +68,25 @@ Canvas::Finalize( const fs::path& finalpath )
   }
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief PDF file saving with additional fixes
+ *
+ * Saving as PDF fixes the issue of the generated PDF files being rotated when
+ * using XeLaTex (I like XeLaTex because I need to typeset in CJK), this
+ * function generates a temporary PDF file using the @ROOT engine in the /tmp
+ * directory and fixes the PDF file using ghostscript. Reference to the
+ * ghostscript command can be found here:
+ *  http://tex.stackexchange.com/questions/66522/xelatex-rotating-my-figures-in-beamer
+ *
+ * @param filepath final path to store the PDF file.
+ *                 (Parent directory would be automatically created if possible)
+ */
 void
 Canvas::SaveAsPDF( const fs::path& filepath )
 {
   Finalize( filepath );
   const fs::path tmppath = SaveTempPDF( filepath );
 
-  // Command found at
-  // http://tex.stackexchange.com/questions/66522/
-  // xelatex-rotating-my-figures-in-beamer
   const std::string cmd = boost::str( boost::format(
       "gs"
       "  -sDEVICE=pdfwrite"
@@ -88,29 +104,25 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   std::cout << "Saving Canvas to " << filepath << std::endl;
 }
 
-/*----------------------------------------------------------------------------*/
-
-void
-Canvas::SaveToROOT( const fs::path& filepath, const std::string& objname )
-{
-  Finalize( filepath );
-  TFile* myfile = TFile::Open( filepath.c_str(), "UPDATE" );
-  TCanvas::Write( objname.c_str(), TFile::kOverwrite );
-  delete myfile;
-}
-
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief High resolution PNG file saving
+ *
+ * The file creats a temporary PDF file using the stock @ROOT functions, and
+ * uses ImageMagik to convert the PDF into a high resolution PNG file. The
+ * `convert` command is take from
+ [here](https://stackoverflow.com/questions/6605006/convert-pdf-to-image-with-high-resolution).
+ * @param filepath final path to store the PDF file.
+ *                 (Parent directory would be automatically created if possible)
+ * @param dpi      Required image quality
+ */
 void
 Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
 {
   Finalize( filepath );
   const fs::path tmppath = SaveTempPDF( filepath );
 
-  const float scale = (float)len::ROOTDPI/(float)dpi;
-  // Command found at
-  // https://stackoverflow.com/questions/6605006/
-  // convert-pdf-to-image-with-high-resolution
+  const float scale = (float)len::ROOT_DPI/(float)dpi;
+
   const std::string cmd = boost::str( boost::format(
       "convert"
       "   -density %d"
@@ -128,25 +140,32 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
   std::cout << "Saving Canvas to " << filepath << std::endl;
 }
 
-/*----------------------------------------------------------------------------*/
-
-fs::path
-Canvas::SaveTempPDF( const fs::path& finalpath )
+/**
+ * @brief Saving the canvas to the a .root file, under a certain name.
+ *
+ * Since the canvas is assigned a random name during construction, when name
+ * the object should be stored under in the root file has to be explicitly
+ * specified, during the save call. The .root file (and parent directory) would
+ * be created if it doesn't already exits. If an object with the specified name
+ * already exists in the .root file, the object would be overwritten.
+ */
+void
+Canvas::SaveToROOT( const fs::path& filepath, const std::string& objname )
 {
-  // Saving to a temporary file /tmp/XXXXXX_<filename>.pdf
-  // Forcing postfix to be '.pdf'
-  const std::string temppdf = boost::str( boost::format( "/tmp/%s_%s.pdf" )
-    % usr::RandomString( 6 )
-    % finalpath.stem().string() );
-
-  // Default saving options
-  TCanvas::SaveAs( temppdf.c_str() );
-  MakeParent( finalpath );
-  return temppdf;
+  Finalize( filepath );
+  TFile* myfile = TFile::Open( filepath.c_str(), "UPDATE" );
+  TCanvas::Write( objname.c_str(), TFile::kOverwrite );
+  delete myfile;
 }
 
-/*----------------------------------------------------------------------------*/
-
+/**
+ * @brief Saving as CPP file.
+ *
+ * Apart form addressing of unifying the interface, for the saving functions,
+ * this function all addresses the issue of the @ROOT{TCanvas} only generating
+ * functions with the .cxx prefix.
+ * @param filepath file to save the macro file.
+ */
 void
 Canvas::SaveAsCPP( const fs::path& filepath )
 {
@@ -160,117 +179,21 @@ Canvas::SaveAsCPP( const fs::path& filepath )
   std::system( ( "rm "+tempfile ).c_str() );
 }
 
-/*-----------------------------------------------------------------------------
- *  Font dimension access functions
-   --------------------------------------------------------------------------*/
-float
-Canvas::FontSize() const { return _fontset.size; }
-
-short
-Canvas::FontFace() const { return font::fontface( _fontset.face ); }
-
-float
-Canvas::LineHeight() const { return _fontset.lineheight; }
-
-
-/*-----------------------------------------------*/
-/*-----------------------------------------------*/
-/*-----------------------------------------------*/
-
-/*-----------------------------------------------------------------------------
- *  PadBase functions
-   --------------------------------------------------------------------------*/
-PadBase::PadBase( const PadSize& size ) :
-  TPad( RandomString( 12 ).c_str(), "",
-        size.xmin, size.ymin, size.xmax, size.ymax )
+/**
+ * @brief Saving a temporary PDF file in the from of "/tmp/XXXXXX_<filename>.pdf"
+ *
+ * The random string at the front of the file is to help avoid collisions when
+ * runny multiple plotting scripts at the same time.
+ */
+fs::path
+Canvas::SaveTempPDF( const fs::path& finalpath )
 {
-  // Additional TPad initialization
-  TPad::SetTicks( 1, 1 );// Common setting in HEP plots
+  const std::string temppdf = boost::str( boost::format( "/tmp/%s_%s.pdf" )
+    % usr::RandomString( 6 )
+    % finalpath.stem().string() );
 
-  // Latex initializing
-  _latex.SetTextFont( ParentCanvas().FontFace() );
-  _latex.SetTextSize( ParentCanvas().FontSize() );
-  _latex.SetTextAlign( font::top_left );
-}
-
-/*----------------------------------------------------------------------------*/
-
-PadBase::~PadBase(){}
-
-/*----------------------------------------------------------------------------*/
-
-Canvas&
-PadBase::ParentCanvas() const
-{
-  // Dynamic cast and static not working because of public inheritance
-  return *( (Canvas*)( TPad::GetMother() ) );
-}
-
-/*-----------------------------------------------------------------------------
- *  Dimension access functions
-   --------------------------------------------------------------------------*/
-double
-PadBase::RelWidth() const { return TPad::GetWNDC(); }
-
-double
-PadBase::RelHeight() const { return TPad::GetHNDC(); }
-
-double
-PadBase::AbsWidth() const { return ParentCanvas().Width() * RelWidth(); }
-
-double
-PadBase::AbsHeight() const { return ParentCanvas().Height() * RelHeight(); }
-
-
-/*-----------------------------------------------------------------------------
- *  Latex writing functions
-   --------------------------------------------------------------------------*/
-PadBase&
-PadBase::WriteAtData( const double x, const double y, const std::string& line )
-{
-  TPad::cd();
-  _latex.DrawLatex( x, y, line.c_str() );
-  return *this;
-}
-
-/*----------------------------------------------------------------------------*/
-
-PadBase&
-PadBase::WriteLine( const std::string& line )
-{
-  TPad::cd();
-  _latex.DrawLatexNDC( _latex_cursorx, _latex_cursory, line.c_str() );
-  _latex_cursory -= RelLineHeight();
-  return *this;
-}
-
-/*----------------------------------------------------------------------------*/
-
-PadBase&
-PadBase::SetTextCursor( const double x, const double y, const font::align a )
-{
-  _latex.SetTextAlign( a );
-  return SetTextCursor( x, y );
-}
-
-/*----------------------------------------------------------------------------*/
-
-PadBase&
-PadBase::SetTextCursor( const double x, const double y )
-{
-  _latex_cursorx = x;
-  _latex_cursory = y;
-  return *this;
-}
-
-/*-----------------------------------------------------------------------------
- *  Drawing options
-   --------------------------------------------------------------------------*/
-void
-PadBase::PlotObj( TObject& obj, Option_t* opt )
-{
-  TPad::cd();
-  obj.Draw( opt );
+  TCanvas::SaveAs( temppdf.c_str() );
+  return temppdf;
 }
 
 }/* plt  */

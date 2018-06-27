@@ -13,11 +13,19 @@
 *.root
 *.log
 log*
+*.cmake
+Makefile
+CMakeFiles/
+CMakeCache.txt
 
 # Specific file exclusion
 # [relative/path/to/file]
-html/
+docs/html/
 .remote-sync.json
+.vscode/**
+docs/style.css
+docs/style.css.map
+.sass-cache
 
 
 # Specific file inclusion

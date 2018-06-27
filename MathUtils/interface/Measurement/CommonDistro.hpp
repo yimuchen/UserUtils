@@ -1,18 +1,18 @@
-/*******************************************************************************
-*
-*  Filename    : Efficiency.hpp
-*  Description : Wraper function for our parameter to TEfficiency class
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*  Wrapper functions for storing selection efficiencies to the Measurement
-*  objects. Mainly powered by the TEfficiency static functions
-*
-*******************************************************************************/
+/**
+ * @file
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Functions for constructing common measurements
+ */
 #ifndef USERUTILS_MATHUTILS_MEASUREMENT_COMMONDISTRO_HPP
 #define USERUTILS_MATHUTILS_MEASUREMENT_COMMONDISTRO_HPP
 
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #include "UserUtils/MathUtils/interface/StatisticsUtil.hpp"
+#else
+#include "UserUtils/MathUtils/Measurement/Measurement.hpp"
+#include "UserUtils/MathUtils/StatisticsUtil.hpp"
+#endif
 
 namespace usr {
 
@@ -28,9 +28,6 @@ extern Measurement Minos(
   const double confidencelevel = usr::stat::onesigma_level
   );
 
-/*-----------------------------------------------------------------------------
- *  General Wrapper for TEfficiency::Baysian functions
-   --------------------------------------------------------------------------*/
 extern const bool shortest_interval;
 extern const bool central_interval;
 
@@ -46,9 +43,9 @@ extern Measurement Bayesian(
 };// Efficiency
 
 
-/*******************************************************************************
-*   Poisson - all Poison related method for creating Measurements
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  Poisson measurement construction
+   --------------------------------------------------------------------------*/
 namespace Poisson
 {
 extern Measurement Minos(
@@ -59,6 +56,8 @@ extern Measurement Minos(
 // TODO: Add more methods
 
 };// Poisson
+
+/** @} */
 
 }/* usr */
 

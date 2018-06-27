@@ -1,19 +1,23 @@
-/*******************************************************************************
-*
-*  Filename    : STLUtils_OStreamUtils.cc
-*  Description : Ostream interaction class Implementation
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    STLUtils_OStreamUtils.cc
+ * @brief   ostream interaction class implementation.
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ */
+
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
+#endif
 
 #include <ostream>
 
 namespace usr {
 
-/*******************************************************************************
-*   Clear line implementation
-*******************************************************************************/
+/**
+ * @details currently the clear line implementation consists of printing
+ *          multiple backspace and whitespaces. Maybe not the best?
+ */
 std::ostream&
 operator<<( std::ostream& os, const clearline& )
 {
@@ -24,16 +28,17 @@ operator<<( std::ostream& os, const clearline& )
   return os;
 }
 
-
-/*******************************************************************************
-*   separator implementation
-*******************************************************************************/
 separator::separator( const char x, const size_t m ) :
   token( x ),
   n(m){}
 
 separator::~separator(){}
 
+/**
+ * @brief Implementation is essneitally what it says on the tin
+ *
+ * duplicating the character multiple times.
+ */
 std::ostream&
 operator<<( std::ostream& os, const separator& x )
 {

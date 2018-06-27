@@ -1,10 +1,15 @@
 /**
- * @file    STLUtils_StringPathUtils.cc
+ * @file    STLUtils_StringUtils.cc
  * @brief   Implementation of path utility functions in std::string format.
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/Filesystem.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/Filesystem.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#endif
 
 #include <algorithm>
 #include <cstdlib>
@@ -12,16 +17,19 @@
 #include <string>
 
 namespace usr  {
-/*----------------------------------------------------------------------------*/
+
+/**
+ * @brief C++ string version of getting system environment variables.
+ */
 std::string
 GetEnv( const std::string& x )
 {
   return std::getenv( x.c_str() );
 }
 
-/*-----------------------------------------------------------------------------
- *  Globbing Related functions
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Converting the glob notation to regex comparation strings.
+ */
 std::string
 GlobToRegex( const std::string& query )
 {
@@ -37,10 +45,10 @@ GlobToRegex( const std::string& query )
   return ans;
 }
 
-/*-----------------------------------------------------------------------------
- *  Globbing in std::string format
- *  Directly using results of std::filesystem
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Globbing with the return type being a list of string rather than a
+ *        the std::filesystem, useful for ROOT and CMSSW interfaces.
+ */
 std::vector<std::string>
 GlobLocalStr( const std::string& x )
 {
@@ -54,9 +62,13 @@ GlobLocalStr( const std::string& x )
   return ans;
 }
 
-/*-----------------------------------------------------------------------------
- *  Random string
-   --------------------------------------------------------------------------*/
+/**
+ * @brief generating an random alpha-numerical string with length n .
+ *
+ * Currently the random number generator used is that std::rand function
+ * provided in the cstdlib.h file. No way of customizing the generator,
+ * but allows for setting the random seed outisde the function.
+ */
 std::string
 RandomString( const unsigned n )
 {
@@ -74,9 +86,9 @@ RandomString( const unsigned n )
 }
 
 
-/*-----------------------------------------------------------------------------
- *  string operations functions
-   --------------------------------------------------------------------------*/
+/**
+ * @brief Converting entire string to uppercase
+ */
 void
 ToUpper( std::string& x )
 {
@@ -85,6 +97,9 @@ ToUpper( std::string& x )
     } );
 }
 
+/**
+ * @brief removing all instances of a certain substring in a given string.
+ */
 void
 StripSubstring( std::string& x, const std::string& sub )
 {
@@ -94,7 +109,5 @@ StripSubstring( std::string& x, const std::string& sub )
     x.erase( x.begin() +found, x.begin()+found + sub.size() );
   }
 }
-
-
 
 }/* usr  */

@@ -1,7 +1,6 @@
 /**
  * @file    Time.hpp
- * @brief   Simpler interface for std::chrono with specific use cases
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifndef USERUTILS_COMMON_SYSTEMUTILS_TIMP_HPP
 #define USERUTILS_COMMON_SYSTEMUTILS_TIMP_HPP
@@ -10,8 +9,14 @@
 
 namespace usr {
 
+/**
+ * @defgroup SystemTime System Time
+ * @brief    Simple interface to the std::chrono for time handling.
+ * @ingroup  Common
+ * @{
+ */
 /*-----------------------------------------------------------------------------
- *  Getting time as a 64-bit number. Nice for unrepeating simulation
+ *  Getting UNIX time as a 64-bit number
    --------------------------------------------------------------------------*/
 extern size_t CurrentTimeInNanSec();
 extern size_t CurrentTimeInMuSec();
@@ -20,8 +25,6 @@ extern size_t CurrentTimeInSec();
 
 /*-----------------------------------------------------------------------------
  *  Displaying present time
- *  Meaning of format described here:
- *  http://www.cplusplus.com/reference/ctime/strftime/
    --------------------------------------------------------------------------*/
 extern std::string CurrentTime( const std::string& fmt="%Y-%m-%d %X");
 
@@ -32,6 +35,7 @@ extern void SleepMicroSec( const unsigned );
 extern void SleepMillSec( const unsigned );
 extern void SleepSec( const unsigned );
 
+/* @} */
 
 } /* usr */
 

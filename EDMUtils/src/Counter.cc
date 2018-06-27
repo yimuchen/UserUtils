@@ -1,10 +1,8 @@
-/*******************************************************************************
-*
-*  Filename    : Counter.hpp
-*  Description : Implementation of counter class
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    Counter.cc
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   Implementing Counter class
+ */
 #include "UserUtils/EDMUtils/interface/Counter.hpp"
 
 namespace usr {
@@ -12,12 +10,16 @@ namespace usr {
 Counter::Counter(){ value = 0; }
 Counter::Counter( const double x ){ value = x; }
 Counter::~Counter(){}
-
+/**
+ * @brief The existance of this function is required for merging values between
+ *        runs.
+ *
+ * Unlike its edm counterpart. We would not care for overflow parsing here (it
+ * is highly unlikely that some cache would require e308 to store.)
+ */
 bool
 Counter::mergeProduct( const Counter& nextcounter )
 {
-  // No case handling for overflow, assuming that double
-  // should be able to handle precision
   value += nextcounter.value;
   return true;
 }

@@ -1,31 +1,21 @@
-/*******************************************************************************
-*
-*  Filename    : STLUtils.hpp
-*  Description : Handful of libraries to make using stl more pleasent
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ * @brief   One file include for all STL utility headers
+ */
 #ifndef USERUTILS_COMMON_STLUTILS_HPP
 #define USERUTILS_COMMON_STLUTILS_HPP
 
-/*******************************************************************************
-*   Collection of classes to help enhance OStream usability
-*******************************************************************************/
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
-
-/*-----------------------------------------------------------------------------
-  Vector Interaction Inhancements
-------------------------------------------------------------------------------*/
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
-
-/*-----------------------------------------------------------------------------
- *  String utility functions
-   --------------------------------------------------------------------------*/
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
-
-/*-----------------------------------------------------------------------------
- *  Filesystem utility functions
-   --------------------------------------------------------------------------*/
 #include "UserUtils/Common/interface/STLUtils/Filesystem.hpp"
+#else
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
+#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/Common/STLUtils/Filesystem.hpp"
+#endif
 
 #endif /* end of include guard: USERUTILS_COMMON_STLUTILS_HPP */

@@ -1,14 +1,17 @@
-/*******************************************************************************
-*
-*  Filename    : MeasurementArithmetic.cc
-*  Description : One Line descrption of file contents
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*******************************************************************************/
+/**
+ * @file    Measurement_Arithmetic.cc
+ * @brief   Implementation of measurement arithetics methods
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
-
 #include "UserUtils/MathUtils/interface/GSLUtil.hpp"
 #include "UserUtils/MathUtils/interface/StatisticsUtil.hpp"
+#else
+#include "UserUtils/MathUtils/Measurement.hpp"
+#include "UserUtils/MathUtils/GSLUtil.hpp"
+#include "UserUtils/MathUtils/StatisticsUtil.hpp"
+#endif
 
 #include <cassert>
 #include <gsl/gsl_vector.h>
@@ -19,9 +22,9 @@ using namespace std;
 
 namespace usr {
 
-/*******************************************************************************
-*   General Interfacing functions with MakeMinos functions
-*******************************************************************************/
+/**
+ * @brief interface to the Single variable version of the MinosError() function.
+ */
 Measurement
 MakeMinos(
   gsl_function* nll,
@@ -39,8 +42,10 @@ MakeMinos(
   return Measurement( central, upperbound-central, central-lowerbound );
 }
 
-/******************************************************************************/
-
+/**
+ * @brief interface to the \f$R^{n}\rightarrow R\f$ version of the MinosError()
+ *        function
+ */
 Measurement
 MakeMinos(
   usr::gsl::gsl_multifunc* nll,
@@ -71,30 +76,6 @@ MakeMinos(
 }
 
 
-/*******************************************************************************
-*   Approximate Loglikelihood --- Linear Variance
-*   Following the arguments from R. Barlow's "Asymmetric statistical errors"
-*   The loglikelihood is defined as:
-*      > L = - (x*x) / ( 2 * V * (1 + x* A ))
-*   *  x is the distance from the central value.
-*   *  V is the average variance: (sigma1 * sigma2)
-*   *  A is the asymmetry: (sigma1-sigma2)/V
-*
-*   Small adjustments are made such that this approximation could be used to
-*   carry out numerically stalbe calculations:
-*
-*   * The ratio between the two uncertainties are capped at 10.
-*   * V has a minimal value of ~1e-16
-*   * A the function is singular at x = -1/A, a exponential is used to extend
-*     the positive domain of the function to infinity
-*     The singularity will always occur on the side with the smaller
-*     uncertainty and will always be outside said uncertainty. An exponential
-*     denominator is used to instead of the linear denominator for when x is
-*     outside of the arithmetic average of said uncertainty and location of
-*     singularity. The exponential function is designed such that the
-*     denominator and it's derivative is continuous.
-*
-*******************************************************************************/
 static double
 AugmentedDeminator( double x, const double up, const double lo )
 {
@@ -119,13 +100,40 @@ AugmentedDeminator( double x, const double up, const double lo )
   return ans;
 }
 
+/**
+ * @brief Approximate @NLL function for a measurements of
+ *        \f$x^{+\sigma_+}_{-\sigma_i}\f$
+ *
+ * The approximation for an @NLL function is a variation of the one recommended
+ * in
+ * [R. Barlow's "Asymmetric statistical errors"](https://arxiv.org/abs/physics/0406120),
+ * In the form of:
+ *
+ * \f[
+ *  \mathrm{NLL}(x) = \frac{x^{2}}{ 2V(1+Ax)}
+ * \f]
+ *
+ * with \f$V\f$ being the average variance \f$\sigma_+ \sigma_-\f$, and \f$A\f$
+ * being the variance asymmetry \f$ (\sigma_{+} - \sigma_{-})/V \f$.
+ *
+ * A few adjustments are made to ensure the stability of the calculations.
+ * - The ratio between the two uncertainties would have a hard limit of 10. The
+ *   smaller uncertainty would be inflated if extreme aysmmetries are present.
+ * - The average variance would have an minimum value of $10^{-16}$ which
+ *   should cover most cases where uncertainty calculations are required. Test
+ *   have shown that the calculation would not be affected by such limits if
+ *   the there are some dominate uncertainties.
+ * - To avoid the singularity at \f$x=-1/A\f$, an exponential function would be
+ *   used instead for the linear function for the denominator in the @NLL
+ *   function when x is past half-way from the central value to the original
+ *   singular point, such that the approximation would be extended to an
+ *   infinite domain. The exponential function is designed such that the
+ *   denominator and its derivative is continuous.
+ */
 double
 LinearVarianceNLL( double x, const Measurement& parm )
 {
-  // Can only treat asymmetry up to a cap, inflating the smaller uncertainty
-  // if needed
   static const double maxrelerror = 10.;
-
 
   // Getting potentially inflating uncertainties
   const double central  = parm.CentralValue();
@@ -141,9 +149,9 @@ LinearVarianceNLL( double x, const Measurement& parm )
   return ans;
 }
 
-/*******************************************************************************
-*   Hidden method for Making a master uncorrelated member functions
-*******************************************************************************/
+/*-----------------------------------------------------------------------------
+ *  Hidden method for making a master NLL function
+   --------------------------------------------------------------------------*/
 struct uncorrelatedparam
 {
   const vector<Measurement>* listptr;
@@ -165,9 +173,18 @@ UncorrelatedNLL( const gsl_vector* x, void* param )
   return ans;
 }
 
-/*******************************************************************************
-*   Main function for interfacing with user
-*******************************************************************************/
+/**
+ * @brief given a list of measurements with uncertainties, return the effective
+ *        sum of all measurements as if all measurements are uncorrelated.
+ *
+ * This function also allows the user to define the working confidence level
+ * for the calculations and also the approximate @NLL function used for the
+ * individual measurements (by default using the LinearVarianceNLL() function).
+ *
+ * For improved stability of the calculation. An estimate for when the
+ * original estimations would give the "1 sigma" uncertainty is given using
+ * the symmetic-uncorrelated sum approximation.
+ */
 Measurement
 SumUncorrelated(
   const vector<Measurement>& paramlist,
@@ -235,8 +252,14 @@ SumUncorrelated(
   return ans;
 }
 
-/******************************************************************************/
-
+/**
+ * @brief given a list of measurements with uncertainties, return the effective
+ *        sum of all measurements as if all measurements are uncorrelated.
+ *
+ * This function also allows the user to define the working confidence level
+ * for the calculations and also the approximate @NLL function used for the
+ * individual measurements (by default using the LinearVarianceNLL() function).
+ */
 Measurement
 ProdUncorrelated(
   const std::vector<Measurement>& paramlist,

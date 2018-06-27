@@ -1,7 +1,7 @@
 /**
  * @file    format_test.cc
  * @brief   unit testing for format related functions.
- * @author  Yi-Mu "Enoch" Chen (ensc@hep1.phys.ntu.edu.tw)
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  * @details Detailed descriptions
  */
 #include "UserUtils/Common/interface/Format.hpp"
