@@ -1,5 +1,0 @@
-<use name="root"/>
-<use name="DataFormats/FWLite"/>
-<use name="SimDataFormats/GeneratorProducts"/>
-
-<bin name="DumpLHERunInfo" file="DumpLHERunInfo.cc"/>

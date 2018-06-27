@@ -1,9 +1,0 @@
-<use name="UserUtils/Common"/>
-<use name="UserUtils/PlotUtils"/>
-
-<flags CXXFLAGS="-g"/>
-
-<bin name="usrutil_unit_test"           file="usrutil_unit_test.cc"/>
-<bin name="usrutil_basecanvas_test"     file="usrutil_basecanvas_test.cc"/>
-<bin name="usrutil_simple1dcanvas_test" file="usrutil_simple1dcanvas_test.cc"/>
-<bin name="usrutil_ratio1dcanvas_test"  file="usrutil_ratio1dcanvas_test.cc"/>
