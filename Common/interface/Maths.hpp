@@ -3,12 +3,13 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  * @brief   Simple concrete type maths functions
  */
+#include <cstdint>
 
 namespace usr {
 
 /**
  * @defgroup STLMaths Math with concrete types.
- * @brief    Calculations with concrete types that are not avaialbe in STL
+ * @brief    Calculations with concrete types that are not available in STL
  * @ingroup  Common
  * @{
  */
@@ -28,11 +29,21 @@ sgn( TYPE val )
 }
 
 /*-----------------------------------------------------------------------------
- *  Exponential and Related functions
+ *  exponential and related functions
    --------------------------------------------------------------------------*/
 extern int    ReduceToMant( double& x );
 extern int    GetExponent( double x );
 extern double IntPower( double base, int exp );
+
+/*-----------------------------------------------------------------------------
+ *  Rounding functions
+   --------------------------------------------------------------------------*/
+extern unsigned RoundUpToP2( unsigned x );
+
+/*-----------------------------------------------------------------------------
+ *  Hash value calculation
+   --------------------------------------------------------------------------*/
+extern uint64_t HashValue( double x );
 
 /** @} */
 
