@@ -34,10 +34,10 @@ extern const bool central_interval;
 extern Measurement Bayesian(
   double passed,
   double total,
-  double confidencelevel,
-  bool   confidencemethod,
-  double alpha,
-  double beta
+  double confidencelevel =usr::stat::onesigma_level,
+  bool   confidencemethod = shortest_interval,
+  double alpha = 0.5,
+  double beta  = 0.5
   );
 
 };// Efficiency
