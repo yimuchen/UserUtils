@@ -9,8 +9,10 @@
 #include "UserUtils/Common/ArgumentExtender.hpp"
 #endif
 
+#include <boost/algorithm/string.hpp>
 #include <boost/exception/diagnostic_information.hpp>
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/program_options/errors.hpp>
 
@@ -21,6 +23,7 @@
 
 namespace pt  = boost::property_tree;
 namespace opt = boost::program_options;
+namespace fs  = std::experimental::filesystem;
 
 namespace usr {
 
@@ -221,6 +224,134 @@ bool
 ArgumentExtender::CheckArg( const std::string& opt ) const
 {
   return Args().count( opt );
+}
+
+void
+ArgumentExtender::SetFilePrefix( const fs::path pre )
+{
+  _prefix = pre;
+}
+
+void
+ArgumentExtender::SetDirScheme( const PathScheme& newscheme )
+{
+  _dirscheme = newscheme;
+}
+
+void
+ArgumentExtender::AddDirScheme( const ArgPathScheme& arg )
+{
+  _dirscheme.push_back( arg );
+}
+
+void
+ArgumentExtender::AddDirScheme( const PathScheme& newscheme )
+{
+  for( const auto& x : newscheme ){
+    _dirscheme.push_back( x );
+  }
+}
+
+void
+ArgumentExtender::SetNameScheme( const PathScheme& newscheme )
+{
+  _namescheme = newscheme;
+}
+
+void
+ArgumentExtender::AddNameScheme( const ArgPathScheme& arg )
+{
+  _namescheme.push_back( arg );
+}
+
+void
+ArgumentExtender::AddNameScheme( const PathScheme& newscheme )
+{
+  for( const auto& x : newscheme ){
+    _namescheme.push_back( x );
+  }
+}
+
+fs::path
+ArgumentExtender::MakeFile(
+  const std::string& nameprefix,
+  const std::string& ext ) const
+{
+  fs::path dirname  = _prefix;
+  fs::path filename = nameprefix;
+
+  for( const auto& x : _dirscheme ){
+    dirname /= genPathString( x );
+  }
+
+  for( const auto& x : _namescheme ){
+    filename += "_" + genPathString( x );
+  }
+
+  filename += "." + ext;
+
+  return fs::path( dirname / filename );
+}
+
+fs::path
+ArgumentExtender::MakePDFFile( const std::string& x ) const
+{
+  return MakeFile( x, "pdf" );
+}
+
+fs::path
+ArgumentExtender::MakePNGFile( const std::string& x ) const
+{
+  return MakeFile( x, "png" );
+}
+
+fs::path
+ArgumentExtender::MakeTXTFile( const std::string& x ) const
+{
+  return MakeFile( x, "txt" );
+}
+
+fs::path
+ArgumentExtender::MakeTEXFile( const std::string& x ) const
+{
+  return MakeFile( x, "tex" );
+}
+
+std::string
+ArgumentExtender::genPathString( const ArgPathScheme& x ) const
+{
+  if( !CheckArg( x.option ) ){ return ""; }
+
+  boost::format genfmt( "%s%s" );
+  boost::format intfmt( "%d" );
+  boost::format fltfmt( "%lg" );
+  const std::string optstring = x.pathstring;
+
+  std::string inputstring;
+
+  if( inputstring == "" ){
+    try {
+      inputstring = Arg<std::string>( x.option );
+    } catch( ... ){
+    }
+  }
+
+  if( inputstring == "" ){
+    try {
+      inputstring = ( intfmt % Arg<int>( x.option ) ).str();
+    } catch( ... ){
+    }
+  }
+
+  if( inputstring == "" ){
+    try {
+      inputstring = ( fltfmt % Arg<float>( x.option ) ).str();
+      boost::replace_all( inputstring, ".", "p" );
+    } catch( ... ){
+    }
+  }
+
+  return ( genfmt % optstring % inputstring ).str();
 }
 
 }/* usr */

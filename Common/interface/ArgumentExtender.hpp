@@ -7,6 +7,8 @@
 #define USERUTILS_COMMON_ARGUMENTEXTENDER_HPP
 
 #include <boost/program_options.hpp>
+#include <experimental/filesystem>
+#include <vector>
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
@@ -19,6 +21,7 @@
 namespace usr {
 
 namespace po = boost::program_options;
+namespace fs = std::experimental::filesystem;
 
 class ArgumentExtender
 {
@@ -54,8 +57,13 @@ public:
 
   template<typename TYPE = std::string>
   TYPE Arg( const std::string& opt ) const;
+
+  template<typename TYPE = std::string>
+  TYPE ArgOpt( const std::string& opt, const TYPE& val ) const ;
+
   template<typename TYPE>
   std::vector<TYPE> ArgList( const std::string& opt ) const;
+
   template<typename TYPE>
   TYPE ArgExt( const std::string& opt, const std::string& exttag ) const;
 
@@ -70,6 +78,34 @@ public:
   /** @brief Constant access to internal argument value map instance. */
   inline const po::variables_map&
   Args() const { return _argmap; }
+
+  /**
+   * @brief Simple wrapper for Argument naming scheme for filename generation.
+   */
+  struct ArgPathScheme{
+    ArgPathScheme( const std::string& opt, const std::string fstring ):
+      option(opt), pathstring( fstring ) {}
+    ArgPathScheme( const std::string& opt ):
+      option(opt), pathstring( opt ) {}
+    std::string option;
+    std::string pathstring;
+  };
+
+  typedef std::vector<ArgPathScheme> PathScheme;
+
+  void SetFilePrefix( const fs::path );
+  void SetDirScheme( const PathScheme& );
+  void AddDirScheme( const ArgPathScheme& );
+  void AddDirScheme( const PathScheme& );
+  void SetNameScheme( const PathScheme& );
+  void AddNameScheme( const ArgPathScheme& );
+  void AddNameScheme( const PathScheme& );
+
+  fs::path MakeFile( const std::string&, const std::string& ) const ;
+  fs::path MakePDFFile( const std::string& ) const;
+  fs::path MakePNGFile( const std::string& ) const;
+  fs::path MakeTXTFile( const std::string& ) const;
+  fs::path MakeTEXFile( const std::string& ) const;
 
 protected:
 
@@ -90,9 +126,13 @@ private:
   po::options_description _optdesc;
   po::variables_map _argmap;
 
-  void _init( const std::vector<std::string>& filelist );
-};
+  fs::path   _prefix;
+  PathScheme _dirscheme;
+  PathScheme _namescheme;
 
+  void _init( const std::vector<std::string>& filelist );
+  std::string genPathString( const ArgPathScheme& ) const ;
+};
 
 /*-----------------------------------------------------------------------------
  *  Template implementation
@@ -100,7 +140,6 @@ private:
 template<typename ... TS>
 ArgumentExtender::ArgumentExtender( const std::string& first, TS ... others )
 { _init( MakeVector<std::string>( first, others ... ) ); }
-
 
 /**
  * @brief template function for getting the user input of an option.
@@ -111,6 +150,16 @@ template<typename T>
 T
 ArgumentExtender::Arg( const std::string& opt ) const
 { return _argmap[opt].as<T>(); }
+
+/**
+ * @brief Returning user input if exists, returning default value other wise
+ * @details The user is responsible for casting the input to an appropriate
+ * type.
+ */
+template<typename T>
+T
+ArgumentExtender::ArgOpt( const std::string& opt, const T& val ) const
+{ return CheckArg(opt)? Arg<T>(opt) : val ; }
 
 /**
  * @brief template function for getting the user input list to an option.
@@ -134,7 +183,6 @@ ArgumentExtender::ArgExt( const std::string& opt, const std::string& exttag ) co
 {
   return usr::GetSingle<T>( Tree(), opt, Arg<std::string>( opt ), exttag );
 }
-
 
 }/* usr */
 
