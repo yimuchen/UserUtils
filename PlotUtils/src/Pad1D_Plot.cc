@@ -151,7 +151,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
  * - PlotType: Defining how the data should be represented on the Pad. The
  *   supported types are:
  *   - plottype::simplefunc(default): single polyline joining the data points.
- *     This is used if the graph representes a function sample.
+ *     This is used if the graph represents a function sample.
  *   - plottype::fittedfunc: a polyline joining the data points with the Y error
  *     represented with a shaded region. This is used if the graph represents
  *     a function sample with additional sampling for fitting uncertainties
@@ -165,7 +165,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
  *
  * - TrackY: Whether or not the y-axis range should be adjusted according to
  *   the newly added graph. By default, only the maximum value of the
- *   histogram will be used to asjust the y-axis range.
+ *   histogram will be used to adjust the y-axis range.
  */
 TGraph&
 Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
@@ -186,31 +186,36 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     !arglist.Get( PlotType::CmdName ).getString( 0 ) ? "" :
     arglist.Get( PlotType::CmdName ).getString( 0 );
 
-  // Issue as option 'A' cannot be used singularly
-  const std::string aopt = GetAxisObject() ? "" : "A";
+  // If no axis are available. Generating a TH1 object for axis:
+  if( !GetAxisObject() ){
+    auto& axishist = _frame.MakeObj<TH1F>(
+      ("axishist" + RandomString(10)).c_str(),
+      ("axishist" + RandomString(10)).c_str(),
+      10, GetXmin( obj ), GetXmax( obj ) );
+    axishist.SetStats( 0 );
+    PadBase::PlotObj( axishist, "AXIS" );
+    SetAxisFont();
+  }
 
   if( opt == plottype::simplefunc ){
-    PadBase::PlotObj( obj, ( aopt+"L" ).c_str() );
+    PadBase::PlotObj( obj, "L" );
   } else if( opt == plottype::fittedfunc ){
-    PadBase::PlotObj( obj, ( aopt+ "3" ).c_str() );
+    PadBase::PlotObj( obj, "3" );
     // Draw Error with fill region and then
-    PadBase::PlotObj( obj, ( aopt+"LX" ).c_str() );
+    PadBase::PlotObj( obj, "LX" );
     // Draw the central line.all errors disabled.
   } else if( opt == plottype::scatter ){
     // Point, no error bar end ticks, and show error bar for points
     // outside range.
-    PadBase::PlotObj( obj, ( aopt+"PZ0" ).c_str() );
+    PadBase::PlotObj( obj, "PZ0" );
   } else if( opt == plottype::dummy_start && optraw != "" ){
     ToUpper( optraw );
     StripSubstring( optraw, "A" );
-    PlotObj( obj, ( aopt + optraw ).c_str() );
+    PlotObj( obj, ( optraw ).c_str() );
   } else {
     std::cerr << "Skipping over invalid value" << std::endl;
   }
 
-  if( aopt == "A" ){
-    SetAxisFont();
-  }
 
   // Automatic tracking options  require determining the type of the first
   // plotted object. If anything already exists in the pad, track nothing,
@@ -396,7 +401,7 @@ Pad1D::PlotData(
  * RooFit::VisualizeError. The stock RooPlot generates are contour line for the
  * uncertainty range rather than a line with error, making styling of a PDF
  * with uncertainty rather tedious. This functions takes the generated TGraphs
- * by the RooPlot and reclaculated a TGraph with uncertainty. The newly
+ * by the RooPlot and recalculated a TGraph with uncertainty. The newly
  * calculated graph will be placed under the ownership of the RooPlot object.
  */
 TGraph&

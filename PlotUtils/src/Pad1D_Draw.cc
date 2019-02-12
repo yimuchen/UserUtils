@@ -60,9 +60,9 @@ Pad1D::DrawVLine(
 {
   TLine& line = _frame.MakeObj<TLine>(
     x,
-    std::numeric_limits<double>::min(),
+    Yaxis().GetXmin(),
     x,
-    std::numeric_limits<double>::max() );
+    Yaxis().GetXmax() );
   line.SetLineColor( c );
   line.SetLineStyle( s );
   line.SetLineWidth( w );

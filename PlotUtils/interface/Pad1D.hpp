@@ -120,6 +120,8 @@ public:
   static double GetYmin( const TGraph* );
   static double GetYmin( const THStack* );
   static double GetYmax( const THStack* );
+  static double GetXmax( const TGraph* );
+  static double GetXmin( const TGraph* );
   /** @} */
 
   /**
@@ -134,6 +136,10 @@ public:
   GetYmax( const TGraph& x ){ return GetYmax( &x ); }
   inline static double
   GetYmin( const TGraph& x ){ return GetYmin( &x ); }
+  inline static double
+  GetXmax( const TGraph& x ){ return GetXmax( &x ); }
+  inline static double
+  GetXmin( const TGraph& x  ){ return GetXmin( &x ); }
   /** @} */
 
 public:
@@ -236,6 +242,7 @@ public:
   enum rangetype { hist, graph, ratio, pull, aut };
   void AutoSetYRange( const rangetype = aut );
   void SetLogy( int );
+  void SetLogx( int );
 
 
   void MakeLegend();
@@ -366,14 +373,14 @@ private:
  */
 enum plottype
 {
-  dummy_start = 10000, //< start at non-zero to avoid value collision.
-  scatter,//< Plot both graphs and histograms as scatter points.
-  hist,//< Plot histogram as boxes
-  histerr,//<  error boxes  (both graph and histograms),
-  histstack,//< Adding histogram to internal THStack, (histogram only)
-  histnewstack,//< Forcing a new stack to be created.
-  simplefunc,//< for graphs representing a function
-  fittedfunc//< for graphs representing a function with fitting uncertainty
+  dummy_start = 10000,// < start at non-zero to avoid value collision.
+  scatter,// < Plot both graphs and histograms as scatter points.
+  hist,// < Plot histogram as boxes
+  histerr,// <  error boxes  (both graph and histograms),
+  histstack,// < Adding histogram to internal THStack, (histogram only)
+  histnewstack,// < Forcing a new stack to be created.
+  simplefunc,// < for graphs representing a function
+  fittedfunc// < for graphs representing a function with fitting uncertainty
 };
 
 /**

@@ -94,6 +94,37 @@ Pad1D::GetYmin( const TGraph* x )
   return ans;
 }
 
+/**
+ * @brief
+ *
+ * @param x
+ * @return double
+ */
+double
+Pad1D::GetXmin( const TGraph* x )
+{
+  double ans = std::numeric_limits<double>::max() ;
+
+  for( int i = 0 ; i < x->GetN(); ++i ){
+    const double bin = x->GetX()[i] + x->GetErrorXhigh( i );
+    ans = std::min(ans,bin );
+  }
+
+  return ans;
+}
+
+double
+Pad1D::GetXmax( const TGraph* x )
+{
+  double ans = -std::numeric_limits<double>::max() ;
+
+  for( int i = 0 ; i < x->GetN(); ++i ){
+    const double bin = x->GetX()[i] - x->GetErrorXlow( i );
+    ans = std::max(ans,bin );
+  }
+
+  return ans;
+}
 
 /**
  * Retuning the maximum bin value of a THStack object, the bin errors of each

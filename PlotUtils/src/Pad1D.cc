@@ -130,6 +130,13 @@ Pad1D::SetLogy( int x )
   AutoSetYRange();
 }
 
+void
+Pad1D::SetLogx( int x )
+{
+  TPad::SetLogx( x );
+}
+
+
 }/* plt */
 
 }/* usr  */

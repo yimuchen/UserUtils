@@ -1,6 +1,6 @@
 /**
  * @file    PadBase.cc
- * @brief   Implementation of memebers of PadBase class
+ * @brief   Implementation of members of PadBase class
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
