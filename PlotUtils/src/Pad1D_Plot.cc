@@ -189,8 +189,8 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
     auto& axishist = _frame.MakeObj<TH1F>(
-      ("axishist" + RandomString(10)).c_str(),
-      ("axishist" + RandomString(10)).c_str(),
+      ( "axishist" + RandomString( 10 ) ).c_str(),
+      ( "axishist" + RandomString( 10 ) ).c_str(),
       10, GetXmin( obj ), GetXmax( obj ) );
     axishist.SetStats( 0 );
     PadBase::PlotObj( axishist, "AXIS" );
@@ -349,7 +349,7 @@ Pad1D::PlotData(
   }
 
   // Generating the object via RooFit
-  TGraphAsymmErrors& ans = GenRoofitGraph<TGraphAsymmErrors>( data, oplist );
+  TGraphAsymmErrors& ans = GenGraph( data, oplist );
 
   // Additional Fixes for RooFit generated objects
   for( int i = 0; i < ans.GetN(); ++i ){
@@ -445,11 +445,11 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
 
   TGraph* ans = nullptr;
   if( !runfiterr ){
-    ans = &GenRoofitGraph<TGraph>( pdf, oplist );
+    ans = &GenGraph( pdf, oplist );
     if( addtopad ){ PlotGraph( ans, pltopt, trkopt  ); }
   } else {
-    TGraph& centralgraph = GenRoofitGraph<TGraph>( pdf, oplist );
-    TGraph& errorgraph   = GenRoofitGraph<TGraph>( pdf, oplist2 );
+    TGraph& centralgraph = GenGraph( pdf, oplist );
+    TGraph& errorgraph   = GenGraph( pdf, oplist2 );
 
     // Map for storing uncertainty
     std::map<double, std::pair<double, double> > fiterr;
@@ -493,6 +493,29 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
 
   return *ans;
 }
+
+TGraph&
+Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
+{
+  RooPlot* test = pdf.plotOn( &_frame, arglist );
+  if( !test ){
+    throw std::invalid_argument(
+      "Bad argument list or object, plotting failed" );
+  }
+  return _frame.LastPlot<TGraph>();
+}
+
+TGraphAsymmErrors&
+Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
+{
+  RooPlot* test = data.plotOn( &_frame, arglist );
+  if( !test ){
+    throw std::invalid_argument(
+      "Bad argument list or object, plotting failed" );
+  }
+  return _frame.LastPlot<TGraphAsymmErrors>();
+}
+
 
 }/* plt */
 

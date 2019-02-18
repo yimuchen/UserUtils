@@ -28,6 +28,11 @@ class ArgumentExtender
 public:
 
   /**
+   *@ brief Initialization without additional json file
+   */
+  ArgumentExtender() {}
+
+  /**
    * @brief initialization from single json file.
    * @details see, ArgumentExtender::_init() for more details.
    */

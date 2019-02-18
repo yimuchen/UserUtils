@@ -92,6 +92,18 @@ public:
     RooPlot::addObject( ptr );
     return *ptr;
   }
+
+  /**
+   * Returning the last object plotted on the RooPlot object. Typically a
+   * child class of TGraph, casting will fail if wrong type is passed.
+   */
+  template<typename ObjType=TGraph>
+  ObjType&
+  LastPlot()
+  {
+    ObjType& ans = *( dynamic_cast<ObjType*>( getObject( numItems() -1 ) ) );
+    return ans;
+  }
 };
 
 /**
@@ -297,33 +309,8 @@ protected:
   /** @brief legend entry stack */
   std::stack<legentry> _legstack;
 
-  /**
-   * @brief generating @ROOT{TGraph}s for RooFit object.
-   *
-   * Generating a TGraphs instance based on the data/pdf object with argument
-   * list using the underlying RooPlot object. In the case that the plotting
-   * fails, and exception is raised.
-   * @tparam Ret     Return type. Could be any TGraph children types, though
-   *                 casting could fail.
-   * @tparam Arg     Supposedly any RooFit object with the plotOn function
-   *                 could be used.
-   * @param  obj     RooFit object for plotting.
-   * @param  arglist List of RooCmdArgs objects
-   * @return         Generated TGraph object.
-   * */
-  template<typename Ret = TGraph, typename Arg>
-  Ret&
-  GenRoofitGraph( Arg& obj, RooLinkedList& arglist )
-  {
-    RooPlot* test = obj.plotOn( &_frame, arglist );
-    if( !test ){
-      throw std::invalid_argument(
-        "Bad argument list or object, plotting failed" );
-    }
-    Ret& ans = *( dynamic_cast<Ret*>(
-                    _frame.getObject( _frame.numItems() -1 ) ) );
-    return ans;
-  }
+  TGraphAsymmErrors& GenGraph( RooAbsData& data, RooLinkedList& arglist );
+  TGraph&            GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist );
 
   static
   void SetAxisTitle(

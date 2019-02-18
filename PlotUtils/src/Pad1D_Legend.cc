@@ -11,6 +11,8 @@
 
 #include "TLegendEntry.h"
 
+#include <boost/algorithm/string.hpp>
+
 namespace usr  {
 
 namespace plt  {
@@ -63,8 +65,16 @@ Pad1D::AddLegendEntry(
       && !hist.GetXaxis()->IsVariableBinSize() ) ? "PE" :
     ( plotopt.getString( 0 ) ) ? "PLFE" :
     "";
-  if( legopt != "" ){
-    _legstack.push( {&hist, title, legopt} );
+
+  std::vector<std::string> lines;
+  boost::split( lines, title, boost::is_any_of( "\n" ) );
+
+  for( int i = lines.size()-1; i >= 0; i-- ){
+    if( i > 0 ){
+      _legstack.push( { nullptr, lines.at( i ), "" } );
+    } else {
+      _legstack.push( { &hist, lines.at( i ), legopt } );
+    }
   }
 }
 
@@ -117,8 +127,15 @@ Pad1D::AddLegendEntry(
     plotopt.getString( 0 ) ? "PLFE" :
     "";
 
-  if( legopt != "" ){
-    _legstack.push( {&graph, title, legopt} );
+  std::vector<std::string> lines;
+  boost::split( lines, title, boost::is_any_of( "\n" ) );
+
+  for( int i = lines.size()-1; i >= 0; i-- ){
+    if( i > 0 ){
+      _legstack.push( { nullptr, lines.at( i ), "" } );
+    } else {
+      _legstack.push( { &graph, lines.at( i ), legopt } );
+    }
   }
 }
 
@@ -140,7 +157,7 @@ Pad1D::MakeLegend()
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
 
   float width  = 0;
-  float height = LineHeight() * _legend.GetListOfPrimitives()->GetEntries();
+  float height = 1.2*LineHeight() * _legend.GetListOfPrimitives()->GetEntries();
 
   TPad::cd();
 
@@ -149,12 +166,13 @@ Pad1D::MakeLegend()
     TLatex* textmp    = new TLatex( 0, 0, label );
     textmp->SetTextFont( FontFace() );
     textmp->SetTextSize( FontSize() );
-    width = std::max( int(width), int(textmp->GetXsize() * AbsWidth() ) );
+    width = std::max( int(width),
+      int(1.3 *textmp->GetXsize() * AbsWidth() + 5) );
     delete textmp;
   }
 
-  width *= 1.2;// Relieving spacing a little
-  width += 1.5 * LineHeight();// Reserving space for legend icon boxes.
+  width *= 1.1;// Relieving spacing a little
+  width += 1.0 * LineHeight();// Reserving space for legend icon boxes.
 
   // For whatever reason, the y corordinates of the TLegend counts from the
   // top.... Don't ask. Just ROOT things
