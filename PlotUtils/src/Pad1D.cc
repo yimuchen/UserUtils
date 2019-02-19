@@ -80,7 +80,7 @@ Pad1D::Pad1D( const PadSize& size ) :
 void
 Pad1D::InitDraw()
 {
-  // Early exist is no RooPlot is required;
+  // Early exit if no RooPlot is required;
   if( !_frame.AxisHistPtr() ){ return; }
 
   // Drawing the frame histogram for defining axis

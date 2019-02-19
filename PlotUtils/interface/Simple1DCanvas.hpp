@@ -44,16 +44,15 @@ public:
   /**
    * @brief Returning reference to the created Pad1D.
    */
-  Pad1D&
+  inline Pad1D&
   Pad(){ return GetPad<Pad1D>( 0 ); }
 
-#define PASSTHROUGH_PLOTFUNC( FUNC_NAME, PLOT_TYPE, RET_TYPE )   \
-  template<typename ... Args>                                    \
-  inline RET_TYPE &FUNC_NAME( PLOT_TYPE& obj, Args ... args )    \
-  { return this->Pad().FUNC_NAME( obj, args ... );               \
-  }                                                              \
-  template<typename ... Args>                                    \
-  inline RET_TYPE &FUNC_NAME( PLOT_TYPE* obj, Args ... args )    \
+#define PASSTHROUGH_PLOTFUNC( FUNC_NAME, PLOT_TYPE, RET_TYPE ) \
+  template<typename ... Args>                                  \
+  inline RET_TYPE &FUNC_NAME( PLOT_TYPE& obj, Args ... args )  \
+  { return this->Pad().FUNC_NAME( obj, args ... ); }           \
+  template<typename ... Args>                                  \
+  inline RET_TYPE &FUNC_NAME( PLOT_TYPE* obj, Args ... args )  \
   { return this->Pad().FUNC_NAME( obj, args ... );}
 
   /**

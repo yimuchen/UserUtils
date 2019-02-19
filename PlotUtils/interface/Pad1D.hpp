@@ -10,10 +10,12 @@
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
+#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/Canvas.hpp"
 #include "UserUtils/PlotUtils/Constants.hpp"
+#include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
 #include "RooAbsData.h"
@@ -38,73 +40,8 @@ namespace usr  {
 
 namespace plt {
 
-// Forwards declaration of all classes in this header file
-class Pad1D;// main thing
-struct RangeByVar;// constructor helper class
-class PlotType;// RooCmdArg augmentation class ;
-class TrackY;// RooCmdArg augmentation class;
-class EntryText;// RooCmdArg augmentation class;
-class Roo1DFrame;// simple access for Roo1DFrame;
-class RooArgContainer;// Helper class for simple RooCmdArg parsing.
 
-/**
- * @brief Simple class for exposing additional variables and functions of the
- * @ROOT{RooPlot} object
- */
-class Roo1DFrame : public RooPlot
-{
-  friend class Pad1D;
 
-public:
-  Roo1DFrame();
-  Roo1DFrame( const RangeByVar& );
-  Roo1DFrame( const double min, const double max );
-  virtual
-  ~Roo1DFrame();
-
-  /**
-   * @brief returning the internal histogram object used for axis plotting.
-   */
-  inline TH1*
-  AxisHistPtr(){ return RooPlot::_hist; }
-
-  /**
-   * @brief returning reference to internal histogram object used for axis
-   * plotting (no null protection)
-   */
-  inline TH1&
-  AxisHist(){ return *AxisHistPtr(); }
-
-  /**
-   * Making a Root object under the ownership of the RooPlot object.
-   * Using the variadic interface to allow for any sort of declaration type.
-   * @tparam ObjType The type of object you which to create (must be explicitly
-   *                 specified)
-   * @tparam Args    the arguments could be of any type nessesary.
-   * @param  args    any arguments required for a TObject inherited object.
-   * @return         Reference to the newly created object.
-   */
-  template<typename ObjType, typename ... Args>
-  ObjType&
-  MakeObj( Args ... args )
-  {
-    ObjType* ptr = new ObjType( args ... );
-    RooPlot::addObject( ptr );
-    return *ptr;
-  }
-
-  /**
-   * Returning the last object plotted on the RooPlot object. Typically a
-   * child class of TGraph, casting will fail if wrong type is passed.
-   */
-  template<typename ObjType=TGraph>
-  ObjType&
-  LastPlot()
-  {
-    ObjType& ans = *( dynamic_cast<ObjType*>( getObject( numItems() -1 ) ) );
-    return ans;
-  }
-};
 
 /**
  * @brief Specialized class for 1D data plotting.
@@ -120,39 +57,6 @@ protected:
   virtual void Finalize();
 
   friend class Canvas;
-
-public:
-  /**
-   * @{
-   * @brief Getting the min/max y values of a plotting object
-   */
-  static double GetYmax( const TH1D* );
-  static double GetYmin( const TH1D* );
-  static double GetYmax( const TGraph* );
-  static double GetYmin( const TGraph* );
-  static double GetYmin( const THStack* );
-  static double GetYmax( const THStack* );
-  static double GetXmax( const TGraph* );
-  static double GetXmin( const TGraph* );
-  /** @} */
-
-  /**
-   * @{
-   * @brief Getting the min/max y values of a plotting object
-   */
-  inline static double
-  GetYmax( const TH1D& x ){ return GetYmax( &x ); }
-  inline static double
-  GetYmin( const TH1D& x ){ return GetYmin( &x ); }
-  inline static double
-  GetYmax( const TGraph& x ){ return GetYmax( &x ); }
-  inline static double
-  GetYmin( const TGraph& x ){ return GetYmin( &x ); }
-  inline static double
-  GetXmax( const TGraph& x ){ return GetXmax( &x ); }
-  inline static double
-  GetXmin( const TGraph& x  ){ return GetXmin( &x ); }
-  /** @} */
 
 public:
   virtual
@@ -264,7 +168,7 @@ public:
   Legend(){ return _legend; }
 
   /** @brief returning reference to internal Roo1DFrame object. */
-  inline Roo1DFrame&
+  inline RooFrame&
   FrameObj(){ return _frame; }
 
   /** @brief returning the stored y range adjustment type */
@@ -276,7 +180,7 @@ protected:
   /**
    * @brief RooPlot object used for generating graphs for ROOFIT objects
    */
-  Roo1DFrame _frame;
+  RooFrame _frame;
 
   /**
    * @brief Internal @ROOT{THStack} object for assisting with stacked histogram
@@ -326,105 +230,6 @@ protected:
   void _init_legend();
   void AddLegendEntry( TH1D&, const std::string&, const RooCmdArg& );
   void AddLegendEntry( TGraph&, const std::string&, const RooCmdArg& );
-};
-
-/**
- * @brief Constructor argument container for Pad1D
- */
-struct RangeByVar
-{
-  const RooRealVar* var;
-  double            xmin;
-  double            xmax;
-  int               nbin;
-  RangeByVar(
-    const RooRealVar& _var,
-    const double      _xmin = find_default,
-    const double      _xmax = find_default,
-    const int         _nbin = -1
-    );
-  RangeByVar(
-    const RooRealVar* _var,
-    const double      _xmin = find_default,
-    const double      _xmax = find_default,
-    const int         _nbin = -1
-    );
-
-private:
-  static const double find_default;
-};
-
-/**
- * @brief Enum for defining plot types. Putting this in global plt namespace
- * to reduce verbosity.
- */
-enum plottype
-{
-  dummy_start = 10000,// < start at non-zero to avoid value collision.
-  scatter,// < Plot both graphs and histograms as scatter points.
-  hist,// < Plot histogram as boxes
-  histerr,// <  error boxes  (both graph and histograms),
-  histstack,// < Adding histogram to internal THStack, (histogram only)
-  histnewstack,// < Forcing a new stack to be created.
-  simplefunc,// < for graphs representing a function
-  fittedfunc// < for graphs representing a function with fitting uncertainty
-};
-
-/**
- * @brief Plot argument to specify how data should be presented.
- */
-class PlotType : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  /** @brief Enum interface for plottype input */
-  PlotType( const int i );
-
-  /** @brief specifying raw ROOT style string */
-  PlotType( const std::string& );
-  virtual
-  ~PlotType(){}
-};
-
-/**
- * @brief Plot argument to specify which edges of data to keep track of.
- */
-class TrackY : public RooCmdArg
-{
-public:
-  enum tracky
-  {
-    none, min, max, both, aut
-  };
-  static const std::string CmdName;
-  TrackY( int x = aut );
-  virtual
-  ~TrackY(){}
-};
-
-/**
- * @brief Argument for defining text to place in legend.
- */
-class EntryText : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  EntryText( const std::string& );
-  virtual ~EntryText(){}
-};
-
-/**
- * @brief Simple container for helping with RooCmdArg parsing.
- */
-class RooArgContainer : public std::vector<RooCmdArg>
-{
-public:
-  RooArgContainer( const std::vector<RooCmdArg>& );
-  virtual
-  ~RooArgContainer();
-
-  const RooCmdArg& Get( const std::string& name ) const;
-  bool             Has( const std::string& name ) const;
 };
 
 }/* plt */

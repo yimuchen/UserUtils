@@ -59,7 +59,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist );
   const int opt
     = !args.Has( PlotType::CmdName ) ? plottype::hist :
-      args.Get( PlotType::CmdName ).getString( 0 ) ? plottype::dummy_start :
+      args.Get( PlotType::CmdName ).getString( 0 ) ? plottype::plottype_dummy :
       args.Get( PlotType::CmdName ).getInt( 0 );
   const int trky
     = !args.Has( TrackY::CmdName ) ? TrackY::max :
@@ -71,14 +71,15 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     args.Get( PlotType::CmdName ).getString( 0 );
 
   if( !GetAxisObject() ){
-    TH1D& axisobj = _frame.MakeObj<TH1D>( obj );// MUST ust a clone
+    TH1D& axisobj = _frame.MakeObj<TH1D>( obj );
+    // MUST ust a clone
     // otherwise messes with THStack
     axisobj.Reset();
     PlotObj( axisobj, "AXIS" );
     this->SetAxisFont();
   }
 
-  // Flushing the _working stack if hist is nolonger used
+  // Flushing the _working stack if hist is no longer used
   if( opt != plottype::histstack && _workingstack ){
     PlotObj( _workingstack, "HIST SAME NOCLEAR" );
     _workingstack = nullptr;
@@ -109,7 +110,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     _workingstack = &_frame.MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
     _workingstack->Add( &obj );
 
-  } else if( opt == plottype::dummy_start && optraw != "" ){
+  } else if( opt == plottype::plottype_dummy && optraw != "" ){
     // Special case for raw options parsing. (Must remove axis and add string)
     ToUpper( optraw );
     StripSubstring( optraw, "AXIS" );
@@ -137,7 +138,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   // Adding legend
   if( args.Has( EntryText::CmdName ) ){
     const PlotType plotopt =
-      opt == plottype::dummy_start ? PlotType( optraw ) :
+      opt == plottype_dummy ? PlotType( optraw ) :
       PlotType( opt );
     const std::string leg = args.Get( EntryText::CmdName ).getString( 0 );
     AddLegendEntry( obj, leg, plotopt );
@@ -176,7 +177,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
   const RooArgContainer arglist( args );
   const int opt =
     !arglist.Has( PlotType::CmdName ) ? plottype::simplefunc :
-    arglist.Get( PlotType::CmdName ).getString( 0 ) ? plottype::dummy_start :
+    arglist.Get( PlotType::CmdName ).getString( 0 ) ? plottype_dummy :
     arglist.Get( PlotType::CmdName ).getInt( 0 );
   const int trky
     = !arglist.Has( "TrackY" ) ? TrackY::aut : // more complex
@@ -208,7 +209,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     // Point, no error bar end ticks, and show error bar for points
     // outside range.
     PadBase::PlotObj( obj, "PZ0" );
-  } else if( opt == plottype::dummy_start && optraw != "" ){
+  } else if( opt == plottype_dummy && optraw != "" ){
     ToUpper( optraw );
     StripSubstring( optraw, "A" );
     PlotObj( obj, ( optraw ).c_str() );
@@ -253,7 +254,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
   // Adding legend
   if( arglist.Has( EntryText::CmdName ) ){
     const PlotType plotopt =
-      opt == plottype::dummy_start ? PlotType( optraw ) :
+      opt == plottype_dummy ? PlotType( optraw ) :
       PlotType( opt );
     const std::string leg = arglist.Get( EntryText::CmdName ).getString( 0 );
     AddLegendEntry( obj, leg, plotopt );
