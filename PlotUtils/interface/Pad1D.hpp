@@ -87,7 +87,6 @@ public:
   DECLARE_PLOT_FUNCTIONS( PlotHist, TH1D, TH1D& );
   /** @} */
 
-
   /** @{
    * @brief
    * Plotting x-y scatter graph objects

@@ -115,6 +115,15 @@ public:
   PadBase& WriteLine( const std::string& );
   PadBase& WriteAtData( const double, const double, const std::string& );
 
+  void PlotObj( TObject&, Option_t* = "" );
+
+  /** @brief pointer interface to PlotObj */
+  inline void
+  PlotObj( TObject* obj, Option_t* opt = "" ){ PlotObj( *obj, opt ); }
+
+  bool HasObject( const TObject& ) const ;
+  inline bool HasObject( const TObject* obj ) const { return HasObject(*obj); }
+
 protected:
 
   /** @brief Latex object used for text writing */
@@ -131,11 +140,6 @@ protected:
   const FontSet& Font() const;
   virtual void InitDraw();
   virtual void Finalize();
-  void         PlotObj( TObject&, Option_t* = "" );
-
-  /** @brief pointer interface to PlotObj */
-  inline void
-  PlotObj( TObject* obj, Option_t* opt = "" ){ PlotObj( *obj, opt ); }
 
   /** @brief Getting the list of objects to be plotted on the pad */
   inline TList*

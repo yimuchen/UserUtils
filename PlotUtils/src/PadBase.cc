@@ -1,6 +1,6 @@
 /**
  * @file    PadBase.cc
- * @brief   Implementation of members of PadBase class
+ * @brief   Implementation of memebers of PadBase class
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
@@ -164,6 +164,13 @@ PadBase::PlotObj( TObject& obj, Option_t* opt )
 {
   TPad::cd();
   obj.Draw( opt );
+  TPad::Update();
+}
+
+bool
+PadBase::HasObject( const TObject& obj ) const
+{
+  return TPad::FindObject(obj.GetName())  == &obj;
 }
 
 /**
