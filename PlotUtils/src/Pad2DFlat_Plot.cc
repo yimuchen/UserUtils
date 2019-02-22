@@ -29,6 +29,10 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     opt == plot2df::cont ? "L" :
     "PFLE";
 
+  for( const auto&& func : *(hist.GetListOfFunctions()) ){
+    func->SetBit( TF1::kNotDraw, true );
+  }
+
   // Parsing plotting flag
   if( opt == plot2df::heat ){
     PlotObj( hist, "COLZ" );
@@ -89,6 +93,10 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
     SetAxisFont();
   }
 
+  for( const auto&& func : *(graph.GetListOfFunctions()) ){
+    func->SetBit( TF1::kNotDraw, true );
+  }
+
   // Parsing plotting flag
   if( opt == plot2df::heat ){
     PlotObj( graph, "CONT4 SAME" );
@@ -116,7 +124,7 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
   return graph;
 }
 
-TH2D&
+TGraph2D&
 Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
 {
   static const unsigned sep = 300;
@@ -128,25 +136,22 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
   const double dx   = ( xmax-xmin )/sep;
   const double dy   = ( ymax-ymin )/sep;
 
-  TH2D& hist = _frame.MakeObj<TH2D>(
-    ( func.GetName() + RandomString( 12 ) ).c_str(), "",
-    sep, xmin, xmax,
-    sep, ymin, ymax );
+  std::vector<double> x;
+  std::vector<double> y;
+  std::vector<double> z;
 
   for( unsigned i = 0; i < sep; ++i ){
     for( unsigned j = 0; j < sep; ++j ){
-      const double x = xmin + ( i + 0.5 ) * dx;
-      const double y = ymin + ( j + 0.5 ) * dy;
-      const double z = func.Eval( x, y );
-
-      const int binidx = hist.FindBin( x, y );
-
-      hist.SetBinContent( binidx, z );
-      hist.SetBinError( binidx, 0 );
+      x.push_back( xmin + ( i + 0.5 ) * dx );
+      y.push_back( ymin + ( j + 0.5 ) * dy );
+      z.push_back( func.Eval( x.back(), y.back() ) );
     }
   }
 
-  return PlotHist( hist, arglist );
+  TGraph2D& graph = _frame.MakeObj<TGraph2D>( x.size(),
+    x.data(), y.data(), z.data() );
+
+  return PlotGraph( graph, arglist );
 }
 
 TGraph&
@@ -207,9 +212,9 @@ Pad2DFlat::MakeLegend()
 
   // For whatever reason, the y corordinates of the TLegend counts from the
   // top.... Don't ask. Just ROOT things
-  const float xmin = 0.5 * float(LineHeight()) / AbsWidth() ;
-  const float ymax = 1   - GetTopMargin() ;
-  const float xmax = GetLeftMargin() - 5*float(LineHeight()) / AbsWidth();
+  const float xmin = 0.5 * float(LineHeight() ) / AbsWidth();
+  const float ymax = 1   - GetTopMargin();
+  const float xmax = GetLeftMargin() - 5*float(LineHeight() ) / AbsWidth();
   const float ymin = ymax - height/ AbsHeight();
   _legend.SetX1NDC( xmin );
   _legend.SetX2NDC( xmax );

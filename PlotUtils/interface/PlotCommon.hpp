@@ -196,9 +196,9 @@ public:
 enum plot2df
 {
   plot2df_dummy = 10000,// < start at non-zero to avoid value collision.
-  heat,    // < Plot objects has head maps
+  heat,// < Plot objects has head maps
   heatcont,// < Plot object as heat maps with contours lines
-  cont     // < Plotting only contour lines
+  cont// < Plotting only contour lines
 };
 
 /**
@@ -216,6 +216,18 @@ public:
   virtual
   ~Plot2DF(){}
 };
+
+/**
+ * @brief Plot argument to plot a fitted TF1 with fit uncertainties.
+ */
+class ShowFitErr : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  ShowFitErr( const TFitResultPtr&, const double z = 1 );
+  virtual ~ShowFitErr(){}
+};
+
 
 
 /**

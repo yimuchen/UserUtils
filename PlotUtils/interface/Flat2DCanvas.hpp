@@ -46,7 +46,7 @@ public:
   CANVAS2D_PASSTHROUGH_FUNC( PlotHist,    TH2D    , TH2D     );
   CANVAS2D_PASSTHROUGH_FUNC( Plot1DGraph, TGraph  , TGraph   );
   CANVAS2D_PASSTHROUGH_FUNC( PlotGraph,   TGraph2D, TGraph2D );
-  CANVAS2D_PASSTHROUGH_FUNC( PlotFunc,    TF2     , TH2D     );
+  CANVAS2D_PASSTHROUGH_FUNC( PlotFunc,    TF2     , TGraph2D );
   /** @} */
 #undef CANVAS2D_PASSTHROUGH_FUNC
 

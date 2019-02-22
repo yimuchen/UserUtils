@@ -65,7 +65,7 @@ public:
 
   DECLARE_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
 
-  DECLARE_PLOT_FUNCTIONS( PlotFunc, TF2, TH2D& );
+  DECLARE_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
 
   DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph2D, TGraph2D& );
 
