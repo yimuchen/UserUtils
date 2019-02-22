@@ -6,6 +6,8 @@
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
+#include "TFitResult.h"
+
 #include <algorithm>
 #include <set>
 #include <string>
@@ -71,7 +73,7 @@ RooArgContainer::Get( const std::string& name ) const
   return *iter;
 }
 
-//----------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------//
 
 
 /**
@@ -86,7 +88,7 @@ TrackY::TrackY( const int i ) :
   RooCmdArg( CmdName.c_str(), i ){}
 
 
-//----------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------//
 
 /**
  * @brief strong for defining the RooCmdArg name
@@ -101,7 +103,7 @@ EntryText::EntryText( const std::string& str ) :
 
 
 
-//----------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------//
 
 
 /**
@@ -122,7 +124,7 @@ PlotType::PlotType( const std::string& drawopt ) :
   RooCmdArg( CmdName.c_str(), 0, 0, 0, 0, drawopt.c_str() ){}
 
 
-//----------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------//
 
 /**
  * @brief string for defining the RooCmdArg name
@@ -140,6 +142,23 @@ Plot2DF::Plot2DF( const int i ) :
  */
 Plot2DF::Plot2DF( const std::string& drawopt ) :
   RooCmdArg( CmdName.c_str(), 0, 0, 0, 0, drawopt.c_str() ){}
+
+// ----------------------------------------------------------------------------//
+
+/**
+ * @brief string for defining the RooCmdArg name
+ */
+const std::string ShowFitErr::CmdName = "ShowFitErr";
+
+/**
+ * @brief defining plot type via ROOT draw strings
+ */
+ShowFitErr::ShowFitErr( const TFitResultPtr& fit, const double z ) :
+  RooCmdArg( CmdName.c_str(),
+    0, 0, // int
+    z, 0, // double
+    0, 0, // c_string
+    dynamic_cast<const TObject*>(&(*fit)) ){}
 
 }
 

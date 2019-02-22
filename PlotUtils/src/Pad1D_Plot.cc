@@ -4,12 +4,21 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #else
+#include "UserUtils/Common/Maths.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
+
+#include <random>
+
+#include "TGraphErrors.h"
+#include "TDecompChol.h"
+#include "TFitResult.h"
+#include "TList.h"
 
 namespace usr  {
 
@@ -22,15 +31,15 @@ namespace plt {
  *   - plottype::hist (default) - standard square curve/block diagram for
  *     displaying a diagram, equivalent to the `"HIST"` options provided in the
  *     TH1 object.
- *   - plottype::scatter - Plotting points with error bars. Complying to the
- *     CMS plotting convention with the horizonal error bar being suppressed for
- *     fixed bin-width datas.
- *   - plottype::histstack - Stacking this histogram into the histogram stack
- *     on the Pad. If the stack doesn't already exist, a new stack is created.
- *     Note that all histograms in the stack will be plotted with the hist style
- *     and cannot be changed. Notice that the stack must be plotted
- *     consecutively, meaning that any non histstack options would cause the
- *     stack to be finalised and plotted onto the Pad.
+ *   - plottype::scatter - Plotting points with error bars. Complying to the CMS
+ *     plotting convention with the horizontal error bar being suppressed for
+ *     fixed bin-width data.
+ *   - plottype::histstack - Stacking this histogram into the histogram stack on
+ *     the Pad. If the stack doesn't already exist, a new stack is created. Note
+ *     that all histograms in the stack will be plotted with the hist style and
+ *     cannot be changed. Notice that the stack must be plotted consecutively,
+ *     meaning that any non histstack options would cause the stack to be
+ *     finalised and plotted onto the Pad.
  *   - plottype::histnewstack - Force the creation of the new histogram stack,
  *     used only if you are plotting two histogram stacks in the same Pad.
  *   - plottype::histerr - Drawing histogram uncertainty as a shaded box region.
@@ -43,10 +52,16 @@ namespace plt {
  *   that the attributes to display in the legend would be generated from the
  *   PlotType used.
  *
- * - TrackY: Whether or not the y-axis range should be adjusted according to
- *   the newly added histogram. By default, if only graphs exists in the pad
- *   (excluding the axis object), both the min and max values in the graph
- *   would be used; otherwise none of the values would be used.
+ * - TrackY: Whether or not the y-axis range should be adjusted according to the
+ *   newly added histogram. By default, if only graphs exists in the pad
+ *   (excluding the axis object), both the min and max values in the graph would
+ *   be used; otherwise none of the values would be used.
+ *
+ * One side note is that fitted functions will have its DrawOptions cleared from
+ * the histogram! The user should be the one explicitly invoking the plotting
+ * behavior, given more freedom to what the final plot will look like (See the
+ * Pad1D::PlotFunc method for more details). This design aspect is in stark
+ * contrast with the design of ROOT objects. So beware of unwanted behaviour.
  */
 TH1D&
 Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
@@ -77,6 +92,11 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     axisobj.Reset();
     PlotObj( axisobj, "AXIS" );
     this->SetAxisFont();
+  }
+
+  // Forcing fit functions to not be drawn
+  for( const auto&& func : *(obj.GetListOfFunctions()) ){
+    func->SetBit( TF1::kNotDraw, true );
   }
 
   // Flushing the _working stack if hist is no longer used
@@ -171,6 +191,13 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
 TGraph&
 Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
 {
+  // Early Exit for Graphs without any data points
+  if( obj.GetN() <=0 ){
+    std::cerr << "Cannot plot TGraphs with no data points!" << std::endl;
+    return obj;
+  }
+
+
   obj.SetTitle( "" );// Forcing clear title. This should be handled by Canvas.
 
   // Getting the flags
@@ -180,8 +207,8 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     arglist.Get( PlotType::CmdName ).getString( 0 ) ? plottype_dummy :
     arglist.Get( PlotType::CmdName ).getInt( 0 );
   const int trky
-    = !arglist.Has( "TrackY" ) ? TrackY::aut : // more complex
-      arglist.Get( "TrackY" ).getInt( 0 );// parsing latter
+    = !arglist.Has( TrackY::CmdName ) ? TrackY::aut : // more complex
+      arglist.Get( TrackY::CmdName ).getInt( 0 );// parsing latter
   std::string optraw =
     !arglist.Has( PlotType::CmdName ) ?  "" :
     !arglist.Get( PlotType::CmdName ).getString( 0 ) ? "" :
@@ -198,8 +225,13 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     SetAxisFont();
   }
 
+  // Forcing fit functions to not be drawn
+  for( const auto&& func : *(obj.GetListOfFunctions()) ){
+    func->SetBit( TF1::kNotDraw, true );
+  }
+
   if( opt == plottype::simplefunc ){
-    PadBase::PlotObj( obj, "L" );
+    PadBase::PlotObj( obj, "LX" );
   } else if( opt == plottype::fittedfunc ){
     PadBase::PlotObj( obj, "3" );
     // Draw Error with fill region and then
@@ -216,7 +248,6 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
   } else {
     std::cerr << "Skipping over invalid value" << std::endl;
   }
-
 
   // Automatic tracking options  require determining the type of the first
   // plotted object. If anything already exists in the pad, track nothing,
@@ -262,6 +293,114 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
 
   return obj;
 }
+
+/**
+ * Plotting a TF1 object is done by generating a TGraph with 300 samples points
+ * across the x axis, and plotting the TGraph instead. All TGraph plotting
+ * options will be available for the TF1 plotting. There is a new plotting
+ * options ShowFitErr, which generates a TGraphErrors graph by randomly
+ * sampling the parameter space according to the correlation matrix given in the
+ * TFitResult.
+ */
+TGraph&
+Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
+{
+  static const unsigned xsample = 300;
+  static const unsigned psample = 1000;
+
+  const RooArgContainer args( arglist );
+
+  std::vector<double> x;
+  std::vector<double> y;
+  std::vector<double> yerr;
+  std::vector<double> zero;
+
+  std::vector<std::vector<double> > ysample;
+
+
+  // If no axis are available. Generating a TH1 object for axis:
+  if( !GetAxisObject() ){
+    auto& axishist = _frame.MakeObj<TH1F>(
+      ( "axishist" + RandomString( 10 ) ).c_str(),
+      ( "axishist" + RandomString( 10 ) ).c_str(),
+      10, func.GetXmin(), func.GetXmax() );
+    axishist.SetStats( 0 );
+    PadBase::PlotObj( axishist, "AXIS" );
+    SetAxisFont();
+  }
+
+  const double xmax = GetXaxisMax();
+  const double xmin = GetXaxisMin();
+
+  // Getting common elements for graph generation
+  for( unsigned i = 0; i < xsample; ++i ){
+    const double xval = xmin + i* ( xmax-xmin )/( xsample -1 );
+    const double yval = func.Eval( xval );
+
+    x.push_back( xval );
+    y.push_back( yval );
+    yerr.push_back( 0 );
+    ysample.push_back( {} );
+    zero.push_back( 0 );
+  }
+
+  if( args.Has( ShowFitErr::CmdName ) ){
+    const TFitResult* fit
+      = (TFitResult*)args.Get( ShowFitErr::CmdName ).getObject( 0 );
+    const double zval = args.Get( ShowFitErr::CmdName ).getDouble( 0 );
+
+    const std::vector<double> bestfit_param = fit->Parameters();
+
+    // Getting matrix for random parameter generation
+    const TMatrixDSym cormatrix = fit->GetCorrelationMatrix();
+    const TMatrixD tmatrix      = TDecompChol( cormatrix ).GetU();
+    std::mt19937 gen;
+    std::normal_distribution pdf( 0.0, zval );
+
+    // Random sample for parameter space
+    for( unsigned i = 0; i < psample; ++i ){
+      TVectorD vec( tmatrix.GetNrows() );
+
+      // Generating random variation using gaussian
+      for( int j = 0; j < vec.GetNrows(); ++j ){
+        vec[j] = pdf( gen );
+      }
+
+      // Tranforming random Gaussian matrix according to
+      // correlation matrix
+      vec = tmatrix * vec;
+
+      // Shifting to central value of function.
+      for( int j = 0; j < vec.GetNrows(); ++j ){
+        func.SetParameter( j , vec[j] + bestfit_param[j] );
+      }
+
+      // Generate y-sample from randomly generated parameters.
+      for( unsigned j = 0; j < xsample; ++j ){
+        const double xval = x.at( j );
+        ysample.at( j ).push_back( func.Eval( xval ) );
+      }
+    }
+
+    // Calculating standard deviation
+    for( unsigned i = 0; i < xsample; ++i ){
+      yerr[i] = StdDev( ysample[i] );
+    }
+
+    TGraphErrors& graph = _frame.MakeObj<TGraphErrors>(  x.size(),
+      x.data(), y.data(),
+      zero.data(), yerr.data() );
+
+    graph.SetName( RandomString(6).c_str() );
+    return PlotGraph( graph, arglist );
+
+  } else {
+    TGraph& graph = _frame.MakeObj<TGraph>( x.size(), x.data(), y.data() );
+    graph.SetName( RandomString(6).c_str() );
+    return PlotGraph( graph, arglist );
+  }
+}
+
 
 /**
  * Function for plotting all of the RooAbsData objects, the supported options

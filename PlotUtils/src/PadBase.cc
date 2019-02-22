@@ -39,7 +39,12 @@ PadBase::PadBase( const PadSize& size ) :
 /**
  * Nothing particular to do with the destructor.
  */
-PadBase::~PadBase(){}
+PadBase::~PadBase()
+{
+  // TODO: Horrible hack to stop programs from running into double free errors.
+  // Must try and find a proper solution.
+  TPad::fCollideGrid = nullptr;
+}
 
 /**
  * @brief Returning referece to parent canvas.

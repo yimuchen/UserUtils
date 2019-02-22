@@ -124,6 +124,7 @@ public:
   bool HasObject( const TObject& ) const ;
   inline bool HasObject( const TObject* obj ) const { return HasObject(*obj); }
 
+
 protected:
 
   /** @brief Latex object used for text writing */
@@ -216,6 +217,7 @@ public:
   void SaveAsCPP( const fs::path& );
   void SaveToROOT( const fs::path&, const std::string& name );
 
+  inline void Clear(){ TCanvas::Clear(); }
 
 protected:
   void     Finalize( const fs::path& );

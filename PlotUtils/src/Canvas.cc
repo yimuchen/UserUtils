@@ -66,6 +66,9 @@ Canvas::Finalize( const fs::path& finalpath )
   for( const auto& pad : _padlist ){
     pad->Finalize();
   }
+
+  TPad::cd();
+  TCanvas::Update();
 }
 
 /**

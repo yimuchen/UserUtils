@@ -156,36 +156,35 @@ Pad1D::MakeLegend()
   if( !_legend.GetListOfPrimitives() ){ return; }
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
 
-  float width  = 0;
-  float height = 1.2*LineHeight() * _legend.GetListOfPrimitives()->GetEntries();
-
-  TPad::cd();
+  double width  = 0;
+  double height = 0;
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
     const char* label = ( (TLegendEntry*)obj )->GetLabel();
     TLatex* textmp    = new TLatex( 0, 0, label );
     textmp->SetTextFont( FontFace() );
     textmp->SetTextSize( FontSize() );
-    width = std::max( int(width),
-      int(1.3 *textmp->GetXsize() * AbsWidth() + 5) );
+    // Magic number.... no idea why
+    width = std::max( width, 0.40*textmp->GetXsize()/AbsWidth() );
+    height += 1.2 * RelLineHeight();
     delete textmp;
   }
 
   width *= 1.1;// Relieving spacing a little
-  width += 1.0 * LineHeight();// Reserving space for legend icon boxes.
+  width += 1.0 * RelLineHeight();// Reserving space for legend icon boxes.
 
-  // For whatever reason, the y corordinates of the TLegend counts from the
-  // top.... Don't ask. Just ROOT things
-  const float xmax =
-    ( 1 - GetRightMargin() - 1.2*Yaxis().GetTickLength() ) * AbsWidth();
-  const float ymax =
-    ( GetTopMargin() + 1.2*Xaxis().GetTickLength() ) * AbsHeight();
-  _legend.SetBBoxX2( xmax );
-  _legend.SetBBoxY2( ymax + height );
-  _legend.SetBBoxX1( xmax - width );
-  _legend.SetBBoxY1( ymax );
+  const float xmax = 1 - GetRightMargin() - 1.2*Yaxis().GetTickLength();
+  const float ymax = 1 - GetTopMargin() - 1.2*Xaxis().GetTickLength() ;
+  const float xmin = xmax - width;
+  const float ymin = ymax - height;
+  _legend.SetX1NDC( xmin );
+  _legend.SetX2NDC( xmax );
+  _legend.SetY1NDC( ymin );
+  _legend.SetY2NDC( ymax );
 
-  if( !TPad::FindObject( &_legend ) ){ PadBase::PlotObj( _legend ); }
+  if( !TPad::FindObject( &_legend ) ){
+    PadBase::PlotObj( _legend );
+   }
 }
 
 }/* plt  */

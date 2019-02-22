@@ -27,7 +27,7 @@
 
 #include "TGraph.h"
 #include "TGraphAsymmErrors.h"
-#include "TH1.h"
+#include "TF1.h"
 #include "TH1D.h"
 #include "THStack.h"
 #include "TLegend.h"
@@ -92,6 +92,13 @@ public:
    * Plotting x-y scatter graph objects
    */
   DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph, TGraph& );
+  /** @} */
+
+  /** @{
+   * @brief
+   * Plotting ROOT flavoured 1D function
+   */
+  DECLARE_PLOT_FUNCTIONS( PlotFunc, TF1, TGraph& );
   /** @} */
 
   /** @{
