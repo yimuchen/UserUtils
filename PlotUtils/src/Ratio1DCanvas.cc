@@ -24,13 +24,13 @@ namespace plt {
  * @brief default ratio canvas would have smallist bottom pad, so it is
  * informative but not intrusive.
  */
-float PadRatio::default_ratio         = 4;
+float PadRatio::default_ratio = 4;
 
 /**
  * @brief default gap would be small such that the two pad having equal x
  * axis scale is immediately obvious, but still look distinct.
  */
-float PadRatio::default_gap           = 0.005;
+float PadRatio::default_gap = 0.005;
 
 /**
  * @{
@@ -41,7 +41,7 @@ float PadRatio::default_gap           = 0.005;
 length_t Ratio1DCanvas::default_width = 0.45*len::a4textwidth_default();
 length_t Ratio1DCanvas::default_height
   = ( 5./4. )*0.45*len::a4textwidth_default();
-FontSet Ratio1DCanvas::default_font  = FontSet( 8 );
+FontSet Ratio1DCanvas::default_font = FontSet( 8 );
 /** @} */
 
 /**
@@ -100,13 +100,13 @@ Ratio1DCanvas::_splitNDC( const float x ) const
 void
 Ratio1DCanvas::_init_margin( const float gap )
 {
-  SetTopMargin(    1.5*Font().lineheight()/Height() );
-  SetLeftMargin(   3.5*Font().lineheight()/Width() );
+  SetTopMargin( 1.5*Font().lineheight()/Height() );
+  SetLeftMargin( 3.5*Font().lineheight()/Width() );
   SetBottomMargin( 2.0*Font().lineheight()/Height() );
   SetRightMargin(
     std::max(
       ( 3.5*Font().lineheight()/Height() - ( 3.5*Font().lineheight()/Width() ) )
-      ,
+            ,
       ( 0.6*Font().lineheight()/Width() ) )
     );
 
@@ -182,6 +182,31 @@ Bottom1DPad::SetAxisFont()
 }
 
 /**
+ * @brief Making the bottom axis object immediately after AxisObject in the top
+ * Canvas is found. This is to ensure that the top and bottom bads behave in
+ * the same way.
+ */
+void
+Ratio1DCanvas::MakeBottomAxis()
+{
+  if( BottomPad().GetAxisObject() || !TopPad().GetAxisObject() ){ return; }
+
+  if( TopPad().GetAxisObject()->InheritsFrom( TH1F::Class() ) ){
+    TH1F* hist = dynamic_cast<TH1F*>( TopPad().GetAxisObject()->Clone() );
+    hist->Reset();
+    BottomPad().PlotObj( hist, "AXIS" );
+    BottomPad().FrameObj().addObject( hist );
+  } else if( TopPad().GetAxisObject()->InheritsFrom( TH1D::Class() ) ){
+    TH1F* hist = dynamic_cast<TH1F*>( TopPad().GetAxisObject()->Clone() );
+    hist->Reset();
+    BottomPad().PlotObj( hist, "AXIS" );
+    BottomPad().FrameObj().addObject( hist );
+  }
+
+  BottomPad().SetAxisFont();
+}
+
+/**
  * @details
  * Given a numerator and denominator histogram, this function generates
  * the scale division results to the two histograms (see static method for
@@ -239,6 +264,29 @@ Ratio1DCanvas::PlotScale(
     TrackY( TrackY::both );
 
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
+  BottomPad().PlotGraph( ans, pltopt, trkopt );
+
+  return *ans;
+}
+
+TGraphAsymmErrors&
+Ratio1DCanvas::PlotPull(
+  const TGraph&                 num,
+  const TGraph&                 den,
+  const std::vector<RooCmdArg>& arglist )
+{
+  TGraphAsymmErrors* ans = PullDivide( &num, &den );
+  BottomPad().FrameObj().addObject( ans );
+
+  const RooArgContainer args( arglist );
+  const RooCmdArg pltopt =
+    args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
+    PlotType( scatter );
+  const RooCmdArg trkopt =
+    args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
+    TrackY( TrackY::both );
+
+  BottomPad().RangeType() = Pad1D::rangetype::pull;
   BottomPad().PlotGraph( ans, pltopt, trkopt );
 
   return *ans;
@@ -307,7 +355,7 @@ Ratio1DCanvas::ScaleDivide(
   const double  cen
   )
 {
-  TGraphAsymmErrors* ans = new TGraphAsymmErrors(num->GetN());
+  TGraphAsymmErrors* ans = new TGraphAsymmErrors( num->GetN() );
   // duplicating style
   ans->SetLineColor( num->GetLineColor() );
   ans->SetLineStyle( num->GetLineStyle() );
@@ -344,6 +392,56 @@ Ratio1DCanvas::ScaleDivide(
   ans->GetXaxis()->SetLimits(
     num->GetXaxis()->GetXmin(),
     num->GetXaxis()->GetXmax() );
+
+  return ans;
+}
+
+TGraphAsymmErrors*
+Ratio1DCanvas::PullDivide(
+  const TGraph* num,
+  const TGraph* den,
+  const double  cen )
+{
+  TGraphAsymmErrors* ans = new TGraphAsymmErrors( num->GetN() );
+
+  // duplicating style
+  ans->SetLineColor( num->GetLineColor() );
+  ans->SetLineStyle( num->GetLineStyle() );
+  ans->SetLineWidth( num->GetLineWidth() );
+  ans->SetFillColor( num->GetFillColor() );
+  ans->SetFillStyle( num->GetFillStyle() );
+  ans->SetMarkerColor( num->GetMarkerColor() );
+  ans->SetMarkerStyle( num->GetMarkerStyle() );
+  ans->SetMarkerSize( num->GetMarkerSize() );
+
+  // Making error graphs for interpolation
+  TGraph denerrup   = TGraph( den->GetN() );
+  TGraph denerrdown = TGraph( den->GetN() );
+
+  for( int i = 0; i < den->GetN(); ++i ){
+    denerrup.SetPoint( i, den->GetX()[i], den->GetErrorYhigh( i ) );
+    denerrdown.SetPoint( i, den->GetX()[i], den->GetErrorYlow( i ) );
+  }
+
+  for( int i = 0; i < num->GetN(); ++i ){
+    const double x    = num->GetX()[i];
+    const double diff = num->GetY()[i] - den->Eval( x );
+    const double err  = diff > 0 ? denerrup.Eval( x ) :
+                        denerrdown.Eval( x );
+
+    ans->SetPointEXhigh( i, 0 );
+    ans->SetPointEXlow( i, 0 );
+    if( err > 0  ){
+      ans->SetPoint( i, x, diff / err );
+      ans->SetPointEYhigh( i, num->GetErrorYhigh( i ) / err );
+      ans->SetPointEYlow( i, num->GetErrorYlow( i ) / err );
+    } else {
+      ans->SetPoint( i, x, cen );
+      ans->SetPointEYhigh( i, 0 );
+      ans->SetPointEYlow( i, 0 );
+    }
+  }
+
 
   return ans;
 }

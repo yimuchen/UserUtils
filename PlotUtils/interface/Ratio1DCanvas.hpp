@@ -98,6 +98,11 @@ public:
     const TGraph* den,
     const double  cen = 1. );
 
+  static TGraphAsymmErrors* PullDivide(
+    const TGraph* num,
+    const TGraph* den,
+    const double  cen = 0 );
+
   static length_t default_width;
   static length_t default_height;
   static FontSet  default_font;
@@ -133,12 +138,11 @@ public:
   // static functions).
 #define PASSTHROUGH_TOPPLOTFUNC( FUNC_NAME, PLOT_TYPE, RET_TYPE ) \
   template<typename ... Args>                                     \
-  inline RET_TYPE &FUNC_NAME( PLOT_TYPE& obj, Args ... args )     \
-  { return TopPad().FUNC_NAME( obj, args ... );                   \
-  }                                                               \
+  inline RET_TYPE& FUNC_NAME( PLOT_TYPE& obj, Args ... args )     \
+  { return  TopPad().FUNC_NAME( obj, args ... );        }         \
   template<typename ... Args>                                     \
-  inline RET_TYPE &FUNC_NAME( PLOT_TYPE* obj, Args ... args )     \
-  { return TopPad().FUNC_NAME( obj, args ... ); }
+  inline RET_TYPE& FUNC_NAME( PLOT_TYPE* obj, Args ... args )     \
+  { return  TopPad().FUNC_NAME( obj, args ... );        }         \
 
   /**
    * @{
@@ -146,6 +150,7 @@ public:
    */
   PASSTHROUGH_TOPPLOTFUNC( PlotHist,  TH1D,       TH1D );
   PASSTHROUGH_TOPPLOTFUNC( PlotGraph, TGraph,     TGraph );
+  PASSTHROUGH_TOPPLOTFUNC( PlotFunc,  TF1,        TGraph );
   PASSTHROUGH_TOPPLOTFUNC( PlotData,  RooAbsData, TGraphAsymmErrors );
   PASSTHROUGH_TOPPLOTFUNC( PlotPdf,   RooAbsPdf,  TGraph );
   /** @} */
@@ -216,7 +221,10 @@ public:
   DIVIDE_FUNCTION( PlotScale, TGraphAsymmErrors, TGraph, TGraph );
   /** @} */
 
+  DIVIDE_FUNCTION( PlotPull, TGraphAsymmErrors, TGraph, TGraph );
 #undef DIVIDE_FUNCTION
+
+
 
   void SetTopMargin( const float x );
   void SetLeftMargin( const float x );
@@ -226,6 +234,8 @@ public:
 protected:
   float _splitNDC( const float ratio ) const;
   void  _init_margin( const float gap );
+
+  void MakeBottomAxis();
 };
 
 }/* plt  */
