@@ -4,6 +4,7 @@
  * @brief   Simple concrete type maths functions
  */
 #include <cstdint>
+#include <vector>
 
 namespace usr {
 
@@ -44,6 +45,11 @@ extern unsigned RoundUpToP2( unsigned x );
  *  Hash value calculation
    --------------------------------------------------------------------------*/
 extern uint64_t HashValue( double x );
+
+// Basic statisitic tools for vectors
+extern double Mean( const std::vector<double>& );
+extern double StdDev( const std::vector<double>& );
+
 
 /** @} */
 

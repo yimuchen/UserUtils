@@ -3,8 +3,11 @@
  * @brief   Simple concrete type math functions
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <numeric>
+#include <vector>
 
 namespace usr {
 
@@ -12,7 +15,8 @@ namespace usr {
  * @brief Reducing the double x to it's mantissa component in it's scientific
  *        notation, returns the exponent.
  */
-int ReduceToMant( double& x )
+int
+ReduceToMant( double& x )
 {
   int ans = 0;
   if( x == 0 ){ return 0; }
@@ -36,7 +40,7 @@ int ReduceToMant( double& x )
 int
 GetExponent( double x )
 {
-  return ReduceToMant(x);
+  return ReduceToMant( x );
 }
 
 /**
@@ -64,7 +68,8 @@ IntPower( double base, int exp )
  * Using a nice algorithm by bit mashing.
  * https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
  */
-unsigned RoundUpToP2( unsigned x )
+unsigned
+RoundUpToP2( unsigned x )
 {
   x--;
   x |= x >> 1;
@@ -85,7 +90,8 @@ unsigned RoundUpToP2( unsigned x )
  * [xorshift algorithm](https://en.wikipedia.org/wiki/Xorshift) for
  * randomization.
  */
-uint64_t HashValue( const double in )
+uint64_t
+HashValue( const double in )
 {
   union bitconvert
   {
@@ -93,13 +99,34 @@ uint64_t HashValue( const double in )
     double   in;
   };
 
-  bitconvert bitconv ;
+  bitconvert bitconv;
   bitconv.in = in;
   uint64_t x = bitconv.bits;
-  x ^= x >> 12; // a
-  x ^= x << 25; // b
-  x ^= x >> 27; // c
+  x ^= x >> 12;// a
+  x ^= x << 25;// b
+  x ^= x >> 27;// c
   return x * 0x2545F4914F6CDD1D;
 }
 
-} /* usr */
+double
+Mean( const std::vector<double>& vec )
+{
+  return std::accumulate( vec.begin(), vec.end(), 0 ) / vec.size();
+}
+
+double
+StdDev( const std::vector<double>& vec )
+{
+  const double mean = Mean( vec );
+  std::vector<double> diff( vec.size() );
+
+  std::transform( vec.begin(), vec.end(), diff.begin(),
+    [mean]( const double x ){
+      return x-mean;
+    } );
+  const double sq = std::inner_product( diff.begin(), diff.end(), diff.begin(), 0.0 );
+
+  return std::sqrt( sq/vec.size() );
+}
+
+}/* usr */
