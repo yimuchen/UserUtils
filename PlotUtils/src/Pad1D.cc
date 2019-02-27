@@ -110,7 +110,7 @@ Pad1D::Finalize()
   TPad::cd();
   RedrawAxis();
   MakeLegend();
-  MakeLegend(); // Making twice... needs to force update
+  MakeLegend();
 }
 
 /**

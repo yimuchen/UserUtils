@@ -140,7 +140,7 @@ Pad1D::AddLegendEntry(
 }
 
 /**
- * The generation of the plot object at
+ * Generating the TLegend object at the inner top right of the pad.
  */
 void
 Pad1D::MakeLegend()
@@ -156,25 +156,34 @@ Pad1D::MakeLegend()
   if( !_legend.GetListOfPrimitives() ){ return; }
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
 
+  TPad::cd();
   double width  = 0;
   double height = 0;
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
     const char* label = ( (TLegendEntry*)obj )->GetLabel();
-    TLatex* textmp    = new TLatex( 0, 0, label );
-    textmp->SetTextFont( FontFace() );
-    textmp->SetTextSize( FontSize() );
-    // Magic number.... no idea why
-    width = std::max( width, 0.40*textmp->GetXsize()/AbsWidth() );
-    height += 1.2 * RelLineHeight();
-    delete textmp;
+    TLatex* temp      = new TLatex( 0.5, 0.5, label );
+    temp->SetTextFont( FontFace() );
+    temp->SetTextSize( FontSize() );
+    temp->Draw();// Must draw once to get the coordinates.
+    // Sometimes returning absolute size, sometimes relative...
+    width = temp->GetXsize() > 1 ?
+            std::max( width, 0.6 * temp->GetXsize() / AbsWidth() ) :
+            std::max( width, 0.6 * temp->GetXsize() );
+    height += temp->GetYsize() > 0.5 ?
+              0.5 * temp->GetYsize() / AbsHeight() :
+              0.5 * temp->GetYsize();
+
+    // Clearing object so it isn't actually drawn.
+    TPad::RecursiveRemove( temp );// Clearing object
+    delete temp;
   }
 
   width *= 1.1;// Relieving spacing a little
-  width += 1.0 * RelLineHeight();// Reserving space for legend icon boxes.
+  width += 1.3*LineHeight() / AbsWidth();// Reserving space for legend icon boxes.
 
   const float xmax = 1 - GetRightMargin() - 1.2*Yaxis().GetTickLength();
-  const float ymax = 1 - GetTopMargin() - 1.2*Xaxis().GetTickLength() ;
+  const float ymax = 1 - GetTopMargin() - 1.2*Xaxis().GetTickLength();
   const float xmin = xmax - width;
   const float ymin = ymax - height;
   _legend.SetX1NDC( xmin );
@@ -184,7 +193,11 @@ Pad1D::MakeLegend()
 
   if( !TPad::FindObject( &_legend ) ){
     PadBase::PlotObj( _legend );
-   }
+    _legend.SetX1NDC( xmin );
+    _legend.SetX2NDC( xmax );
+    _legend.SetY1NDC( ymin );
+    _legend.SetY2NDC( ymax );
+  }
 }
 
 }/* plt  */
