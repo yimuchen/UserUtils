@@ -3,7 +3,7 @@ var searchData=
   ['_5fdatamax',['_datamax',['../classusr_1_1plt_1_1Pad1D.html#a5a01017805323b69f1bde2290d62cbcb',1,'usr::plt::Pad1D']]],
   ['_5fdatamin',['_datamin',['../classusr_1_1plt_1_1Pad1D.html#adf07a91d48622a9bfb5cae9726d677fa',1,'usr::plt::Pad1D']]],
   ['_5ffontset',['_fontset',['../classusr_1_1plt_1_1Canvas.html#a85da6e09de6a0b17136a76babffeeb2e',1,'usr::plt::Canvas']]],
-  ['_5fframe',['_frame',['../classusr_1_1plt_1_1Pad1D.html#a77f2dbceb7eed0a4d7983c111dd98b5a',1,'usr::plt::Pad1D']]],
+  ['_5fframe',['_frame',['../classusr_1_1plt_1_1Pad1D.html#adb11c96327a6267fd4ab4d356041bc32',1,'usr::plt::Pad1D']]],
   ['_5flatex',['_latex',['../classusr_1_1plt_1_1PadBase.html#a8914c7abe90b2bc13050570cd4246e82',1,'usr::plt::PadBase']]],
   ['_5flatex_5fcursorx',['_latex_cursorx',['../classusr_1_1plt_1_1PadBase.html#aa064196d8f70fecac62b72fcc93fcb58',1,'usr::plt::PadBase']]],
   ['_5flatex_5fcursory',['_latex_cursory',['../classusr_1_1plt_1_1PadBase.html#afa08613e61a1609166843f8d7a8a6fb1',1,'usr::plt::PadBase']]],

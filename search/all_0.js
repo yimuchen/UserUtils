@@ -3,7 +3,7 @@ var searchData=
   ['_5fdatamax',['_datamax',['../classusr_1_1plt_1_1Pad1D.html#a5a01017805323b69f1bde2290d62cbcb',1,'usr::plt::Pad1D']]],
   ['_5fdatamin',['_datamin',['../classusr_1_1plt_1_1Pad1D.html#adf07a91d48622a9bfb5cae9726d677fa',1,'usr::plt::Pad1D']]],
   ['_5ffontset',['_fontset',['../classusr_1_1plt_1_1Canvas.html#a85da6e09de6a0b17136a76babffeeb2e',1,'usr::plt::Canvas']]],
-  ['_5fframe',['_frame',['../classusr_1_1plt_1_1Pad1D.html#a77f2dbceb7eed0a4d7983c111dd98b5a',1,'usr::plt::Pad1D']]],
+  ['_5fframe',['_frame',['../classusr_1_1plt_1_1Pad1D.html#adb11c96327a6267fd4ab4d356041bc32',1,'usr::plt::Pad1D']]],
   ['_5finit',['_init',['../classusr_1_1ArgumentExtender.html#abed801178b0bae69c5988f4d8586de96',1,'usr::ArgumentExtender']]],
   ['_5finit_5flegend',['_init_legend',['../classusr_1_1plt_1_1Pad1D.html#a06abe815599e0c66ecdc57f588ce6e3e',1,'usr::plt::Pad1D']]],
   ['_5finit_5fmargin',['_init_margin',['../classusr_1_1plt_1_1Ratio1DCanvas.html#a3712150ad4f1fa74ef38fdf83f5040a8',1,'usr::plt::Ratio1DCanvas::_init_margin()'],['../classusr_1_1plt_1_1Simple1DCanvas.html#a33a0cbcbba8f9a351e5c3f195feb8a55',1,'usr::plt::Simple1DCanvas::_init_margin()']]],

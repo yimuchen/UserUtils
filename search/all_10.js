@@ -2,7 +2,7 @@ var searchData=
 [
   ['randomstring',['RandomString',['../group__StringUtils.html#gaa81bd9ef7a6463905634f22920b281ce',1,'usr']]],
   ['rangebyvar',['RangeByVar',['../structusr_1_1plt_1_1RangeByVar.html',1,'usr::plt::RangeByVar'],['../structusr_1_1plt_1_1RangeByVar.html#ac24760105bcaf8d64b7cfddbe4918d2e',1,'usr::plt::RangeByVar::RangeByVar(const RooRealVar &amp;_var, const double _xmin=find_default, const double _xmax=find_default, const int _nbin=-1)'],['../structusr_1_1plt_1_1RangeByVar.html#a008d971e1419386f7d79dd1753a9a1cc',1,'usr::plt::RangeByVar::RangeByVar(const RooRealVar *_var, const double _xmin=find_default, const double _xmax=find_default, const int _nbin=-1)']]],
-  ['rangetype',['RangeType',['../classusr_1_1plt_1_1Pad1D.html#a934ca67dd42f6e42bfe9088330a9d8ee',1,'usr::plt::Pad1D::RangeType()'],['../classusr_1_1plt_1_1Pad1D.html#a8abc92e4404a07ea4fafd8ee4a5441eb',1,'usr::plt::Pad1D::rangetype()']]],
+  ['rangetype',['rangetype',['../classusr_1_1plt_1_1Pad1D.html#a8abc92e4404a07ea4fafd8ee4a5441eb',1,'usr::plt::Pad1D::rangetype()'],['../classusr_1_1plt_1_1Pad1D.html#a934ca67dd42f6e42bfe9088330a9d8ee',1,'usr::plt::Pad1D::RangeType()']]],
   ['ratio1dcanvas',['Ratio1DCanvas',['../classusr_1_1plt_1_1Ratio1DCanvas.html',1,'usr::plt::Ratio1DCanvas'],['../classusr_1_1plt_1_1Ratio1DCanvas.html#a01707e64b407be3478cd56d85b8f0a7f',1,'usr::plt::Ratio1DCanvas::Ratio1DCanvas(const length_t width=default_width, const length_t height=default_height, const PadRatio &amp;=PadRatio(), const FontSet &amp;=default_font)'],['../classusr_1_1plt_1_1Ratio1DCanvas.html#a68fa1fdd6e77d68e691bf686f3418c13',1,'usr::plt::Ratio1DCanvas::Ratio1DCanvas(const RangeByVar &amp;, const length_t width=default_width, const length_t height=default_height, const PadRatio &amp;=PadRatio(), const FontSet &amp;=default_font)']]],
   ['ratio1dcanvas_2ecc',['Ratio1DCanvas.cc',['../Ratio1DCanvas_8cc.html',1,'']]],
   ['ratio1dcanvas_2ehpp',['Ratio1DCanvas.hpp',['../Ratio1DCanvas_8hpp.html',1,'']]],
@@ -15,8 +15,9 @@ var searchData=
   ['relwidth',['RelWidth',['../classusr_1_1plt_1_1PadBase.html#afbfabf6fb1a2a1df860d5555c4aadd11',1,'usr::plt::PadBase']]],
   ['removeduplicate',['RemoveDuplicate',['../group__VecUtils.html#gac68e49ecd072c97bf44d553a168f80c1',1,'usr']]],
   ['resultpath',['resultpath',['../group__filesys.html#ga8b670e24d9b4e4ea6dae399d09979760',1,'usr']]],
-  ['roo1dframe',['Roo1DFrame',['../classusr_1_1plt_1_1Roo1DFrame.html',1,'usr::plt::Roo1DFrame'],['../classusr_1_1plt_1_1Roo1DFrame.html#ab166425e5fab8f286d6568d74d34a52f',1,'usr::plt::Roo1DFrame::Roo1DFrame()'],['../classusr_1_1plt_1_1Roo1DFrame.html#a5196a00ae0d110e412d2768267e2c1c3',1,'usr::plt::Roo1DFrame::Roo1DFrame(const RangeByVar &amp;)'],['../classusr_1_1plt_1_1Roo1DFrame.html#a4de03fe72109f98928941d73459a0bda',1,'usr::plt::Roo1DFrame::Roo1DFrame(const double min, const double max)']]],
   ['rooargcontainer',['RooArgContainer',['../classusr_1_1plt_1_1RooArgContainer.html',1,'usr::plt::RooArgContainer'],['../classusr_1_1plt_1_1RooArgContainer.html#a348f292d6a652e35079e857d42c00986',1,'usr::plt::RooArgContainer::RooArgContainer()']]],
   ['roofitext_2ecc',['RooFitExt.cc',['../RooFitExt_8cc.html',1,'']]],
-  ['roofitext_2ehpp',['RooFitExt.hpp',['../RooFitExt_8hpp.html',1,'']]]
+  ['roofitext_2ehpp',['RooFitExt.hpp',['../RooFitExt_8hpp.html',1,'']]],
+  ['rooframe',['RooFrame',['../classusr_1_1plt_1_1RooFrame.html',1,'usr::plt::RooFrame'],['../classusr_1_1plt_1_1RooFrame.html#a5c0d7fa5db19f1eaa718b0b9127733b6',1,'usr::plt::RooFrame::RooFrame()'],['../classusr_1_1plt_1_1RooFrame.html#a93c3bb71e9a53f0024fbaa432b1ac471',1,'usr::plt::RooFrame::RooFrame(const RangeByVar &amp;)'],['../classusr_1_1plt_1_1RooFrame.html#ab6e08b6d62b09e8d6397c610980da542',1,'usr::plt::RooFrame::RooFrame(const double min, const double max)'],['../classusr_1_1plt_1_1RooFrame.html#a61772121e82803c1dab1fcea21ee7f93',1,'usr::plt::RooFrame::RooFrame(const double xmin, const double xmax, const double ymin, const double ymax)']]],
+  ['rounduptop2',['RoundUpToP2',['../group__STLMaths.html#gab97dd3aa34a578528319bbfc3ee279a2',1,'usr']]]
 ];

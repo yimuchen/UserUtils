@@ -9,8 +9,9 @@ var searchData=
   ['fillhash',['fillhash',['../group__PlotUtilsConvert.html#ga79302735a2c99770006008dfc618bbfe',1,'usr::plt::sty']]],
   ['fillnone',['fillnone',['../group__PlotUtilsConvert.html#ga2fb9afadb9929cf0dfb1a035bc041cbc',1,'usr::plt::sty']]],
   ['fillsolid',['fillsolid',['../group__PlotUtilsConvert.html#ga310b1d0a7be4fd3a15f34b5befb36063',1,'usr::plt::sty']]],
-  ['finalize',['Finalize',['../classusr_1_1plt_1_1PadBase.html#a313a3475752c7347003538df365a5ede',1,'usr::plt::PadBase::Finalize()'],['../classusr_1_1plt_1_1Canvas.html#a68af6d076f9c9d6c4d5e9104d051d097',1,'usr::plt::Canvas::Finalize()'],['../classusr_1_1plt_1_1Pad1D.html#a4299da435d73d91ce3f872d625324d58',1,'usr::plt::Pad1D::Finalize()']]],
+  ['finalize',['Finalize',['../classusr_1_1plt_1_1PadBase.html#a313a3475752c7347003538df365a5ede',1,'usr::plt::PadBase::Finalize()'],['../classusr_1_1plt_1_1Canvas.html#a68af6d076f9c9d6c4d5e9104d051d097',1,'usr::plt::Canvas::Finalize()'],['../classusr_1_1plt_1_1Pad1D.html#a4299da435d73d91ce3f872d625324d58',1,'usr::plt::Pad1D::Finalize()'],['../classusr_1_1plt_1_1Pad2DFlat.html#a8cd8012f1144277821d7d8a24836da57',1,'usr::plt::Pad2DFlat::Finalize()']]],
   ['findvalue',['FindValue',['../group__VecUtils.html#ga79c7ced21df9a6914bab33c3e2b3d0f3',1,'usr']]],
+  ['flat2dcanvas',['Flat2DCanvas',['../classusr_1_1plt_1_1Flat2DCanvas.html',1,'usr::plt::Flat2DCanvas'],['../classusr_1_1plt_1_1Flat2DCanvas.html#a848f11383a0e771901ce29058ffa7759',1,'usr::plt::Flat2DCanvas::Flat2DCanvas()']]],
   ['font',['font',['../classusr_1_1plt_1_1font.html',1,'usr::plt::font'],['../classusr_1_1plt_1_1PadBase.html#a679062202c69abe2b50d07a5e6323a4a',1,'usr::plt::PadBase::Font()'],['../classusr_1_1plt_1_1font.html#afa0cb48e15b77a2b26fd1fde44443660',1,'usr::plt::font::font()']]],
   ['fontface',['FontFace',['../classusr_1_1plt_1_1PadBase.html#aacd2b5977b2d45a58c94f81971c51d79',1,'usr::plt::PadBase::FontFace()'],['../classusr_1_1plt_1_1font.html#a50bb21f16ef7d93026a0048e2dd2f7bf',1,'usr::plt::font::fontface()']]],
   ['fontset',['FontSet',['../Canvas_8hpp.html#a7ccd04bcda1b6813673cd894f23dfe22',1,'usr::plt']]],
@@ -20,8 +21,8 @@ var searchData=
   ['format',['format',['../classusr_1_1fmt_1_1base_1_1format.html',1,'usr::fmt::base::format'],['../classusr_1_1fmt_1_1base_1_1format.html#afe2742964dcde2c7fc9ed394c6089845',1,'usr::fmt::base::format::format()']]],
   ['format_2ecc',['Format.cc',['../Format_8cc.html',1,'']]],
   ['format_2ehpp',['Format.hpp',['../Common_2interface_2Format_8hpp.html',1,'(Global Namespace)'],['../MathUtils_2interface_2Measurement_2Format_8hpp.html',1,'(Global Namespace)']]],
-  ['frameobj',['FrameObj',['../classusr_1_1plt_1_1Pad1D.html#a380403ec2d34831ce32988354a6050d5',1,'usr::plt::Pad1D']]],
+  ['frameobj',['FrameObj',['../classusr_1_1plt_1_1Pad1D.html#a198138c5f550494aa1945daed22a8a09',1,'usr::plt::Pad1D']]],
   ['fromjsonfile',['FromJsonFile',['../group__ptreeutils.html#ga3fd9097f3169385edc34c0f5b86bb1d1',1,'usr']]],
   ['fromjsonfiles',['FromJsonFiles',['../group__ptreeutils.html#gacce78189256c8c6c8a8fde73d92510f1',1,'usr::FromJsonFiles(const std::vector&lt; std::string &gt; &amp;filelist)'],['../group__ptreeutils.html#ga5c67877695a7890d9785c279b263e286',1,'usr::FromJsonFiles(const std::string &amp;x, TS ... args)']]],
-  ['format',['format',['../md__home_ensc_Homework_CMS_CMSSW_src_UserUtils_Common_doc_format.html',1,'']]]
+  ['format',['format',['../md__home_ensc_Homework_CMSSW_UserUtils_Common_doc_format.html',1,'']]]
 ];
