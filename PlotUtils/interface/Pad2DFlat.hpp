@@ -29,6 +29,10 @@ namespace usr {
 
 namespace plt {
 
+/**
+ * @brief Specialized class for 2D data object representation in x-y plane
+ * projections
+ */
 class Pad2DFlat : public PadBase
 {
 protected:
@@ -63,13 +67,33 @@ public:
     return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
   }
 
+  /**
+   * @{
+   * @brief Plotting 2D histogram object
+   */
   DECLARE_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
+  /** @} */
 
+  /**
+   * @{
+   * @brief Plotting 2D function object
+   */
   DECLARE_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
+  /** @} */
 
+  /**
+   * @{
+   * @brief Plotting 2D graph object
+   */
   DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph2D, TGraph2D& );
+  /** @} */
 
+  /**
+   * @{
+   * @brief Plotting 1D graph object
+   */
   DECLARE_PLOT_FUNCTIONS( Plot1DGraph, TGraph, TGraph& );
+  /** @} */
 
 #undef DECLARE_PLOTFUNCTIONS
 
@@ -86,7 +110,9 @@ public:
 
   void SetAxisFont();
 
-  /** @brief returning reference to internal legend object. */
+  /**
+   * @brief returning reference to internal legend object.
+   */
   inline TLegend& Legend(){ return _legend; }
 
 
@@ -96,10 +122,9 @@ public:
   void DrawLuminosity( const std::string& string );
 
 private:
+
   TLegend _legend;
-
   RooFrame _frame;
-
   void init_legend();
   void MakeLegend();
 };

@@ -7,7 +7,7 @@ parameter in calculations calculations. An example of this case would be when
 an analysis is split into muon/electron channels, where the calculations are
 nearly entirely the same, but require the plotting to put in unique labels
 for the two channel, while also potentially using slightly different numbers
-in calculation (scale factors, integrated luminosity... etc).  
+in calculation (scale factors, integrated luminosity... etc).
 Such behaviour could be listed in a json file as something like:
 something like:
 
@@ -87,3 +87,82 @@ For the use-case above. It would look something like:
 
   myargs.ArgExt<double>("channel","lumi");
 ```
+
+---
+
+## File path generation by options
+
+In the typical case that a user running a command with various options:
+
+```
+my_analysis  --method Random --inputtype electron --fittype unbinned --minrange 0.02
+```
+
+Typically an analysis will want to generate files based on a myriad of input
+type. So the target filename might look something like:
+
+```
+results/electron/MyPlot_MethodRandom_unbinned_min0p02.pdf
+```
+
+This class allows one to do this sort of file name specification via the
+embedded `ArgPathScheme` class. To use this functionally one will typically need
+to specify:
+
+1. The prefix path of the generated file name
+2. A list of options that will be used in the director of the file path
+3. A list of options that will be used in the basename of the file path
+4. The prefix of the basename.
+5. The extension of the file
+
+Using the above command as an example, the options description will be something
+like:
+
+```cpp
+desc.add_options()
+  ("method",value<std::string>() )
+  ("inputtype", value<std::string>() )
+  ("fittype", value<std::string>() )
+  ("minrange", value<double>() )
+;
+```
+
+The generation of the file name will need to be set up as something like:
+
+```cpp
+// Setting up a total directory range
+arg.SetFilePrefix( "result/" )
+
+arg.SetDirScheme( {"inputtype", ""} ); // Specifying input  to user for directory naming
+                                       // The second string is left empty so just the
+                                       // argument value will be used for path generation
+
+arg.SetNameScheme( { // Specifying inputs to user for basename generation
+  {"method", "Method"}, // Add prefix "Method" in front of argument value for path generation
+  {"fittype", ""} ,     // No prefix to be added
+  {"minrange", "min"}   // prefix "min" is to be added, double type will have slight differences.
+});
+
+auto f = arg.MakeFileName("MyPlot", "pdf"); // "MyPlot" is the prefix of the file name
+                                            // with a pdf file extension.
+auto f = arg.MakeFileName("MyOtherPlot", "pdf"); // Can now be used multiple times.
+```
+
+The scheme is effectively a list of two strings, the first being which option to
+use, the second the string to be used in the final path name (can be blank).
+This will generate the file name based on the input arguments and the defined
+strings. Note that the raw, string-like input will be used, so if you input a
+integer argument as as 1e6, and another time like 100000, this will generate
+different file names, even if the setup is entirely the same. (Strictly
+speaking, it will not actually be a list of two string, but for most use cases,
+this will what it will look like.)
+
+The directory scheme is to use different inputs to generated nested directory
+names, while the name scheme will generate the resulting base name of the file.
+A few things points to clean up is that decimal points will be replaced with the
+character 'p', and list arguments will be separated by the '-' character. The
+character separating the option inputs values will simply be '_'. If the
+argument doesn't exists, the the string is simply not generated.
+
+A bunch of functions is also available for generating file paths with commonly
+used file extensions.

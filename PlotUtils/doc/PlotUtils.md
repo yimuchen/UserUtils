@@ -8,6 +8,10 @@ the plotting experience for analysis level plots by augmenting the existing
 Due to the complexity of the issues with root. This package is further divided
 into the following subpackages:
 
+- [PlotUtilsUser](@ref PlotUtilsUser)
+  User level classes to allow for presentation ready plots with minimal user
+  code.
+
 - [PlotUtilsCore](@ref PlotUtilsCore):
   Are the key wrapper classes that *restricts* the usage of ROOT plotting
   objects, wrapping the plotting APIs of ROOT into more intuitive methods,
@@ -18,6 +22,5 @@ into the following subpackages:
   Translation of the many magic numbers used in ROOTs plotting API to human
   readable constants and functions.
 
-- [PlotUtilsUser](@ref PlotUtilsUser)
-  User level classes to allow for presentation ready plots with minimal user
-  code.
+- [PlotUtilsArgument](@ref PlotUtilsArgument)
+  List of arguments that can be used for plotting.

@@ -60,15 +60,36 @@ public:
   void              ParseOptions( int argc, char** argv );
   bool              CheckArg( const std::string& opt ) const;
 
+  /**
+   * @brief template function for getting the user input of an option.
+   * @details the user is responsible for casting the input to an appropriate
+   * type.
+   */
   template<typename TYPE = std::string>
   TYPE Arg( const std::string& opt ) const;
 
+  /**
+   * @brief Returning user input if exists, returning default value other wise
+   * @details The user is responsible for casting the input to an appropriate
+   * type.
+   */
   template<typename TYPE = std::string>
   TYPE ArgOpt( const std::string& opt, const TYPE& val ) const ;
 
+  /**
+   * @brief template function for getting the user input list to an option.
+   * @details Notice that this must be used together with a
+   * boost::program_options' multitoken when defining the options description.
+   * Again the user is responsible for providing the appropriate casting.
+   */
   template<typename TYPE>
   std::vector<TYPE> ArgList( const std::string& opt ) const;
 
+  /**
+   * @brief template function for getting the extend object to an options.
+   * @details The user is responsible for providing the correct string tag, and
+   *          providing the correct type to case the data in the json file.
+   */
   template<typename TYPE>
   TYPE ArgExt( const std::string& opt, const std::string& exttag ) const;
 
@@ -76,11 +97,15 @@ public:
   inline const pt::ptree&
   Tree() const { return _exttree; }
 
-  /** @brief Constant access to internal options description instance. */
+  /**
+   * @brief Constant access to internal options description instance.
+   */
   inline const po::options_description&
   Description() const { return _optdesc; }
 
-  /** @brief Constant access to internal argument value map instance. */
+  /**
+   * @brief Constant access to internal argument value map instance.
+   */
   inline const po::variables_map&
   Args() const { return _argmap; }
 
@@ -106,11 +131,16 @@ public:
   void AddNameScheme( const ArgPathScheme& );
   void AddNameScheme( const PathScheme& );
 
+  /**
+   * @brief
+   * @{
+   */
   fs::path MakeFile( const std::string&, const std::string& ) const ;
   fs::path MakePDFFile( const std::string& ) const;
   fs::path MakePNGFile( const std::string& ) const;
   fs::path MakeTXTFile( const std::string& ) const;
   fs::path MakeTEXFile( const std::string& ) const;
+  /** @} */
 
 protected:
 
@@ -146,42 +176,21 @@ template<typename ... TS>
 ArgumentExtender::ArgumentExtender( const std::string& first, TS ... others )
 { _init( MakeVector<std::string>( first, others ... ) ); }
 
-/**
- * @brief template function for getting the user input of an option.
- * @details the user is responsible for casting the input to an appropriate
- * type.
- */
 template<typename T>
 T
 ArgumentExtender::Arg( const std::string& opt ) const
 { return _argmap[opt].as<T>(); }
 
-/**
- * @brief Returning user input if exists, returning default value other wise
- * @details The user is responsible for casting the input to an appropriate
- * type.
- */
 template<typename T>
 T
 ArgumentExtender::ArgOpt( const std::string& opt, const T& val ) const
 { return CheckArg(opt)? Arg<T>(opt) : val ; }
 
-/**
- * @brief template function for getting the user input list to an option.
- * @details Notice that this must be used together with a
- * boost::program_options' multitoken when defining the options description.
- * Again the user is responsible for providing the appropriate casting.
- */
 template<typename T>
 std::vector<T>
 ArgumentExtender::ArgList( const std::string& opt ) const
 { return _argmap[opt].as<std::vector<T> >(); }
 
-/**
- * @brief template function for getting the extend object to an options.
- * @details The user is responsible for providing the correct string tag, and
- *          providing the correct type to case the data in the json file.
- */
 template<typename T>
 T
 ArgumentExtender::ArgExt( const std::string& opt, const std::string& exttag ) const

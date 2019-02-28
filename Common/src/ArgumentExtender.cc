@@ -226,24 +226,42 @@ ArgumentExtender::CheckArg( const std::string& opt ) const
   return Args().count( opt );
 }
 
+/**
+ * @brief Setting the file prefix for the file path generation
+ *
+ * This is the directory path that will be used regardless of any input status.
+ */
 void
 ArgumentExtender::SetFilePrefix( const fs::path pre )
 {
   _prefix = pre;
 }
 
+/**
+ * @brief Setting the directory naming scheme list
+ *
+ * This will **remove** any existing scheme for the directory naming.
+ */
 void
 ArgumentExtender::SetDirScheme( const PathScheme& newscheme )
 {
   _dirscheme = newscheme;
 }
 
+/**
+ * @brief Incrementally adding single directory name scheme to the final list
+ */
 void
 ArgumentExtender::AddDirScheme( const ArgPathScheme& arg )
 {
   _dirscheme.push_back( arg );
 }
 
+/**
+ * @brief Adding a list of directory naming scheme to the existing list.
+ *
+ * This is extend the existing list instead of straight up replacing it.
+ */
 void
 ArgumentExtender::AddDirScheme( const PathScheme& newscheme )
 {
@@ -252,18 +270,31 @@ ArgumentExtender::AddDirScheme( const PathScheme& newscheme )
   }
 }
 
+/**
+ * @brief Setting the basename naming scheme list
+ *
+ * This will **remove** any existing scheme for the directory naming.
+ */
 void
 ArgumentExtender::SetNameScheme( const PathScheme& newscheme )
 {
   _namescheme = newscheme;
 }
 
+/**
+ * @brief Incrementally adding single basename name scheme to the final list
+ */
 void
 ArgumentExtender::AddNameScheme( const ArgPathScheme& arg )
 {
   _namescheme.push_back( arg );
 }
 
+/**
+ * @brief Adding a list of basename naming scheme to the existing list.
+ *
+ * This is extend the existing list instead of straight up replacing it.
+ */
 void
 ArgumentExtender::AddNameScheme( const PathScheme& newscheme )
 {
@@ -272,6 +303,16 @@ ArgumentExtender::AddNameScheme( const PathScheme& newscheme )
   }
 }
 
+/**
+ * @brief Generating a path based of existing naming scheme in the class
+ *
+ * The directory scheme is to use different inputs to generated nested directory
+ * names, while the name scheme will generate the resulting base name of the
+ * file. The character separating the option inputs values will simply be '_'.
+ *
+ * For details on the generation of individual options string, see the private
+ * method `genPathString()`.
+ */
 fs::path
 ArgumentExtender::MakeFile(
   const std::string& nameprefix,
@@ -317,39 +358,37 @@ ArgumentExtender::MakeTEXFile( const std::string& x ) const
   return MakeFile( x, "tex" );
 }
 
+/**
+ * @brief Generating the string for a single option input.
+ *
+ * For the given scheme of { option, prefixstring }, the function will return
+ * the string. prefixstring + option_input_as_string. Some substitutions will be
+ * name to make the output more friendly to command lines:
+ *
+ * 1. Decimal points will be replaced with 'p'
+ * 2. Spaces (for list multitoken arguments) will be replaced with '-'
+ * 3. If the option doesn't have a input (a.k.a. The option is just a boolean
+ *    flag), the the option_input_as_string is simply "".
+ */
 std::string
 ArgumentExtender::genPathString( const ArgPathScheme& x ) const
 {
   if( !CheckArg( x.option ) ){ return ""; }
 
   boost::format genfmt( "%s%s" );
-  boost::format intfmt( "%d" );
-  boost::format fltfmt( "%lg" );
   const std::string optstring = x.pathstring;
 
   std::string inputstring;
 
-  if( inputstring == "" ){
-    try {
-      inputstring = Arg<std::string>( x.option );
-    } catch( ... ){
-    }
+  // If casting false, the string will simply be empty
+  // EX. If the option is just a boolean flag
+  try {
+    inputstring = Arg<std::string>( x.option );
+  } catch( ... ){
   }
 
-  if( inputstring == "" ){
-    try {
-      inputstring = ( intfmt % Arg<int>( x.option ) ).str();
-    } catch( ... ){
-    }
-  }
-
-  if( inputstring == "" ){
-    try {
-      inputstring = ( fltfmt % Arg<float>( x.option ) ).str();
-      boost::replace_all( inputstring, ".", "p" );
-    } catch( ... ){
-    }
-  }
+  boost::replace_all( inputstring, ".", "p" );
+  boost::replace_all( inputstring, " ", "-" );
 
   return ( genfmt % optstring % inputstring ).str();
 }

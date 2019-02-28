@@ -43,7 +43,7 @@ GetYmin( const TH1D* hist )
 /**
  * Returning maximum y value stored in a TGraphs object, with the Y error bar
  * taken into account (The GetErrorYhigh method is virtual, so TGraphs with
- * assymetric errors would be handled properly.)
+ * asymmetric errors would be handled properly.)
  */
 double
 GetYmax( const TGraph* x )
@@ -138,9 +138,9 @@ GetYmax( const THStack* x )
 }
 
 /**
- * Getting the minimum bin value of a THStack object, the bin erros of each
- * internal histogram would *not* be taken into accound. This function currently
- * assume *identical* binning for the histograms, though this is not nessesary
+ * Getting the minimum bin value of a THStack object, the bin errors of each
+ * internal histogram would *not* be taken into account. This function currently
+ * assume *identical* binning for the histograms, though this is not necessary
  * the case. Use at your own risk.
  */
 double

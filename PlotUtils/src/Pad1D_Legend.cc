@@ -171,8 +171,8 @@ Pad1D::MakeLegend()
             std::max( width, 0.6 * temp->GetXsize() / AbsWidth() ) :
             std::max( width, 0.6 * temp->GetXsize() );
     height += temp->GetYsize() > 0.5 ?
-              0.5 * temp->GetYsize() / AbsHeight() :
-              0.5 * temp->GetYsize();
+              0.35 * temp->GetYsize() / AbsHeight() :
+              0.35 * temp->GetYsize();
 
     // Clearing object so it isn't actually drawn.
     TPad::RecursiveRemove( temp );// Clearing object

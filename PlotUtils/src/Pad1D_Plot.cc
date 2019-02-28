@@ -169,14 +169,16 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
 
 /**
  * Plotting of the TGraph object has the following supporting options:
- * - PlotType: Defining how the data should be represented on the Pad. The
+ *
+ * - `PlotType`: Defining how the data should be represented on the Pad. The
  *   supported types are:
- *   - plottype::simplefunc(default): single polyline joining the data points.
+ *   - `plottype::simplefunc`(default): single polyline joining the data points.
  *     This is used if the graph represents a function sample.
- *   - plottype::fittedfunc: a polyline joining the data points with the Y error
- *     represented with a shaded region. This is used if the graph represents
- *     a function sample with additional sampling for fitting uncertainties
- *   - plottype::scatter: plotting the data as data points with error bars.
+ *   - `plottype::fittedfunc`: a polyline joining the data points with the Y
+ *     error represented with a shaded region. This is used if the graph
+ *     represents a function sample with additional sampling for fitting
+ *     uncertainties
+ *   - `plottype::scatter`: plotting the data as data points with error bars.
  *     Unlike the histograms, this would not attempt to adjust the x error bars.
  *
  * - EntryText: String to add in the legend entry. If this options is not
@@ -184,9 +186,9 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
  *   that the attributes to display in the legend would be generated from the
  *   PlotType used.
  *
- * - TrackY: Whether or not the y-axis range should be adjusted according to
- *   the newly added graph. By default, only the maximum value of the
- *   histogram will be used to adjust the y-axis range.
+ * - TrackY: Whether or not the y-axis range should be adjusted according to the
+ *   newly added graph. By default, only the maximum value of the histogram will
+ *   be used to adjust the y-axis range.
  */
 TGraph&
 Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
@@ -299,8 +301,8 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
  * across the x axis, and plotting the TGraph instead. All TGraph plotting
  * options will be available for the TF1 plotting. There is a new plotting
  * options ShowFitErr, which generates a TGraphErrors graph by randomly
- * sampling the parameter space according to the correlation matrix given in the
- * TFitResult.
+ * sampling the parameter space according to the correlation matrix given by a
+ * @ROOT{TFitResult}.
  */
 TGraph&
 Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )

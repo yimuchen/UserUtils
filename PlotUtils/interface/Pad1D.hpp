@@ -25,9 +25,9 @@
 #include "RooPlot.h"
 #include "RooRealVar.h"
 
+#include "TF1.h"
 #include "TGraph.h"
 #include "TGraphAsymmErrors.h"
-#include "TF1.h"
 #include "TH1D.h"
 #include "THStack.h"
 #include "TLegend.h"
@@ -39,9 +39,6 @@
 namespace usr  {
 
 namespace plt {
-
-
-
 
 /**
  * @brief Specialized class for 1D data plotting.
@@ -80,35 +77,36 @@ public:
     return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );           \
   }
 
-  /** @{
-   * @brief
-   * Plotting 1D histogram objects
+  /**
+   * @{
+   * @brief Plotting 1D histogram objects
    */
   DECLARE_PLOT_FUNCTIONS( PlotHist, TH1D, TH1D& );
   /** @} */
 
-  /** @{
-   * @brief
-   * Plotting x-y scatter graph objects
+  /**
+   * @{
+   * @brief Plotting x-y scatter graph objects
    */
   DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph, TGraph& );
   /** @} */
 
-  /** @{
-   * @brief
-   * Plotting ROOT flavoured 1D function
+  /**
+   * @{
+   * @brief Plotting ROOT flavoured 1D function
    */
   DECLARE_PLOT_FUNCTIONS( PlotFunc, TF1, TGraph& );
   /** @} */
 
-  /** @{
-   * @brief
-   * Plotting RooFit's @ROOT{RooAbsData}s
+  /**
+   * @{
+   * @brief Plotting RooFit's @ROOT{RooAbsData}s
    */
   DECLARE_PLOT_FUNCTIONS( PlotData, RooAbsData, TGraphAsymmErrors& );
   /** @} */
 
-  /** @{
+  /**
+   * @{
    * @brief
    * Plotting RooFit's @ROOT{RooAbsPdf}s
    */

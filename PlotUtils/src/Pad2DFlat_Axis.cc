@@ -4,6 +4,12 @@ namespace usr{
 
 namespace plt {
 
+/**
+ * @brief Getting the object that is responsible for plotting the axis.
+ *
+ * Assuming the first object that has axis settings (This should be true for
+ * typical use cases)
+ */
 TObject* Pad2DFlat::GetAxisObject() const
 {
   if( !GetListOfPrimitives() ){ return nullptr; }
@@ -21,6 +27,9 @@ TObject* Pad2DFlat::GetAxisObject() const
   return nullptr;
 }
 
+/**
+ * @brief common settings for setting the axis fonts
+ */
 void Pad2DFlat::SetAxisFont()
 {
   Xaxis().SetLabelFont( FontFace() );

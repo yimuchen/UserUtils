@@ -8,6 +8,9 @@ namespace usr {
 
 namespace plt {
 
+/**
+ * @brief Canvas containing a single 2D pad
+ */
 class Flat2DCanvas : public Canvas
 {
 public:
@@ -25,7 +28,7 @@ public:
   ~Flat2DCanvas ();
 
   /**
-   * @brief Returning reference to the created Pad1D.
+   * @brief Returning reference to the underlying Pad2DFlat instance
    */
   inline Pad2DFlat&
   Pad(){ return GetPad<Pad2DFlat>( 0 ); }
@@ -42,6 +45,7 @@ public:
    * @{
    * @brief passing through for Pad2DFlat plotting function so that user can
    * 'plot' on this canvas type.
+   * @details See Pad2DFlats plot functions for details.
    */
   CANVAS2D_PASSTHROUGH_FUNC( PlotHist,    TH2D    , TH2D     );
   CANVAS2D_PASSTHROUGH_FUNC( Plot1DGraph, TGraph  , TGraph   );
@@ -53,9 +57,14 @@ public:
 #define CANVAS2D_ACCESS_PASSTHROUGH( FUNC_NAME, RET_TYPE )              \
   inline RET_TYPE FUNC_NAME() { return Pad().FUNC_NAME(); }             \
 
+  /**
+   * @{
+   * @brief Pass through for axis access
+   */
   CANVAS2D_ACCESS_PASSTHROUGH( Xaxis, TAxis& );
   CANVAS2D_ACCESS_PASSTHROUGH( Yaxis, TAxis& );
   CANVAS2D_ACCESS_PASSTHROUGH( Zaxis, TAxis& );
+  /** @} */
 
 #undef CANVAS2D_ACCESS_PASSTHROUGH
 
@@ -66,7 +75,7 @@ public:
 
   /**
    * @{
-   * @brief passing through addition Pad1D functions
+   * @brief passing through addition Pad2DFlat functions
    */
   CANVAS2D_VOID_PASSTHROUGH( DrawCMSLabel );
   CANVAS2D_VOID_PASSTHROUGH( DrawLuminosity );
@@ -75,9 +84,7 @@ public:
 
 protected:
   void init_margin();
-
 };
-
 
 }
 

@@ -12,11 +12,12 @@ namespace plt {
  * Drawing the CMS label inside the frame outside the top left corner.
  * Additional styling will include:
  * - The font size of the label will be a "large" variant to the Canvas settings
- * - The Top left corner of the text would be set to 1.5 times the tick length.
- * - The man label (CMS) would be set to bold
+ * - The bottom left corner would be aligned to the top left corner of the frame
+ *   corner, with a vertical offset of 0.25 tick-lengths
+ * - The main label (CMS by default) would be set to bold
  * - The second label (if defined, such as "Preliminary") would be set to
  *   italic.
- * @param tag  The secondary tag to be displayed below the CMS label font.
+ * @param tag  The secondary tag to be displayed beside the CMS label font.
  * @param main The main tag to be plotted (default to CMS but could be changed
  *             if you are working for another experiment)
  */
@@ -42,7 +43,6 @@ Pad2DFlat::DrawCMSLabel( const std::string& tag, const std::string& main )
  * This string in directly pass to the TLatex object, so all styling here would
  * be user defined. The font setting would be identical to that of the canvas
  * setting.
- * @param x the string to use as the luminosity label
  */
 void
 Pad2DFlat::DrawLuminosity( const std::string& x )
@@ -60,7 +60,6 @@ Pad2DFlat::DrawLuminosity( const std::string& x )
  *
  * Writing the luminosity label in the standard format of
  * "XX.X fb^{-1} (13TeV)"
- * @param lumi The luminosity in units of fb-1
  */
 void
 Pad2DFlat::DrawLuminosity( const double lumi )

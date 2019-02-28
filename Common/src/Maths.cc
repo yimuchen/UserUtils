@@ -47,7 +47,7 @@ GetExponent( double x )
  * @brief faster implementation of the power function with integers
  *
  * This actually has minimal uses in analysis, I just thought it was a nice
- * excercise for writting a [square-and-multiply algorithm](https://en.wikipedia.org/wiki/Exponentiation_by_squaring) :/
+ * exercise for writting a [square-and-multiply algorithm](https://en.wikipedia.org/wiki/Exponentiation_by_squaring) :/
  */
 double
 IntPower( double base, int exp )
@@ -108,12 +108,22 @@ HashValue( const double in )
   return x * 0x2545F4914F6CDD1D;
 }
 
+/**
+ * @brief Calculating the mean of a double vector
+ *
+ * Simple vector arithmetics using the std::algorithm methods
+ */
 double
 Mean( const std::vector<double>& vec )
 {
   return std::accumulate( vec.begin(), vec.end(), 0 ) / vec.size();
 }
 
+/**
+ * @brief Calculating the standard deviation of a double vector
+ *
+ * Simple vector arithmetics using the std::algorithm methods
+ */
 double
 StdDev( const std::vector<double>& vec )
 {

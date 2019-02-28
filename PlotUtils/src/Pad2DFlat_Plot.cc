@@ -9,6 +9,22 @@ namespace usr {
 
 namespace plt {
 
+/**
+ * Plotting a two dimensional histogram support the following options:
+ *
+ * - Plot2DF: Defining how the the data should be represented. The following
+ *   types are supported.
+ *   - `plot2df::heat`: Heat map, corresponds to the `"COLZ"` options for TH2
+ *     plotting in @ROOT
+ *   - `plot2df::cont` Plotting the contour lines, using the "CONT3" options for
+ *      TH2 plotting
+ *   - `plot2df::heatcont`: Plotting both the heat map and contour lines.
+ *
+ * - EntryText: Adding text for display in the legend. Currently only the `cont`
+ *   and `heatcont` will add a legend entry with the line styling displayed. The
+ *   `heat` option assumes that this object will be used for the z axis colour
+ *   pallet, so it will only add a text entry in the legend without a display.
+ */
 TH2D&
 Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
 {
@@ -60,8 +76,23 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
   return hist;
 }
 
-
-
+/**
+ * Plotting a two dimensional graph support the following options:
+ *
+ * - Plot2DF: Defining how the the data should be represented. The following
+ *   types are supported.
+ *   - `plot2df::heat`: Heat map, corresponds to the "CONT4" options for
+ *     TGraph2D plotting in @ROOT
+ *   - `plot2df::cont` Plotting the contour lines, using the "CONT3" options for
+ *      TH2 plotting
+ *   - `plot2df::heatcont`: Plotting both the heat map and contour lines.
+ *
+ * - EntryText: Adding text for display in the legend. Currently only the `cont`
+ *   and `heatcont` will add a legend entry with the line styling displayed. The
+ *   `heat` option assumes that this object will be used for the z axis colour
+ *   pallet, so it will only add a text entry in the legend without a display.
+ * @brief
+ */
 TGraph2D&
 Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
 {
@@ -124,6 +155,11 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
   return graph;
 }
 
+/**
+ * Plotting of a 2 dimensional graph is done by generating a TGraph2D object via
+ * the sampling the function. All other plotting functionalities are identical
+ * to the the PlotGraph function.
+ */
 TGraph2D&
 Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
 {
@@ -154,6 +190,15 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
   return PlotGraph( graph, arglist );
 }
 
+/**
+ * Plotting a regular 1D graph object (TGraph as oppose to TGraph2D) object
+ * supports the following commands:
+ * - PlotType: specifying how the data should be represented. The supported plot
+ *   types are:
+ *   - `plottype::scatter`: Scatter point with error bars (no end ticks)
+ *   - `plottype::simplefunc`: Simple polyline joining the points.
+ * - EntryText: Adding text into the legend.
+ */
 TGraph&
 Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
 {
@@ -173,6 +218,8 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   // Parsing plotting flag
   if( opt == plottype::scatter ){
     PadBase::PlotObj( graph, "PZ0" );
+  } eise if( opt == plottype::simplefunc ){
+    PadBase::PlotObj( graph, "L" );
   } else if( opt == plottype_dummy && optraw != "" ){
     // Special case for raw options parsing. (Must remove axis and add string)
     ToUpper( optraw );
@@ -189,7 +236,13 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   return graph;
 }
 
-
+/**
+ * In 2D plotting, we are assuming the important stuff is being plotted first:
+ * Important takes up more area (with heat plots, for example), so we will not
+ * need to reverse the legend entry as with the Pad1D objects. The TLegend will
+ * be generated on the left side of the frame. The size will be adjusted to have
+ * everything fit snugly in the legend.
+ */
 void
 Pad2DFlat::MakeLegend()
 {
@@ -210,8 +263,6 @@ Pad2DFlat::MakeLegend()
   width *= 1.1;// Relieving spacing a little
   width += 1.0 * LineHeight();// Reserving space for legend icon boxes.
 
-  // For whatever reason, the y corordinates of the TLegend counts from the
-  // top.... Don't ask. Just ROOT things
   const float xmin = 0.5 * float(LineHeight() ) / AbsWidth();
   const float ymax = 1   - GetTopMargin();
   const float xmax = GetLeftMargin() - 5*float(LineHeight() ) / AbsWidth();

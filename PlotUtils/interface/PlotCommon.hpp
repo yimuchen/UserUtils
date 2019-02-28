@@ -111,6 +111,11 @@ private:
 };
 
 
+/**
+ * @addtogroup PlotUtilsArgument
+ * @{
+ */
+
 
 /**
  * @brief Simple container for helping with RooCmdArg parsing.
@@ -228,6 +233,7 @@ public:
   virtual ~ShowFitErr(){}
 };
 
+/** @} */
 
 
 /**
