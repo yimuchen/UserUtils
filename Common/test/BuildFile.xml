@@ -1,10 +1,10 @@
 <use name="UserUtils/Common"/>
 
-<flags CXXFLAGS="-g -I$CMSSW_BASE/src/UserUtils/Common/interface/"/>
+<flags CXXFLAGS="-g"/>
 
-<bin name="ptree_test"            file="usrutil_ptree_test.cc"   />
-<bin name="pathutil_test"         file="usrutil_pathutil_test.cc"/>
-<bin name="format_test"           file="usrutil_format_test.cc"  />
-<bin name="system_test"           file="usrutil_system_test.cc"  />
-<bin name="variadic_test"         file="usrutil_variadic_test.cc"/>
-<bin name="argumentextender_test" file="usrutil_argumentextender_test.cc"/>
+<bin name="usrutil_ptree"            file="ptree.cc"           />
+<bin name="usrutil_pathutils"        file="pathutils.cc"       />
+<bin name="usrutil_format"           file="format.cc"          />
+<bin name="usrutil_system"           file="system.cc"          />
+<bin name="usrutil_variadic"         file="variadic.cc"        />
+<bin name="usrutil_argumentextender" file="argumentextender.cc"/>
