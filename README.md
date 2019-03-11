@@ -14,6 +14,15 @@ git clone https://github.com/yimuchen/UserUtils.git
 scram b
 ```
 
+As the plot fixing requires ghostscript, before to have ghostscript installed on
+your system. You will also need to export gcc environment variables to allow for
+gcc to find the libraries, if this package is not globally installed
+
+```bash
+export CFLAGS=$CFLAGS:/your/local/include/path
+export LIBRARY_PATH=$LIBRARY_PATH:/your/local/lib/path
+```
+
 version requirements: CMSSW environment with gcc version greater than 6 (major
 versions 9 and above).
 
