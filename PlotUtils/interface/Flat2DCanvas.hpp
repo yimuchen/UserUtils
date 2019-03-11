@@ -1,8 +1,13 @@
 #ifndef USERUTILS_PLOTUTILS_FLAT2DCANVAS_HPP
 #define USERUTILS_PLOTUTILS_FLAT2DCANVAS_HPP
 
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Pad2DFlat.hpp"
+#else
+#include "UserUtils/PlotUtils/Canvas.hpp"
+#include "UserUtils/PlotUtils/Pad2DFlat.hpp"
+#endif
 
 namespace usr {
 

@@ -1,4 +1,8 @@
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
+#else
+#include "UserUtils/PlotUtils/PlotCommon.hpp"
+#endif
 
 namespace usr {
 

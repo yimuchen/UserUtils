@@ -1,7 +1,12 @@
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Pad2DFlat.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
-
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#else
+#include "UserUtils/PlotUtils/Pad2DFlat.hpp"
+#include "UserUtils/PlotUtils/PlotCommon.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#endif
 
 #include "TLegendEntry.h"
 

@@ -26,7 +26,8 @@ docs/html/
 docs/style.css
 docs/style.css.map
 .sass-cache
-
+testbin/**
 
 # Specific file inclusion
 # ![relative/path/to/file]
+!**/CMakeLists.txt

@@ -1,4 +1,8 @@
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
+#else
+#include "UserUtils/PlotUtils/Flat2DCanvas.hpp"
+#endif
 
 namespace usr {
 

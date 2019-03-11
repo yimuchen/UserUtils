@@ -1,6 +1,10 @@
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
-
+#else
+#include "UserUtils/PlotUtils/PlotCommon.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#endif
 
 namespace usr {
 
