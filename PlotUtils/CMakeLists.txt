@@ -3,7 +3,7 @@ add_library(PlotUtils SHARED ${PlotUtils_src})
 target_link_libraries(PlotUtils
   Common
   ${ROOT_LIBRARIES}
-  gs
+  gs # Ghost script
 )
 
 ## Function for compiling unit tests

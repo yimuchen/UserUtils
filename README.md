@@ -45,7 +45,6 @@ After cloning the repository, build the standalone libraries using `cmake`:
 cd UserUtils
 cmake ./
 cmake --build ./
-make install
 ```
 
 Currently, this will not install the package as a system library, but place the
