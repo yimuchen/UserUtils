@@ -1,8 +1,8 @@
 # UserUtils
 
 This is a package designed to enhance the useability of CMSSW for analysis
-purposes and make the related tool sets (ROOT/ROOFIT) more pleasant to use.
-The full documentation is hosted [here](https://yimuchen.github.io/UserUtils/)
+purposes and make the related tool sets (ROOT/ROOFIT) more pleasant to use. The
+full documentation is hosted [here](https://yimuchen.github.io/UserUtils/).
 
 ## Installing
 
@@ -24,11 +24,13 @@ As a standalone package, make sure the following is available one your system:
 - [cmake](https://cmake.org/) (>3.8)
 - [CERN ROOT6](https://root.cern.ch/)
 - [boost](https://www.boost.org/) (>1.41)
+- [gsl](https://www.gnu.org/software/gsl/)
+- [ghostscript](https://www.ghostscript.com/download.html) interpreter interface
 - c++ compiler supporting the [c++17 standard](https://en.wikipedia.org/wiki/C%2B%2B17)
   - g++ > 6.0
   - clang > 4
 
-After cloning the repository, build the standalone libraries using cmake:
+After cloning the repository, build the standalone libraries using `cmake`:
 
 ```bash
 cd UserUtils
