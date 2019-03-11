@@ -16,9 +16,13 @@
 #include "TFile.h"
 
 #include <boost/format.hpp>
-#include <cstdlib>
 #include <iostream>
 #include <string>
+
+#include <ghostscript/iapi.h>
+#include <ghostscript/ierrors.h>
+
+static bool run_ghostscript( const std::vector<std::string>& );
 
 namespace usr  {
 
@@ -90,30 +94,37 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   Finalize( filepath );
   const fs::path tmppath = SaveTempPDF( filepath );
 
-  const std::string cmd = boost::str( boost::format(
-      "gs"
-      "  -sDEVICE=pdfwrite"
-      "  -dCompatibilityLevel=1.4"
-      "  -dPDFSETTINGS=/screen"
-      "  -dNOPAUSE"
-      "  -dQUIET"
-      "  -dBATCH"
-      "  -sOutputFile=%s"
-      "  %s"
-      ) % filepath % tmppath );
-  std::system( cmd.c_str() );
-  system( ( "rm "+ tmppath.string() ).c_str() );
+  const std::vector<std::string> gs_pdffix = {
+    "gs",
+    "-dNOPAUSE",
+    "-dQUIET",
+    "-dBATCH",
+    "-sstdout=/dev/null",// Supperssing error messages
+    "-sDEVICE=pdfwrite",
+    "-dCompatibilityLevel=1.4",
+    "-dPDFSETTINGS=/screen",
+    ( boost::format( "-sOutputFile=%s" )%filepath.string() ).str(),
+    "-f",
+    tmppath };
 
-  std::cout << "Saving Canvas to " << filepath << std::endl;
+  if( run_ghostscript( gs_pdffix ) ){
+    // ghostscript properly finished
+    std::cout << "Saved Canvas to " << filepath << std::endl;
+    fs::remove( tmppath );
+  } else {
+    std::cout << "Error in starting ghostscript processes, saving as "
+              << "unaltered PDF file" << std::endl;
+    fs::copy( tmppath, filepath );
+    fs::remove( tmppath );
+  }
 }
 
 /**
  * @brief High resolution PNG file saving
  *
- * The file creats a temporary PDF file using the stock @ROOT functions, and
- * uses ImageMagik to convert the PDF into a high resolution PNG file. The
- * `convert` command is take from
- [here](https://stackoverflow.com/questions/6605006/convert-pdf-to-image-with-high-resolution).
+ * The file creates a temporary PDF file using the stock @ROOT functions, and
+ * uses ghostscript to convert the PDF into a high resolution PNG file.
+ *
  * @param filepath final path to store the PDF file.
  *                 (Parent directory would be automatically created if possible)
  * @param dpi      Required image quality
@@ -124,23 +135,33 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
   Finalize( filepath );
   const fs::path tmppath = SaveTempPDF( filepath );
 
-  const float scale = (float)len::ROOT_DPI/(float)dpi;
+  const double scale = (double)len::ROOT_DPI / dpi ;
 
-  const std::string cmd = boost::str( boost::format(
-      "convert"
-      "   -density %d"
-      "   -trim"// removing additional transparenct around the edges
-      "   %s"
-      "   -quality 100"
-      "   -sharpen 0x1.0"
-      "   -resize %lf%%"
-      "   %s"
-      ) % dpi % tmppath % ( scale*100 ) % filepath );
+  // Using ghostscript C api to avoid using system fuction
+  const std::vector<std::string> gs_png = {
+    "gs",
+    "-dNOPAUSE",
+    "-dQUIET",
+    "-dBATCH",
+    "-sstdout=/dev/null",// suppressing all error
+    "-sDEVICE=pngalpha",
+    ( boost::format( "-sOutputFile=%s" )%filepath.string() ).str(),
+    ( boost::format( "-r%d" )%dpi ).str(),
+    ( boost::format( "-dDEVICEWIDTHPOINTS=%d")%(Width()*scale) ).str(),
+    ( boost::format( "-dDEVICEHEIGHTPOINTS=%d")%(Height()*scale) ).str(),
+    "-dUseCropBox",
+    "-f",
+    tmppath };
 
-  std::system( cmd.c_str() );
-  std::system( ( "rm "+ tmppath.string() ).c_str() );
-
-  std::cout << "Saving Canvas to " << filepath << std::endl;
+  if( run_ghostscript( gs_png ) ){
+    std::cout << "Saving Canvas to " << filepath << std::endl;
+    fs::remove( tmppath );
+  } else {
+    std::cout << "Ghostscript conversion failed, saving via in-built root "
+              << "function (Display maybe bad!)" << std::endl;
+    fs::remove( tmppath );
+    TCanvas::SaveAs( filepath.c_str() );
+  }
 }
 
 /**
@@ -178,8 +199,8 @@ Canvas::SaveAsCPP( const fs::path& filepath )
     % filepath.stem().string() );
   TCanvas::SaveAs( tempfile.c_str() );
 
-  std::system( ( "cp "+tempfile+" "+filepath.string() ).c_str() );
-  std::system( ( "rm "+tempfile ).c_str() );
+  fs::copy( tempfile, filepath );
+  fs::remove( tempfile );
 }
 
 /**
@@ -202,3 +223,47 @@ Canvas::SaveTempPDF( const fs::path& finalpath )
 }/* plt  */
 
 }/* usr  */
+
+// Running Ghostscript API
+bool
+run_ghostscript( const std::vector<std::string>& args )
+{
+  void* gs_inst        = nullptr;
+  int gs_status        = 0;
+  int gs_status1       = 0;
+  int gs_argc          = args.size();
+  const char** gs_argv = new const char*[args.size()];
+
+  for( unsigned i = 0; i < args.size(); ++i ){
+    gs_argv[i] = args.at( i ).c_str();
+  }
+
+  // Generating new ghostscript instance
+  if( gsapi_new_instance( &gs_inst, nullptr ) < 0 ){
+    delete[] gs_argv;
+    return false;
+  }
+
+  // Calling GS function
+  if( gsapi_set_arg_encoding( gs_inst, GS_ARG_ENCODING_UTF8 ) ){
+    delete[] gs_argv;
+    gsapi_delete_instance( gs_inst );
+    return false;
+  }
+
+  gs_status = gsapi_init_with_args( gs_inst, gs_argc,
+    const_cast<char**>( gs_argv ) );
+  gs_status1 = gsapi_exit( gs_inst );
+  if( gs_status == 0 || gs_status1 == gs_error_Quit ){
+    gs_status = gs_status1;
+  }
+
+  delete[] gs_argv;
+  gsapi_delete_instance( gs_inst );
+
+  if( gs_status == 0 || gs_status == gs_error_Quit ){
+    return true;
+  } else {
+    return false;
+  }
+}

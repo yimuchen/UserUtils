@@ -84,6 +84,19 @@ public:
   /** @} */
 #undef PASSTHOUGH_VOIDFUNC
 
+#define PASSTHROUGH_ACCESSFUNC( FUNC_NAME, RET_TYPE )\
+  inline RET_TYPE FUNC_NAME() { return Pad().FUNC_NAME(); }
+
+  /**
+   * @{
+   * @brief Pass through for axis access
+   */
+  PASSTHROUGH_ACCESSFUNC( Xaxis, TAxis& );
+  PASSTHROUGH_ACCESSFUNC( Yaxis, TAxis& );
+  /** @} */
+
+#undef PASSTHROUGH_ACCESSFUNC
+
 protected:
   void _init_margin();
 };

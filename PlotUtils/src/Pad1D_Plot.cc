@@ -331,8 +331,8 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
     SetAxisFont();
   }
 
-  const double xmax = GetXaxisMax();
-  const double xmin = GetXaxisMin();
+  const double xmax = func.GetXmax();
+  const double xmin = func.GetXmin();
 
   // Getting common elements for graph generation
   for( unsigned i = 0; i < xsample; ++i ){

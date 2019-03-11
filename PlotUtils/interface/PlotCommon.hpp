@@ -238,17 +238,17 @@ public:
 
 /**
  * @{
- * @brief Getting the min/max y values of a plotting object
+ * @brief Getting the min/max x-y values of a plotting object
  */
 
-double GetYmax( const TH1D* );
-double GetYmin( const TH1D* );
-double GetYmax( const TGraph* );
-double GetYmin( const TGraph* );
-double GetYmin( const THStack* );
-double GetYmax( const THStack* );
-double GetXmax( const TGraph* );
-double GetXmin( const TGraph* );
+extern double GetYmax( const TH1D* );
+extern double GetYmin( const TH1D* );
+extern double GetYmax( const TGraph* );
+extern double GetYmin( const TGraph* );
+extern double GetYmin( const THStack* );
+extern double GetYmax( const THStack* );
+extern double GetXmax( const TGraph* );
+extern double GetXmin( const TGraph* );
 
 inline double
 GetYmax( const TH1D& x ){ return GetYmax( &x ); }
@@ -268,6 +268,11 @@ GetXmax( const TGraph& x ){ return GetXmax( &x ); }
 inline double
 GetXmin( const TGraph& x  ){ return GetXmin( &x ); }
 /** @} */
+
+extern double EstimateLatexWidth( const std::string& text,
+                                  const unsigned     fontsize );
+extern double EstimateLatexHeight( const std::string& text,
+                                   const unsigned     fontsize );
 
 
 }// plt

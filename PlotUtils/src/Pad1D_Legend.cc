@@ -161,22 +161,10 @@ Pad1D::MakeLegend()
   double height = 0;
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
-    const char* label = ( (TLegendEntry*)obj )->GetLabel();
-    TLatex* temp      = new TLatex( 0.5, 0.5, label );
-    temp->SetTextFont( FontFace() );
-    temp->SetTextSize( FontSize() );
-    temp->Draw();// Must draw once to get the coordinates.
-    // Sometimes returning absolute size, sometimes relative...
-    width = temp->GetXsize() > 1 ?
-            std::max( width, 0.6 * temp->GetXsize() / AbsWidth() ) :
-            std::max( width, 0.6 * temp->GetXsize() );
-    height += temp->GetYsize() > 0.5 ?
-              0.35 * temp->GetYsize() / AbsHeight() :
-              0.35 * temp->GetYsize();
-
-    // Clearing object so it isn't actually drawn.
-    TPad::RecursiveRemove( temp );// Clearing object
-    delete temp;
+    const std::string entry( ( (TLegendEntry*)obj )->GetLabel() );
+    // Gussing width based on character count alone
+    width = std::max( 0.5 * FontSize()*entry.length() / AbsWidth(), width );
+    height += 1.4*RelLineHeight();
   }
 
   width *= 1.1;// Relieving spacing a little

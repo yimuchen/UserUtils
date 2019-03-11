@@ -130,11 +130,9 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
 
   // Parsing plotting flag
   if( opt == plot2df::heat ){
-    PlotObj( graph, "CONT4 SAME" );
-    SetAxisFont();
+    PlotObj( graph, "CONT4Z SAME" );
   } else if( opt == plot2df::heatcont ){
-    PlotObj( graph, "CONT4 SAME" );
-    SetAxisFont();
+    PlotObj( graph, "CONT4Z SAME" );
     PlotObj( graph, "CONT3 SAME" );
   } else if( opt == plot2df::cont ){
     PlotObj( graph, "CONT3 SAME" );
@@ -187,6 +185,8 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
   TGraph2D& graph = _frame.MakeObj<TGraph2D>( x.size(),
     x.data(), y.data(), z.data() );
 
+  graph.SetName( usr::RandomString(12).c_str() );
+
   return PlotGraph( graph, arglist );
 }
 
@@ -213,13 +213,14 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
     !args.Get( Plot2DF::CmdName ).getString( 0 ) ? "" :
     args.Get( Plot2DF::CmdName ).getString( 0 );
 
-  const std::string legopt = "PLE";
+  std::string legopt = "PLE";
 
   // Parsing plotting flag
   if( opt == plottype::scatter ){
     PadBase::PlotObj( graph, "PZ0" );
-  } eise if( opt == plottype::simplefunc ){
+  } else if( opt == plottype::simplefunc ){
     PadBase::PlotObj( graph, "L" );
+    legopt = "L";
   } else if( opt == plottype_dummy && optraw != "" ){
     // Special case for raw options parsing. (Must remove axis and add string)
     ToUpper( optraw );
@@ -227,6 +228,10 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   } else {// Skipping over stuff
     std::cerr << "Skipping over invalid value" << std::endl;
   }
+
+  // Resetting underlying histogram range:
+  graph.GetHistogram()->SetMaximum( usr::plt::GetYmax(graph) );
+  graph.GetHistogram()->SetMinimum( usr::plt::GetYmin(graph) );
 
   if( args.Has( EntryText::CmdName ) ){
     _legend.AddEntry( &graph,
@@ -246,6 +251,9 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
 void
 Pad2DFlat::MakeLegend()
 {
+  // Early exit if Legend wasn't requested
+  if( !_legend.GetListOfPrimitives() ){ return; }
+  if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
   TPad::cd();
   float width  = 0;
   float height = 1.2*LineHeight() * _legend.GetListOfPrimitives()->GetEntries();
