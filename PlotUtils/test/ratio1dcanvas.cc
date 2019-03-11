@@ -3,7 +3,11 @@
  * @brief   Testing the default value settings of the ratiocanvas class
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
+#else
+#include "UserUtils/PlotUtils/Ratio1DCanvas.hpp"
+#endif
 
 #include "TH1D.h"
 #include "TRandom3.h"

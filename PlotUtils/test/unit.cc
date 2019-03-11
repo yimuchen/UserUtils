@@ -3,8 +3,13 @@
  * @brief   Test for unit conversion
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
 #include "UserUtils/Common/interface/STLUtils.hpp"
+#else
+#include "UserUtils/PlotUtils/Constants.hpp"
+#include "UserUtils/Common/STLUtils.hpp"
+#endif
 
 #include <iostream>
 using namespace std;

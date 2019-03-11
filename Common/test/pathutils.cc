@@ -5,8 +5,13 @@
  * @details Detailed descriptions
  */
 
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/Filesystem.hpp"
 #include "UserUtils/Common/interface/STLUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/Filesystem.hpp"
+#include "UserUtils/Common/STLUtils.hpp"
+#endif
 
 #include <iostream>
 #include <boost/format.hpp>

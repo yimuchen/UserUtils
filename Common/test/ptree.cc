@@ -5,8 +5,13 @@
 *  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
 *
 *******************************************************************************/
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils.hpp"
+#else
+#include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/STLUtils.hpp"
+#endif
 
 #include <iostream>
 

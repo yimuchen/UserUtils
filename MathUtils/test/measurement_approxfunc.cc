@@ -3,10 +3,15 @@
  * @brief   testing the functionality of likelihood function approximations
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
-
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
 #include "UserUtils/MathUtils/interface/GSLUtil.hpp"
 #include "UserUtils/MathUtils/interface/StatisticsUtil.hpp"
+#else
+#include "UserUtils/MathUtils/Measurement.hpp"
+#include "UserUtils/MathUtils/GSLUtil.hpp"
+#include "UserUtils/MathUtils/StatisticsUtil.hpp"
+#endif
 
 #include <cstdio>
 #include <cassert>

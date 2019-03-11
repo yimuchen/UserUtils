@@ -3,8 +3,11 @@
  * @brief   Testing the simple 1d Canvas.
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
-
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
+#else
+#include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
+#endif
 
 #include "RooDataSet.h"
 #include "RooGaussian.h"

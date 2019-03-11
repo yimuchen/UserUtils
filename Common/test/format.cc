@@ -4,8 +4,13 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  * @details Detailed descriptions
  */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/Common/interface/STLUtils.hpp"
+#else
+#include "UserUtils/Common/Format.hpp"
+#include "UserUtils/Common/STLUtils.hpp"
+#endif
 
 #include <boost/format.hpp>
 #include <iostream>

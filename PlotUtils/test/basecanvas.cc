@@ -4,10 +4,16 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
-
 #include "UserUtils/Common/interface/STLUtils.hpp"
+#else
+#include "UserUtils/PlotUtils/Canvas.hpp"
+#include "UserUtils/PlotUtils/Pad1D.hpp"
+#include "UserUtils/Common/STLUtils.hpp"
+#endif
+
 
 #include "TH1D.h"
 #include "TRandom3.h"

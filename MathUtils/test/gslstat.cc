@@ -5,9 +5,15 @@
 *  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
 *
 *******************************************************************************/
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Format.hpp"
 #include "UserUtils/MathUtils/interface/StatisticsUtil.hpp"
+#else
+#include "UserUtils/Common/STLUtils.hpp"
+#include "UserUtils/MathUtils/Measurement/Format.hpp"
+#include "UserUtils/MathUtils/StatisticsUtil.hpp"
+#endif
 
 #include <cmath>
 #include <cstdlib>

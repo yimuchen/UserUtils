@@ -2,8 +2,11 @@
  * @file    argumentextender_test.cc
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
-
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#else
+#include "UserUtils/Common/ArgumentExtender.hpp"
+#endif
 
 int main(int argc, char* argv[])
 {

@@ -3,7 +3,11 @@
  * @brief   Testing functionalities of Proper implementation of KS test using RooFit objects
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
+#else
+#include "UserUtils/MathUtils/RooFitExt.hpp"
+#endif
 
 #include "RooConstVar.h"
 #include "RooDataSet.h"
