@@ -27,7 +27,7 @@ namespace plt  {
 namespace len {
 
 extern const unsigned ROOT_DPI = 72;
-extern const float INCH_TO_CM   = 2.54;
+extern const float INCH_TO_CM  = 2.54;
 
 /**
  * @{
@@ -231,7 +231,7 @@ const short filldotsparse = 3003;
 /** @} */
 
 /**
- * @brief  A human readable interface to hash-fill styles in @ROOT{TAttrFill}.
+ * @brief  A human readable interface to hash-fill styles in @ROOT{TAttFill}.
  *
  * To be used with the distmm(), angle1(), and angle2() functions to make what
  * the hash is suppose to look like look more natural.
@@ -257,7 +257,7 @@ fillhash( unsigned short distance,
  * @brief Converting actual hash distances in millimeters into the unit
  * used by the distance string.
  *
- * @ROOT{TAttrFill} only defines 0.5mm converts to 1 , and 6mm converts to 9.
+ * @ROOT{TAttFill} only defines 0.5mm converts to 1 , and 6mm converts to 9.
  * There we assume a linear relation, rounding to the closest value.
  */
 const short
@@ -320,6 +320,38 @@ angle2( const float x )
 
 /** @brief Flag to use if you want to diplay a certain angle display */
 const short anglenone = 5;
+
+/**
+ * @{
+ * @brief common settings used by @ROOT{TAttLine}.
+ * */
+const short linsolid     = 1;
+const short lindotted    = 2;
+const short lindensedot  = 3;
+const short lindashed    = 9;
+const short linshortdash = 7;
+/** @} */
+
+/**
+ * @{
+ * @brief common settings used by @ROOT{TAttMarker}.
+ * */
+extern const short mkrcircle           = 20;
+extern const short mkrsquare           = 21;
+extern const short mkrtriangleup       = 22;
+extern const short mkrtriangledown     = 23;
+extern const short mkrdiamond          = 33;
+extern const short mkrcross            = 34;
+extern const short mkrstar             = 29;
+extern const short mkropencircle       = 24;
+extern const short mkropensquare       = 25;
+extern const short mkropentriangleup   = 26;
+extern const short mkropentriangledown = 32;
+extern const short mkropendiamond      = 27;
+extern const short mkropencross        = 28;
+extern const short mkropenstar         = 30;
+/** @} */
+
 
 }/* sty */
 

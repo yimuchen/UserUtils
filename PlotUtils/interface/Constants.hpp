@@ -124,7 +124,23 @@ namespace sty  {
 
 // Marker styles
 inline float
-mkrpixels( const int x ){ return x / 8;  }
+mkrpixels( const int x ){ return x / 8; }
+
+extern const short mkrcircle;
+extern const short mkrsquare;
+extern const short mkrtriangleup;
+extern const short mkrtriangledown;
+extern const short mkrdiamond;
+extern const short mkrcross;
+extern const short mkrstar;
+extern const short mkropencircle;
+extern const short mkropensquare;
+extern const short mkropentriangleup;
+extern const short mkropentriangledown;
+extern const short mkropendiamond;
+extern const short mkropencross;
+extern const short mkropenstar;
+
 
 // Fill styles
 extern const short fillnone;
@@ -144,9 +160,175 @@ extern const short anglenone;
 extern const short angle1( const float );
 extern const short angle2( const float );
 
+
+// Line style
+extern const short linsolid;
+extern const short lindotted;
+extern const short lindensedot;
+extern const short lindashed;
+extern const short linshortdash;
+
 /** @} */
 
 }/* sty  */
+
+
+/**
+ * @brief Defining a more comprehensive list of colors
+ *
+ * The colors are defined in https://www.rapidtables.com/web/color/RGB_Color.html#color-table
+ */
+namespace col
+{
+extern const int maroon;
+extern const int darkred;
+extern const int brown;
+extern const int firebrick;
+extern const int crimson;
+extern const int red;
+extern const int tomato;
+extern const int coral;
+extern const int indianred;
+extern const int lightcoral;
+extern const int darksalmon;
+extern const int salmon;
+extern const int lightsalmon;
+extern const int orangered;
+extern const int darkorange;
+extern const int orange;
+extern const int gold;
+extern const int darkgoldenrod;
+extern const int goldenrod;
+extern const int palegoldenrod;
+extern const int darkkhaki;
+extern const int khaki;
+extern const int olive;
+extern const int yellow;
+extern const int yellowgreen;
+extern const int darkolivegreen;
+extern const int olivedrab;
+extern const int lawngreen;
+extern const int chartreuse;
+extern const int greenyellow;
+extern const int darkgreen;
+extern const int green;
+extern const int forestgreen;
+extern const int lime;
+extern const int limegreen;
+extern const int lightgreen;
+extern const int palegreen;
+extern const int darkseagreen;
+extern const int mediumspringgreen;
+extern const int springgreen;
+extern const int seagreen;
+extern const int mediumaquamarine;
+extern const int mediumseagreen;
+extern const int lightseagreen;
+extern const int darkslategray;
+extern const int teal;
+extern const int darkcyan;
+extern const int aqua;
+extern const int cyan;
+extern const int lightcyan;
+extern const int darkturquoise;
+extern const int turquoise;
+extern const int mediumturquoise;
+extern const int paleturquoise;
+extern const int aquamarine;
+extern const int powderblue;
+extern const int cadetblue;
+extern const int steelblue;
+extern const int cornflowerblue;
+extern const int deepskyblue;
+extern const int dodgerblue;
+extern const int lightblue;
+extern const int skyblue;
+extern const int lightskyblue;
+extern const int midnightblue;
+extern const int navy;
+extern const int darkblue;
+extern const int mediumblue;
+extern const int blue;
+extern const int royalblue;
+extern const int blueviolet;
+extern const int indigo;
+extern const int darkslateblue;
+extern const int slateblue;
+extern const int mediumslateblue;
+extern const int mediumpurple;
+extern const int darkmagenta;
+extern const int darkviolet;
+extern const int darkorchid;
+extern const int mediumorchid;
+extern const int purple;
+extern const int thistle;
+extern const int plum;
+extern const int violet;
+extern const int magenta;
+extern const int fuchsia;
+extern const int orchid;
+extern const int mediumvioletred;
+extern const int palevioletred;
+extern const int deeppink;
+extern const int hotpink;
+extern const int lightpink;
+extern const int pink;
+extern const int antiquewhite;
+extern const int beige;
+extern const int bisque;
+extern const int blanchedalmond;
+extern const int wheat;
+extern const int cornsilk;
+extern const int lemonchiffon;
+extern const int lightgoldenrodyellow;
+extern const int lightyellow;
+extern const int saddlebrown;
+extern const int sienna;
+extern const int chocolate;
+extern const int peru;
+extern const int sandybrown;
+extern const int burlywood;
+extern const int tan;
+extern const int rosybrown;
+extern const int moccasin;
+extern const int navajowhite;
+extern const int peachpuff;
+extern const int mistyrose;
+extern const int lavenderblush;
+extern const int linen;
+extern const int oldlace;
+extern const int papayawhip;
+extern const int seashell;
+extern const int mintcream;
+extern const int slategray;
+extern const int lightslategray;
+extern const int lightsteelblue;
+extern const int lavender;
+extern const int floralwhite;
+extern const int aliceblue;
+extern const int ghostwhite;
+extern const int honeydew;
+extern const int ivory;
+extern const int azure;
+extern const int snow;
+extern const int black;
+extern const int dimgrey;
+extern const int grey;
+extern const int darkgrey;
+extern const int silver;
+extern const int lightgrey;
+extern const int gainsboro;
+extern const int whitesmoke;
+extern const int white;
+extern const int fuchsia;
+extern const int dimgray;
+extern const int darkgray;
+extern const int lightgray;
+extern const int gray;
+extern const int bzgreen;
+extern const int bzyellow;
+} // col
+
 
 /** @} */
 
