@@ -401,7 +401,8 @@ template&lt;typename PadType  = PadBase&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The file creats a temporary PDF file using the stock <a href="https://root.cern.ch">ROOT</a> functions, and uses ImageMagik to convert the PDF into a high resolution PNG file. The <code>convert</code> command is take from <a href="https://stackoverflow.com/questions/6605006/convert-pdf-to-image-with-high-resolution">here</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>The file creates a temporary PDF file using the stock <a href="https://root.cern.ch">ROOT</a> functions, and uses ghostscript to convert the PDF into a high resolution PNG file.</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filepath</td><td>final path to store the PDF file. (Parent directory would be automatically created if possible) </td></tr>
     <tr><td class="paramname">dpi</td><td>Required image quality </td></tr>

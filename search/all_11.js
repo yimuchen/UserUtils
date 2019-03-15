@@ -56,7 +56,7 @@ var searchData=
   ['stringutils_2ehpp',['StringUtils.hpp',['../StringUtils_8hpp.html',1,'']]],
   ['stripsubstring',['StripSubstring',['../group__StringUtils.html#ga457df27780cfe895a61b5e6edd925516',1,'usr']]],
   ['subpkgpath',['subpkgpath',['../group__filesys.html#ga10975a38227f178bf359a2f0ee1e1a4a',1,'usr']]],
-  ['sum',['sum',['../structusr_1_1SimplifiedData.html#a5ee972816ae12014bf3bfbb1518ca536',1,'usr::SimplifiedData::sum()'],['../group__StatUtils.html#ga07008df582f8eb02d23bf5f4650532d6',1,'usr::Sum()'],['../group__GSLUtils.html#ga7c4b710a9e8f8020b6e3600e379a0cbb',1,'usr::gsl::sum()']]],
+  ['sum',['sum',['../structusr_1_1SimplifiedData.html#a5ee972816ae12014bf3bfbb1518ca536',1,'usr::SimplifiedData::sum()'],['../group__GSLUtils.html#ga7c4b710a9e8f8020b6e3600e379a0cbb',1,'usr::gsl::sum()'],['../group__StatUtils.html#ga07008df582f8eb02d23bf5f4650532d6',1,'usr::Sum()']]],
   ['sumsq',['sumsq',['../structusr_1_1SimplifiedData.html#aa645f9f435849eafc85339134ff514c1',1,'usr::SimplifiedData']]],
   ['sumuncorrelated',['SumUncorrelated',['../group__StatUtils.html#gaaf5fe33db693d842779d0bd22932b182',1,'usr::SumUncorrelated(const std::vector&lt; Measurement &gt; &amp;paramlist, const double confidencelevel=usr::stat::onesigma_level, double(*nll)(double, const Measurement &amp;)=&amp;LinearVarianceNLL)'],['../group__StatUtils.html#gaaf5fe33db693d842779d0bd22932b182',1,'usr::SumUncorrelated(const vector&lt; Measurement &gt; &amp;paramlist, const double confidencelevel, double(*nll)(double, const Measurement &amp;))']]],
   ['system_20commands',['System Commands',['../group__SystemCommands.html',1,'']]],

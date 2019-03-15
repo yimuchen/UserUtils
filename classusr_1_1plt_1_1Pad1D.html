@@ -175,6 +175,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a871f35d9871ea075606b63bee19eac55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a871f35d9871ea075606b63bee19eac55">DrawLuminosity</a> (const std::string &amp;string)</td></tr>
 <tr class="memdesc:a871f35d9871ea075606b63bee19eac55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drawing luminosity label.  <a href="#a871f35d9871ea075606b63bee19eac55">More...</a><br /></td></tr>
 <tr class="separator:a871f35d9871ea075606b63bee19eac55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6286bbdce471b0378338fc95190907ca"><td class="memItemLeft" align="right" valign="top"><a id="a6286bbdce471b0378338fc95190907ca"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>InnerTextLeft</b> () const</td></tr>
+<tr class="separator:a6286bbdce471b0378338fc95190907ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7bf50474fde6627ad6d48b7ee922ff6"><td class="memItemLeft" align="right" valign="top"><a id="af7bf50474fde6627ad6d48b7ee922ff6"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>InnerTextRight</b> () const</td></tr>
+<tr class="separator:af7bf50474fde6627ad6d48b7ee922ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30baf303503eda0f94b89f353217118c"><td class="memItemLeft" align="right" valign="top"><a id="a30baf303503eda0f94b89f353217118c"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>InnerTextTop</b> () const</td></tr>
+<tr class="separator:a30baf303503eda0f94b89f353217118c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d8a49d9e508226751a37a6e6dc6333"><td class="memItemLeft" align="right" valign="top"><a id="af4d8a49d9e508226751a37a6e6dc6333"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>InnerTextBottom</b> () const</td></tr>
+<tr class="separator:af4d8a49d9e508226751a37a6e6dc6333"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2979843fc2bc6bcad63ee1dda4220290"><td class="memItemLeft" align="right" valign="top">TObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a2979843fc2bc6bcad63ee1dda4220290">GetAxisObject</a> () const</td></tr>
 <tr class="memdesc:a2979843fc2bc6bcad63ee1dda4220290"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the TObject used for drawing the axis frame.  <a href="#a2979843fc2bc6bcad63ee1dda4220290">More...</a><br /></td></tr>
 <tr class="separator:a2979843fc2bc6bcad63ee1dda4220290"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1819,8 +1831,131 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="a36ca6919a50117a307b00e4eb110677a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36ca6919a50117a307b00e4eb110677a">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph &amp; usr::plt::Pad1D::PlotGraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraph &amp;&#160;</td>
+          <td class="paramname"><em>obj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Plotting of the TGraph object has the following supporting options:</p>
+<ul>
+<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
+<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
+<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
+<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
+</ul>
+</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked. </li>
+</ul>
+
+</div>
+</div>
+<a id="a4faeadf03c6e8b917d9be26e27246cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4faeadf03c6e8b917d9be26e27246cbd">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotGraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraph *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>list</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting of the TGraph object has the following supporting options:</p>
+<ul>
+<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
+<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
+<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
+<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
+</ul>
+</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked. </li>
+</ul>
+
+</div>
+</div>
+<a id="ae6dadacc5bf0b7d99d46c5a93568abba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6dadacc5bf0b7d99d46c5a93568abba">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotGraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraph &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting of the TGraph object has the following supporting options:</p>
+<ul>
+<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
+<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
+<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
+<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
+</ul>
+</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked. </li>
+</ul>
+
+</div>
+</div>
 <a id="a8782257efd5be01aa6f4f805e734e8a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8782257efd5be01aa6f4f805e734e8a8">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8782257efd5be01aa6f4f805e734e8a8">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1869,130 +2004,7 @@ template&lt;typename ... Args&gt; </div>
 </ul>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, only the maximum value of the histogram will be used to adjust the y-axis range. </li>
-</ul>
-
-</div>
-</div>
-<a id="a36ca6919a50117a307b00e4eb110677a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36ca6919a50117a307b00e4eb110677a">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[2/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph &amp; usr::plt::Pad1D::PlotGraph </td>
-          <td>(</td>
-          <td class="paramtype">TGraph &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Plotting of the TGraph object has the following supporting options:</p>
-<ul>
-<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
-<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
-<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
-<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
-</ul>
-</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, only the maximum value of the histogram will be used to adjust the y-axis range. </li>
-</ul>
-
-</div>
-</div>
-<a id="a4faeadf03c6e8b917d9be26e27246cbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4faeadf03c6e8b917d9be26e27246cbd">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[3/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotGraph </td>
-          <td>(</td>
-          <td class="paramtype">TGraph *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
-          <td class="paramname"><em>list</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting of the TGraph object has the following supporting options:</p>
-<ul>
-<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
-<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
-<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
-<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
-</ul>
-</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, only the maximum value of the histogram will be used to adjust the y-axis range. </li>
-</ul>
-
-</div>
-</div>
-<a id="ae6dadacc5bf0b7d99d46c5a93568abba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6dadacc5bf0b7d99d46c5a93568abba">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[4/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotGraph </td>
-          <td>(</td>
-          <td class="paramtype">TGraph &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting of the TGraph object has the following supporting options:</p>
-<ul>
-<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
-<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
-<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
-<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
-</ul>
-</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, only the maximum value of the histogram will be used to adjust the y-axis range. </li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked. </li>
 </ul>
 
 </div>
@@ -2029,7 +2041,7 @@ template&lt;typename ... Args&gt; </div>
 </ul>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, only the maximum value of the histogram will be used to adjust the y-axis range. </li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked. </li>
 </ul>
 
 </div>
@@ -2084,18 +2096,16 @@ template&lt;typename ... Args&gt; </div>
 </ul>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, only the maximum value of the histogram will be used to adjust the y-axis range. </li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked. </li>
 </ul>
 
 </div>
 </div>
-<a id="a9688f51b4423cc9c246ecaec1b4bb7be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9688f51b4423cc9c246ecaec1b4bb7be">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[1/6]</span></h2>
+<a id="aac81dc15a8d70dcfaa110fd0840ae063"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac81dc15a8d70dcfaa110fd0840ae063">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2104,82 +2114,8 @@ template&lt;typename ... Args&gt; </div>
           <td class="memname">TH1D&amp; usr::plt::Pad1D::PlotHist </td>
           <td>(</td>
           <td class="paramtype">TH1D *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting 1D histograms accepts three types of options:</p><ul>
-<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Defining how the binned data should be represented on the pad, following types are supported<ul>
-<li>plottype::hist (default) - standard square curve/block diagram for displaying a diagram, equivalent to the <code>"HIST"</code> options provided in the TH1 object.</li>
-<li>plottype::scatter - Plotting points with error bars. Complying to the CMS plotting convention with the horizontal error bar being suppressed for fixed bin-width data.</li>
-<li>plottype::histstack - Stacking this histogram into the histogram stack on the Pad. If the stack doesn't already exist, a new stack is created. Note that all histograms in the stack will be plotted with the hist style and cannot be changed. Notice that the stack must be plotted consecutively, meaning that any non histstack options would cause the stack to be finalised and plotted onto the Pad.</li>
-<li>plottype::histnewstack - Force the creation of the new histogram stack, used only if you are plotting two histogram stacks in the same Pad.</li>
-<li>plottype::histerr - Drawing histogram uncertainty as a shaded box region.</li>
-<li>Raw string: The user can use the ROOT style string options to define how the Histogram options should be plotted. The strings <code>"SAME"</code> and <code>"HIST"</code> would be handed by the functions and will be stripped.</li>
-</ul>
-</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, if only graphs exists in the pad (excluding the axis object), both the min and max values in the graph would be used; otherwise none of the values would be used.</li>
-</ul>
-<p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
-
-</div>
-</div>
-<a id="a7ef343cd12f9c706ebb5ee6b8b1c7f6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ef343cd12f9c706ebb5ee6b8b1c7f6b">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[2/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TH1D&amp; usr::plt::Pad1D::PlotHist </td>
-          <td>(</td>
-          <td class="paramtype">TH1D &amp;&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -2206,7 +2142,7 @@ template&lt;typename ... Args&gt; </div>
 </div>
 </div>
 <a id="ae7966698b713b3ddd8cd81a4670fc945"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7966698b713b3ddd8cd81a4670fc945">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7966698b713b3ddd8cd81a4670fc945">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2225,6 +2161,64 @@ template&lt;typename ... Args&gt; </div>
           <td></td>
           <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
           <td class="paramname"><em>list</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting 1D histograms accepts three types of options:</p><ul>
+<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Defining how the binned data should be represented on the pad, following types are supported<ul>
+<li>plottype::hist (default) - standard square curve/block diagram for displaying a diagram, equivalent to the <code>"HIST"</code> options provided in the TH1 object.</li>
+<li>plottype::scatter - Plotting points with error bars. Complying to the CMS plotting convention with the horizontal error bar being suppressed for fixed bin-width data.</li>
+<li>plottype::histstack - Stacking this histogram into the histogram stack on the Pad. If the stack doesn't already exist, a new stack is created. Note that all histograms in the stack will be plotted with the hist style and cannot be changed. Notice that the stack must be plotted consecutively, meaning that any non histstack options would cause the stack to be finalised and plotted onto the Pad.</li>
+<li>plottype::histnewstack - Force the creation of the new histogram stack, used only if you are plotting two histogram stacks in the same Pad.</li>
+<li>plottype::histerr - Drawing histogram uncertainty as a shaded box region.</li>
+<li>Raw string: The user can use the ROOT style string options to define how the Histogram options should be plotted. The strings <code>"SAME"</code> and <code>"HIST"</code> would be handed by the functions and will be stripped.</li>
+</ul>
+</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, if only graphs exists in the pad (excluding the axis object), both the min and max values in the graph would be used; otherwise none of the values would be used.</li>
+</ul>
+<p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
+
+</div>
+</div>
+<a id="a9688f51b4423cc9c246ecaec1b4bb7be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9688f51b4423cc9c246ecaec1b4bb7be">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Pad1D::PlotHist </td>
+          <td>(</td>
+          <td class="paramtype">TH1D *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2295,48 +2289,8 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="aac81dc15a8d70dcfaa110fd0840ae063"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac81dc15a8d70dcfaa110fd0840ae063">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[5/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TH1D&amp; usr::plt::Pad1D::PlotHist </td>
-          <td>(</td>
-          <td class="paramtype">TH1D *&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting 1D histograms accepts three types of options:</p><ul>
-<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Defining how the binned data should be represented on the pad, following types are supported<ul>
-<li>plottype::hist (default) - standard square curve/block diagram for displaying a diagram, equivalent to the <code>"HIST"</code> options provided in the TH1 object.</li>
-<li>plottype::scatter - Plotting points with error bars. Complying to the CMS plotting convention with the horizontal error bar being suppressed for fixed bin-width data.</li>
-<li>plottype::histstack - Stacking this histogram into the histogram stack on the Pad. If the stack doesn't already exist, a new stack is created. Note that all histograms in the stack will be plotted with the hist style and cannot be changed. Notice that the stack must be plotted consecutively, meaning that any non histstack options would cause the stack to be finalised and plotted onto the Pad.</li>
-<li>plottype::histnewstack - Force the creation of the new histogram stack, used only if you are plotting two histogram stacks in the same Pad.</li>
-<li>plottype::histerr - Drawing histogram uncertainty as a shaded box region.</li>
-<li>Raw string: The user can use the ROOT style string options to define how the Histogram options should be plotted. The strings <code>"SAME"</code> and <code>"HIST"</code> would be handed by the functions and will be stripped.</li>
-</ul>
-</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, if only graphs exists in the pad (excluding the axis object), both the min and max values in the graph would be used; otherwise none of the values would be used.</li>
-</ul>
-<p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
-
-</div>
-</div>
 <a id="a52854cd0946f580296f34ddd0cbef917"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52854cd0946f580296f34ddd0cbef917">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a52854cd0946f580296f34ddd0cbef917">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2377,11 +2331,71 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="a6a8075c0596d982ee2cbae7bb04ccb59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a8075c0596d982ee2cbae7bb04ccb59">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[1/6]</span></h2>
+<a id="a7ef343cd12f9c706ebb5ee6b8b1c7f6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ef343cd12f9c706ebb5ee6b8b1c7f6b">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Pad1D::PlotHist </td>
+          <td>(</td>
+          <td class="paramtype">TH1D &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting 1D histograms accepts three types of options:</p><ul>
+<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Defining how the binned data should be represented on the pad, following types are supported<ul>
+<li>plottype::hist (default) - standard square curve/block diagram for displaying a diagram, equivalent to the <code>"HIST"</code> options provided in the TH1 object.</li>
+<li>plottype::scatter - Plotting points with error bars. Complying to the CMS plotting convention with the horizontal error bar being suppressed for fixed bin-width data.</li>
+<li>plottype::histstack - Stacking this histogram into the histogram stack on the Pad. If the stack doesn't already exist, a new stack is created. Note that all histograms in the stack will be plotted with the hist style and cannot be changed. Notice that the stack must be plotted consecutively, meaning that any non histstack options would cause the stack to be finalised and plotted onto the Pad.</li>
+<li>plottype::histnewstack - Force the creation of the new histogram stack, used only if you are plotting two histogram stacks in the same Pad.</li>
+<li>plottype::histerr - Drawing histogram uncertainty as a shaded box region.</li>
+<li>Raw string: The user can use the ROOT style string options to define how the Histogram options should be plotted. The strings <code>"SAME"</code> and <code>"HIST"</code> would be handed by the functions and will be stripped.</li>
+</ul>
+</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, if only graphs exists in the pad (excluding the axis object), both the min and max values in the graph would be used; otherwise none of the values would be used.</li>
+</ul>
+<p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
+
+</div>
+</div>
+<a id="adbf97fbac03051b083ead9a1b60bbd6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbf97fbac03051b083ead9a1b60bbd6f">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2389,9 +2403,25 @@ template&lt;typename ... Args&gt; </div>
         <tr>
           <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotPdf </td>
           <td>(</td>
-          <td class="paramtype">RooAbsPdf &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
+          <td class="paramtype">RooAbsPdf *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -2445,8 +2475,42 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="a6a8075c0596d982ee2cbae7bb04ccb59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a8075c0596d982ee2cbae7bb04ccb59">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotPdf </td>
+          <td>(</td>
+          <td class="paramtype">RooAbsPdf &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
+<ul>
+<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. This options will only be used if the RooFit::DrawOption is not already specified. If neither <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> or RooFit::DrawOption is specified, the scatter method would be used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
+</ul>
+<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the RooPlot object. </p>
+
+</div>
+</div>
 <a id="a7c2c07eee329b6b2d8e7345e32e19af4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c2c07eee329b6b2d8e7345e32e19af4">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c2c07eee329b6b2d8e7345e32e19af4">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2498,7 +2562,7 @@ template&lt;typename ... Args&gt; </div>
 </div>
 </div>
 <a id="a9b7b84d34c8ad13901d9f4fd9f3ac6a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b7b84d34c8ad13901d9f4fd9f3ac6a2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b7b84d34c8ad13901d9f4fd9f3ac6a2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2534,7 +2598,7 @@ template&lt;typename ... Args&gt; </div>
 </div>
 </div>
 <a id="a40d9f540fa71eb04b9cdefe08c2990b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40d9f540fa71eb04b9cdefe08c2990b2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a40d9f540fa71eb04b9cdefe08c2990b2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2553,58 +2617,6 @@ template&lt;typename ... Args&gt; </div>
           <td></td>
           <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
           <td class="paramname"><em>list</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
-<ul>
-<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. This options will only be used if the RooFit::DrawOption is not already specified. If neither <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> or RooFit::DrawOption is specified, the scatter method would be used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
-</ul>
-<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the RooPlot object. </p>
-
-</div>
-</div>
-<a id="adbf97fbac03051b083ead9a1b60bbd6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbf97fbac03051b083ead9a1b60bbd6f">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[6/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotPdf </td>
-          <td>(</td>
-          <td class="paramtype">RooAbsPdf *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

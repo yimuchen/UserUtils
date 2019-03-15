@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['max_5fiteration',['max_iteration',['../group__GSLUtils.html#ga8c2f00b10083ab37e057fd8c00dda930',1,'usr::gsl']]],
-  ['max_5fprecision',['max_precision',['../group__ostreamutils.html#ga8935245953842e25bd7ddb04ca167350',1,'usr::fmt::base']]],
-  ['mch_5fepsilon',['mch_epsilon',['../group__GSLUtils.html#gaac6b3d597e6117d52b7db7b2addf2d5f',1,'usr::gsl']]]
+  ['lindashed',['lindashed',['../group__PlotUtilsConvert.html#ga6cb1be12ce1b9a3721a3d81becb90958',1,'usr::plt::sty']]],
+  ['lindensedot',['lindensedot',['../group__PlotUtilsConvert.html#ga8fc9e4d6362e7ccb4e872699a45cf19e',1,'usr::plt::sty']]],
+  ['lindotted',['lindotted',['../group__PlotUtilsConvert.html#ga34c19cbd04b81b5613caad45bfc96896',1,'usr::plt::sty']]],
+  ['linshortdash',['linshortdash',['../group__PlotUtilsConvert.html#gafe36a61b0f7fa922b7048e3f305d5368',1,'usr::plt::sty']]],
+  ['linsolid',['linsolid',['../group__PlotUtilsConvert.html#ga557b40ad95546630bb5d6f870c4c993b',1,'usr::plt::sty']]]
 ];

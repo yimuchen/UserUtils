@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rel_5fepsilon',['rel_epsilon',['../group__GSLUtils.html#ga73664b1843fd7f5ae9969284bae04086',1,'usr::gsl']]]
+  ['precision_5fdefault',['precision_default',['../group__ostreamutils.html#gaa793b07ecf0c58b97c06b9e2fa727b85',1,'usr::fmt::base']]]
 ];
