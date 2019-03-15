@@ -15,9 +15,9 @@
 
 #include <random>
 
-#include "TGraphErrors.h"
 #include "TDecompChol.h"
 #include "TFitResult.h"
+#include "TGraphErrors.h"
 #include "TList.h"
 
 namespace usr  {
@@ -95,7 +95,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   }
 
   // Forcing fit functions to not be drawn
-  for( const auto&& func : *(obj.GetListOfFunctions()) ){
+  for( const auto&& func : *( obj.GetListOfFunctions() ) ){
     func->SetBit( TF1::kNotDraw, true );
   }
 
@@ -194,7 +194,7 @@ TGraph&
 Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
 {
   // Early Exit for Graphs without any data points
-  if( obj.GetN() <=0 ){
+  if( obj.GetN() <= 0 ){
     std::cerr << "Cannot plot TGraphs with no data points!" << std::endl;
     return obj;
   }
@@ -228,7 +228,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
   }
 
   // Forcing fit functions to not be drawn
-  for( const auto&& func : *(obj.GetListOfFunctions()) ){
+  for( const auto&& func : *( obj.GetListOfFunctions() ) ){
     func->SetBit( TF1::kNotDraw, true );
   }
 
@@ -308,17 +308,15 @@ TGraph&
 Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 {
   static const unsigned xsample = 300;
-  static const unsigned psample = 1000;
+  static const unsigned psample = 300;
 
   const RooArgContainer args( arglist );
 
   std::vector<double> x;
   std::vector<double> y;
-  std::vector<double> yerr;
+  std::vector<double> yerrhi;
+  std::vector<double> yerrlo;
   std::vector<double> zero;
-
-  std::vector<std::vector<double> > ysample;
-
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
@@ -341,8 +339,8 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 
     x.push_back( xval );
     y.push_back( yval );
-    yerr.push_back( 0 );
-    ysample.push_back( {} );
+    yerrlo.push_back( 0 );
+    yerrhi.push_back( 0 );
     zero.push_back( 0 );
   }
 
@@ -357,7 +355,7 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
     const TMatrixDSym cormatrix = fit->GetCorrelationMatrix();
     const TMatrixD tmatrix      = TDecompChol( cormatrix ).GetU();
     std::mt19937 gen;
-    std::normal_distribution pdf( 0.0, zval );
+    std::normal_distribution pdf( 0.0, 1.0 );
 
     // Random sample for parameter space
     for( unsigned i = 0; i < psample; ++i ){
@@ -368,37 +366,39 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
         vec[j] = pdf( gen );
       }
 
-      // Tranforming random Gaussian matrix according to
-      // correlation matrix
+      // Forcing the vector onto unit sphere, then transforming according to
+      // the Correlation matrix
+      vec = ( zval /sqrt( vec.Norm2Sqr() ) ) * vec;
       vec = tmatrix * vec;
 
       // Shifting to central value of function.
       for( int j = 0; j < vec.GetNrows(); ++j ){
-        func.SetParameter( j , vec[j] + bestfit_param[j] );
+        func.SetParameter( j, vec[j] + bestfit_param[j] );
       }
 
-      // Generate y-sample from randomly generated parameters.
+      // Finding evelope of randomly generated parameter values
       for( unsigned j = 0; j < xsample; ++j ){
         const double xval = x.at( j );
-        ysample.at( j ).push_back( func.Eval( xval ) );
+        const double yerr = func.Eval( xval ) - y.at( j );
+        yerrhi[j] = std::max( yerr, yerrhi.at( j ) );
+        yerrlo[j] = std::max( -yerr, yerrlo.at( j ) );
       }
     }
 
-    // Calculating standard deviation
-    for( unsigned i = 0; i < xsample; ++i ){
-      yerr[i] = StdDev( ysample[i] );
-    }
+    // Reseting the function parameters to best value
+    func.SetParameters( bestfit_param.data() );
 
-    TGraphErrors& graph = _frame.MakeObj<TGraphErrors>(  x.size(),
+    TGraphAsymmErrors& graph = _frame.MakeObj<TGraphAsymmErrors>(  x.size(),
       x.data(), y.data(),
-      zero.data(), yerr.data() );
+      zero.data(), zero.data(),
+      yerrlo.data(), yerrhi.data() );
 
-    graph.SetName( RandomString(6).c_str() );
+    graph.SetName( RandomString( 6 ).c_str() );
     return PlotGraph( graph, arglist );
 
   } else {
     TGraph& graph = _frame.MakeObj<TGraph>( x.size(), x.data(), y.data() );
-    graph.SetName( RandomString(6).c_str() );
+    graph.SetName( RandomString( 6 ).c_str() );
     return PlotGraph( graph, arglist );
   }
 }

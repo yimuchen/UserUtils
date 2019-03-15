@@ -176,6 +176,9 @@ EstimateLatexHeight( const std::string& text )
   // Super scripts/ subscripts and parenthesis are nearly all covered in
   // the maximum height restriction. We are assuming no super complicated
   // Calculation to appear on plots.
+  if( un_text.find( "#sqrt" ) != std::string::npos ){ ans += 0.22; }
+  if( un_text.find( "^{" ) != std::string::npos ){ ans += 0.22; }
+  if( un_text.find( "_{" ) != std::string::npos ){ ans += 0.22; }
 
 
   return ans;
