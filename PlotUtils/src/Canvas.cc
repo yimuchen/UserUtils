@@ -94,6 +94,12 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   Finalize( filepath );
   const fs::path tmppath = SaveTempPDF( filepath );
 
+  if( filepath.extension() != ".pdf" ){
+    std::cerr << "Warning! File extension is not .pdf. "
+              << "The file will be created but external programs "
+              << "might not able to understand it" << std::endl;
+  }
+
   const std::vector<std::string> gs_pdffix = {
     "gs",
     "-dNOPAUSE",
@@ -133,9 +139,16 @@ void
 Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
 {
   Finalize( filepath );
+
+  if( filepath.extension() != ".png" ){
+    std::cerr << "Warning! File extension is not .png. "
+              << "The file will be created but external programs "
+              << "might not able to understand it" << std::endl;
+  }
+
   const fs::path tmppath = SaveTempPDF( filepath );
 
-  const double scale = (double)len::ROOT_DPI / dpi ;
+  const double scale = (double)len::ROOT_DPI / dpi;
 
   // Using ghostscript C api to avoid using system fuction
   const std::vector<std::string> gs_png = {
@@ -147,8 +160,8 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
     "-sDEVICE=pngalpha",
     ( boost::format( "-sOutputFile=%s" )%filepath.string() ).str(),
     ( boost::format( "-r%d" )%dpi ).str(),
-    ( boost::format( "-dDEVICEWIDTHPOINTS=%d")%(Width()*scale) ).str(),
-    ( boost::format( "-dDEVICEHEIGHTPOINTS=%d")%(Height()*scale) ).str(),
+    ( boost::format( "-dDEVICEWIDTHPOINTS=%d" )%( Width()*scale ) ).str(),
+    ( boost::format( "-dDEVICEHEIGHTPOINTS=%d" )%( Height()*scale ) ).str(),
     "-dUseCropBox",
     "-f",
     tmppath };

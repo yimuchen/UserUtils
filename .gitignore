@@ -27,6 +27,7 @@ docs/style.css
 docs/style.css.map
 .sass-cache
 testbin/**
+docs/image/**
 
 # Specific file inclusion
 # ![relative/path/to/file]

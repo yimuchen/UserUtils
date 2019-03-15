@@ -269,10 +269,9 @@ inline double
 GetXmin( const TGraph& x  ){ return GetXmin( &x ); }
 /** @} */
 
-extern double EstimateLatexWidth( const std::string& text,
-                                  const unsigned     fontsize );
-extern double EstimateLatexHeight( const std::string& text,
-                                   const unsigned     fontsize );
+extern double EstimateLatexWidth( const std::string& text );
+
+extern double EstimateLatexHeight( const std::string& text );
 
 
 }// plt

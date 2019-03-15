@@ -127,6 +127,12 @@ public:
   void DrawLuminosity( const double luminosity );
   void DrawLuminosity( const std::string& string );
 
+  // Common text settings
+  float InnerTextLeft() const ;
+  float InnerTextRight() const ;
+  float InnerTextTop() const ;
+  float InnerTextBottom() const ;
+
   // Axis and Range setting function
   TObject*     GetAxisObject() const;
   virtual void SetAxisFont();

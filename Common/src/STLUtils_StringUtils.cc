@@ -110,4 +110,35 @@ StripSubstring( std::string& x, const std::string& sub )
   }
 }
 
+size_t
+MatchBrace( const std::string& x, const unsigned open_brace )
+{
+  size_t ans       = open_brace;
+  unsigned counter = 1;
+
+  const char addcount = x.at( open_brace );
+  const char mincount = addcount == '(' ? ')' :
+                        addcount == '{' ? '}' :
+                        addcount == '[' ? ']' :
+                        ')';
+
+  while( counter > 0 ){
+    const char c = x.at( ++ans );
+    if( c == addcount ){
+      ++counter;
+    } else if( c == mincount ){
+      --counter;
+    }
+  }
+
+  return ans;
+}
+
+size_t
+NextOpenBrace( const std::string& x, const unsigned start )
+{
+  return x.find_first_of( "([{", start );
+}
+
+
 }/* usr  */

@@ -44,6 +44,9 @@ extern std::string RandomString( const unsigned length );
 extern void ToUpper( std::string& );
 extern void StripSubstring( std::string&, const std::string& x );
 
+extern size_t MatchBrace( const std::string&, const unsigned open_brace );
+extern size_t NextOpenBrace( const std::string&, const unsigned start );
+
 /** @} */
 
 }/* usr */

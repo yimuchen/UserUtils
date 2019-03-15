@@ -5,8 +5,10 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
+#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
 #include "UserUtils/PlotUtils/Canvas.hpp"
+#include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
 namespace usr  {
@@ -136,7 +138,8 @@ PadBase::WriteLine( const std::string& line )
 {
   TPad::cd();
   _latex.DrawLatexNDC( _latex_cursorx, _latex_cursory, line.c_str() );
-  _latex_cursory -= RelLineHeight();
+  _latex_cursory -= std::max( double(RelLineHeight()),
+    EstimateLatexHeight( line )*FontSize()/AbsHeight() );
   return *this;
 }
 
@@ -175,7 +178,7 @@ PadBase::PlotObj( TObject& obj, Option_t* opt )
 bool
 PadBase::HasObject( const TObject& obj ) const
 {
-  return TPad::FindObject(obj.GetName())  == &obj;
+  return TPad::FindObject( obj.GetName() )  == &obj;
 }
 
 /**

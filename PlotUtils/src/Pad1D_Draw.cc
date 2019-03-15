@@ -16,6 +16,26 @@ namespace usr  {
 
 namespace plt  {
 
+float Pad1D::InnerTextLeft() const
+{
+  return GetLeftMargin() + 1.5 * Yaxis().GetTickLength();
+}
+
+float Pad1D::InnerTextRight() const
+{
+  return 1. - GetRightMargin() - 1.5 * Yaxis().GetTickLength();
+}
+
+float Pad1D::InnerTextTop() const
+{
+  return  1 - GetTopMargin() - 1.5 * Xaxis().GetTickLength();
+}
+
+float Pad1D::InnerTextBottom() const
+{
+  return GetBottomMargin() + 1.5 * Xaxis().GetTickLength();
+}
+
 /**
  * @brief Drawing horizontal line
  *
@@ -88,13 +108,9 @@ void
 Pad1D::DrawCMSLabel( const std::string& tag, const std::string& main )
 {
   const float tmp     = FontSize();
-  const float xmargin = 1.5 * Yaxis().GetTickLength();
-  const float ymargin = 1.5 * Xaxis().GetTickLength();
-  const float cursorx = GetLeftMargin() + xmargin;
-  const float cursory = 1 - GetTopMargin() - ymargin;
   _latex.SetTextSize( Font().large() );
 
-  SetTextCursor( cursorx, cursory, font::top_left );
+  SetTextCursor( InnerTextLeft(), InnerTextTop(), font::top_left );
   WriteLine( "#bf{"+main+"}" );
   if( tag != "" ){
     WriteLine( "#it{" + tag + "}" );

@@ -68,7 +68,7 @@ public:
   /** @} */
 #undef PASSTHROUGH_PLOTFUNC
 
-#define PASSTHOUGH_VOIDFUNC( FUNC_NAME ) \
+#define PASSTHROUGH_VOIDFUNC( FUNC_NAME ) \
   template<typename ... Args>            \
   inline void FUNC_NAME( Args ... args ) \
   { this->Pad().FUNC_NAME( args ... ); }
@@ -77,12 +77,14 @@ public:
    * @{
    * @brief passing through addition Pad1D functions
    */
-  PASSTHOUGH_VOIDFUNC( DrawCMSLabel );
-  PASSTHOUGH_VOIDFUNC( DrawLuminosity );
-  PASSTHOUGH_VOIDFUNC( SetLogy );
-  PASSTHOUGH_VOIDFUNC( SetHistAxisTitles );
+  PASSTHROUGH_VOIDFUNC( DrawCMSLabel );
+  PASSTHROUGH_VOIDFUNC( DrawLuminosity );
+  PASSTHROUGH_VOIDFUNC( DrawHLine );
+  PASSTHROUGH_VOIDFUNC( DrawVLine );
+  PASSTHROUGH_VOIDFUNC( SetLogy );
+  PASSTHROUGH_VOIDFUNC( SetHistAxisTitles );
   /** @} */
-#undef PASSTHOUGH_VOIDFUNC
+#undef PASSTHROUGH_VOIDFUNC
 
 #define PASSTHROUGH_ACCESSFUNC( FUNC_NAME, RET_TYPE )\
   inline RET_TYPE FUNC_NAME() { return Pad().FUNC_NAME(); }

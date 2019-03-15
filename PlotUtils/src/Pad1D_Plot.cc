@@ -124,11 +124,11 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
       _workingstack =
         &_frame.MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
     }
-    _workingstack->Add( &obj );
+    _workingstack->Add( &obj, "HIST" );
 
   } else if( opt == plottype::histnewstack ){
     _workingstack = &_frame.MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
-    _workingstack->Add( &obj );
+    _workingstack->Add( &obj, "HIST" );
 
   } else if( opt == plottype::plottype_dummy && optraw != "" ){
     // Special case for raw options parsing. (Must remove axis and add string)

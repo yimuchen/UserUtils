@@ -37,7 +37,7 @@ the style/color settings and data filling code removed)
   c.SaveAsPNG( "simple1dcanvas_log.png", 144 );
 ```
 
-@image html simple1dcanvas_log_test.png
+@image html simple1dcanvas_log.png
 
 # Plotting with stacked histograms
 
@@ -52,7 +52,7 @@ c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
 c.SaveAsPNG( "testfig/simple1dcanvas_stack.png", 144 );
 ```
 
-@image html simple1dcanvas_stack_test.png
+@image html simple1dcanvas_stack.png
 
 # Plotting with RooFit
 
@@ -74,7 +74,7 @@ c2.SetHistAxisTitles( "M_{HHHHH}", plt::unit::GeVcc );
 c2.SaveAsPNG( "testfig/simple1dcanvas_roofit_test.png", 144 );
 ```
 
-@image html simple1dcanvas_roofit_test.png
+@image html simple1dcanvas_roofit.png
 
 
 @class   usr::plt::Ratio1DCanvas
@@ -116,7 +116,7 @@ c.DrawLuminosity( 133.7 );
 c.SaveAsPNG( "testfig/ratio1dcanvas_test.png", 144 );
 ```
 
-@image html ratio1dcanvas_test.png
+@image html ratio1dcanvas.png
 
 # Plotting with RooFit and fitting uncertainties
 
@@ -150,4 +150,4 @@ c.DrawLuminosity( 133.7 );
 c.SaveAsPNG("testfig/ratio1dcanvas_roofit_test.png",144);
 ```
 
-@image html ratio1dcanvas_roofit_test.png
+@image html ratio1dcanvas_roofit.png

@@ -161,10 +161,14 @@ Pad1D::MakeLegend()
   double height = 0;
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
-    const std::string entry( ( (TLegendEntry*)obj )->GetLabel() );
+    // This should be absolute coordinates
+    const double estwidth = EstimateLatexWidth(
+      ( (TLegendEntry*)obj )->GetLabel() ) * FontSize() / AbsWidth();
+    const double estheight = EstimateLatexHeight(
+      ( (TLegendEntry*)obj )->GetLabel() ) * FontSize() / AbsHeight();
     // Gussing width based on character count alone
-    width = std::max( 0.5 * FontSize()*entry.length() / AbsWidth(), width );
-    height += 1.4*RelLineHeight();
+    width   = std::max( estwidth, width );
+    height += std::max( 1.1* estheight, 1.4*RelLineHeight() );
   }
 
   width *= 1.1;// Relieving spacing a little

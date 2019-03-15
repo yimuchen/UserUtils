@@ -22,8 +22,8 @@ template<typename T>
 void
 SetDataStyle( T& x )
 {
-  x.SetMarkerSize( 0.5 );
   x.SetMarkerStyle( 20 );
+  x.SetMarkerSize( 0.5 );
   x.SetMarkerSize( kBlack );
 }
 
@@ -62,7 +62,7 @@ main( int argc, char* argv[] )
     // Styling
     data.SetLineColor( kBlack );
     data.SetMarkerStyle( 20 );
-    data.SetMarkerSize( 0.05 );
+    data.SetMarkerSize( 0.2 );
 
     histsum.SetFillStyle( plt::sty::filldotdense );
     histsum.SetFillColor( kGray );
@@ -101,8 +101,10 @@ main( int argc, char* argv[] )
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
-    c.SaveAsPNG( "testfig/ratio1dcanvas_test.png", 144 );
-    c.SaveAsCPP( "testfig/ratio1dcanvas_test.cc" );
+    c.SaveAsPNG( "image/ratio1dcanvas.png", 72 );
+    c.SaveAsPNG( "image/ratio1dcanvas_highres.png", 300 );
+    c.SaveAsPDF( "image/ratio1dcanvas_highres.pdf" );
+    // c.SaveAsCPP( "image/ratio1dcanvas_test.cc" );
   }
   {// RooFit Testing
     RooRealVar x( "x", "x", -10, 10, plt::unit::GeVcc.c_str() );
@@ -132,7 +134,7 @@ main( int argc, char* argv[] )
     auto& datgraph = c.PlotData( d, plt::EntryText("Fake Data") );
 
     datgraph.SetMarkerStyle( 20 );
-    datgraph.SetMarkerSize( 0.1 );
+    datgraph.SetMarkerSize( 0.2 );
     datgraph.SetLineColor( kBlack );
     fitgraph.SetLineColor( kBlue );
     fitgraph.SetFillColor( kCyan );
@@ -150,7 +152,9 @@ main( int argc, char* argv[] )
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
-    c.SaveAsPNG("testfig/ratio1dcanvas_roofit_test.png",144);
+    c.SaveAsPNG("image/ratio1dcanvas_roofit.png", 72 );
+    c.SaveAsPNG("image/ratio1dcanvas_roofit_highres.png", 300 );
+    c.SaveAsPDF("image/ratio1dcanvas_roofit.pdf" );
   }
 
   return 0;
