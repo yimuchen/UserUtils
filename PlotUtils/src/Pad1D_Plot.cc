@@ -20,6 +20,9 @@
 #include "TGraphErrors.h"
 #include "TList.h"
 
+// static variables for new object generation
+static const std::string genaxisname = "axishist";
+
 namespace usr  {
 
 namespace plt {
@@ -86,10 +89,10 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     args.Get( PlotType::CmdName ).getString( 0 );
 
   if( !GetAxisObject() ){
+    // MUST ust a clone, otherwise messes with THStack
     TH1D& axisobj = _frame.MakeObj<TH1D>( obj );
-    // MUST ust a clone
-    // otherwise messes with THStack
     axisobj.Reset();
+    axisobj.SetName( ( genaxisname+RandomString( 6 ) ).c_str() );
     PlotObj( axisobj, "AXIS" );
     this->SetAxisFont();
   }
@@ -187,8 +190,9 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
  *   PlotType used.
  *
  * - TrackY: Whether or not the y-axis range should be adjusted according to the
- *   newly added graph. By default, only the maximum value of the histogram will
- *   be used to adjust the y-axis range.
+ *   newly added graph. By default, both the maximum and minimum will be tracked
+ *   if this graph is the first thing to be plotted on the pad (excluding the
+ *   histogram used for handling the axis), otherwise, nothing will be tracked.
  */
 TGraph&
 Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
@@ -198,7 +202,6 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     std::cerr << "Cannot plot TGraphs with no data points!" << std::endl;
     return obj;
   }
-
 
   obj.SetTitle( "" );// Forcing clear title. This should be handled by Canvas.
 
@@ -219,8 +222,8 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
     auto& axishist = _frame.MakeObj<TH1F>(
-      ( "axishist" + RandomString( 10 ) ).c_str(),
-      ( "axishist" + RandomString( 10 ) ).c_str(),
+      ( genaxisname + RandomString( 6 ) ).c_str(),
+      "",
       10, GetXmin( obj ), GetXmax( obj ) );
     axishist.SetStats( 0 );
     PadBase::PlotObj( axishist, "AXIS" );
@@ -251,26 +254,28 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     std::cerr << "Skipping over invalid value" << std::endl;
   }
 
-  // Automatic tracking options  require determining the type of the first
-  // plotted object. If anything already exists in the pad, track nothing,
-  // otherwise attempt to track both.
+  // Automatic tracking options require determining the type of the first
+  // plotted object (excluding objects used exclusively for axis plotting).
+  // If *anything* already exists, then track nothing,otherwise attempt to
+  // track both.
   int optrky = trky;
   if( trky == TrackY::aut ){
     optrky = TrackY::both;
-    if( !PadBase::GetListOfPrimitives() ){ optrky = TrackY::both; }
-    TIter next( PadBase::GetListOfPrimitives() );
-    TObject* iter;
+    // Backward iteration will be faster
+    TIter next( PadBase::GetListOfPrimitives(), kIterBackward );
+    TObject* iter = nullptr;
 
-    while( ( iter = next() ) ){
-      if( ( iter->InheritsFrom( TH1::Class() )
-            && ( (TH1*)iter )->GetXaxis() != _frame.GetXaxis() )
-          || iter->InheritsFrom( THStack::Class() )
-          || iter->InheritsFrom( TGraph::Class() )
-          // ignoring the RooPlot frame defining histogram
-          // (using this weird syntax since this function is both)
-           ){
+    while( ( iter = next() ) && optrky == TrackY::both ){
+      if( iter == &obj ){ continue; }
+      if( iter->InheritsFrom( TH1::Class() ) ){
+        if( iter == _frame.AxisHistPtr() ) { continue; }
+        const std::string name = iter->GetName() ;
+        if( name.find( genaxisname ) != std::string::npos ){ continue; }
         optrky = TrackY::none;
-        break;
+      } else if( iter->InheritsFrom(THStack::Class()) ){
+        optrky = TrackY::none;
+      } else if( iter->InheritsFrom(TGraph::Class() )) {
+        optrky = TrackY::none;
       }
     }
   }
