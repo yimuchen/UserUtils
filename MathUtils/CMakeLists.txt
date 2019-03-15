@@ -2,7 +2,7 @@ file(GLOB MathUtils_src src/*.cc)
 add_library(MathUtils SHARED ${MathUtils_src})
 target_link_libraries( MathUtils
   Common
-  gsl gslcblas
+  ${GSL_LIBRARIES}
   ${ROOT_LIBRARIES}
 )
 

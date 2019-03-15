@@ -254,10 +254,6 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     std::cerr << "Skipping over invalid value" << std::endl;
   }
 
-  // Automatic tracking options require determining the type of the first
-  // plotted object (excluding objects used exclusively for axis plotting).
-  // If *anything* already exists, then track nothing,otherwise attempt to
-  // track both.
   int optrky = trky;
   if( trky == TrackY::aut ){
     optrky = TrackY::both;

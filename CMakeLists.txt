@@ -18,9 +18,14 @@ find_package( Boost REQUIRED
 
 find_package( ROOT REQUIRED
   COMPONENTS RooFitCore RooFit)
-# FindGSL()
 
+find_package( GSL REQUIRED )
 
+## Ghostscript requires intervention:
+find_path( GHOSTSCRIPT_INCLUDES
+    NAMES ghostscript/ierrors.h ghostscript/iapi.h )
+find_library(GHOSTSCRIPT_LIBRARIES
+    NAMES gs)
 
 # Declaring make directory
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib )
