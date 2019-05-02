@@ -41,7 +41,8 @@ public:
 #define CANVAS2D_PASSTHROUGH_FUNC( FUNC_NAME, PLOT_TYPE, RET_TYPE ) \
   template<typename ... Args>                                       \
   inline RET_TYPE& FUNC_NAME( PLOT_TYPE& obj,    Args ... args )    \
-  { return this->Pad().FUNC_NAME( obj, args ... ); }                \
+  { return this->Pad().FUNC_NAME( obj, args ... ); \
+  }                \
   template<typename ... Args>                                       \
   inline RET_TYPE& FUNC_NAME( PLOT_TYPE* obj,    Args ... args )    \
   { return this->Pad().FUNC_NAME( obj, args ... ); }                \
@@ -52,15 +53,15 @@ public:
    * 'plot' on this canvas type.
    * @details See Pad2DFlats plot functions for details.
    */
-  CANVAS2D_PASSTHROUGH_FUNC( PlotHist,    TH2D    , TH2D     );
-  CANVAS2D_PASSTHROUGH_FUNC( Plot1DGraph, TGraph  , TGraph   );
+  CANVAS2D_PASSTHROUGH_FUNC( PlotHist,    TH2D,     TH2D     );
+  CANVAS2D_PASSTHROUGH_FUNC( Plot1DGraph, TGraph,   TGraph   );
   CANVAS2D_PASSTHROUGH_FUNC( PlotGraph,   TGraph2D, TGraph2D );
-  CANVAS2D_PASSTHROUGH_FUNC( PlotFunc,    TF2     , TGraph2D );
+  CANVAS2D_PASSTHROUGH_FUNC( PlotFunc,    TF2,      TGraph2D );
   /** @} */
 #undef CANVAS2D_PASSTHROUGH_FUNC
 
 #define CANVAS2D_ACCESS_PASSTHROUGH( FUNC_NAME, RET_TYPE )              \
-  inline RET_TYPE FUNC_NAME() { return Pad().FUNC_NAME(); }             \
+  inline RET_TYPE FUNC_NAME(){ return Pad().FUNC_NAME(); }             \
 
   /**
    * @{
@@ -86,6 +87,13 @@ public:
   CANVAS2D_VOID_PASSTHROUGH( DrawLuminosity );
   /** @} */
 #undef CANVAS2D_VOID_PASSTHROUGH
+
+  inline void
+  SetLogx( int x = 1  ){ Pad().SetLogx( x ); }
+  inline void
+  SetLogy( int x = 1  ){ Pad().SetLogy( x ); }
+  inline void
+  SetLogz( int x = 1  ){ Pad().SetLogz( x ); }
 
 protected:
   void init_margin();

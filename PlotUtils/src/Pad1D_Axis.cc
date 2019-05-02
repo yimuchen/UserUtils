@@ -188,6 +188,19 @@ double
 Pad1D::GetDataMin() const { return _datamin; }
 /** @} */
 
+/**
+ * @{
+ * @brief Manually overriding the stored y limit of data
+ *
+ * Directly returning the double stored by the class.
+ */
+void
+Pad1D::SetDataMax( const double x ){ _datamax = x ; }
+
+void
+Pad1D::SetDataMin( const double x ){ _datamin = x ; }
+/** @} */
+
 
 /**
  * @brief Automatically adjusting y axis range according to tracked min/max

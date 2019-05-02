@@ -640,6 +640,9 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
 TGraph&
 Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
 {
+  // Suppressing plotting messages
+  RooMsgService::instance().setSilentMode(true);
+
   RooPlot* test = pdf.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(
@@ -651,6 +654,10 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
 TGraphAsymmErrors&
 Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
 {
+  // Suppressing plotting messages
+  RooMsgService::instance().setSilentMode(true);
+
+  // Generating plotting information
   RooPlot* test = data.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(

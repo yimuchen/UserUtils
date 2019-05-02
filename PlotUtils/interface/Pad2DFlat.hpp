@@ -121,6 +121,10 @@ public:
   void DrawLuminosity( const double luminosity );
   void DrawLuminosity( const std::string& string );
 
+  inline void SetLogx( int x = 1  ){ TPad::SetLogx(x) ; }
+  inline void SetLogy( int x = 1  ){ TPad::SetLogy(x) ; }
+  inline void SetLogz( int x = 1  ){ TPad::SetLogz(x) ; }
+
 private:
 
   TLegend _legend;

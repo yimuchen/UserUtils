@@ -117,6 +117,16 @@ PadBase::RelLineHeight() const { return LineHeight()/AbsHeight(); }
 
 
 /**
+ * @brief Manually setting text alignment options
+ */
+PadBase&
+PadBase::SetTextAlign( const font::align x )
+{
+  _latex.SetTextAlign( x );
+  return *this;
+}
+
+/**
  * @brief Writing latex text at data point.
  */
 PadBase&
@@ -146,7 +156,7 @@ PadBase::WriteLine( const std::string& line )
 PadBase&
 PadBase::SetTextCursor( const double x, const double y, const font::align a )
 {
-  _latex.SetTextAlign( a );
+  SetTextAlign( a );
   return SetTextCursor( x, y );
 }
 

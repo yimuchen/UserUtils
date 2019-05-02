@@ -50,6 +50,10 @@ extern uint64_t HashValue( double x );
 extern double Mean( const std::vector<double>& );
 extern double StdDev( const std::vector<double>& );
 
+extern double RoundTo( const double x, const double target );
+extern double RoundUp( const double x, const double target );
+extern double RoundDown( const double x, const double target );
+
 
 /** @} */
 

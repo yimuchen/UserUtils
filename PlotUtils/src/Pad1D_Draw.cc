@@ -53,7 +53,7 @@ Pad1D::DrawHLine(
   const Style_t s,
   const Width_t w )
 {
-  TLine& line = _frame.MakeObj<TLine>( GetXaxisMin(), y, GetYaxisMin(), y );
+  TLine& line = _frame.MakeObj<TLine>( GetXaxisMin(), y, GetXaxisMax(), y );
   line.SetLineColor( c );
   line.SetLineStyle( s );
   line.SetLineWidth( w );
@@ -87,6 +87,7 @@ Pad1D::DrawVLine(
   line.SetLineStyle( s );
   line.SetLineWidth( w );
   PadBase::PlotObj( line );
+  _linelist.push_back( &line );
   return line;
 }
 
@@ -154,6 +155,20 @@ Pad1D::DrawLuminosity( const double lumi )
     boost::str( boost::format( "%.1f fb^{-1} (13 TeV)" ) % lumi )
     );
 }
+
+/**
+ * @brief Resetting the vertical lines according to the data plotted on the pad
+ *
+ */
+void
+Pad1D::FixVLines()
+{
+  for( auto line : _linelist ){
+    line->SetY1( GetYaxisMin() );
+    line->SetY2( GetYaxisMax() );
+  }
+}
+
 
 }/* plt  */
 

@@ -24,8 +24,8 @@ namespace usr {
  * @brief Helper structure for expressing a 1D data set (RooDataSet) simply
  *        as a list of numbers with weights.
  *
- * Additional helper rountines are used for caching anc calculating the numbers
- * required for performing the Kolmogorov-Smirov test. One in particular is the
+ * Additional helper routines are used for caching anc calculating the numbers
+ * required for performing the Kolmogorov-Smirnov test. One in particular is the
  * "EffectiveNum" method, as the number of data points is required for the
  * calculation of the KS test, the "number of data points" for weighted data
  * sets would follow the "sum squared over sum of squared" approach:
@@ -61,7 +61,7 @@ struct SimplifiedData
 /**
  * @brief Helper structure for expressing a CDF object, and helping with
  *        adjusting the normalization of the CDF function when the Kolmogorov--
- *        Smirov test is asked to be performed on certain regions of the
+ *        Smirnov test is asked to be performed on certain regions of the
  *        variable range.
  *
  * The construction of the CDF functions as a RooFit RooAbsRel object handles
@@ -162,7 +162,7 @@ KSDistance(
 }
 
 /**
- * @brief Returning the corresponding KS probablity after calculating the KS
+ * @brief Returning the corresponding KS probability after calculating the KS
  *        distance of between a data set and PDF.
  *
  * The probability function is already implemented in the
@@ -238,7 +238,7 @@ KSDistance(
 }
 
 /**
- * @brief Returning the KS probablity of two data sets
+ * @brief Returning the KS probability of two data sets
  * @details this takes the KS distance of the two datasets and pass it directly
  * to the TMath::KolmogorovProb() functions.
  */
@@ -256,7 +256,7 @@ KSProb(
 
 /**
  * @brief An alternative, effective p-value of the KS test for two data set.
- * @details the alternative calculation is descibed in
+ * @details the alternative calculation is described in
   [this]( https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test) page.
   Hard limiting the calculation output to 1 for a more "sane" output value
  */

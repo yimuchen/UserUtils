@@ -11,6 +11,7 @@
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
+#include "TGaxis.h"
 #include <limits>
 
 namespace usr  {
@@ -80,6 +81,9 @@ Pad1D::Pad1D( const PadSize& size ) :
 void
 Pad1D::InitDraw()
 {
+  // Setting axis digits
+  TGaxis::SetMaxDigits(4);
+
   // Early exit if no RooPlot is required;
   if( !_frame.AxisHistPtr() ){ return; }
 
@@ -108,6 +112,7 @@ void
 Pad1D::Finalize()
 {
   TPad::cd();
+  FixVLines();
   RedrawAxis();
   MakeLegend();
   MakeLegend();

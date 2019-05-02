@@ -55,7 +55,7 @@ GetYmax( const TGraph* x )
   double ans = -std::numeric_limits<double>::max();
 
   for( int i = 0; i < x->GetN(); ++i ){
-    const double bin = x->GetY()[i] + x->GetErrorYhigh( i );
+    const double bin = x->GetY()[i] + std::max( x->GetErrorYhigh( i ), 0.0 );
     ans = std::max( ans, bin );
   }
 
@@ -73,7 +73,7 @@ GetYmin( const TGraph* x )
   double ans = std::numeric_limits<double>::max();
 
   for( int i = 0; i < x->GetN(); ++i ){
-    const double bin = x->GetY()[i] - x->GetErrorYlow( i );
+    const double bin = x->GetY()[i] - std::max( x->GetErrorYlow( i ), 0.0 );
     ans = std::min( ans, bin );
   }
 
@@ -87,11 +87,11 @@ GetYmin( const TGraph* x )
 double
 GetXmin( const TGraph* x )
 {
-  double ans = std::numeric_limits<double>::max() ;
+  double ans = std::numeric_limits<double>::max();
 
-  for( int i = 0 ; i < x->GetN(); ++i ){
-    const double bin = x->GetX()[i] + x->GetErrorXhigh( i );
-    ans = std::min(ans,bin );
+  for( int i = 0; i < x->GetN(); ++i ){
+    const double bin = x->GetX()[i] - std::max( x->GetErrorXlow( i ), 0.0 );
+    ans = std::min( ans, bin );
   }
 
   return ans;
@@ -104,11 +104,11 @@ GetXmin( const TGraph* x )
 double
 GetXmax( const TGraph* x )
 {
-  double ans = -std::numeric_limits<double>::max() ;
+  double ans = -std::numeric_limits<double>::max();
 
-  for( int i = 0 ; i < x->GetN(); ++i ){
-    const double bin = x->GetX()[i] - x->GetErrorXlow( i );
-    ans = std::max(ans,bin );
+  for( int i = 0; i < x->GetN(); ++i ){
+    const double bin = x->GetX()[i] + std::max( x->GetErrorXhigh( i ), 0.0 );
+    ans = std::max( ans, bin );
   }
 
   return ans;

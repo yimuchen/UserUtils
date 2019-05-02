@@ -112,6 +112,7 @@ public:
 
   PadBase& SetTextCursor( const double, const double );
   PadBase& SetTextCursor( const double, const double, const font::align );
+  PadBase& SetTextAlign( const font::align );
   PadBase& WriteLine( const std::string& );
   PadBase& WriteAtData( const double, const double, const std::string& );
 

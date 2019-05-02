@@ -33,11 +33,9 @@ RangeByVar::RangeByVar(
   ) : var( &_var )
 {
   xmin = _xmin == find_default ? var->getMin() :
-         var->getMin() > _xmin ? var->getMin() :
          _xmin > _xmax         ? var->getMin() :
          _xmin;
   xmax = _xmax == find_default ? var->getMax() :
-         _xmax > var->getMax() ? var->getMax() :
          _xmin < _xmax         ? var->getMax() :
          _xmax;
   nbin = _nbin < 0 ? var->getBins() : _nbin;
@@ -56,11 +54,9 @@ RangeByVar::RangeByVar(
   ) : var( _var )
 {
   xmin = _xmin == find_default ? var->getMin() :
-         var->getMin() > _xmin ? var->getMin() :
          _xmin > _xmax         ? var->getMin() :
          _xmin;
   xmax = _xmax == find_default ? var->getMax() :
-         _xmax > var->getMax() ? var->getMax() :
          _xmin > _xmax         ? var->getMax() :
          _xmax;
   nbin = _nbin < 0 ? var->getBins() : _nbin;

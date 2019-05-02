@@ -54,6 +54,10 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     func->SetBit( TF1::kNotDraw, true );
   }
 
+  // Forcing stuff to not be displayed
+  hist.SetTitle("");
+  hist.SetStats(0);
+
   // Parsing plotting flag
   if( opt == plot2df::heat ){
     PlotObj( hist, "COLZ" );

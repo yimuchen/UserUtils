@@ -140,6 +140,21 @@ Pad1D::AddLegendEntry(
 }
 
 /**
+ * @brief Explicitly adding a TObject into the legend stack. Used for the
+ * creation of additional objects (such as guiding lines via V/HLine). Takes
+ * standard ROOT Flavour options to specify points.
+ *
+ */
+void
+Pad1D::AddLegendEntry(
+  TObject&           obj,
+  const std::string& title,
+  const std::string& attr )
+{
+  _legstack.push( { &obj, title, attr } );
+}
+
+/**
  * Generating the TLegend object at the inner top right of the pad.
  */
 void
@@ -148,7 +163,17 @@ Pad1D::MakeLegend()
   // Flushing the contents in the stack.
   while( !_legstack.empty() ){
     const auto& ent = _legstack.top();
-    _legend.AddEntry( ent.obj, ent.entry.c_str(), ent.legopt.c_str() );
+    std::vector<std::string> entryval;
+    boost::split( entryval, ent.entry, boost::is_any_of( "\n" ) );
+
+    for( auto it = entryval.begin(); it != entryval.end(); ++it ){
+      if( it == entryval.begin() ){
+        _legend.AddEntry( ent.obj, it->c_str(), ent.legopt.c_str() );
+      } else {
+        _legend.AddEntry( (TObject*)nullptr, it->c_str(), ent.legopt.c_str() );
+      }
+    }
+
     _legstack.pop();
   }
 

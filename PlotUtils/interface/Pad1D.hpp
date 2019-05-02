@@ -128,10 +128,10 @@ public:
   void DrawLuminosity( const std::string& string );
 
   // Common text settings
-  float InnerTextLeft() const ;
-  float InnerTextRight() const ;
-  float InnerTextTop() const ;
-  float InnerTextBottom() const ;
+  float InnerTextLeft() const;
+  float InnerTextRight() const;
+  float InnerTextTop() const;
+  float InnerTextBottom() const;
 
   // Axis and Range setting function
   TObject*     GetAxisObject() const;
@@ -152,6 +152,8 @@ public:
   double GetYaxisMin() const;
   void   SetYaxisMax( const double );
   void   SetYaxisMin( const double );
+  void   SetDataMax( const double );
+  void   SetDataMin( const double );
 
   // Histogram axis title setting
   static const double autobinwidth;
@@ -170,6 +172,9 @@ public:
   void SetLogy( int );
   void SetLogx( int );
 
+  void AddLegendEntry( TObject&,
+                       const std::string& title,
+                       const std::string& format );
 
   void MakeLegend();
 
@@ -223,6 +228,9 @@ protected:
   /** @brief legend entry stack */
   std::stack<legentry> _legstack;
 
+  /** @brief list of lines that need finalizing just before plot is finalized */
+  std::vector<TLine*> _linelist;
+
   TGraphAsymmErrors& GenGraph( RooAbsData& data, RooLinkedList& arglist );
   TGraph&            GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist );
 
@@ -236,6 +244,7 @@ protected:
   void AutoSetYRangeGraph();
   void AutoSetYRangeRatio();
   void AutoSetYRangePull();
+  void FixVLines();
 
   void _init_legend();
   void AddLegendEntry( TH1D&, const std::string&, const RooCmdArg& );
