@@ -45,7 +45,7 @@ public:
   // Normalized version
   Measurement NormParam() const;
 
-  // Error arithmatics :: See src/Measurement_Arithmatics.cc
+  // Error arithmetics :: See src/Measurement_Arithmetics.cc
   Measurement&       operator+=( const Measurement& );
   Measurement&       operator*=( const Measurement& );
   Measurement&       operator+=( const double );

@@ -22,10 +22,9 @@ namespace usr
 namespace fmt {
 
 /**
- * @brief reimplementing a double input such that a common interface could be
- *        achieved.
+ * @brief Re-implementing a double input for common fmt interface
  *
- * This construction means that the measreument without uncertainty would
+ * This construction means that the measurement without uncertainty would
  * output the same values as if using a double.
  */
 decimal::decimal( const double input, const int p ) :
@@ -54,10 +53,10 @@ decimal::decimal( const Measurement& input, const int p ) :
 /**
  * @brief main operation for creating a latex string.
  *
- * @details Note that this function essentially calles the base::decimal
+ * @details Note that this function essentially calls the base::decimal
  * methods for creating the string representation of a double three times,
- * meaning that if the cental value and uncertainties are of wildly different
- * orders of maganitude, the output could look very weird.
+ * meaning that if the central value and uncertainties are of wildly different
+ * orders of magnitude, the output could look very weird.
  */
 std::string
 decimal::str() const
@@ -121,7 +120,7 @@ decimal::SetPrecision()
 /**
  * @brief allowing double input to avoid multiple interfaces for double input.
  *
- * This construction means that the measreument without uncertainty would
+ * This construction means that the measurement without uncertainty would
  * output the same values as if using a double.
  */
 scientific::scientific( const double input, const unsigned p ) :
@@ -198,7 +197,7 @@ scientific::precision( const int i )
 }
 
 /**
- * @brief reducing/magifying the central value and uncertainties by a common
+ * @brief reducing/magnifying the central value and uncertainties by a common
  *        exponent value.
  *
  * If the central value is none-zero, then extracting the exponent of the
@@ -224,7 +223,7 @@ scientific::SetExponent()
 }
 
 /**
- * @brief autoamtically determining the precision to use.
+ * @brief automatically determining the precision to use.
  *
  * If the central value is smaller than the larger uncertainty, then at most
  * the precision is 1 (if the uncertainty after the exponent has been factored
@@ -260,14 +259,14 @@ scientific::SetPrecision()
  * @brief template specialization for a boost property tree helper function.
  *
  * reading a list of doubles with 1-3 parameters as a measurement class.
- * * If only an empty list exists at the address, then the unit measrument
+ * * If only an empty list exists at the address, then the unit measurement
  *   (1+-0), * is returned.
  * * If only the list is only a single double long, a measurement with no
  *   uncertainty is returned.
  * * If only two double exist, then a measurement with symmetric uncertainty is
  *   returned. (x[0] +- x[1])
  * * If more than three doubles exists, then the first three doubles will be
- *   used to construct a measurement with asymmetic uncertainty:
+ *   used to construct a measurement with asymmetric uncertainty:
  *   (x[0] +x[1] -x[2] )
  */
 template<>

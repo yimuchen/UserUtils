@@ -17,7 +17,7 @@ namespace usr {
 
 /**
  * Default constructor makes an all-zero measurement (may cause issues with
- * callculation... currently un-tested)
+ * calculation... currently un-tested)
  */
 Measurement::Measurement()
 {
@@ -30,8 +30,8 @@ Measurement::Measurement()
  * @brief Typical construction involving the assignment of the central value,
  *        the absolute higher uncertainty, and absolute lower uncertainty.
  *
- * Currently the class can only operated with aboth uncertainties being larger
- * than 0, so if a negtive value is passed for the uncertainty, the sign will
+ * Currently the class can only operated with both uncertainties being larger
+ * than 0, so if a negative value is passed for the uncertainty, the sign will
  * be automatically flipped.
  */
 Measurement::Measurement(
@@ -240,7 +240,6 @@ operator*( const double y, const Measurement& x )
 }
 
 /*----------------------------------------------------------------------------*/
-
 
 Measurement
 operator/( const double y, const Measurement& x )

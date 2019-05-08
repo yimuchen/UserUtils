@@ -182,10 +182,10 @@ KSProb(
 }
 
 /**
- * @brief Calculating the Kolmogorov-Smirov distance between two data sets.
+ * @brief Calculating the Kolmogorov-Smirnov distance between two data sets.
  *
  * The code for looping though the two data set is based on the ROOT
- * implementation found in the TMath::KolmorogovTest() functions.
+ * implementation found in the TMath::KolmogorovTest() functions.
  * Supporting up to two range cuts and weighted data sets. For the calculation
  * of the effective number of events in a weighted data set, see the helper
  * class SimplifiedData.
@@ -214,7 +214,7 @@ KSDistance(
     } else if( evt1->first > evt2->first ){
       empcdf2 += evt2->second;
       evt2++;
-    } else {// special case for indentical value
+    } else {// special case for identical value
       double x = evt1->first;
 
       while( evt1->first == x && evt1 != sim1.dataset.end() ){

@@ -118,7 +118,7 @@ AugmentedDeminator( double x, const double up, const double lo )
  *
  * A few adjustments are made to ensure the stability of the calculations.
  * - The ratio between the two uncertainties would have a hard limit of 10. The
- *   smaller uncertainty would be inflated if extreme aysmmetries are present.
+ *   smaller uncertainty would be inflated if extreme asymmetries are present.
  * - The average variance would have an minimum value of $10^{-16}$ which
  *   should cover most cases where uncertainty calculations are required. Test
  *   have shown that the calculation would not be affected by such limits if
@@ -183,7 +183,7 @@ UncorrelatedNLL( const gsl_vector* x, void* param )
  *
  * For improved stability of the calculation. An estimate for when the
  * original estimations would give the "1 sigma" uncertainty is given using
- * the symmetic-uncorrelated sum approximation.
+ * the symmetric-uncorrelated sum approximation.
  */
 Measurement
 SumUncorrelated(
@@ -234,7 +234,7 @@ SumUncorrelated(
       p.CentralValue() - p.AbsLowerError()/shift_lo );
   }
 
-  // Calling MinosError function for acutal computation
+  // Calling MinosError function for actual computation
   Measurement ans = MakeMinos(
     &masternll,
     &varfunction,
@@ -244,7 +244,7 @@ SumUncorrelated(
     lowerguess
     );
 
-  // Releaing gsl vector calls
+  // Releasing gsl vector calls
   gsl_vector_free( initguess );
   gsl_vector_free( upperguess );
   gsl_vector_free( lowerguess );
@@ -302,7 +302,7 @@ ProdUncorrelated(
    gsl_vector_set( lowerguess, i, p.CentralValue()-p.AbsLowerError() );
   }
 
-  // Calling MinosError function for acutal computation
+  // Calling MinosError function for actual computation
   Measurement ans = MakeMinos(
     &masternll,
     &varfunction,
@@ -312,7 +312,7 @@ ProdUncorrelated(
     lowerguess
     );
 
-  // Releaing gsl vector calls
+  // Releasing gsl vector calls
   gsl_vector_free( initguess );
   gsl_vector_free( upperguess );
   gsl_vector_free( lowerguess );

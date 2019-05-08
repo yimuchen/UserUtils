@@ -97,7 +97,7 @@ namespace Poisson {
 
 /**
  * @brief simple interface for creating poisson measurements with minos
- *        uncertaintes.
+ *        uncertainties.
  * @ingroup StatUtils
  */
 Measurement

@@ -211,7 +211,7 @@ MinosError(
 
   // Step 2: Setting up the function for root finding
   // The original variables take up the first 'dim' variables in the solver
-  // The final variable is the Lagrange multiplier lamda
+  // The final variable is the Lagrange multiplier lambda
   struct minosparam
   {
     usr::gsl::gsl_multifunc* nllfunc;
