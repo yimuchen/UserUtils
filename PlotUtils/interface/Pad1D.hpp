@@ -29,6 +29,7 @@
 #include "TGraph.h"
 #include "TGraphAsymmErrors.h"
 #include "TH1D.h"
+#include "TProfile.h"
 #include "THStack.h"
 #include "TLegend.h"
 #include "TLine.h"
@@ -82,6 +83,13 @@ public:
    * @brief Plotting 1D histogram objects
    */
   DECLARE_PLOT_FUNCTIONS( PlotHist, TH1D, TH1D& );
+  /** @} */
+
+  /**
+   * @{
+   * @brief Special case for TProfile plotting
+   */
+  DECLARE_PLOT_FUNCTIONS( PlotProfile, TProfile, TH1D& );
   /** @} */
 
   /**

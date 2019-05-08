@@ -73,6 +73,11 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   obj.SetStats( 0 );
   obj.SetTitle( "" );
 
+  // If TProfile is given, send to PlotProfile function instead
+  if( obj.InheritsFrom( TProfile::Class() ) ){
+    return PlotProfile( dynamic_cast<TProfile&>(obj), arglist );
+  }
+
   // Getting the flags
   const RooArgContainer args( arglist );
   const int opt
@@ -170,6 +175,15 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   return obj;
 }
 
+TH1D&
+Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
+{
+  // Generating new profile objects
+  TH1D* _newhist = obj.ProjectionX( usr::RandomString(6).c_str(), "E" );
+  _frame.addObject( _newhist );
+  return PlotHist( _newhist, args );
+}
+
 /**
  * Plotting of the TGraph object has the following supporting options:
  *
@@ -264,13 +278,13 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     while( ( iter = next() ) && optrky == TrackY::both ){
       if( iter == &obj ){ continue; }
       if( iter->InheritsFrom( TH1::Class() ) ){
-        if( iter == _frame.AxisHistPtr() ) { continue; }
-        const std::string name = iter->GetName() ;
+        if( iter == _frame.AxisHistPtr() ){ continue; }
+        const std::string name = iter->GetName();
         if( name.find( genaxisname ) != std::string::npos ){ continue; }
         optrky = TrackY::none;
-      } else if( iter->InheritsFrom(THStack::Class()) ){
+      } else if( iter->InheritsFrom( THStack::Class() ) ){
         optrky = TrackY::none;
-      } else if( iter->InheritsFrom(TGraph::Class() )) {
+      } else if( iter->InheritsFrom( TGraph::Class() ) ){
         optrky = TrackY::none;
       }
     }
@@ -641,7 +655,7 @@ TGraph&
 Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
 {
   // Suppressing plotting messages
-  RooMsgService::instance().setSilentMode(true);
+  RooMsgService::instance().setSilentMode( true );
 
   RooPlot* test = pdf.plotOn( &_frame, arglist );
   if( !test ){
@@ -655,7 +669,7 @@ TGraphAsymmErrors&
 Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
 {
   // Suppressing plotting messages
-  RooMsgService::instance().setSilentMode(true);
+  RooMsgService::instance().setSilentMode( true );
 
   // Generating plotting information
   RooPlot* test = data.plotOn( &_frame, arglist );

@@ -4,6 +4,8 @@
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
+#include "TProfile.h"
+
 namespace usr {
 
 namespace plt {
@@ -19,7 +21,9 @@ GetYmax( const TH1D* hist )
 
   for( int i = 1; i <= hist->GetNcells(); ++i ){
     const double bincont = hist->GetBinContent( i );
-    const double binerr  = hist->GetBinError( i );
+    // Special case for TProfile... (not sure why yet)
+    const double binerr  = hist->InheritsFrom( TProfile::Class()) ? 0 :
+                           hist->GetBinError( i );
     ans = std::max( ans, bincont + binerr );
   }
 
