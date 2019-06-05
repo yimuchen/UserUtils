@@ -68,4 +68,8 @@ extern double KSProbAlt(
 
 }/* usr */
 
+#define USR_ROOFIT_SILENCE \
+RooFit::Verbose(false), RooFit::PrintLevel(-1), \
+Warnings(false), PrintEvalErrors(-1)
+
 #endif/* end of include guard: USERUTILS_MATHUTILS_ROOFITEXT_HPP */

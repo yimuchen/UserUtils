@@ -93,6 +93,11 @@ public:
     const TH1D*  den,
     const double cen = 1. );
 
+  static TH1D* ScaleDivide(
+    const TH1D*   num,
+    const TGraph* den,
+    const double  cen = 1. );
+
   static TGraphAsymmErrors* ScaleDivide(
     const TGraph* num,
     const TGraph* den,
@@ -105,21 +110,21 @@ public:
 
   static length_t default_width;
   static length_t default_height;
-  static FontSet  default_font;
+  static FontSet default_font;
 
 public:
   Ratio1DCanvas(
     const length_t width  = default_width,
     const length_t height = default_height,
-    const PadRatio& = PadRatio(),
-    const FontSet&  = default_font
+    const PadRatio&       = PadRatio(),
+    const FontSet&        = default_font
     );
   Ratio1DCanvas(
     const RangeByVar&,
     const length_t width  = default_width,
     const length_t height = default_height,
-    const PadRatio& = PadRatio(),
-    const FontSet&  = default_font
+    const PadRatio&       = PadRatio(),
+    const FontSet&        = default_font
     );
 
   virtual
@@ -139,10 +144,11 @@ public:
 #define PASSTHROUGH_TOPPLOTFUNC( FUNC_NAME, PLOT_TYPE, RET_TYPE ) \
   template<typename ... Args>                                     \
   inline RET_TYPE& FUNC_NAME( PLOT_TYPE& obj, Args ... args )     \
-  { return  TopPad().FUNC_NAME( obj, args ... );        }         \
+  { return TopPad().FUNC_NAME( obj, args ... ); \
+  }         \
   template<typename ... Args>                                     \
   inline RET_TYPE& FUNC_NAME( PLOT_TYPE* obj, Args ... args )     \
-  { return  TopPad().FUNC_NAME( obj, args ... );        }         \
+  { return TopPad().FUNC_NAME( obj, args ... );        }         \
 
   /**
    * @{
@@ -175,33 +181,33 @@ public:
 #define DIVIDE_FUNCTION( FUNC_NAME, RET_TYPE, NUM_TYPE, DEN_TYPE )           \
   RET_TYPE& FUNC_NAME(                                                       \
     const NUM_TYPE&, const DEN_TYPE&, const std::vector<RooCmdArg> & );      \
-  inline NUM_TYPE& FUNC_NAME( const NUM_TYPE &num, const DEN_TYPE &den ){    \
+  inline NUM_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE & den ){  \
     return FUNC_NAME( num, den, {} ); }                                      \
   template<typename ... Args>                                                \
-  inline RET_TYPE &                                                          \
-  FUNC_NAME( const NUM_TYPE &num, const DEN_TYPE &den,                       \
-    const RooCmdArg &arg1, Args ... args )                                   \
+  inline RET_TYPE&                                                           \
+  FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE & den,                     \
+    const RooCmdArg & arg1, Args ... args )                                  \
   { return FUNC_NAME( num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
-  inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE &den ){    \
+  inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE & den ){   \
     return FUNC_NAME( *num, den, {} ); }                                     \
   template<typename ... Args>                                                \
-  inline RET_TYPE &                                                          \
-  FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE &den,                       \
-    const RooCmdArg &arg1, Args ... args )                                   \
-  { return FUNC_NAME( *num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
-  inline RET_TYPE& FUNC_NAME( const NUM_TYPE &num, const DEN_TYPE* den ){    \
+  inline RET_TYPE&                                                           \
+  FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE & den,                      \
+    const RooCmdArg & arg1, Args ... args )                                  \
+  { return FUNC_NAME( *num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); }\
+  inline RET_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den ){   \
     return FUNC_NAME( num, *den, {} ); }                                     \
   template<typename ... Args>                                                \
-  inline RET_TYPE &                                                          \
-  FUNC_NAME( const NUM_TYPE &num, const DEN_TYPE* den,                       \
-    const RooCmdArg &arg1, Args ... args )                                   \
-  { return FUNC_NAME( num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
+  inline RET_TYPE&                                                           \
+  FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den,                      \
+    const RooCmdArg & arg1, Args ... args )                                  \
+  { return FUNC_NAME( num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); }\
   inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE* den ){    \
     return FUNC_NAME( *num, *den, {} ); }                                    \
   template<typename ... Args>                                                \
-  inline RET_TYPE &                                                          \
+  inline RET_TYPE&                                                           \
   FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE* den,                       \
-    const RooCmdArg &arg1, Args ... args )                                   \
+    const RooCmdArg & arg1, Args ... args )                                  \
   { return FUNC_NAME( *num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); }
 
   /**
@@ -209,9 +215,16 @@ public:
    * @brief plotting the scale division of two histogram onto bottom pad,
    * returning reference to the newly constructed histogram.
    */
-  DIVIDE_FUNCTION( PlotScale, TH1D,              TH1D,   TH1D );
+  DIVIDE_FUNCTION( PlotScale, TH1D, TH1D, TH1D );
   /** @} */
 
+  /**
+   * @{
+   * @brief plotting the scale division of a histogram and a graph onto bottom
+   * pad, returning reference to the newly constructed histogram.
+   */
+  DIVIDE_FUNCTION( PlotScale, TH1D, TH1D, TGraph );
+  /** @} */
 
   /**
    * @{
@@ -221,7 +234,7 @@ public:
   DIVIDE_FUNCTION( PlotScale, TGraphAsymmErrors, TGraph, TGraph );
   /** @} */
 
-  DIVIDE_FUNCTION( PlotPull, TGraphAsymmErrors, TGraph, TGraph );
+  DIVIDE_FUNCTION( PlotPull,  TGraphAsymmErrors, TGraph, TGraph );
 #undef DIVIDE_FUNCTION
 
 

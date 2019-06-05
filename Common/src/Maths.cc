@@ -116,7 +116,7 @@ HashValue( const double in )
 double
 Mean( const std::vector<double>& vec )
 {
-  return std::accumulate( vec.begin(), vec.end(), 0 ) / vec.size();
+  return std::accumulate( vec.begin(), vec.end(), 0.0 ) / (double)vec.size();
 }
 
 /**

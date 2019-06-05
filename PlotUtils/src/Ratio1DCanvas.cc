@@ -238,6 +238,31 @@ Ratio1DCanvas::PlotScale(
   return *ans;
 }
 
+TH1D&
+Ratio1DCanvas::PlotScale(
+  const TH1D&                   num,
+  const TGraph&                 den,
+  const std::vector<RooCmdArg>& arglist
+  )
+{
+  TH1D* ans = ScaleDivide( &num, &den );
+  BottomPad().FrameObj().addObject( ans );
+
+  // Parsing arguments.
+  const RooArgContainer args( arglist );
+  const RooCmdArg pltopt =
+    args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
+    PlotType( plt::hist );
+  const RooCmdArg trkopt =
+    args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
+    TrackY( TrackY::both );
+
+  BottomPad().RangeType() = Pad1D::rangetype::ratio;
+  BottomPad().PlotHist( ans, pltopt, trkopt );
+
+  return *ans;
+}
+
 /**
  * @details
  * Given a numerator and denominator graph, this function generates
@@ -332,6 +357,33 @@ Ratio1DCanvas::ScaleDivide(
 
   return ans;
 }
+
+TH1D*
+Ratio1DCanvas::ScaleDivide(
+  const TH1D*   num,
+  const TGraph* den,
+  const double  cen
+  )
+{
+  TH1D* ans = new TH1D( *num );
+
+  for( int i = 0; i < num->GetNcells(); ++i ){
+    const double x = num->GetBinCenter( i );
+    const double n = num->GetBinContent( i );
+    const double e = num->GetBinError( i );
+    const double d = den->Eval( x );
+    if( n == 0 || d == 0 ){
+      ans->SetBinContent( i, cen );
+      ans->SetBinError( i, 0 );
+    } else {
+      ans->SetBinContent( i, n/d );
+      ans->SetBinError( i, e/d );
+    }
+  }
+
+  return ans;
+}
+
 
 /**
  * @brief Dividing a graph by another graph by scaling the numerator by the
