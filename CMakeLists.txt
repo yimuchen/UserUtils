@@ -11,10 +11,10 @@ add_compile_options("-Wall")
 add_compile_options("-Wno-undef")
 
 # Command package setup
-#find_package(PythonLibs   3 REQUIRED)
-#find_package(PythonInterp 3 REQUIRED)
+find_package(PythonLibs   3 REQUIRED)
+find_package(PythonInterp 3 REQUIRED)
 find_package( Boost REQUIRED
-  COMPONENTS program_options)
+  COMPONENTS program_options python3 )
 
 find_package( ROOT REQUIRED
   COMPONENTS RooFitCore RooFit)

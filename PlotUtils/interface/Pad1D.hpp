@@ -62,20 +62,20 @@ public:
   Pad1D()               = delete;
   Pad1D( const Pad1D& ) = delete;
 
-#define DECLARE_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )                   \
-  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg> & );                \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> &list ){   \
-    return FUNC_NAME( *x, list );                                             \
-  }                                                                           \
-  inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }          \
-  inline RET_TYPE FUNC_NAME( TYPE* x ){ return FUNC_NAME( x, {} ); }          \
-  template<typename ... Args>                                                 \
+#define DECLARE_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )                    \
+  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg> & );                 \
+  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> &list ){    \
+    return FUNC_NAME( *x, list );                                              \
+  }                                                                            \
+  inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }           \
+  inline RET_TYPE FUNC_NAME( TYPE* x ){ return FUNC_NAME( x, {} ); }           \
+  template<typename ... Args>                                                  \
   inline RET_TYPE FUNC_NAME( TYPE& x, const RooCmdArg & arg1, Args ... args ){ \
-    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );           \
-  }                                                                           \
-  template<typename ... Args>                                                 \
+    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
+  }                                                                            \
+  template<typename ... Args>                                                  \
   inline RET_TYPE FUNC_NAME( TYPE* x, const RooCmdArg & arg1, Args ... args ){ \
-    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );           \
+    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
   }
 
   /**

@@ -28,31 +28,33 @@
  * @ingroup EDMUtils
  *
  * @details
- * Addtional examples of how to allow a edm plugins to process run/lumi level
- * production coudl be found in the CMSSW [EventCountProducer](http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_10_1_7/doc/html/d0/d83/EventCountProducer_8cc_source.html) Class.
+ * Additional examples of how to allow a edm plugins to process run/lumi level
+ * production could be found in the CMSSW
+ * [EventCountProducer](http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_10_1_7/doc/html/d0/d83/EventCountProducer_8cc_source.html)
+ * Class.
  *
- * The rational of this class is that the sum-of-weights is frequently used
- * for calculating the selection efficiency and for isolating the impacts of
+ * The rational of this class is that the sum-of-weights is frequently used for
+ * calculating the selection efficiency and for isolating the impacts of
  * generator uncertainties (PDF and QCD scale) on acceptance and theoretical
  * cross sections.
  *
- * As the framework is setup such that run-level data can only be accessed
- * at the end fo the run, the user must define the weight families that
- * needs to be summed in the parameter set with the type `vint32` and under the
- * name "idlist". Weights listed in EDM files under the specified id's would
- * first be be divided by the weight under the central ID (i.e. the first
- * id in the provided list, then the normalised weights would be summed and
- * stored at cache level.
+ * As the framework is setup such that run-level data can only be accessed at the
+ * end fo the run, the user must define the weight families that needs to be
+ * summed in the parameter set with the type `vint32` and under the name
+ * "idlist". Weights listed in EDM files under the specified id's would first be
+ * be divided by the weight under the central ID (i.e. the first id in the
+ * provided list, then the normalized weights would be summed and stored at cache
+ * level.
  *
  * One nuance that needs to be taken care of is the sign of the weights, since
- * using negative weights is a common statergy to correct for higher order
+ * using negative weights is a common strategy to correct for higher order
  * behaviours. The "divide" operation described earlier would only scale by the
  * absolute value of the central weight, leaving the sign of the various weights
  * untouched.
  *
  * Note that in the case that the user provides the weight id of 0, the input
  * file is assumed to be for data, and the sum of events will be calculated
- * instead (no addtional PDF/QCD weights would be calculated).
+ * instead (no additional PDF/QCD weights would be calculated).
  *
  * For reading the outputs of this plugin, read the deatiled sections of the
  * constructor.
@@ -86,12 +88,14 @@ using namespace std;
  * @brief defining the requirements as wells as defining the output names.
  *
  * @details The parameterset passed to the plugins requires two things:
- *  - an input tag telling the plugin where to extract the lhe information
- *  - an vint32 telling the plugin which weight variation to take into
- *    calculation. If you unsure which weight variations you should use, see [this page](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideDataFormatGeneratorInterface)
- *    for more information. If you unsure which weight varitions is contained
- *    in your edm file, consider the [DumpLHERunInfo](@ref DumpLHERunInfo.cc)
- *    command provided by yours truely.
+ *  - An input tag telling the plugin where to extract the lhe information
+ *  - A `vint32` telling the plugin which weight variation to take into
+ *    calculation. If you unsure which weight variations you should use, see
+ *    [this
+ *    page](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideDataFormatGeneratorInterface)
+ *    for more information. If you unsure which weight variations is contained in
+ *    your edm file, consider the [DumpLHERunInfo](@ref DumpLHERunInfo.cc)
+ *    command provided by yours truly.
  *
  * The output is stored in the form of the new usr::Counter class in the run
  * level, under the name "EventsCount" (for the simple sum of events), and the

@@ -21,4 +21,3 @@ file(GLOB plot_test_files "test/*.cc")
 foreach(plot_test_file ${plot_test_files})
   make_plotutils_test( ${plot_test_file} )
 endforeach()
-

@@ -20,7 +20,7 @@ namespace plt  {
  * Plotting length in ROOT is defined using pixels (usually), with the
  * conversion of pixels into printable formats using the old standard of 72DPI.
  *
- * Here we provide functionsfor convert from printing units (inches, mm... etc),
+ * Here we provide functions for convert from printing units (inches, mm... etc),
  * to the standard ROOT length units, as well as commonly used dimension in
  * CMS documents.
  */
@@ -86,7 +86,7 @@ float font::default_lineheight = 1.2;
  * @brief Defining a font setting.
  * @param basesize   The base size of the font
  * @param face       The type-face of the font to use.
- * @param lineheight The lineheight **multipler** to use.
+ * @param lineheight The lineheight **multiplier** to use.
  */
 font::font( float basesize,
             face  face,
@@ -263,14 +263,14 @@ fillhash( unsigned short distance,
 const short
 distmm( const float x )
 {
-  return x < 0.84375 ? 1 :
-         x < 1.53125 ? 2 :
-         x < 2.21875 ? 3 :
-         x < 2.90625 ? 4 :
-         x < 3.59375 ? 5 :
-         x < 4.28125 ? 6 :
-         x < 4.96875 ? 7 :
-         x < 5.65625 ? 8 :
+  return x < usr::plt::len::mm(0.84375) ? 1 :
+         x < usr::plt::len::mm(1.53125) ? 2 :
+         x < usr::plt::len::mm(2.21875) ? 3 :
+         x < usr::plt::len::mm(2.90625) ? 4 :
+         x < usr::plt::len::mm(3.59375) ? 5 :
+         x < usr::plt::len::mm(4.28125) ? 6 :
+         x < usr::plt::len::mm(4.96875) ? 7 :
+         x < usr::plt::len::mm(5.65625) ? 8 :
          9;
 }
 
@@ -351,7 +351,6 @@ extern const short mkropendiamond      = 27;
 extern const short mkropencross        = 28;
 extern const short mkropenstar         = 30;
 /** @} */
-
 
 }/* sty */
 

@@ -1,11 +1,3 @@
-/*******************************************************************************
-*
-*  Filename    : TriggerMatching.hpp
-*  Description : Functions for Trigger Object matching
-*  Author      : Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*
-*
-*******************************************************************************/
 /**
  * @file    TriggerMatching.hpp
  * @brief   Trigger object matching functions.

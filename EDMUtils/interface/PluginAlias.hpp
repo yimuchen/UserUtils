@@ -18,14 +18,14 @@
 namespace usr {
 
 /**
- * @brief class for reducting the verbosity of the various edm plugin calls.
+ * @brief class for reducing the verbosity of the various edm plugin calls.
  * @ingroup EDMUtils
  *
  * @details One I find immensely annoying to code is the `consume` calls to
  *          create an EDMToken object. What makes it worse is that the consumes
- *          call is an protected member function of the edm plugin's base
- *          class. Writing an alias to the function, therefore, requires all
- *          future plugins to inherit from this alias class.
+ *          call is an protected member function of the edm plugin's base class.
+ *          Writing an alias to the function, therefore, requires all future
+ *          plugins to inherit from this alias class.
  */
 class PluginAlias : public virtual edm::EDConsumerBase
 {
@@ -42,7 +42,7 @@ public:
 protected:
 
   /**
-   * @brief template class for getting the EdmToken from the initlializor
+   * @brief template class for getting the EdmToken from the initializer
    *        configuration parameter set.
    *
    * @tparam TYPE  the type of object attempting to be consumed must be user
@@ -76,7 +76,7 @@ protected:
   { return GetFileObj( _config, filetag, objtag ); }
 
   /**
-   * @brief getting the full path to a file. See staic function for full
+   * @brief getting the full path to a file. See static function for full
    *        documentation.
    */
   inline std::string

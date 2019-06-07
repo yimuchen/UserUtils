@@ -110,7 +110,6 @@ GetList( const pt::ptree& tree, const std::string& query )
 {
   std::vector<T> ans;
 
-  // Taken from
   for( auto& v : tree.get_child( query ) ){
     if( !v.first.empty() ){
       std::cerr << "Warning! Skipping over illegal format at branch: (" << query

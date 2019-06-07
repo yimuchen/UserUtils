@@ -11,11 +11,11 @@ Counter::Counter(){ value = 0; }
 Counter::Counter( const double x ){ value = x; }
 Counter::~Counter(){}
 /**
- * @brief The existance of this function is required for merging values between
+ * @brief The existence of this function is required for merging values between
  *        runs.
  *
- * Unlike its edm counterpart. We would not care for overflow parsing here (it
- * is highly unlikely that some cache would require e308 to store.)
+ * Unlike its edm counterpart. We would not care for overflow parsing here (it is
+ * highly unlikely that some cache would require e308 to store.)
  */
 bool
 Counter::mergeProduct( const Counter& nextcounter )

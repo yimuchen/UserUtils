@@ -34,7 +34,7 @@ public:
 
   /**
    * @brief initialization from single json file.
-   * @details see, ArgumentExtender::_init() for more details.
+   * @details see ArgumentExtender::_init() for more details.
    */
   ArgumentExtender( const std::string& filename )
   { _init( {filename} ); }
