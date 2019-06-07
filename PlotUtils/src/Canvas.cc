@@ -152,7 +152,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
 
   if( !run_ghostscript( gs_getdim ) ){
     std::cerr << "Cannot get PDF file dimensions, saving a unscaled version "
-              <<  "of the PDF " << std::endl;
+              << "of the PDF " << std::endl;
     fs::copy( tmp2path, filepath );
     fs::remove( tmp2path );
     fs::remove( dimpath );
@@ -170,10 +170,10 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   const float scale
     = std::max( (float)Width()/( x2-x1 ), (float)Height()/( y2-y1 ) );
 
-  const unsigned newwidth  = ( x2-x1 ) * scale;
-  const unsigned newheight = ( y2-y1 ) * scale;
+  const unsigned newwidth  = std::ceil( ( x2-x1 ) * scale );
+  const unsigned newheight = std::ceil( ( y2-y1 ) * scale );
 
-
+  // Command for rescaling the PDF file.
   const std::vector<std::string> gs_fixscale = {
     "gs",
     "-dNOPAUSE",
