@@ -108,6 +108,16 @@ void ClearValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
  */
 template<typename OBJTYPE>
 bool
+FindValue( const std::vector<OBJTYPE>& vec, const OBJTYPE& x )
+{
+  return std::find( vec.begin(), vec.end(), x ) != vec.end();
+}
+
+/**
+ * @brief Checking if any of the elements in the vector is equivalent to x
+ */
+template<typename OBJTYPE>
+bool
 FindValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
 {
   return std::find( vec.begin(), vec.end(), x ) != vec.end();

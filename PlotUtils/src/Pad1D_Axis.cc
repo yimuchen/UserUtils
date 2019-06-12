@@ -4,11 +4,11 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #include "UserUtils/Common/interface/Format.hpp"
+#include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #else
-#include "UserUtils/PlotUtils/Pad1D.hpp"
 #include "UserUtils/Common/Format.hpp"
+#include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
 #include <boost/algorithm/string.hpp>
@@ -29,19 +29,15 @@ static double unfound = std::numeric_limits<double>::quiet_NaN();
  * Getting the pointer to the TObject responsible for drawing the axis.
  * Based on how the Various Draw functions works, this will be the first object
  * on the TPad that is either a TH1 or a TGraph. The code for iterating through
- * the objects in the pad is copied from the  [TPad::RedrawFrame()](https://root.cern.ch/doc/master/src_2TPad_8cxx_source.html#l05219) code.
+ * the objects in the pad is copied from the  [TPad::RedrawAxis()](https://root.cern.ch/doc/master/TPad_8cxx_source.html#l05243) code.
  */
 TObject*
 Pad1D::GetAxisObject() const
 {
   if( !GetListOfPrimitives() ){ return nullptr; }
 
-  TIter next( GetListOfPrimitives() );
-  TObject* obj;
-
-  while( ( obj = next() ) ){
-    if( obj->InheritsFrom( TH1::Class() )
-        || obj->InheritsFrom( TGraph::Class() ) ){
+  for( const auto&& obj : *GetListOfPrimitives() ){
+    if( obj->InheritsFrom( TH1::Class() ) ){
       return obj;
     }
   }
@@ -195,10 +191,10 @@ Pad1D::GetDataMin() const { return _datamin; }
  * Directly returning the double stored by the class.
  */
 void
-Pad1D::SetDataMax( const double x ){ _datamax = x ; }
+Pad1D::SetDataMax( const double x ){ _datamax = x; }
 
 void
-Pad1D::SetDataMin( const double x ){ _datamin = x ; }
+Pad1D::SetDataMin( const double x ){ _datamin = x; }
 /** @} */
 
 
@@ -235,22 +231,18 @@ Pad1D::AutoSetYRange( const rangetype type )
     rangetype::aut;
 
   if( optype == rangetype::aut ){
-    if( !PadBase::GetListOfPrimitives() ){
+    if( !GetListOfPrimitives() ){
       optype = rangetype::aut;
     }
-    TIter next( PadBase::GetListOfPrimitives() );
-    TObject* iter;
 
-    while( ( iter = next() ) ){
-      if( ( iter->InheritsFrom( TH1::Class() )
-            && ( (TH1*)iter )->GetXaxis() != _frame.GetXaxis() )
-          || ( iter->InheritsFrom( THStack::Class() ) )
-          // ignoring the RooPlot frame defining histogram
-          // (using this weird syntax since this function is both)
+    for( const auto&& obj : *GetListOfPrimitives() ){
+      if( ( obj->InheritsFrom( TH1::Class() )
+            && ( (TH1*)obj )->GetXaxis() != _frame.GetXaxis() )
+          || ( obj->InheritsFrom( THStack::Class() ) )
            ){
         optype = rangetype::hist;
         break;
-      } else if( iter->InheritsFrom( TGraph::Class() ) ){
+      } else if( obj->InheritsFrom( TGraph::Class() ) ){
         optype = rangetype::graph;
       }
     }
@@ -284,7 +276,7 @@ Pad1D::AutoSetYRange( const rangetype type )
 void
 Pad1D::AutoSetYRangeHist()
 {
-  if( !GetLogy() ){// None log scale
+  if( !GetLogy() ){  // None log scale
     const double diff = _datamax - _datamin;
     SetYaxisMax( _datamin + diff * 1.25 );
     SetYaxisMin( _datamin );
@@ -307,7 +299,7 @@ Pad1D::AutoSetYRangeHist()
 void
 Pad1D::AutoSetYRangeGraph()
 {
-  if( !GetLogy() ){// None log scale
+  if( !GetLogy() ){  // None log scale
     const double diff = _datamax - _datamin;
     SetYaxisMax( _datamin + diff * 1.2 );
     SetYaxisMin( _datamax - diff * 1.1 );
@@ -434,7 +426,7 @@ Pad1D::SetHistAxisTitles(
 /**
  * @brief static flag for bin-width determination.
  */
-const double Pad1D::autobinwidth     = -1;
+const double Pad1D::autobinwidth = -1;
 
 /**
  * @brief static flag for forcing the variable bin-width scheme.

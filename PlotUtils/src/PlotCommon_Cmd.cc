@@ -72,8 +72,26 @@ RooArgContainer::Get( const std::string& name ) const
   return *iter;
 }
 
-// ---------------------------------------------------------------------------//
+// ------------------------------V---------------------------------------------//
 
+const std::string PlotUnder::CmdName = "PlotUnder";
+
+PlotUnder::PlotUnder( const TObject& obj ):
+  RooCmdArg( CmdName.c_str(),
+    0,0, // int
+    0,0, // double
+    0,0, // char
+    &obj ){}
+
+PlotUnder::PlotUnder( const TObject* obj ):
+  RooCmdArg( CmdName.c_str(),
+    0,0, // int
+    0,0, // double
+    0,0, // char
+    obj ){}
+
+
+// ---------------------------------------------------------------------------//
 
 /**
  * @brief string for defining the RooCmdArg name
@@ -120,7 +138,7 @@ PlotType::PlotType( const int i ) :
  * @brief defining plot type via ROOT draw strings
  */
 PlotType::PlotType( const std::string& drawopt ) :
-  RooCmdArg( CmdName.c_str(), 0, 0, 0, 0, drawopt.c_str() ){}
+  RooCmdArg( CmdName.c_str(), plottype_dummy, 0, 0, 0, drawopt.c_str() ){}
 
 
 // ---------------------------------------------------------------------------//

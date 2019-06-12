@@ -44,14 +44,27 @@ public:
    * @brief returning the internal histogram object used for axis plotting.
    */
   inline TH1*
-  AxisHistPtr(){ return RooPlot::_hist; }
+  AxisHistPtr() { return RooPlot::_hist; }
+
+  /**
+   * @brief returning the internal histogram object used for axis plotting.
+   */
+  inline const TH1*
+  AxisHistPtr() const { return RooPlot::_hist; }
 
   /**
    * @brief returning reference to internal histogram object used for axis
    * plotting (no null protection)
    */
   inline TH1&
-  AxisHist(){ return *AxisHistPtr(); }
+  AxisHist() { return *AxisHistPtr(); }
+
+  /**
+   * @brief returning reference to internal histogram object used for axis
+   * plotting (no null protection)
+   */
+  inline const TH1&
+  AxisHist() const { return *AxisHistPtr(); }
 
   /**
    * Making a Root object under the ownership of the RooPlot object.
@@ -131,6 +144,18 @@ public:
   bool             Has( const std::string& name ) const;
 };
 
+/**
+ * @brief
+ *
+ */
+class PlotUnder : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  PlotUnder( const TObject& );
+  PlotUnder( const TObject* );
+  virtual ~PlotUnder() {}
+};
 
 /**
  * @brief Plot argument to specify which edges of data to keep track of.
@@ -190,6 +215,7 @@ public:
   PlotType( const std::string& );
   virtual
   ~PlotType(){}
+  inline int get() const { return getInt(0); }
 };
 
 

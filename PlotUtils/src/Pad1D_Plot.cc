@@ -23,6 +23,15 @@
 // static variables for new object generation
 static const std::string genaxisname = "axishist";
 
+// static helper functions for parsing options
+static RooLinkedList MakeRooList(
+  const usr::plt::RooArgContainer& args,
+  const std::vector<std::string>&  exclude = {} );
+
+static usr::plt::PlotType GetPlotType(
+  const usr::plt::RooArgContainer& arglist,
+  const int                        default_type );
+
 namespace usr  {
 
 namespace plt {
@@ -75,27 +84,18 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
 
   // If TProfile is given, send to PlotProfile function instead
   if( obj.InheritsFrom( TProfile::Class() ) ){
-    return PlotProfile( dynamic_cast<TProfile&>(obj), arglist );
+    return PlotProfile( dynamic_cast<TProfile&>( obj ), arglist );
   }
 
   // Getting the flags
   const RooArgContainer args( arglist );
-  const int opt
-    = !args.Has( PlotType::CmdName ) ? plottype::hist :
-      args.Get( PlotType::CmdName ).getString( 0 ) ? plottype::plottype_dummy :
-      args.Get( PlotType::CmdName ).getInt( 0 );
-  const int trky
-    = !args.Has( TrackY::CmdName ) ? TrackY::max :
-      args.Get( TrackY::CmdName ).getInt( 0 ) == TrackY::aut ? TrackY::max :
-      args.Get( TrackY::CmdName ).getInt( 0 );
-  std::string optraw =
-    !args.Has( PlotType::CmdName ) ?  "" :
-    !args.Get( PlotType::CmdName ).getString( 0 ) ? "" :
-    args.Get( PlotType::CmdName ).getString( 0 );
+  const auto plottype = GetPlotType( args, plottype::hist );
+  const int tracky    = !args.Has( TrackY::CmdName ) ? TrackY::max :
+                        args.Get( TrackY::CmdName ).getInt( 0 );
 
   if( !GetAxisObject() ){
     // MUST ust a clone, otherwise messes with THStack
-    TH1D& axisobj = _frame.MakeObj<TH1D>( obj );
+    TH1D& axisobj = MakeObj<TH1D>( obj );
     axisobj.Reset();
     axisobj.SetName( ( genaxisname+RandomString( 6 ) ).c_str() );
     PlotObj( axisobj, "AXIS" );
@@ -108,68 +108,51 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   }
 
   // Flushing the _working stack if hist is no longer used
-  if( opt != plottype::histstack && _workingstack ){
+  if( plottype.get() != plottype::histstack && _workingstack ){
     PlotObj( _workingstack, "HIST SAME NOCLEAR" );
     _workingstack = nullptr;
   }
 
   // Parsing plotting flag
-  if( opt == plottype::hist ){
+  if( plottype.get() == plottype::hist ){
     PlotObj( obj, "HIST SAME" );
 
-  } else if( opt == plottype::scatter ){
+  } else if( plottype.get() == plottype::scatter ){
     if( obj.GetXaxis()->IsVariableBinSize() ){
       PlotObj( obj, "P L E SAME" );
     } else {
       PlotObj( obj, "P E X0 SAME" );
     }
-
-  } else if( opt == plottype::histerr ){
+  } else if( plottype.get() == plottype::histerr ){
     PlotObj( obj, "E2 SAME" );
 
-  } else if( opt == plottype::histstack ){
+  } else if( plottype.get() == plottype::histstack ){
     if( !_workingstack ){
       _workingstack =
-        &_frame.MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
+        &MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
     }
     _workingstack->Add( &obj, "HIST" );
 
-  } else if( opt == plottype::histnewstack ){
-    _workingstack = &_frame.MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
+  } else if( plottype.get() == plottype::histnewstack ){
+    _workingstack = &MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
     _workingstack->Add( &obj, "HIST" );
 
-  } else if( opt == plottype::plottype_dummy && optraw != "" ){
-    // Special case for raw options parsing. (Must remove axis and add string)
-    ToUpper( optraw );
-    StripSubstring( optraw, "AXIS" );
-    PlotObj( obj, ( optraw+" SAME" ).c_str() );
+  } else if( plottype.get() == plottype::plottype_dummy  ){
+    PlotObj( obj, ( std::string( plottype.getString( 0 ) )+" SAME" ).c_str() );
 
   } else {
     std::cerr << "Skipping over invalid value" << std::endl;
   }
 
-  // Parsing the tracking options
-  if( trky == TrackY::min || trky == TrackY::both ){
-    _datamin = std::min( _datamin, GetYmin( obj ) );
-    if( _workingstack ){
-      _datamin = std::min( _datamin, GetYmin( _workingstack ) );
-    }
+  if( _workingstack ){
+    TrackObjectY( *_workingstack, tracky );
   }
-  if( trky == TrackY::max || trky == TrackY::both ){
-    _datamax = std::max( _datamax, GetYmax( obj ) );
-    if( _workingstack ){
-      _datamax = std::max( _datamax, GetYmax( _workingstack ) );
-    }
-  }
-  AutoSetYRange();
+  TrackObjectY( obj, tracky );
 
   // Adding legend
   if( args.Has( EntryText::CmdName ) ){
-    const PlotType plotopt =
-      opt == plottype_dummy ? PlotType( optraw ) :
-      PlotType( opt );
     const std::string leg = args.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( obj, leg, plotopt );
+    AddLegendEntry( obj, leg, plottype );
   }
 
   return obj;
@@ -179,7 +162,7 @@ TH1D&
 Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
 {
   // Generating new profile objects
-  TH1D* _newhist = obj.ProjectionX( usr::RandomString(6).c_str(), "E" );
+  TH1D* _newhist = obj.ProjectionX( usr::RandomString( 6 ).c_str(), "E" );
   _frame.addObject( _newhist );
   return PlotHist( _newhist, args );
 }
@@ -221,21 +204,12 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
 
   // Getting the flags
   const RooArgContainer arglist( args );
-  const int opt =
-    !arglist.Has( PlotType::CmdName ) ? plottype::simplefunc :
-    arglist.Get( PlotType::CmdName ).getString( 0 ) ? plottype_dummy :
-    arglist.Get( PlotType::CmdName ).getInt( 0 );
-  const int trky
-    = !arglist.Has( TrackY::CmdName ) ? TrackY::aut : // more complex
-      arglist.Get( TrackY::CmdName ).getInt( 0 );// parsing latter
-  std::string optraw =
-    !arglist.Has( PlotType::CmdName ) ?  "" :
-    !arglist.Get( PlotType::CmdName ).getString( 0 ) ? "" :
-    arglist.Get( PlotType::CmdName ).getString( 0 );
+  const auto plottype = GetPlotType( arglist, plottype::simplefunc );
+  const int tracky      = GraphTrackY( arglist );
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
-    auto& axishist = _frame.MakeObj<TH1F>(
+    auto& axishist = MakeObj<TH1F>(
       ( genaxisname + RandomString( 6 ) ).c_str(),
       "",
       10, GetXmin( obj ), GetXmax( obj ) );
@@ -249,63 +223,36 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     func->SetBit( TF1::kNotDraw, true );
   }
 
-  if( opt == plottype::simplefunc ){
+  if( plottype.get() == plottype::simplefunc ){
     PadBase::PlotObj( obj, "LX" );
-  } else if( opt == plottype::fittedfunc ){
+  } else if( plottype.get() == plottype::fittedfunc ){
     PadBase::PlotObj( obj, "3" );
     // Draw Error with fill region and then
     PadBase::PlotObj( obj, "LX" );
     // Draw the central line.all errors disabled.
-  } else if( opt == plottype::scatter ){
+  } else if( plottype.get() == plottype::scatter ){
     // Point, no error bar end ticks, and show error bar for points
     // outside range.
     PadBase::PlotObj( obj, "PZ0" );
-  } else if( opt == plottype_dummy && optraw != "" ){
-    ToUpper( optraw );
-    StripSubstring( optraw, "A" );
-    PlotObj( obj, ( optraw ).c_str() );
+  } else if( plottype.get() == plottype_dummy  ){
+    PlotObj( obj, plottype.getString(0) );
   } else {
     std::cerr << "Skipping over invalid value" << std::endl;
   }
 
-  int optrky = trky;
-  if( trky == TrackY::aut ){
-    optrky = TrackY::both;
-    // Backward iteration will be faster
-    TIter next( PadBase::GetListOfPrimitives(), kIterBackward );
-    TObject* iter = nullptr;
-
-    while( ( iter = next() ) && optrky == TrackY::both ){
-      if( iter == &obj ){ continue; }
-      if( iter->InheritsFrom( TH1::Class() ) ){
-        if( iter == _frame.AxisHistPtr() ){ continue; }
-        const std::string name = iter->GetName();
-        if( name.find( genaxisname ) != std::string::npos ){ continue; }
-        optrky = TrackY::none;
-      } else if( iter->InheritsFrom( THStack::Class() ) ){
-        optrky = TrackY::none;
-      } else if( iter->InheritsFrom( TGraph::Class() ) ){
-        optrky = TrackY::none;
-      }
-    }
-  }
-
   // Perfroming the axis range setting
-  if( optrky == TrackY::min || optrky == TrackY::both ){
+  if( tracky == TrackY::min || tracky == TrackY::both ){
     _datamin = std::min( _datamin, GetYmin( obj ) );
   }
-  if( optrky == TrackY::max || optrky == TrackY::both ){
+  if( tracky == TrackY::max || tracky == TrackY::both ){
     _datamax = std::max( _datamax, GetYmax( obj ) );
   }
   AutoSetYRange();
 
   // Adding legend
   if( arglist.Has( EntryText::CmdName ) ){
-    const PlotType plotopt =
-      opt == plottype_dummy ? PlotType( optraw ) :
-      PlotType( opt );
     const std::string leg = arglist.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( obj, leg, plotopt );
+    AddLegendEntry( obj, leg, plottype );
   }
 
   return obj;
@@ -335,7 +282,7 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
-    auto& axishist = _frame.MakeObj<TH1F>(
+    auto& axishist = MakeObj<TH1F>(
       ( "axishist" + RandomString( 10 ) ).c_str(),
       ( "axishist" + RandomString( 10 ) ).c_str(),
       10, func.GetXmin(), func.GetXmax() );
@@ -403,7 +350,7 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
     // Reseting the function parameters to best value
     func.SetParameters( bestfit_param.data() );
 
-    TGraphAsymmErrors& graph = _frame.MakeObj<TGraphAsymmErrors>(  x.size(),
+    TGraphAsymmErrors& graph = MakeObj<TGraphAsymmErrors>(  x.size(),
       x.data(), y.data(),
       zero.data(), zero.data(),
       yerrlo.data(), yerrhi.data() );
@@ -412,12 +359,11 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
     return PlotGraph( graph, arglist );
 
   } else {
-    TGraph& graph = _frame.MakeObj<TGraph>( x.size(), x.data(), y.data() );
+    TGraph& graph = MakeObj<TGraph>( x.size(), x.data(), y.data() );
     graph.SetName( RandomString( 6 ).c_str() );
     return PlotGraph( graph, arglist );
   }
 }
-
 
 /**
  * Function for plotting all of the RooAbsData objects, the supported options
@@ -460,23 +406,13 @@ Pad1D::PlotData(
 
   // Default parsing
   const bool addtopad     = !arglist.Has( "Invisible" );
-  const RooCmdArg plotopt =
-    arglist.Has( "DrawOption" ) ? arglist.Get( "DrawOption" ).getString( 0 ) :
-    arglist.Has( PlotType::CmdName ) ? arglist.Get( PlotType::CmdName ) :
-    PlotType( scatter );
+  const RooCmdArg plotopt = GetPlotType( arglist, scatter );
   const RooCmdArg trkopt =
     arglist.Has( TrackY::CmdName ) ? arglist.Get( TrackY::CmdName ) :
     TrackY( TrackY::max );
 
   // Generating the requirements for actual RooFit PlotOn calls
-  RooLinkedList oplist;
-
-  for( const auto& arg : arglist ){
-    if( arg.GetName() == PlotType::CmdName// Ignoring custom arguments
-        || arg.GetName() == TrackY::CmdName
-        || arg.GetName() == EntryText::CmdName ){ continue; }
-    oplist.Add( arg.Clone() );
-  }
+  RooLinkedList oplist = MakeRooList( arglist );
 
   // Option for suppressing x error bars
   if( !arglist.Has( "Binning" ) ){
@@ -570,33 +506,14 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
     RooCmdArg::none();
   const bool runfiterr   = args.Has( "VisualizeError" );
   const bool addtopad    = !args.Has( "Invisible" );
-  const RooCmdArg pltopt =
-    runfiterr ? PlotType( fittedfunc ) :
-    args.Has( "DrawOption" ) ? args.Get( "DrawOption" ).getString( 0 ) :
-    args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
-    PlotType( simplefunc );
+  const RooCmdArg pltopt = GetPlotType( arglist,
+    args.Has("VisualizeError") ? fittedfunc : simplefunc  );
   const RooCmdArg trkopt =
     args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
     TrackY( TrackY::max );// Automatic
 
-  RooLinkedList oplist;
-  RooLinkedList oplist2;
-  // second one for error part (RooLinkedList deletes objects when
-  // getting parsed... so)
-
-  for( const auto& arg : arglist ){
-    if( arg.GetName() == PlotType::CmdName
-        || arg.GetName() == TrackY::CmdName
-        || arg.GetName() == EntryText::CmdName ){
-      continue;
-    }
-    if( arg.GetName() != std::string( "VisualizeError" ) ){
-      oplist.Add( arg.Clone() );
-      oplist2.Add( arg.Clone() );
-    } else {
-      oplist2.Add( arg.Clone() );
-    }
-  }
+  RooLinkedList oplist  = MakeRooList( arglist, {"VisualizeError"} );
+  RooLinkedList oplist2 = MakeRooList( arglist );
 
   if( _prevrangetype == rangetype::aut ){ _prevrangetype = rangetype::hist; }
 
@@ -622,7 +539,7 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
     }
 
     // The new TGraphAsymmErrors to store the results.
-    ans = &_frame.MakeObj<TGraphAsymmErrors>( fiterr.size() );
+    ans = &MakeObj<TGraphAsymmErrors>( fiterr.size() );
     unsigned i = 0;// index for looping
 
     for( const auto& fiterrval : fiterr ){
@@ -640,7 +557,6 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
       PlotGraph( ans, pltopt, trkopt );
     }
   }
-
 
   // Adding legend
   if( args.Has( EntryText::CmdName ) ){
@@ -680,7 +596,118 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
   return _frame.LastPlot<TGraphAsymmErrors>();
 }
 
+/// Helper function
+int
+Pad1D::GraphTrackY( const RooArgContainer& arglist ) const
+{
+  if( arglist.Has( TrackY::CmdName )
+      && arglist.Get( TrackY::CmdName ).getInt( 0 ) != TrackY::aut ){
+    return arglist.Get( TrackY::CmdName ).getInt( 0 );
+  }
+
+  // Backward iteration will be faster
+  TIter next( PadBase::GetListOfPrimitives(), kIterBackward );
+  TObject* iter = nullptr;
+
+  while( ( iter = next() ) ){
+    if( iter->InheritsFrom( TH1::Class() ) ){
+      if( iter == _frame.AxisHistPtr() ){ continue; }
+      const std::string name = iter->GetName();
+      if( name.find( genaxisname ) != std::string::npos ){ continue; }
+      return TrackY::none;
+    } else if( iter->InheritsFrom( THStack::Class() ) ){
+      return TrackY::none;
+    } else if( iter->InheritsFrom( TGraph::Class() ) ){
+      return TrackY::none;
+    }
+  }
+
+  return TrackY::both;
+}
+
+void
+Pad1D::TrackObjectY( const TObject& obj, const int tracky )
+{
+  // Perfroming the axis range setting
+  if( tracky == TrackY::min || tracky == TrackY::both ){
+    if( obj.InheritsFrom( TH1D::Class() ) ){
+      _datamin = std::min( _datamin,
+        GetYmin( &dynamic_cast<const TH1D&>( obj ) ) );
+    }
+    if( obj.InheritsFrom( TGraph::Class() ) ){
+      _datamin = std::min( _datamin,
+        GetYmin( &dynamic_cast<const TGraph&>( obj ) ) );
+    }
+    if( obj.InheritsFrom( THStack::Class() ) ){
+      _datamin = std::min( _datamin,
+        GetYmin( &dynamic_cast<const THStack&>( obj ) ) );
+    }
+  }
+  if( tracky == TrackY::max || tracky == TrackY::both ){
+    if( obj.InheritsFrom( TH1D::Class() ) ){
+      _datamax = std::max( _datamax,
+        GetYmax( &dynamic_cast<const TH1D&>( obj ) ) );
+    }
+    if( obj.InheritsFrom( TGraph::Class() ) ){
+      _datamax = std::max( _datamax,
+        GetYmax( &dynamic_cast<const TGraph&>( obj ) ) );
+    }
+    if( obj.InheritsFrom( THStack::Class() ) ){
+      _datamax = std::max( _datamax,
+        GetYmax( &dynamic_cast<const THStack&>( obj ) ) );
+    }
+  }
+  AutoSetYRange();
+}
+
 
 }/* plt */
 
 }/* usr  */
+
+
+/// Static helper functions
+RooLinkedList
+MakeRooList( const usr::plt::RooArgContainer& arglist,
+             const std::vector<std::string>&  exclude )
+{
+  RooLinkedList ans;
+
+  for( const auto& arg : arglist ){
+    // Ignoring custom arguments
+    if( arg.GetName()    == usr::plt::PlotType::CmdName
+        || arg.GetName() == usr::plt::TrackY::CmdName
+        || arg.GetName() == usr::plt::EntryText::CmdName
+        || arg.GetName() == usr::plt::PlotUnder::CmdName ){ continue; }
+    if( usr::FindValue( exclude,  std::string( arg.GetName() ) ) ){ continue; }
+    ans.Add( arg.Clone() );
+  }
+
+  return ans;
+}
+
+usr::plt::PlotType
+GetPlotType(
+  const usr::plt::RooArgContainer& arglist,
+  const int                        default_type )
+{
+  if( arglist.Has( "DrawOption" ) )
+      return usr::plt::PlotType( arglist.Get( "DrawOption" ).getString( 0 ) );
+
+  const int opt =
+    !arglist.Has( usr::plt::PlotType::CmdName ) ? default_type :
+    arglist.Get(  usr::plt::PlotType::CmdName ).getInt( 0 );
+
+  if( opt != usr::plt::plottype_dummy ){
+    return usr::plt::PlotType( opt );
+  }
+
+  std::string optraw =
+    !arglist.Get( usr::plt::PlotType::CmdName ).getString( 0 ) ? "" :
+    arglist.Get(  usr::plt::PlotType::CmdName ).getString( 0 );
+  usr::ToUpper( optraw );
+  usr::StripSubstring( optraw, "AXIS" );
+  usr::StripSubstring( optraw, "A" );
+
+  return usr::plt::PlotType( optraw );
+}

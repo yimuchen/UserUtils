@@ -59,7 +59,7 @@ struct PadSize
 /**
  * @brief Renaming the font class to make it look like a constructor wrapper.
  */
-typedef font   FontSet;
+typedef font FontSet;
 
 /*-----------------------------------------------------------------------------
  *  Detailed documentation in doc/
@@ -67,8 +67,7 @@ typedef font   FontSet;
 class PadBase : protected TPad
 {
 public:
-  virtual
-  ~PadBase ();
+  virtual ~PadBase ();
   friend class Canvas;
 
   PadBase()                 = delete;
@@ -120,11 +119,33 @@ public:
 
   /** @brief pointer interface to PlotObj */
   inline void
-  PlotObj( TObject* obj, Option_t* opt = "" ){ PlotObj( *obj, opt ); }
+  PlotObj( TObject* obj, Option_t* opt = "" ) {  PlotObj( *obj, opt ); }
 
-  bool HasObject( const TObject& ) const ;
-  inline bool HasObject( const TObject* obj ) const { return HasObject(*obj); }
+  bool HasObject( const TObject& ) const;
+  inline bool
+  HasObject( const TObject* obj ) const { return HasObject( *obj ); }
 
+  /**
+   * Making a Root object under the ownership of the RooPlot object.
+   * Using the variadic interface to allow for any sort of declaration type.
+   * @tparam ObjType The type of object you which to create (must be explicitly
+   *                 specified)
+   * @tparam Args    the arguments could be of any type necessary.
+   * @param  args    any arguments required for a TObject inherited object.
+   * @return         Reference to the newly created object.
+   */
+  template<typename ObjType, typename ... Args>
+  ObjType&
+  MakeObj( Args ... args )
+  {
+    _generated_objects.emplace_back( new ObjType( args... ) );
+    return *dynamic_cast<ObjType*>(_generated_objects.back().get() );
+  }
+
+  void ClaimObject( TObject* );
+
+  // Changing plot sequence.
+  bool MoveTargetToBefore( const TObject& target, const TObject& before );
 
 protected:
 
@@ -138,10 +159,15 @@ protected:
   float _latex_cursory;
 
   PadBase( const PadSize& );
-  const Canvas& ParentCanvas() const;
+  const Canvas&  ParentCanvas() const;
   const FontSet& Font() const;
-  virtual void InitDraw();
-  virtual void Finalize();
+  virtual void   InitDraw();
+  virtual void   Finalize();
+
+  /** @brief a lot of objects for plotting will be dynamically generated (ex. text objects )
+   * The Pad object will then claim ownership of these objects
+   */
+  std::vector<std::unique_ptr<TObject>> _generated_objects;
 
   /** @brief Getting the list of objects to be plotted on the pad */
   inline TList*
@@ -159,8 +185,7 @@ public:
     const length_t height,
     const FontSet& = FontSet()
     );
-  virtual
-  ~Canvas ();
+  virtual ~Canvas ();
 
   /**
    * Creating a pad under the ownership of the canvas. Note that these pads
@@ -211,14 +236,16 @@ public:
   inline unsigned
   Height() const { return TCanvas::GetWh(); }
 
-  inline const FontSet& Font() const { return _fontset; }
+  inline const FontSet&
+  Font() const { return _fontset; }
 
   void SaveAsPDF( const fs::path& );
   void SaveAsPNG( const fs::path&, const unsigned dpi = 300 );
   void SaveAsCPP( const fs::path& );
   void SaveToROOT( const fs::path&, const std::string& name );
 
-  inline void Clear(){ TCanvas::Clear(); }
+  inline void
+  Clear(){ TCanvas::Clear(); }
 
 protected:
   void     Finalize( const fs::path& );

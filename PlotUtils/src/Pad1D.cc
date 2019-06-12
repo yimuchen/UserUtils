@@ -112,10 +112,11 @@ void
 Pad1D::Finalize()
 {
   TPad::cd();
+  PadBase::Finalize();
+  MakeLegend();
+  MakeLegend();
   FixVLines();
-  RedrawAxis();
-  MakeLegend();
-  MakeLegend();
+  TPad::RedrawAxis();
 }
 
 /**
@@ -142,9 +143,6 @@ Pad1D::SetLogx( int x )
   TPad::SetLogx( x );
 }
 
-
 }/* plt */
 
 }/* usr  */
-
-#undef AXISOBJ_ACCESS

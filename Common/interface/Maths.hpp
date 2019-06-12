@@ -3,6 +3,9 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  * @brief   Simple concrete type maths functions
  */
+#ifndef USERUTILS_COMMON_MATHS_HPP
+#define USERUTILS_COMMON_MATHS_HPP
+
 #include <cstdint>
 #include <vector>
 
@@ -58,3 +61,5 @@ extern double RoundDown( const double x, const double target );
 /** @} */
 
 }/* usr */
+
+#endif

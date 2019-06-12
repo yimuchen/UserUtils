@@ -194,6 +194,10 @@ public:
   inline RooFrame&
   FrameObj(){ return _frame; }
 
+  /** @brief returning reference to internal Roo1DFrame object. */
+  inline const RooFrame&
+  FrameObj() const { return _frame; }
+
   /** @brief returning the stored y range adjustment type */
   inline rangetype&
   RangeType(){ return _prevrangetype; }
@@ -224,6 +228,7 @@ protected:
 
   /** @brief the Legend object */
   TLegend _legend;
+
 
   /** @brief simple class for storing legend entry. */
   struct legentry
@@ -257,6 +262,10 @@ protected:
   void _init_legend();
   void AddLegendEntry( TH1D&, const std::string&, const RooCmdArg& );
   void AddLegendEntry( TGraph&, const std::string&, const RooCmdArg& );
+
+  // Helper function for Plot<> Functions
+  int GraphTrackY( const RooArgContainer& arglist ) const ;
+  void TrackObjectY( const TObject& obj, const int tracky );
 };
 
 }/* plt */

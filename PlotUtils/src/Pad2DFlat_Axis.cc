@@ -4,7 +4,7 @@
 #include "UserUtils/PlotUtils/Pad2DFlat.hpp"
 #endif
 
-namespace usr{
+namespace usr {
 
 namespace plt {
 
@@ -14,14 +14,12 @@ namespace plt {
  * Assuming the first object that has axis settings (This should be true for
  * typical use cases)
  */
-TObject* Pad2DFlat::GetAxisObject() const
+TObject*
+Pad2DFlat::GetAxisObject() const
 {
   if( !GetListOfPrimitives() ){ return nullptr; }
 
-  TIter next( GetListOfPrimitives() );
-  TObject* obj;
-
-  while( ( obj = next() ) ){
+  for( const auto&& obj : *GetListOfPrimitives() ){
     if( obj->InheritsFrom( TH2::Class() )
         || obj->InheritsFrom( TGraph2D::Class() ) ){
       return obj;
@@ -34,7 +32,8 @@ TObject* Pad2DFlat::GetAxisObject() const
 /**
  * @brief common settings for setting the axis fonts
  */
-void Pad2DFlat::SetAxisFont()
+void
+Pad2DFlat::SetAxisFont()
 {
   Xaxis().SetLabelFont( FontFace() );
   Xaxis().SetTitleFont( FontFace() );
@@ -73,7 +72,7 @@ void Pad2DFlat::SetAxisFont()
     return;                                               \
   } else if( axisobj->InheritsFrom( TH2::Class() ) ){     \
     return dynamic_cast<TH1*>( axisobj )->ACTION;         \
-  } else if( axisobj->InheritsFrom( TGraph2D::Class() ) ){\
+  } else if( axisobj->InheritsFrom( TGraph2D::Class() ) ){ \
     return dynamic_cast<TGraph*>( axisobj )->ACTION;      \
   }
 
@@ -119,6 +118,4 @@ Pad2DFlat::Zaxis() const { return *GetZaxis(); }
 
 }
 
-} // usr
-
-
+}// usr

@@ -61,6 +61,7 @@ void Pad2DFlat::InitDraw()
 void Pad2DFlat::Finalize()
 {
   TPad::cd();
+  PadBase::Finalize();
   MakeLegend();
   MakeLegend();  // Must run twice... not sure why
 }

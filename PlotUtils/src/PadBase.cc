@@ -11,6 +11,8 @@
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
+#include <stack>
+
 namespace usr  {
 
 namespace plt  {
@@ -28,7 +30,7 @@ namespace plt  {
  * collision.
  */
 PadBase::PadBase( const PadSize& size ) :
-  TPad( RandomString( 12 ).c_str(), "",
+  TPad( ( "Pad" + RandomString( 12 ) ).c_str(), "",
         size.xmin, size.ymin, size.xmax, size.ymax )
 {
   TPad::SetTicks( 1, 1 );
@@ -132,8 +134,12 @@ PadBase::SetTextAlign( const font::align x )
 PadBase&
 PadBase::WriteAtData( const double x, const double y, const std::string& line )
 {
-  TPad::cd();
-  _latex.DrawLatex( x, y, line.c_str() );
+  TPad::cd();// We will still need to cd to pad to get the correct dimensions.
+
+  auto& newlatex = MakeObj<TLatex>( _latex );
+  newlatex.SetNDC( false );
+  newlatex.SetText( x, y, line.c_str() );
+  PlotObj( newlatex, "" );
   return *this;
 }
 
@@ -147,8 +153,13 @@ PadBase&
 PadBase::WriteLine( const std::string& line )
 {
   TPad::cd();
-  _latex.DrawLatexNDC( _latex_cursorx, _latex_cursory, line.c_str() );
-  _latex_cursory -= std::max( double(RelLineHeight()),
+
+  auto& newlatex = MakeObj<TLatex>( _latex );
+  newlatex.SetNDC( true );
+  newlatex.SetText( _latex_cursorx, _latex_cursory, line.c_str() );
+  PlotObj( newlatex, "" );
+
+  _latex_cursory -= std::max( double( RelLineHeight() ),
     EstimateLatexHeight( line )*FontSize()/AbsHeight() );
   return *this;
 }
@@ -192,6 +203,68 @@ PadBase::HasObject( const TObject& obj ) const
 }
 
 /**
+ * @brief
+ *
+ */
+bool
+PadBase::MoveTargetToBefore( const TObject& target, const TObject& before )
+{
+  struct objopt
+  {
+    TObject*    obj;
+    std::string opt;
+  };
+
+  if( !GetListOfPrimitives() ){ return false; }
+
+  // Finding the link to where the targets should be moved.
+  TObjLink* beforelink = GetListOfPrimitives()->FirstLink();
+
+  while( beforelink && beforelink->GetObject() != &before ){
+    beforelink = beforelink->Next();
+  }
+
+  if( !beforelink ){ return false; }
+  beforelink = beforelink->Prev();
+
+  // Flushing all the stuff behind into a target position.
+  std::stack<objopt> otherlinks;
+  std::stack<objopt> targetlinks;
+
+  TObjLink* link = GetListOfPrimitives()->LastLink();
+
+  while( link != beforelink ){
+    const objopt temp = { link->GetObject(), link->GetOption() };
+    if( link->GetObject() == &target ){
+      targetlinks.push( temp );
+    } else {
+      otherlinks.push( temp );
+    }
+    link = link->Prev();
+    GetListOfPrimitives()->RemoveLast();
+  }
+
+  // Inserting targets
+  while( !targetlinks.empty() ){
+    GetListOfPrimitives()->Add(
+      targetlinks.top().obj,
+      targetlinks.top().opt.c_str() );
+    targetlinks.pop();
+  }
+
+  // Inserting the rest of the stuff.
+  while( !otherlinks.empty() ){
+    GetListOfPrimitives()->Add(
+      otherlinks.top().obj,
+      otherlinks.top().opt.c_str() );
+    otherlinks.pop();
+  }
+
+  return true;
+}
+
+
+/**
  * @brief Additional initializations to be performed by the pad after it has
  * been spawned on the canvas.
  *
@@ -209,7 +282,14 @@ PadBase::InitDraw()
  */
 void
 PadBase::Finalize()
-{}
+{
+}
+
+void
+PadBase::ClaimObject( TObject* obj )
+{
+  _generated_objects.emplace_back( obj );
+}
 
 }/* plt  */
 
