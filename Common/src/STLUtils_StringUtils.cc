@@ -28,7 +28,7 @@ GetEnv( const std::string& x )
 }
 
 /**
- * @brief Converting the glob notation to regex comparation strings.
+ * @brief Converting the glob notation to regex comparaison strings.
  */
 std::string
 GlobToRegex( const std::string& query )
@@ -63,11 +63,11 @@ GlobLocalStr( const std::string& x )
 }
 
 /**
- * @brief generating an random alpha-numerical string with length n .
+ * @brief generating an random alpha-numerical string of length n .
  *
  * Currently the random number generator used is that std::rand function
  * provided in the cstdlib.h file. No way of customizing the generator,
- * but allows for setting the random seed outisde the function.
+ * but allows for setting the random seed outside the function.
  */
 std::string
 RandomString( const unsigned n )
@@ -110,6 +110,32 @@ StripSubstring( std::string& x, const std::string& sub )
   }
 }
 
+/**
+ * @brief Returing the position of a matching brace in a string.
+ *
+ * For a given input string, and the position to the opening brace: either '[',
+ * '(' or '{', the function returns the matching brace position of the
+ * corresponding character, taking into account nest braces. For examples the
+ * function call:
+ *
+ * ```
+ * MatchBrace( "((()))", 0 ) == 5
+ * MatchBrace( "((()))", 1 ) == 4
+ * MatchBrace( "((()))", 2 ) == 3
+ * ```
+ *
+ * Note that this function assumes normal tree-like structures between braces of
+ * different flavour, while only taking into account the braces of the same
+ * flavour.  So the function call:
+ * ```
+ * MatchBrace("([)]", 0 ) == 2
+ * MatchBrace("([)]", 1 ) == 3
+ * ```
+ * "Makes sense", in that it indeed returns the expected matching brace for '(',
+ * and '[' respectively, thought the actual syntax of the full string in
+ * ambiguous. In the case that the matching brace cannot be found (for example in
+ * the string "((())"), this function will return the end of the string.
+ */
 size_t
 MatchBrace( const std::string& x, const unsigned open_brace )
 {
@@ -122,7 +148,7 @@ MatchBrace( const std::string& x, const unsigned open_brace )
                         addcount == '[' ? ']' :
                         ')';
 
-  while( counter > 0 ){
+  while( counter > 0 && ans < x.length() ){
     const char c = x.at( ++ans );
     if( c == addcount ){
       ++counter;
@@ -134,6 +160,11 @@ MatchBrace( const std::string& x, const unsigned open_brace )
   return ans;
 }
 
+/**
+ * @brief Finding the next opening brace character after the given position.
+ *
+ * Finds the fist instance of '[', '(' or '{' are the given index position.
+ */
 size_t
 NextOpenBrace( const std::string& x, const unsigned start )
 {

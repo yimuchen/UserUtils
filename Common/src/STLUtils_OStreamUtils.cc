@@ -35,7 +35,7 @@ separator::separator( const char x, const size_t m ) :
 separator::~separator(){}
 
 /**
- * @brief Implementation is essneitally what it says on the tin
+ * @brief Implementation is essentially what it says on the tin
  *
  * duplicating the character multiple times.
  */

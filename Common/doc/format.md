@@ -1,10 +1,10 @@
 @addtogroup ostreamutils
 
-This also includes classes for better outputing formats for the numbers
+This also includes classes for better outputting formats for the numbers
 (double) that are more in-line with what is required for CMS publications.
 All the could be altered is implemented in the usr::fmt::base::format class.
 Including setting number of units to be displayed after the decimal point, and
-additional spacing characeters to be inserted every "n" digits.
+additional spacing characters to be inserted every "n" digits.
 
 The class is designed such that one can use it like:
 ```cpp

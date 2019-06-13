@@ -33,7 +33,7 @@ pkgpath( const std::string& x )
 }
 
 /**
- * @brief returning path to a sub-pacakge directory
+ * @brief returning path to a sub-package directory
  */
 fs::path
 subpkgpath( const std::string& x, const std::string& y )
@@ -51,7 +51,7 @@ datapath( const std::string& x, const std::string& y )
 }
 
 /**
- * @brief returning path to the reulst directory of a sub-package (unofficial)
+ * @brief returning path to the results directory of a sub-package (unofficial)
  */
 fs::path
 resultpath( const std::string& x, const std::string& y )

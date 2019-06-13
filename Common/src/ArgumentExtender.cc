@@ -35,10 +35,10 @@ namespace usr {
  * in the json file will be considered a required arguments (hence the support
  * for multiple json files).
  *
- * An execption would be thrown if any parsing error occurs. Multiple options
+ * An exception would be thrown if any parsing error occurs. Multiple options
  * with the same name would also be considered an exception.
  *
- * After sucessfully parsing the json file. The option `help/h` would be added
+ * After successfully parsing the json file. The option `help/h` would be added
  * to for use (if used, the class will diplay the defined options and exit).
  */
 void
@@ -140,14 +140,14 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
 
 // Parse the program input given the standard argc, argv interface.
 // Throw exception when parse error or exit the program if "help" options
-// is recieved.
+// is received.
 // All functions listed under the json files would be listed as mandetory.
 // and a parse error would be thrown if input is not detected.
 
 /**
- * @brief parsing the rpgoram input with the standard argc, argv interface.
+ * @brief parsing the program input with the standard argc, argv interface.
  *
- * Raising exception if there is any error in parsing. Additional criterias
+ * Raising exception if there is any error in parsing. Additional criteria
  * that counts as an error in parsing includes:
  * 1. The json file contains an options not listed in the final
  *     options_description instance.
