@@ -28,16 +28,12 @@ static RooLinkedList MakeRooList(
   const usr::plt::RooArgContainer& args,
   const std::vector<std::string>&  exclude = {} );
 
-static usr::plt::PlotType GetPlotType(
-  const usr::plt::RooArgContainer& arglist,
-  const int                        default_type );
-
 namespace usr  {
 
 namespace plt {
 
 /**
- * Plotting 1D histograms accepts three types of options:
+ * Plotting 1D histograms accepts these options:
  * - PlotType: Defining how the binned data should be represented on the pad,
  *   following types are supported
  *   - plottype::hist (default) - standard square curve/block diagram for
@@ -51,13 +47,13 @@ namespace plt {
  *     that all histograms in the stack will be plotted with the hist style and
  *     cannot be changed. Notice that the stack must be plotted consecutively,
  *     meaning that any non histstack options would cause the stack to be
- *     finalised and plotted onto the Pad.
+ *     finalized and plotted onto the Pad.
  *   - plottype::histnewstack - Force the creation of the new histogram stack,
  *     used only if you are plotting two histogram stacks in the same Pad.
  *   - plottype::histerr - Drawing histogram uncertainty as a shaded box region.
  *   - Raw string: The user can use the ROOT style string options to define how
- *     the Histogram options should be plotted. The strings `"SAME"` and
- *     `"HIST"` would be handed by the functions and will be stripped.
+ *     the Histogram options should be plotted. The strings `"SAME"` and `"HIST"`
+ *     would be handed by the functions and will be stripped.
  *
  * - EntryText: String to add in the legend entry. If this options is not
  *   present, then this object will NOT appear in the generated legend. Notice
@@ -65,105 +61,137 @@ namespace plt {
  *   PlotType used.
  *
  * - TrackY: Whether or not the y-axis range should be adjusted according to the
- *   newly added histogram. By default, if only graphs exists in the pad
- *   (excluding the axis object), both the min and max values in the graph would
- *   be used; otherwise none of the values would be used.
+ *   newly added histogram. By default, only the max values of the histogram
+ *   would be used.
+ *
+ * - PlotUnder: Specifying the that plot object be plotted underneath a specific
+ *   object. Not that if the object specified in PlotUnder is not found in the
+ *   pad, this option will have no effect and will raise no excpetions.
  *
  * One side note is that fitted functions will have its DrawOptions cleared from
  * the histogram! The user should be the one explicitly invoking the plotting
  * behavior, given more freedom to what the final plot will look like (See the
- * Pad1D::PlotFunc method for more details). This design aspect is in stark
+ * Pad1D::PlotFunc() method for more details). This design aspect is in stark
  * contrast with the design of ROOT objects. So beware of unwanted behaviour.
  */
 TH1D&
 Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
 {
-  // Forcing no statistics. and wiping title
-  obj.SetStats( 0 );
-  obj.SetTitle( "" );
-
   // If TProfile is given, send to PlotProfile function instead
   if( obj.InheritsFrom( TProfile::Class() ) ){
     return PlotProfile( dynamic_cast<TProfile&>( obj ), arglist );
   }
 
   // Getting the flags
-  const RooArgContainer args( arglist );
-  const auto plottype = GetPlotType( args, plottype::hist );
-  const int tracky    = !args.Has( TrackY::CmdName ) ? TrackY::max :
-                        args.Get( TrackY::CmdName ).getInt( 0 );
+  const RooArgContainer args( arglist,
+      {
+        PlotType( hist ),
+        TrackY( TrackY::max )
+      }
+                              );
 
   if( !GetAxisObject() ){
     // MUST ust a clone, otherwise messes with THStack
     TH1D& axisobj = MakeObj<TH1D>( obj );
     axisobj.Reset();
+    axisobj.SetStats( 0 );
+    axisobj.SetTitle( "" );
     axisobj.SetName( ( genaxisname+RandomString( 6 ) ).c_str() );
     PlotObj( axisobj, "AXIS" );
     this->SetAxisFont();
   }
+
+  // Forcing no statistics. and wiping title
+  obj.SetStats( 0 );
+  obj.SetTitle( "" );
 
   // Forcing fit functions to not be drawn
   for( const auto&& func : *( obj.GetListOfFunctions() ) ){
     func->SetBit( TF1::kNotDraw, true );
   }
 
+  // Running the draw commands.
+  const int pt = args.Get( PlotType::CmdName ).getInt( 0 );
+
   // Flushing the _working stack if hist is no longer used
-  if( plottype.get() != plottype::histstack && _workingstack ){
+  if( pt != histstack && _workingstack ){
     PlotObj( _workingstack, "HIST SAME NOCLEAR" );
     _workingstack = nullptr;
   }
 
-  // Parsing plotting flag
-  if( plottype.get() == plottype::hist ){
+  // Plot case for different plot types
+  switch( pt ){
+  case plottype::hist:
     PlotObj( obj, "HIST SAME" );
-
-  } else if( plottype.get() == plottype::scatter ){
-    if( obj.GetXaxis()->IsVariableBinSize() ){
-      PlotObj( obj, "P L E SAME" );
-    } else {
-      PlotObj( obj, "P E X0 SAME" );
-    }
-  } else if( plottype.get() == plottype::histerr ){
+    break;
+  case plottype::scatter:
+    obj.GetXaxis()->IsVariableBinSize() ?
+    PlotObj( obj, "P L E SAME" ) :
+    PlotObj( obj, "P E X0 SAME" );
+    break;
+  case plottype::histerr:
     PlotObj( obj, "E2 SAME" );
-
-  } else if( plottype.get() == plottype::histstack ){
-    if( !_workingstack ){
-      _workingstack =
-        &MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
+    break;
+  case plottype::histstack:
+    if( _workingstack  == 0 ){
+      _workingstack = &MakeObj<THStack>(
+        ( "stack" + RandomString( 12 ) ).c_str(), "" );
     }
     _workingstack->Add( &obj, "HIST" );
-
-  } else if( plottype.get() == plottype::histnewstack ){
-    _workingstack = &MakeObj<THStack>( RandomString( 12 ).c_str(), "" );
+    break;
+  case plottype::histnewstack:
+    _workingstack = &MakeObj<THStack>(
+      ( "stack" + RandomString( 12 ) ).c_str(), "" );
     _workingstack->Add( &obj, "HIST" );
-
-  } else if( plottype.get() == plottype::plottype_dummy  ){
-    PlotObj( obj, ( std::string( plottype.getString( 0 ) )+" SAME" ).c_str() );
-
-  } else {
-    std::cerr << "Skipping over invalid value" << std::endl;
+    break;
+  case plottype::plottype_dummy:
+    PlotObj( obj, ( std::string( args.Get( PlotType::CmdName ).getString( 0 ) )
+                    +" SAME" ).c_str() );
+    break;
+  default:
+    std::cerr << "Skipping over invalid value ("<< pt <<")" << std::endl;
   }
 
   if( _workingstack ){
-    TrackObjectY( *_workingstack, tracky );
+    TrackObjectY( *_workingstack, args.Get( TrackY::CmdName ).getInt( 0 ) );
+  } else {
+    TrackObjectY( obj, args.Get( TrackY::CmdName ).getInt( 0 ) );
   }
-  TrackObjectY( obj, tracky );
 
   // Adding legend
   if( args.Has( EntryText::CmdName ) ){
     const std::string leg = args.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( obj, leg, plottype );
+    AddLegendEntry( obj, leg, args.Get( PlotType::CmdName ) );
+  }
+
+  // Moving to under something
+  if( args.Has( PlotUnder::CmdName ) ){
+    if( _workingstack ){
+      PadBase::MoveTargetToBefore( *_workingstack,
+        *args.Get( PlotUnder::CmdName ).getObject( 0 ) );
+    } else {
+      PadBase::MoveTargetToBefore( obj,
+        *args.Get( PlotUnder::CmdName ).getObject( 0 ) );
+    }
   }
 
   return obj;
 }
 
+/**
+ * @brief  Plotting a TProfile object
+ *
+ * Due to inheritance between TProfile and the TH1D, the original PlotHist
+ * doesn't work with TProfile. Instead, this functions generates a new TH1D from
+ * the TProfile using the ProjectionX function. The return value would then be
+ * the newly generated histogram. So beware of unexpected behaviour.
+ */
 TH1D&
 Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
 {
   // Generating new profile objects
   TH1D* _newhist = obj.ProjectionX( usr::RandomString( 6 ).c_str(), "E" );
-  _frame.addObject( _newhist );
+  ClaimObject( _newhist );
   return PlotHist( _newhist, args );
 }
 
@@ -190,9 +218,16 @@ Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
  *   newly added graph. By default, both the maximum and minimum will be tracked
  *   if this graph is the first thing to be plotted on the pad (excluding the
  *   histogram used for handling the axis), otherwise, nothing will be tracked.
+ *
+ * - PlotUnder: Specifying the that plot object be plotted underneath a specific
+ *   object. Not that if the object specified in PlotUnder is not found in the
+ *   pad, this option will have no effect and will raise no excpetions.
+ *
+ * One side note is that fitted functions will have its DrawOptions cleared from
+ * the histogram! The user should be the one explicitly invoking the plotting
  */
 TGraph&
-Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
+Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
 {
   // Early Exit for Graphs without any data points
   if( obj.GetN() <= 0 ){
@@ -200,12 +235,13 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     return obj;
   }
 
-  obj.SetTitle( "" );// Forcing clear title. This should be handled by Canvas.
 
   // Getting the flags
-  const RooArgContainer arglist( args );
-  const auto plottype = GetPlotType( arglist, plottype::simplefunc );
-  const int tracky      = GraphTrackY( arglist );
+  const RooArgContainer args( arglist,
+      {
+        PlotType( simplefunc ),
+        !GetAxisObject() ? TrackY( TrackY::both ) : TrackY( TrackY::none )
+      } );
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
@@ -218,41 +254,49 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
     SetAxisFont();
   }
 
+  // Object fixing
+  obj.SetTitle( "" );// Forcing clear title. This should be handled by Canvas.
+
   // Forcing fit functions to not be drawn
   for( const auto&& func : *( obj.GetListOfFunctions() ) ){
     func->SetBit( TF1::kNotDraw, true );
   }
 
-  if( plottype.get() == plottype::simplefunc ){
+  const int pt = args.Get( PlotType::CmdName ).getInt( 0 );
+
+  switch( pt ){
+  case simplefunc:
     PadBase::PlotObj( obj, "LX" );
-  } else if( plottype.get() == plottype::fittedfunc ){
-    PadBase::PlotObj( obj, "3" );
-    // Draw Error with fill region and then
-    PadBase::PlotObj( obj, "LX" );
-    // Draw the central line.all errors disabled.
-  } else if( plottype.get() == plottype::scatter ){
-    // Point, no error bar end ticks, and show error bar for points
-    // outside range.
+    break;
+  case fittedfunc:
+    PadBase::PlotObj( obj, "3" );// Draw Error with fill region and then
+    PadBase::PlotObj( obj, "LX" );// Draw the central line. All errors disabled.
+    break;
+  case scatter:
+    // Points, no error bar end ticks, show error bar for points  outside range.
     PadBase::PlotObj( obj, "PZ0" );
-  } else if( plottype.get() == plottype_dummy  ){
-    PlotObj( obj, plottype.getString(0) );
-  } else {
+    break;
+  case plottype_dummy:
+    PlotObj( obj, args.Get( PlotType::CmdName ).getString( 0 ) );
+    break;
+
+  default:
     std::cerr << "Skipping over invalid value" << std::endl;
+    break;
   }
 
-  // Perfroming the axis range setting
-  if( tracky == TrackY::min || tracky == TrackY::both ){
-    _datamin = std::min( _datamin, GetYmin( obj ) );
-  }
-  if( tracky == TrackY::max || tracky == TrackY::both ){
-    _datamax = std::max( _datamax, GetYmax( obj ) );
-  }
-  AutoSetYRange();
+  TrackObjectY( obj, args.Get( TrackY::CmdName ).getInt( 0 ) );
 
   // Adding legend
-  if( arglist.Has( EntryText::CmdName ) ){
-    const std::string leg = arglist.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( obj, leg, plottype );
+  if( args.Has( EntryText::CmdName ) ){
+    const std::string leg = args.Get( EntryText::CmdName ).getString( 0 );
+    AddLegendEntry( obj, leg, args.Get( PlotType::CmdName ) );
+  }
+
+  // Moving to under something
+  if( args.Has( PlotUnder::CmdName ) ){
+    PadBase::MoveTargetToBefore( obj,
+      *args.Get( PlotUnder::CmdName ).getObject( 0 ) );
   }
 
   return obj;
@@ -262,23 +306,25 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& args )
  * Plotting a TF1 object is done by generating a TGraph with 300 samples points
  * across the x axis, and plotting the TGraph instead. All TGraph plotting
  * options will be available for the TF1 plotting. There is a new plotting
- * options ShowFitErr, which generates a TGraphErrors graph by randomly
+ * options VisualizeError, which generates a TGraphErrors graph by randomly
  * sampling the parameter space according to the correlation matrix given by a
  * @ROOT{TFitResult}.
  */
 TGraph&
 Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 {
-  static const unsigned xsample = 300;
-  static const unsigned psample = 300;
-
-  const RooArgContainer args( arglist );
-
-  std::vector<double> x;
-  std::vector<double> y;
-  std::vector<double> yerrhi;
-  std::vector<double> yerrlo;
-  std::vector<double> zero;
+  const RooArgContainer args(
+    arglist,
+      {
+        PlotType(// Inserting default plotting style
+          RooArgContainer::CheckList( arglist, VisualizeError::CmdName ) ?
+          fittedfunc : simplefunc ),
+        RooFit::Precision(// Inserting default x precision
+          RooArgContainer::CheckList( arglist, "Precision" ) ?
+          0 : 1e-3
+          )
+      }
+    );
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
@@ -291,25 +337,52 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
     SetAxisFont();
   }
 
-  const double xmax = func.GetXmax();
-  const double xmin = func.GetXmin();
+  return PlotGraph( MakeTF1Graph( func, args ), args );
+}
+
+/**
+ * @brief Generating a graph representation of the TF1 object.
+ */
+TGraph&
+Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
+{
+  static const unsigned psample = 300;
+  const std::string graphname   = func.GetName()
+                                  + std::string( "_gengraph" )
+                                  + RandomString( 6 );
+
+  const double xmax      = func.GetXmax();
+  const double xmin      = func.GetXmin();
+  const double xspace    = args.Get( "Precision" ).getDouble( 0 );
+  const unsigned xsample = 1 / ( xspace ) + 1;
+
+  std::vector<double> x( xsample );
+  std::vector<double> y( xsample );
+  std::vector<double> yerrhi( xsample );
+  std::vector<double> yerrlo( xsample );
+  std::vector<double> zero( xsample );
 
   // Getting common elements for graph generation
   for( unsigned i = 0; i < xsample; ++i ){
-    const double xval = xmin + i* ( xmax-xmin )/( xsample -1 );
+    const double xval = xmin + i * ( xmax-xmin ) * xspace;
     const double yval = func.Eval( xval );
 
-    x.push_back( xval );
-    y.push_back( yval );
-    yerrlo.push_back( 0 );
-    yerrhi.push_back( 0 );
-    zero.push_back( 0 );
+    x[i]      = xval;
+    y[i]      = yval;
+    yerrlo[i] = 0;
+    yerrhi[i] = 0;
+    zero[i]   = 0;
   }
 
-  if( args.Has( ShowFitErr::CmdName ) ){
+  if( args.Has( VisualizeError::CmdName ) ){
+    TGraph& graph = MakeObj<TGraph>( x.size(), x.data(), y.data() );
+    graph.SetName( graphname.c_str() );
+    return graph;
+  } else {
     const TFitResult* fit
-      = (TFitResult*)args.Get( ShowFitErr::CmdName ).getObject( 0 );
-    const double zval = args.Get( ShowFitErr::CmdName ).getDouble( 0 );
+      = dynamic_cast<const TFitResult*>(
+          args.Get( VisualizeError::CmdName ).getObject( 0 ) );
+    const double zval = args.Get( VisualizeError::CmdName ).getDouble( 0 );
 
     const std::vector<double> bestfit_param = fit->Parameters();
 
@@ -355,13 +428,8 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
       zero.data(), zero.data(),
       yerrlo.data(), yerrhi.data() );
 
-    graph.SetName( RandomString( 6 ).c_str() );
-    return PlotGraph( graph, arglist );
-
-  } else {
-    TGraph& graph = MakeObj<TGraph>( x.size(), x.data(), y.data() );
-    graph.SetName( RandomString( 6 ).c_str() );
-    return PlotGraph( graph, arglist );
+    graph.SetName( graphname.c_str() );
+    return graph;
   }
 }
 
@@ -369,27 +437,28 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
  * Function for plotting all of the RooAbsData objects, the supported options
  * allowed include:
  * - *Any* RooCmdArg supported by the RooAbsData::plotOn function. These will
- *   take precedence to custom defined options.
- * - PlotType: Specifying the representation for the data object on the Pad.
- *   Any of the types valid for the PlotGraph functions would be valid. This
- *   options will only be used if the RooFit::DrawOption is not already
- *   specified. If neither PlotType or RooFit::DrawOption is specified, the
- *   scatter method would be used.
+ *   take precedence to custom defined options. With the excpetion of
+ *   RooFit::DrawOptions.
+ *
+ * - PlotType: Specifying the representation for the data object on the Pad. Any
+ *   of the types valid for the PlotGraph functions would be valid. By default,
+ *   the scatter plot method would be used.
  *
  * - EntryText: String to add in the legend entry. If this options is not
  *   present, then this object will NOT appear in the generated legend. Notice
  *   that the attributes to display in the legend would be generated from the
- *   PlotType used.
+ *   PlotType used. Notice that this method is overwritten by the
+ *   RooFit::Invisible option, which forces the object to be hidden.
  *
- * - TrackY: Whether or not the y-axis range should be adjusted according to
- *   the newly added graph. By default, only the maximum value would be used.
+ * - TrackY: Whether or not the y-axis range should be adjusted according to the
+ *   newly added graph. By default, only the maximum value would be used.
  *
  * Additional automation of options include suppressing the X error bars of the
  * generated graph if an equal binning is used for the data set and the
  * RooFit::XErrorSize is not specified. This is to align the plotting style
- * conventions within the CMS collaboration. Another change to the graphs is
- * that the y uncertainties in the zero bins are suppressed, again, to align
- * with the plotting style conventions.
+ * conventions within the CMS collaboration. Another change to the graphs is that
+ * the y uncertainties in the zero bins are suppressed, again, to align with the
+ * plotting style conventions.
  *
  * The function returns a reference to the generated TGraph object by the
  * underlying RooPlot object, The object would be owned by the RooPlot and be
@@ -398,47 +467,77 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 TGraphAsymmErrors&
 Pad1D::PlotData(
   RooAbsData&                   data,
-  const std::vector<RooCmdArg>& args
+  const std::vector<RooCmdArg>& arglist
   )
 {
   static const RooCmdArg suppressxerror = RooFit::XErrorSize( 0 );// Default
-  const RooArgContainer arglist( args );
+  const RooArgContainer args(
+    args,
+      {
+        PlotType( scatter ),
+        TrackY( TrackY::max )
+      }
+    );
 
-  // Default parsing
-  const bool addtopad     = !arglist.Has( "Invisible" );
-  const RooCmdArg plotopt = GetPlotType( arglist, scatter );
-  const RooCmdArg trkopt =
-    arglist.Has( TrackY::CmdName ) ? arglist.Get( TrackY::CmdName ) :
-    TrackY( TrackY::max );
+  TGraphAsymmErrors& ans = MakeDataGraph( data, args );
 
+  if( !args.Has( "Invisible" ) ){
+    if( _prevrangetype == rangetype::aut ){
+      // Forcing the range type to be histogram like.
+      _prevrangetype = rangetype::hist;
+    }
+    PlotGraph( ans, args );
+  }
+
+  return ans;
+}
+
+/**
+ * @brief Helper method for generating the a TGraph representing a RooAbsData
+ * plot.
+ *
+ * This will detect the binning method specified by the various options (using
+ * the present binning of the RooFrame variable otherwise), and in the case of
+ * uniform binning, suppress the x axis error bars, as specified by the CMS
+ * publication conventions. Additionally, Bins with zero entires would have their
+ * y error bars suppressed.
+ */
+TGraphAsymmErrors&
+Pad1D::MakeDataGraph( RooAbsData&            data,
+                      const RooArgContainer& args )
+{
+  // RooCmdArg for suppressing the X errors in the final graph
+  static const RooCmdArg suppressxerror = RooFit::XErrorSize( 0 );
   // Generating the requirements for actual RooFit PlotOn calls
-  RooLinkedList oplist = MakeRooList( arglist );
+  RooLinkedList oplist = MakeRooList( args );
+
+  auto IsUniform
+    = [this]( const RooCmdArg& cmd ) -> bool {
+        // Double assignment will always be uniform
+        if( cmd.getDouble( 0 ) != cmd.getDouble( 1 ) ){ return true;}
+        // Getting plot variable bining scheme
+        if( cmd.getString( 0 ) ){
+          const auto binname = cmd.getString( 0 );
+          const auto plotvar = this->_frame.getPlotVar();
+          if( plotvar->hasBinning( binname ) ){
+            return plotvar->getBinning( binname ).isUniform();
+          }
+        } else if( cmd.getObject( 0 ) ){
+          auto binobj = dynamic_cast<const RooAbsBinning*>( cmd.getObject( 0 ) );
+          if( binobj  ){
+            return binobj->isUniform();
+          }
+        }
+        return true;// Returning true by default
+      };
 
   // Option for suppressing x error bars
-  if( !arglist.Has( "Binning" ) ){
-    // If no binning is specified, the frame will always use uniformed binning!
-    oplist.Add( suppressxerror.Clone() );
-  } else {
-    const auto binopt = arglist.Get( "Binning" );
-    if( binopt.getDouble( 0 ) != binopt.getDouble( 1 ) ){
-      // Only double setting would be for uniformed binning
+  if( !args.Has( "Binning" ) ){
+    if( !_frame.getPlotVar()->getBinning().isUniform() ){
       oplist.Add( suppressxerror.Clone() );
-    } else {
-      if( binopt.getObject( 0 ) ){// Directly specifying binning
-        auto binobj = dynamic_cast<const RooAbsBinning*>(
-          binopt.getObject( 0 ) );
-        if( binobj && binobj->isUniform() ){
-          oplist.Add( suppressxerror.Clone() );
-        }
-      } else if( binopt.getString( 0 ) ){// Calling binning stored in variable
-        const auto binname = binopt.getString( 0 );
-        const auto plotvar = _frame.getPlotVar();
-        if( plotvar->hasBinning( binname )
-            && plotvar->getBinning( binname ).isUniform() ){
-          oplist.Add( suppressxerror.Clone() );
-        }
-      }
     }
+  } else if( IsUniform( args.Get( "Binning" ) ) ){
+    oplist.Add( suppressxerror.Clone() );
   }
 
   // Generating the object via RooFit
@@ -451,79 +550,84 @@ Pad1D::PlotData(
     }
   }
 
-  if( _prevrangetype == rangetype::aut ){
-    _prevrangetype = rangetype::hist;
-  }
-
-  if( addtopad ){
-    PlotGraph( ans, plotopt, trkopt );
-  }
-
-  // Adding legend
-  if( arglist.Has( EntryText::CmdName ) ){
-    const std::string leg = arglist.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( ans, leg, plotopt );
-  }
-
   return ans;
 }
 
 /**
- * Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot
- * object and plotting the graphs onto the TPad. The supported options are:
+ * Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object
+ * and plotting the graphs onto the TPad. The supported options are:
  *
  * - *Any* RooCmdArg supported by the RooAbsData::plotOn function. These will
- *   take precedence to custom defined options.
+ *   take precedence to custom defined options, with the excpetion of the
+ *   RooFit::DrawOptions method.
  *
- * - PlotType: Specifying the representation for the data object on the Pad.
- *   Any of the types valid for the PlotGraph functions would be valid. This
- *   options will only be used if the RooFit::DrawOption is not already
- *   specified. If neither PlotType or RooFit::DrawOption is specified, the
- *   scatter method would be used.
+ * - PlotType: Specifying the representation for the data object on the Pad. Any
+ *   of the types valid for the PlotGraph functions would be valid. If not
+ *   specified, the simplefunc or fittedfunc methods will be used, depending on
+ *   if the RooFit::VisualizeError is used.
  *
  * - EntryText: String to add in the legend entry. If this options is not
  *   present, then this object will NOT appear in the generated legend. Notice
  *   that the attributes to display in the legend would be generated from the
  *   PlotType used.
  *
- * - TrackY: Whether or not the y-axis range should be adjusted according to
- *   the newly added graph. By default, RooPdf objects would not be used
- *   to adjust the axis range.
+ * - TrackY: Whether or not the y-axis range should be adjusted according to the
+ *   newly added graph. By default, RooPdf objects would not be used to adjust
+ *   the axis range.
  *
  * Additional automation of options include additional generation for
  * RooFit::VisualizeError. The stock RooPlot generates are contour line for the
- * uncertainty range rather than a line with error, making styling of a PDF
- * with uncertainty rather tedious. This functions takes the generated TGraphs
- * by the RooPlot and recalculated a TGraph with uncertainty. The newly
- * calculated graph will be placed under the ownership of the RooPlot object.
+ * uncertainty range rather than a line with error, making styling of a PDF with
+ * uncertainty rather tedious. This functions takes the generated TGraphs by the
+ * RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph
+ * will be placed under the ownership of the Pad.
  */
 TGraph&
 Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist );
-  const RooCmdArg visualerr =
-    args.Has( "VisualizeError" ) ? args.Get( "VisualizeError" ) :
-    RooCmdArg::none();
-  const bool runfiterr   = args.Has( "VisualizeError" );
-  const bool addtopad    = !args.Has( "Invisible" );
-  const RooCmdArg pltopt = GetPlotType( arglist,
-    args.Has("VisualizeError") ? fittedfunc : simplefunc  );
-  const RooCmdArg trkopt =
-    args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
-    TrackY( TrackY::max );// Automatic
+  const RooArgContainer args( arglist,
+      {// Defining default arguments
+        TrackY( TrackY::max ),// Default track y: only top
+        RooArgContainer::CheckList( arglist, VisualizeError::CmdName ) ?
+        PlotType( fittedfunc ) : PlotType( simplefunc )// default plot style.
+      }
+                              );
+  TGraph& ans = MakePdfGraph( pdf, args );
 
-  RooLinkedList oplist  = MakeRooList( arglist, {"VisualizeError"} );
-  RooLinkedList oplist2 = MakeRooList( arglist );
+  if( !args.Has( "Invisible" ) ){// Allow for invisible stuff to exist
+    if( _prevrangetype == rangetype::aut ){
+      // Forcing the range type to be histogram like.
+      _prevrangetype = rangetype::hist;
+    }
+    PlotGraph( ans, args );
+  }
 
-  if( _prevrangetype == rangetype::aut ){ _prevrangetype = rangetype::hist; }
+  return ans;
+}
 
-  TGraph* ans = nullptr;
-  if( !runfiterr ){
-    ans = &GenGraph( pdf, oplist );
-    if( addtopad ){ PlotGraph( ans, pltopt, trkopt  ); }
+/**
+ * @brief Helper function for generating a TGraph representation of a RooAbsPdf
+ * plot
+ *
+ * In the case the RooFit::Visualization is used, this function generates two
+ * graphs via the in-built RooFit methods , one for the central plot, and the
+ * other the contor of the uncertainty. This function then recalculates the two
+ * graphs into a single TGraph with uncertainty, which is makes manipulating the
+ * the plot results of a single RooAbsPdf instance more intuitive (changing the
+ * plot style of a single object, rather than two).
+ */
+TGraph&
+Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& arglist )
+{
+  RooLinkedList roolist  = MakeRooList( arglist );
+  RooLinkedList roolist2 = MakeRooList( arglist, {"VisualizeError"} );
+
+  if( !arglist.Has( "VisualizeError" ) ){
+    // Nothing special needs to be done for simple plotting.
+    return GenGraph( pdf, roolist );
   } else {
-    TGraph& centralgraph = GenGraph( pdf, oplist );
-    TGraph& errorgraph   = GenGraph( pdf, oplist2 );
+    TGraph& centralgraph = GenGraph( pdf, roolist2 );
+    TGraph& errorgraph   = GenGraph( pdf, roolist );
 
     // Map for storing uncertainty
     std::map<double, std::pair<double, double> > fiterr;
@@ -539,38 +643,26 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
     }
 
     // The new TGraphAsymmErrors to store the results.
-    ans = &MakeObj<TGraphAsymmErrors>( fiterr.size() );
-    unsigned i = 0;// index for looping
+    TGraphAsymmErrors& ans = MakeObj<TGraphAsymmErrors>( fiterr.size() );
+    unsigned i             = 0;// index for looping
 
     for( const auto& fiterrval : fiterr ){
       const double x   = fiterrval.first;
       const double y   = centralgraph.Eval( x );
       const double ylo = fiterrval.second.first;
       const double yhi = fiterrval.second.second;
-      ( (TGraphAsymmErrors*)ans )->SetPoint( i, x, y );
-      ( (TGraphAsymmErrors*)ans )->SetPointError( i, 0, 0, y-ylo, yhi-y );
+      ans.SetPoint( i, x, y );
+      ans.SetPointError( i, 0, 0, y-ylo, yhi-y );
       ++i;
     }
 
-    // Drawing the new graph
-    if( addtopad ){
-      PlotGraph( ans, pltopt, trkopt );
-    }
+    return ans;
   }
-
-  // Adding legend
-  if( args.Has( EntryText::CmdName ) ){
-    const std::string leg = args.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( *ans, leg, pltopt );
-  }
-
-  return *ans;
 }
 
-
-//-------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Private Helper functions
-//-------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * @brief Helper function for generating RooAbsPdf plots onto a Pad.
@@ -609,40 +701,6 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
       "Bad argument list or object, plotting failed" );
   }
   return _frame.LastPlot<TGraphAsymmErrors>();
-}
-
-/**
- * @brief Automatically getting the TrackY option for a standalone TGraph is not
- * specified.
- *
- * Details are given in the Pad1D::PlotGraph documentation
- */
-int
-Pad1D::GraphTrackY( const RooArgContainer& arglist ) const
-{
-  if( arglist.Has( TrackY::CmdName )
-      && arglist.Get( TrackY::CmdName ).getInt( 0 ) != TrackY::aut ){
-    return arglist.Get( TrackY::CmdName ).getInt( 0 );
-  }
-
-  // Backward iteration will be faster
-  TIter next( PadBase::GetListOfPrimitives(), kIterBackward );
-  TObject* iter = nullptr;
-
-  while( ( iter = next() ) ){
-    if( iter->InheritsFrom( TH1::Class() ) ){
-      if( iter == _frame.AxisHistPtr() ){ continue; }
-      const std::string name = iter->GetName();
-      if( name.find( genaxisname ) != std::string::npos ){ continue; }
-      return TrackY::none;
-    } else if( iter->InheritsFrom( THStack::Class() ) ){
-      return TrackY::none;
-    } else if( iter->InheritsFrom( TGraph::Class() ) ){
-      return TrackY::none;
-    }
-  }
-
-  return TrackY::both;
 }
 
 /**
@@ -690,11 +748,9 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
 
 }/* usr  */
 
-//-------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Static helper function
-//-------------------------------------------------------------------------------
-
-
+// ------------------------------------------------------------------------------
 RooLinkedList
 MakeRooList( const usr::plt::RooArgContainer& arglist,
              const std::vector<std::string>&  exclude )
@@ -707,35 +763,11 @@ MakeRooList( const usr::plt::RooArgContainer& arglist,
         || arg.GetName() == usr::plt::TrackY::CmdName
         || arg.GetName() == usr::plt::EntryText::CmdName
         || arg.GetName() == usr::plt::PlotUnder::CmdName ){ continue; }
-    if( usr::FindValue( exclude,  std::string( arg.GetName() ) ) ){ continue; }
+    if( usr::FindValue( exclude,  std::string( arg.GetName() ) ) ){
+      continue;
+    }
     ans.Add( arg.Clone() );
   }
 
   return ans;
-}
-
-usr::plt::PlotType
-GetPlotType(
-  const usr::plt::RooArgContainer& arglist,
-  const int                        default_type )
-{
-  if( arglist.Has( "DrawOption" ) )
-      return usr::plt::PlotType( arglist.Get( "DrawOption" ).getString( 0 ) );
-
-  const int opt =
-    !arglist.Has( usr::plt::PlotType::CmdName ) ? default_type :
-    arglist.Get(  usr::plt::PlotType::CmdName ).getInt( 0 );
-
-  if( opt != usr::plt::plottype_dummy ){
-    return usr::plt::PlotType( opt );
-  }
-
-  std::string optraw =
-    !arglist.Get( usr::plt::PlotType::CmdName ).getString( 0 ) ? "" :
-    arglist.Get(  usr::plt::PlotType::CmdName ).getString( 0 );
-  usr::ToUpper( optraw );
-  usr::StripSubstring( optraw, "AXIS" );
-  usr::StripSubstring( optraw, "A" );
-
-  return usr::plt::PlotType( optraw );
 }

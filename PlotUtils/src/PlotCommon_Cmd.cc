@@ -27,14 +27,24 @@ namespace plt {
 /**
  * @brief constructing out argument container from a std::vector.
  *
- * This is not directly a copy constructor, but add additional detection
- * routines so that the command names are unique.
+ * This is not directly a copy constructor, but add additional detection routines
+ * so that the command names in arglist are unique. The second list is a list of
+ * default argument to be added if the corresponding arguments don't exist in the
+ * `arglist` input (if not specified, no default arguments will be added.).
  */
-RooArgContainer::RooArgContainer( const std::vector<RooCmdArg>& arglist )
+RooArgContainer::RooArgContainer(
+  const std::vector<RooCmdArg>& arglist,
+  const std::vector<RooCmdArg>& default_list )
 {
   std::set<std::string> nameset;
 
   for( const auto& arg : arglist ){
+    if( nameset.insert( arg.GetName() ).second ){
+      push_back( arg );
+    }
+  }
+
+  for( const auto& arg : default_list ){
     if( nameset.insert( arg.GetName() ).second ){
       push_back( arg );
     }
@@ -72,28 +82,55 @@ RooArgContainer::Get( const std::string& name ) const
   return *iter;
 }
 
+/**
+ * @brief Function for checking if an argument already exists in a list of
+ * RooCmdArgs.
+ *
+ * Useful for when determining default plotting arguments.
+ */
+bool
+RooArgContainer::CheckList( const std::vector<RooCmdArg>& arglist,
+                            const std::string&            name )
+{
+  auto iter = std::find_if( arglist.begin(), arglist.end(),
+    [&name]( const RooCmdArg& item ){
+        return item.GetName() == name;
+      } );
+  return iter != arglist.end();
+}
+
+/**
+ * @{
+ * @addtogroup PlotUtilsArgument
+ */
 // ---------------------------------------------------------------------------//
 
+/** @brief command name */
 const std::string PlotUnder::CmdName = "PlotUnder";
 
-PlotUnder::PlotUnder( const TObject& obj ):
+/**
+ * @{
+ * @brief Request that the plotted object be placed underneath the target object
+ **/
+PlotUnder::PlotUnder( const TObject& obj ) :
   RooCmdArg( CmdName.c_str(),
-    0,0, // int
-    0,0, // double
-    0,0, // char
-    &obj ){}
+             0, 0,// int
+             0, 0,// double
+             0, 0,// char
+             &obj ){}
 
-PlotUnder::PlotUnder( const TObject* obj ):
+PlotUnder::PlotUnder( const TObject* obj ) :
   RooCmdArg( CmdName.c_str(),
-    0,0, // int
-    0,0, // double
-    0,0, // char
-    obj ){}
+             0, 0,// int
+             0, 0,// double
+             0, 0,// char
+             obj ){}
+/** @} */
 
 // ---------------------------------------------------------------------------//
 
 /**
- * @brief string for defining the RooCmdArg name
+ * @brief command name
  */
 const std::string TrackY::CmdName = "TrackY";
 
@@ -152,24 +189,37 @@ Plot2DF::Plot2DF( const int i ) :
  * @brief defining plot type via ROOT draw strings
  */
 Plot2DF::Plot2DF( const std::string& drawopt ) :
-  RooCmdArg( CmdName.c_str(), 0, 0, 0, 0, drawopt.c_str() ){}
+  RooCmdArg( CmdName.c_str(), plot2df_dummy, 0, 0, 0, drawopt.c_str() ){}
 
 // ---------------------------------------------------------------------------//
 
 /**
  * @brief string for defining the RooCmdArg name
  */
-const std::string ShowFitErr::CmdName = "ShowFitErr";
+const std::string VisualizeError::CmdName = "VisualizeError";
 
 /**
  * @brief defining plot type via ROOT draw strings
  */
-ShowFitErr::ShowFitErr( const TFitResultPtr& fit, const double z ) :
+VisualizeError::VisualizeError( const TFitResultPtr& fit, const double z ) :
   RooCmdArg( CmdName.c_str(),
              0, 0,// int
              z, 0,// double
              0, 0,// c_string
              dynamic_cast<const TObject*>( &( *fit ) ) ){}
+
+VisualizeError::VisualizeError( const RooFitResult& fit,
+                                const double        z,
+                                const bool          linearmethod ) :
+  RooCmdArg( RooFit::VisualizeError( fit, z, linearmethod ) ){}
+
+VisualizeError::VisualizeError( const RooFitResult& fit,
+                                const RooArgSet&    param,
+                                const double        z,
+                                const bool          linearmethod ) :
+  RooCmdArg( RooFit::VisualizeError( fit, param, z, linearmethod ) ){}
+
+/** @} */
 
 }
 

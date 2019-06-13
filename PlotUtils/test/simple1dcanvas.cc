@@ -119,7 +119,9 @@ main( int argc, char* argv[] )
                             plt::Simple1DCanvas::default_width );
 
     auto& dgraph = c2.PlotData( d );
-    auto& fgraph = c2.PlotPdf( g, RooFit::VisualizeError( *fit, 1, false ) );
+    auto& fgraph = c2.PlotPdf( g,
+      RooFit::VisualizeError( *fit, 1, false ),
+      usr::plt::PlotUnder( dgraph ) );
 
     dgraph.SetMarkerStyle( 20 );
     dgraph.SetMarkerSize( 0.2 );

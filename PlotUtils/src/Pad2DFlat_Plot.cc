@@ -1,11 +1,11 @@
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Pad2DFlat.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
-#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #else
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/Pad2DFlat.hpp"
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
-#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
 #include "TLegendEntry.h"
@@ -33,48 +33,47 @@ namespace plt {
 TH2D&
 Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist );
+  const RooArgContainer args( arglist,
+                              { Plot2DF( plot2df::heat )  } );
 
-  const int opt =
-    !args.Has( Plot2DF::CmdName ) ? plot2df::heat :
-    args.Get( Plot2DF::CmdName ).getString( 0 ) ? plot2df_dummy :
-    args.Get( Plot2DF::CmdName ).getInt( 0 );
-  std::string optraw =
-    !args.Has( Plot2DF::CmdName ) ?  "" :
-    !args.Get( Plot2DF::CmdName ).getString( 0 ) ? "" :
-    args.Get( Plot2DF::CmdName ).getString( 0 );
+  const int opt = args.Get( Plot2DF::CmdName ).getInt( 0 );
 
-  const std::string legopt =
-    opt == plot2df::heat ? "" :
-    opt == plot2df::heatcont ? "L" :
-    opt == plot2df::cont ? "L" :
-    "PFLE";
+  const std::string legopt = opt == plot2df::heat ? "" :
+                             opt == plot2df::heatcont ? "L" :
+                             opt == plot2df::cont ? "L" :
+                             "PFLE";
 
-  for( const auto&& func : *(hist.GetListOfFunctions()) ){
+  for( const auto&& func : *( hist.GetListOfFunctions() ) ){
     func->SetBit( TF1::kNotDraw, true );
   }
 
   // Forcing stuff to not be displayed
-  hist.SetTitle("");
-  hist.SetStats(0);
+  hist.SetTitle( "" );
+  hist.SetStats( 0 );
 
   // Parsing plotting flag
-  if( opt == plot2df::heat ){
+  switch( opt ){
+  case  plot2df::heat:
     PlotObj( hist, "COLZ" );
     SetAxisFont();
-  } else if( opt == plot2df::heatcont ){
+    break;
+  case   plot2df::heatcont:
     PlotObj( hist, "COLZ" );
     SetAxisFont();
     PlotObj( hist, "CONT3 SAME" );
-  } else if( opt == plot2df::cont ){
-    PlotObj( hist, "CONT3 SAME" );
-  } else if( opt == plot2df_dummy && optraw != "" ){
-    // Special case for raw options parsing. (Must remove axis and add string)
-    ToUpper( optraw );
-    StripSubstring( optraw, "AXIS" );
-    PlotObj( hist, ( optraw+" SAME" ).c_str() );
-  } else {// Skipping over stuff
+    break;
+  case  plot2df::cont:
+    PlotObj( hist, "CONT3" );
+    SetAxisFont();
+    break;
+  case plot2df_dummy:
+    PlotObj( hist, ( std::string( args.Get( Plot2DF::CmdName ).getString( 0 ) )
+                     +" SAME" ).c_str() );
+    break;
+
+  default:
     std::cerr << "Skipping over invalid value" << std::endl;
+    break;
   }
 
   if( args.Has( EntryText::CmdName ) ){
@@ -105,22 +104,15 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
 TGraph2D&
 Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist );
+  const RooArgContainer args( arglist,
+                              { Plot2DF( plot2df::heat )  } );
 
-  const int opt =
-    !args.Has( Plot2DF::CmdName ) ? plot2df::heat :
-    args.Get( Plot2DF::CmdName ).getString( 0 ) ? plot2df_dummy :
-    args.Get( Plot2DF::CmdName ).getInt( 0 );
-  std::string optraw =
-    !args.Has( Plot2DF::CmdName ) ?  "" :
-    !args.Get( Plot2DF::CmdName ).getString( 0 ) ? "" :
-    args.Get( Plot2DF::CmdName ).getString( 0 );
+  const int opt = args.Get( Plot2DF::CmdName ).getInt( 0 );
 
-  const std::string legopt =
-    opt == plot2df::heat ? "" :
-    opt == plot2df::heatcont ? "L" :
-    opt == plot2df::cont ? "L" :
-    "PFLE";
+  const std::string legopt = opt == plot2df::heat ? "" :
+                             opt == plot2df::heatcont ? "L" :
+                             opt == plot2df::cont ? "L" :
+                             "PFLE";
 
   if( !GetAxisObject() ){
     auto& axishist = MakeObj<TH2D>(
@@ -133,25 +125,28 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
     SetAxisFont();
   }
 
-  for( const auto&& func : *(graph.GetListOfFunctions()) ){
+  for( const auto&& func : *( graph.GetListOfFunctions() ) ){
     func->SetBit( TF1::kNotDraw, true );
   }
 
-  // Parsing plotting flag
-  if( opt == plot2df::heat ){
+  switch( opt ){
+  case plot2df::heat:
     PlotObj( graph, "CONT4Z SAME" );
-  } else if( opt == plot2df::heatcont ){
+    break;
+  case  plot2df::heatcont:
     PlotObj( graph, "CONT4Z SAME" );
     PlotObj( graph, "CONT3 SAME" );
-  } else if( opt == plot2df::cont ){
+    break;
+  case plot2df::cont:
     PlotObj( graph, "CONT3 SAME" );
-  } else if( opt == plot2df_dummy && optraw != "" ){
-    // Special case for raw options parsing. (Must remove axis and add string)
-    ToUpper( optraw );
-    StripSubstring( optraw, "A" );
-    PlotObj( graph, optraw.c_str() );
-  } else {// Skipping over stuff
+    break;
+  case plot2df_dummy:
+    PlotObj( graph, args.Get( Plot2DF::CmdName ).getString( 0 ) );
+    break;
+
+  default:
     std::cerr << "Skipping over invalid value" << std::endl;
+    break;
   }
 
   if( args.Has( EntryText::CmdName ) ){
@@ -194,7 +189,7 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
   TGraph2D& graph = MakeObj<TGraph2D>( x.size(),
     x.data(), y.data(), z.data() );
 
-  graph.SetName( usr::RandomString(12).c_str() );
+  graph.SetName( usr::RandomString( 12 ).c_str() );
 
   return PlotGraph( graph, arglist );
 }
@@ -239,8 +234,8 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   }
 
   // Resetting underlying histogram range:
-  graph.GetHistogram()->SetMaximum( usr::plt::GetYmax(graph) );
-  graph.GetHistogram()->SetMinimum( usr::plt::GetYmin(graph) );
+  graph.GetHistogram()->SetMaximum( usr::plt::GetYmax( graph ) );
+  graph.GetHistogram()->SetMinimum( usr::plt::GetYmin( graph ) );
 
   if( args.Has( EntryText::CmdName ) ){
     _legend.AddEntry( &graph,
@@ -294,6 +289,6 @@ Pad2DFlat::MakeLegend()
   }
 }
 
-} /** plt */
+}/** plt */
 
-} /* usr */
+}/* usr */

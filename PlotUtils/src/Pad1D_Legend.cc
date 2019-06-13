@@ -18,7 +18,8 @@ namespace usr  {
 namespace plt  {
 
 /**
- * @brief Legend creation with consistent font settings.
+ * @brief Legend creation with consistent font settings. Plotting immediate to
+ * have the object booked under the Pads list of primitives.
  */
 void
 Pad1D::_init_legend()
@@ -27,6 +28,8 @@ Pad1D::_init_legend()
   _legend.SetTextSize( ParentCanvas().Font().size() );
   _legend.SetBorderSize( 0 );
   _legend.SetFillColorAlpha( 0, 0 );
+  // Cannot preemptively plot the Legend. While till the finalization function is
+  // called.
 }
 
 
@@ -66,15 +69,16 @@ Pad1D::AddLegendEntry(
     ( plotopt.getString( 0 ) ) ? "PLFE" :
     "";
 
-  std::vector<std::string> lines;
-  boost::split( lines, title, boost::is_any_of( "\n" ) );
+  if( !_legend.GetListOfPrimitives() ){
+    // If legend is empty, Add directly to the legend object.
+    _legend.AddEntry( &hist, title.c_str(), legopt.c_str() );
 
-  for( int i = lines.size()-1; i >= 0; i-- ){
-    if( i > 0 ){
-      _legstack.push( { nullptr, lines.at( i ), "" } );
-    } else {
-      _legstack.push( { &hist, lines.at( i ), legopt } );
-    }
+  } else {
+    // If Legend is not empty manually adding entry to the front of the list.
+    // Note that legend automatically claims ownership of generated TLegend
+    // entries, so there is no need to use the MakeObject call.
+    auto entry = new TLegendEntry( &hist, title.c_str(), legopt.c_str() );
+    _legend.GetListOfPrimitives()->AddFirst( entry );
   }
 }
 
@@ -123,19 +127,20 @@ Pad1D::AddLegendEntry(
   const std::string legopt =
     plottype == plottype::simplefunc ? "L" :
     plottype == plottype::fittedfunc ? "LF" :
-    plottype == plottype::scatter ? "P" + erropt :
-    plotopt.getString( 0 ) ? "PLFE" :
+    plottype == plottype::scatter    ? "P" + erropt :
+    plotopt.getString( 0 )           ? "PLFE" :
     "";
 
-  std::vector<std::string> lines;
-  boost::split( lines, title, boost::is_any_of( "\n" ) );
 
-  for( int i = lines.size()-1; i >= 0; i-- ){
-    if( i > 0 ){
-      _legstack.push( { nullptr, lines.at( i ), "" } );
-    } else {
-      _legstack.push( { &graph, lines.at( i ), legopt } );
-    }
+  if( !_legend.GetListOfPrimitives() ){
+    // If legend is empty, Add directly to the legend object.
+    _legend.AddEntry( &graph, title.c_str(), legopt.c_str() );
+  } else {
+    // If Legend is not empty manually adding entry to the front of the list.
+    // Note that legend automatically claims ownership of generated TLegend
+    // entries, so there is no need to use the MakeObject call.
+    auto entry = new TLegendEntry( &graph, title.c_str(), legopt.c_str() );
+    _legend.GetListOfPrimitives()->AddFirst( entry );
   }
 }
 
@@ -144,6 +149,8 @@ Pad1D::AddLegendEntry(
  * creation of additional objects (such as guiding lines via V/HLine). Takes
  * standard ROOT Flavour options to specify points.
  *
+ * Note that unlike Histograms and Graphs, this is assumed to be placed at the
+ * end of the Legend entries.
  */
 void
 Pad1D::AddLegendEntry(
@@ -151,70 +158,59 @@ Pad1D::AddLegendEntry(
   const std::string& title,
   const std::string& attr )
 {
-  _legstack.push( { &obj, title, attr } );
+  _legend.AddEntry( &obj, title.c_str(), attr.c_str() );
 }
 
 /**
- * Generating the TLegend object at the inner top right of the pad.
+ * Generating the TLegend object. One can assign a new position in the frame (one
+ * of 9, in the left--center--right, top--center--bottom system) is required.
  */
 void
-Pad1D::MakeLegend()
+Pad1D::FinalizeLegend( const align newposition )
 {
-  // Flushing the contents in the stack.
-  while( !_legstack.empty() ){
-    const auto& ent = _legstack.top();
-    std::vector<std::string> entryval;
-    boost::split( entryval, ent.entry, boost::is_any_of( "\n" ) );
-
-    for( auto it = entryval.begin(); it != entryval.end(); ++it ){
-      if( it == entryval.begin() ){
-        _legend.AddEntry( ent.obj, it->c_str(), ent.legopt.c_str() );
-      } else {
-        _legend.AddEntry( (TObject*)nullptr, it->c_str(), ent.legopt.c_str() );
-      }
-    }
-
-    _legstack.pop();
-  }
-
+  _legendposition = newposition;
   // Early exit if Legend wasn't requested
   if( !_legend.GetListOfPrimitives() ){ return; }
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
+
+  if( !TPad::FindObject( &_legend ) ){PadBase::PlotObj( _legend );}
 
   TPad::cd();
   double width  = 0;
   double height = 0;
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
+    auto entry = dynamic_cast<TLegendEntry*>( obj );
     // This should be absolute coordinates
-    const double estwidth = EstimateLatexWidth(
-      ( (TLegendEntry*)obj )->GetLabel() ) * FontSize() / AbsWidth();
-    const double estheight = EstimateLatexHeight(
-      ( (TLegendEntry*)obj )->GetLabel() ) * FontSize() / AbsHeight();
+    const double estwidth = EstimateLatexWidth( entry->GetLabel() )
+                            * FontSize() / AbsWidth();
+    const double estheight = EstimateLatexHeight( entry->GetLabel() )
+                             * FontSize() / AbsHeight();
     // Gussing width based on character count alone
     width   = std::max( estwidth, width );
     height += std::max( 1.1* estheight, 1.4*RelLineHeight() );
   }
 
   width *= 1.1;// Relieving spacing a little
-  width += 1.3*LineHeight() / AbsWidth();// Reserving space for legend icon boxes.
+  width += 1.3*LineHeight() / AbsWidth();// Space for legend icon.
 
-  const float xmax = 1 - GetRightMargin() - 1.2*Yaxis().GetTickLength();
-  const float ymax = 1 - GetTopMargin() - 1.2*Xaxis().GetTickLength();
-  const float xmin = xmax - width;
-  const float ymin = ymax - height;
+  // Computing alignment coordinates
+  const short halign = _legendposition / 10;
+  const short valign = _legendposition % 10;
+
+  const float xmin = halign == align::left     ? InnerTextLeft() :
+                     halign == align::hcenter  ? InnerTextHCenter() - width /2 :
+                     InnerTextRight() - width;
+  const float ymin = valign == align::bottom   ? InnerTextBottom() :
+                     valign == align::vcenter  ? InnerTextVCenter() - height /2 :
+                     InnerTextTop() - height;
+  const float xmax = xmin + width;
+  const float ymax  = ymin + height;
+
   _legend.SetX1NDC( xmin );
   _legend.SetX2NDC( xmax );
   _legend.SetY1NDC( ymin );
   _legend.SetY2NDC( ymax );
-
-  if( !TPad::FindObject( &_legend ) ){
-    PadBase::PlotObj( _legend );
-    _legend.SetX1NDC( xmin );
-    _legend.SetX2NDC( xmax );
-    _legend.SetY1NDC( ymin );
-    _legend.SetY2NDC( ymax );
-  }
 }
 
 }/* plt  */

@@ -3,6 +3,7 @@
 # Getting the images
 ../testbin/PlotUtils/usrutil_simple1dcanvas
 ../testbin/PlotUtils/usrutil_ratio1dcanvas
+../testbin/PlotUtils/usrutil_flat2dcanvas
 # rsync $testdir/simple1dcanvas_roofit_test.png  image/
 # rsync $testdir/ratio1dcanvas_test.png          image/
 # rsync $testdir/ratio1dcanvas_roofit_test.png   image/

@@ -30,7 +30,8 @@ Pad1D::Pad1D( const PadSize& size, const RangeByVar& range ) :
   _workingstack( nullptr ),
   _datamax( 1 ),
   _datamin( 0.3 ),
-  _prevrangetype( rangetype::aut )
+  _prevrangetype( rangetype::aut ),
+  _legendposition( align::top_right )
 {
   // Common setup for pads
   TPad::SetTicks( 1, 1 );
@@ -46,7 +47,8 @@ Pad1D::Pad1D( const PadSize& size, const double min, const double max ) :
   _workingstack( nullptr ),
   _datamax( 1 ),
   _datamin( 0.3 ),
-  _prevrangetype( rangetype::aut )
+  _prevrangetype( rangetype::aut ),
+  _legendposition( align::top_right )
 {
   // Common setup for pads
   TPad::SetTicks( 1, 1 );
@@ -65,7 +67,8 @@ Pad1D::Pad1D( const PadSize& size ) :
   _workingstack( nullptr ),
   _datamax( 1 ),
   _datamin( 0.3 ),
-  _prevrangetype( rangetype::aut )
+  _prevrangetype( rangetype::aut ),
+  _legendposition( align::top_right )
 {
   // Common setup for pads
   TPad::SetTicks( 1, 1 );
@@ -113,8 +116,7 @@ Pad1D::Finalize()
 {
   TPad::cd();
   PadBase::Finalize();
-  MakeLegend();
-  MakeLegend();
+  FinalizeLegend( _legendposition );
   FixVLines();
   TPad::RedrawAxis();
 }

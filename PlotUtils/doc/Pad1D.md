@@ -76,6 +76,18 @@ A few addition plotting behavior for objects are present:
   to be presented in the legend would be automatically determined by the
   PlotType passed to the plot function.
 
+- **VisualizeError** is now extended to include TF1, which takes a TFitResult to
+  interpret for the error band should be drawn.
+
+- **PlotUnder**. In ROOT, the first plotted objects are always placed at the back
+  of the canvas. Sometimes this is not desireable, since the a object that is
+  plotted later might want to be placed in the background, while required to be
+  calculated only after a certain object has been generated (an example that
+  comes to mind is the plotting of the RooFit objects, where the plotting of
+  @ROOT{RooAbsPdf}s depends on the existence of a @ROOT{RooAbsData} object,
+  unless explicitly specified). This option will be force a later plotted object
+  to be behind a certain target.
+
 # Additional Pad plotting behavior enhancements
 
 - Standard CMS and luminosity labels text would be added to the pad via the
@@ -83,11 +95,12 @@ A few addition plotting behavior for objects are present:
   would be placed on the top-left side inside the axis frame, while the
   luminosity label would be placed on the top-right side outside the axis frame.
 - If an EntryText is specified at any point in the pad's lifetime, A
-  @ROOT{TLegend} would be spawn on the top-right of the pad inside the axis
-  frame. The size of the frame would be automatically adjusted, based on the
-  entry text lengths and the number of entries specified. The choice of placing
-  the legend on the top-right is that HEP 1D plots typically exhibit long
-  trailing tails on the right.
+  @ROOT{TLegend} would be spawn on the the pad inside the axis frame. The size of
+  the frame would be automatically adjusted, based on the entry text lengths and
+  the number of entries specified. The position of the legend can be any of the 9
+  positions in the left--center--right, top--center--bottom system. By default,
+  the legend is placed on the top-right, exploiting the fact that HEP 1D plots
+  typically exhibit long trailing tails on the right.
 
   An issue with ROOT object drawing is that the first object to be
   drawn has a smaller z index (placed towards the back), when usually the

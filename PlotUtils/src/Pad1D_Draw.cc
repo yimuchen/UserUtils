@@ -32,6 +32,11 @@ float Pad1D::InnerTextRight() const
   return 1. - GetRightMargin() - 1.5 * Yaxis().GetTickLength();
 }
 
+float Pad1D::InnerTextHCenter() const
+{
+  return (InnerTextLeft() + InnerTextRight() ) /2 ;
+}
+
 float Pad1D::InnerTextTop() const
 {
   return  1 - GetTopMargin() - 1.5 * Xaxis().GetTickLength();
@@ -40,6 +45,11 @@ float Pad1D::InnerTextTop() const
 float Pad1D::InnerTextBottom() const
 {
   return GetBottomMargin() + 1.5 * Xaxis().GetTickLength();
+}
+
+float Pad1D::InnerTextVCenter() const
+{
+  return (InnerTextTop() + InnerTextBottom() ) /2 ;
 }
 /** @} */
 

@@ -29,10 +29,10 @@
 #include "TGraph.h"
 #include "TGraphAsymmErrors.h"
 #include "TH1D.h"
-#include "TProfile.h"
 #include "THStack.h"
 #include "TLegend.h"
 #include "TLine.h"
+#include "TProfile.h"
 
 
 #include <vector>
@@ -57,8 +57,7 @@ protected:
   friend class Canvas;
 
 public:
-  virtual
-  ~Pad1D ();
+  virtual ~Pad1D ();
   Pad1D()               = delete;
   Pad1D( const Pad1D& ) = delete;
 
@@ -128,8 +127,8 @@ public:
                     const Width_t w = 1 );
   TLine& DrawVLine( const double  x,
                     const Color_t c,
-                    const Style_t s          = 1,
-                    const Width_t w          = 1 );
+                    const Style_t s = 1,
+                    const Width_t w = 1 );
   void DrawCMSLabel( const std::string&      = cap::prelim,
                      const std::string& main = "CMS" );
   void DrawLuminosity( const double luminosity );
@@ -138,8 +137,10 @@ public:
   // Common text settings
   float InnerTextLeft() const;
   float InnerTextRight() const;
+  float InnerTextHCenter() const ;
   float InnerTextTop() const;
   float InnerTextBottom() const;
+  float InnerTextVCenter() const ;
 
   // Axis and Range setting function
   TObject*     GetAxisObject() const;
@@ -184,7 +185,7 @@ public:
                        const std::string& title,
                        const std::string& format );
 
-  void MakeLegend();
+  void FinalizeLegend( const align x );
 
   /** @brief returning reference to internal legend object. */
   inline TLegend&
@@ -229,23 +230,11 @@ protected:
   /** @brief the Legend object */
   TLegend _legend;
 
-
-  /** @brief simple class for storing legend entry. */
-  struct legentry
-  {
-    TObject*    obj;
-    std::string entry;
-    std::string legopt;
-  };
-
-  /** @brief legend entry stack */
-  std::stack<legentry> _legstack;
+  /** @brief position of the legend object in the pad */
+  align _legendposition;
 
   /** @brief list of lines that need finalizing just before plot is finalized */
   std::vector<TLine*> _linelist;
-
-  TGraphAsymmErrors& GenGraph( RooAbsData& data, RooLinkedList& arglist );
-  TGraph&            GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist );
 
   static
   void SetAxisTitle(
@@ -264,8 +253,16 @@ protected:
   void AddLegendEntry( TGraph&, const std::string&, const RooCmdArg& );
 
   // Helper function for Plot<> Functions
-  int GraphTrackY( const RooArgContainer& arglist ) const ;
-  void TrackObjectY( const TObject& obj, const int tracky );
+  void    TrackObjectY( const TObject& obj, const int tracky );
+  TGraph& MakePdfGraph( RooAbsPdf&             pdf,
+                        const RooArgContainer& arglist );
+  TGraph& MakeTF1Graph( TF1&,
+                        const RooArgContainer& arglist );
+  TGraphAsymmErrors& MakeDataGraph( RooAbsData&            data,
+                                    const RooArgContainer& arglist );
+  TGraphAsymmErrors& GenGraph( RooAbsData& data, RooLinkedList& arglist );
+  TGraph&            GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist );
+
 };
 
 }/* plt */

@@ -37,14 +37,13 @@ public:
   RooFrame( const double min, const double max );
   RooFrame( const double xmin, const double xmax,
             const double ymin, const double ymax );
-  virtual
-  ~RooFrame();
+  virtual ~RooFrame();
 
   /**
    * @brief returning the internal histogram object used for axis plotting.
    */
   inline TH1*
-  AxisHistPtr() { return RooPlot::_hist; }
+  AxisHistPtr(){ return RooPlot::_hist; }
 
   /**
    * @brief returning the internal histogram object used for axis plotting.
@@ -57,7 +56,7 @@ public:
    * plotting (no null protection)
    */
   inline TH1&
-  AxisHist() { return *AxisHistPtr(); }
+  AxisHist(){ return *AxisHistPtr(); }
 
   /**
    * @brief returning reference to internal histogram object used for axis
@@ -118,12 +117,14 @@ private:
 class RooArgContainer : public std::vector<RooCmdArg>
 {
 public:
-  RooArgContainer( const std::vector<RooCmdArg>& );
-  virtual
-  ~RooArgContainer();
+  RooArgContainer( const std::vector<RooCmdArg>& arg_list,
+                   const std::vector<RooCmdArg>& default_list = {} );
+  virtual ~RooArgContainer();
 
   const RooCmdArg& Get( const std::string& name ) const;
   bool             Has( const std::string& name ) const;
+  static bool      CheckList( const std::vector<RooCmdArg>&,
+                              const std::string& name );
 };
 
 /**
@@ -136,7 +137,7 @@ public:
   static const std::string CmdName;
   PlotUnder( const TObject& );
   PlotUnder( const TObject* );
-  virtual ~PlotUnder() {}
+  virtual ~PlotUnder(){}
 };
 
 /**
@@ -197,7 +198,8 @@ public:
   PlotType( const std::string& );
   virtual
   ~PlotType(){}
-  inline int get() const { return getInt(0); }
+  inline int
+  get() const { return getInt( 0 ); }
 };
 
 
@@ -232,13 +234,23 @@ public:
 
 /**
  * @brief Plot argument to plot a fitted TF1 with fit uncertainties.
+ * Intentionally using the same interface as the VisualizeError for
+ * @ROOT{RooAbsPdf}.
  */
-class ShowFitErr : public RooCmdArg
+class VisualizeError : public RooCmdArg
 {
 public:
   static const std::string CmdName;
-  ShowFitErr( const TFitResultPtr&, const double z = 1 );
-  virtual ~ShowFitErr(){}
+  VisualizeError( const TFitResultPtr&,
+                  const double z = 1 );
+  VisualizeError( const RooFitResult&,
+                  const double z = 1,
+                  const bool   linearmethod = true  );
+  VisualizeError( const RooFitResult&,
+                  const RooArgSet& param,
+                  const double     z = 1,
+                  const bool       linearmethod = true  );
+  virtual ~VisualizeError(){}
 };
 
 /** @} */

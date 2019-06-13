@@ -52,7 +52,7 @@ extern length_t a4textheight_default();
  */
 class font
 {
-public: // static and user enums.
+public:// static and user enums.
 
   /** @brief enum interface for defined fonts. */
   enum face : short
@@ -65,41 +65,52 @@ public: // static and user enums.
   /** @brief enum interface for text alignment in @ROOT{TLatex} */
   enum align : short
   {
+    left          = 10,
+    hcenter       = 20,
+    right         = 30,
+    top           = 3,
+    vcenter       = 2,
+    bottom        = 1,
     bottom_left   = 11,
     bottom_center = 21,
     bottom_right  = 31,
+    center_left   = 12,
+    center        = 22,
+    center_right  = 32,
     top_left      = 13,
     top_center    = 23,
     top_right     = 33
   };
 
-  static float      default_basesize;
+  static float default_basesize;
   static font::face default_face;
-  static float      default_lineheight;
+  static float default_lineheight;
 
 public:
   font( float basesize   = default_basesize,
         face  face       = default_face,
         float lineheight = default_lineheight );
 
-  float size() const ;
+  float size() const;
   float lineheight() const;
   short fontface() const;
-  float em( const float mult ) const ;
+  float em( const float mult ) const;
 
-  float tiny() const ;
-  float footnote() const ;
-  float small() const ;
-  float large() const ;
-  float Large() const ;
-  float LARGE() const ;
-  float huge() const ;
+  float tiny() const;
+  float footnote() const;
+  float small() const;
+  float large() const;
+  float Large() const;
+  float LARGE() const;
+  float huge() const;
 
 protected:
-  float      _basesize ;
+  float _basesize;
   font::face _face;
-  float      _lineheight;
+  float _lineheight;
 };
+
+using align = font::align;// Align can be used in more places than just text.
 
 /** @brief Strings for a unified presentation of units in plots */
 namespace unit {
@@ -321,7 +332,7 @@ extern const int lightgray;
 extern const int gray;
 extern const int bzgreen;
 extern const int bzyellow;
-} // col
+}// col
 
 
 /** @} */
