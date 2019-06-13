@@ -16,6 +16,12 @@ namespace usr  {
 
 namespace plt  {
 
+/**
+ * @{
+ * @brief Function for getting a nice text placement in the corner of a Pad.
+ *
+ * An extra margin based on the current axis tick-length would be added.
+ */
 float Pad1D::InnerTextLeft() const
 {
   return GetLeftMargin() + 1.5 * Yaxis().GetTickLength();
@@ -35,6 +41,7 @@ float Pad1D::InnerTextBottom() const
 {
   return GetBottomMargin() + 1.5 * Xaxis().GetTickLength();
 }
+/** @} */
 
 /**
  * @brief Drawing horizontal line
@@ -53,7 +60,7 @@ Pad1D::DrawHLine(
   const Style_t s,
   const Width_t w )
 {
-  TLine& line = _frame.MakeObj<TLine>( GetXaxisMin(), y, GetXaxisMax(), y );
+  TLine& line = MakeObj<TLine>( GetXaxisMin(), y, GetXaxisMax(), y );
   line.SetLineColor( c );
   line.SetLineStyle( s );
   line.SetLineWidth( w );
@@ -62,7 +69,7 @@ Pad1D::DrawHLine(
 }
 
 /**
- * @brief drawing vertical line
+ * @brief Drawing vertical line
  *
  * Drawing a vertical line on the pad at a fixed x value.
  * @param  x x value to plot the line
@@ -78,7 +85,7 @@ Pad1D::DrawVLine(
   const Style_t s,
   const Width_t w )
 {
-  TLine& line = _frame.MakeObj<TLine>(
+  TLine& line = MakeObj<TLine>(
     x,
     Yaxis().GetXmin(),
     x,
@@ -119,7 +126,6 @@ Pad1D::DrawCMSLabel( const std::string& tag, const std::string& main )
 
   _latex.SetTextSize( tmp );
 }
-
 
 /**
  * @brief Drawing luminosity label.
@@ -168,7 +174,6 @@ Pad1D::FixVLines()
     line->SetY2( GetYaxisMax() );
   }
 }
-
 
 }/* plt  */
 

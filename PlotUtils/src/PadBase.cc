@@ -203,8 +203,12 @@ PadBase::HasObject( const TObject& obj ) const
 }
 
 /**
- * @brief
+ * @brief Moving a target object to before another object on the TPad
  *
+ * Basically a horrible hack to moving things around in the TPad's List of
+ * primitives. As @ROOT{TList} has very limited amounts of exposure for various
+ * method that include the plots options, the function essentially dumps the
+ * links of the TList into a stack to reorder accordingly.
  */
 bool
 PadBase::MoveTargetToBefore( const TObject& target, const TObject& before )
@@ -285,6 +289,11 @@ PadBase::Finalize()
 {
 }
 
+/**
+ * @brief Allowing the Pad to claim ownership of some plot object.
+ *
+ * Mainly for internal use.
+ */
 void
 PadBase::ClaimObject( TObject* obj )
 {

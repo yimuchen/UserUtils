@@ -123,7 +123,7 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
     "PFLE";
 
   if( !GetAxisObject() ){
-    auto& axishist = _frame.MakeObj<TH2D>(
+    auto& axishist = MakeObj<TH2D>(
       ( "axishist" + RandomString( 12 ) ).c_str(), "",
       10, graph.GetXminE(), graph.GetXmaxE(),
       10, graph.GetYminE(), graph.GetYmaxE()
@@ -191,7 +191,7 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
     }
   }
 
-  TGraph2D& graph = _frame.MakeObj<TGraph2D>( x.size(),
+  TGraph2D& graph = MakeObj<TGraph2D>( x.size(),
     x.data(), y.data(), z.data() );
 
   graph.SetName( usr::RandomString(12).c_str() );
@@ -294,7 +294,6 @@ Pad2DFlat::MakeLegend()
   }
 }
 
+} /** plt */
 
-}
-
-}
+} /* usr */

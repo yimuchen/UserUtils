@@ -40,12 +40,22 @@ static const std::map<char, double> char_width = {
   {'y', 0.45180723}, {'z', 0.45180723}
 };
 
-
-
 namespace usr {
 
 namespace plt {
 
+/**
+ * @brief Better estimation of the actual width (in units 'em') of a Latex
+ * string.
+ *
+ * This functions sums the width of most printable ASCII characters with by a
+ * predefined table, as the Latex engine used in ROOT has very minimal kerning on
+ * the characeter sets. The table itself is generated using a ROOT script, using
+ * a Helvetic font (so estimates for Times font might be off). Special care is
+ * taken to remove decorators such as fractions, square-roots, left-right braces,
+ * and sub/sup-scripts. Non-ASCII characters (greek symbols, mathematical
+ * symbols... etc), are simply estimated to be a standard 'M' width.
+ */
 double
 EstimateLatexWidth( const std::string& text )
 {
@@ -61,9 +71,9 @@ EstimateLatexWidth( const std::string& text )
     const size_t openbrace2  = NextOpenBrace( un_text, closebrace1 );
     const size_t closebrace2 = MatchBrace( un_text, openbrace2 );
 
-    const std::string numstr( un_text.begin()+openbrace1+1,
+    const std::string numstr( un_text.begin() + openbrace1+1,
                               un_text.begin() + closebrace1 );
-    const std::string denstr( un_text.begin()+openbrace2+1,
+    const std::string denstr( un_text.begin() + openbrace2+1,
                               un_text.begin() + closebrace2 );
     ans += std::max( EstimateLatexWidth( numstr ),
       EstimateLatexWidth( denstr ) );
@@ -139,7 +149,17 @@ EstimateLatexWidth( const std::string& text )
   return ans;
 }
 
-// This will over estimate
+/**
+ * @brief Estimate of the height of a Latex string in 'em' units.
+ *
+ * A line with no special characters is expected to be a line height of ~1.08em
+ * (using the height ot the tallest regular character in ROOT: The asterisk). A
+ * few processes are taken for fractions, for which we assume double line height
+ * with some margin. One-line decorators (subscripts, supscripts and square
+ * roots, simply adds an offset. The only special character that will the taken
+ * care of would be the integral character (`#int`), which we assume to be 2em
+ * tall.
+ */
 double
 EstimateLatexHeight( const std::string& text )
 {
@@ -179,7 +199,6 @@ EstimateLatexHeight( const std::string& text )
   if( un_text.find( "#sqrt" ) != std::string::npos ){ ans += 0.22; }
   if( un_text.find( "^{" ) != std::string::npos ){ ans += 0.22; }
   if( un_text.find( "_{" ) != std::string::npos ){ ans += 0.22; }
-
 
   return ans;
 }

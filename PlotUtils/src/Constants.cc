@@ -18,7 +18,7 @@ namespace plt  {
 
 /**
  * Plotting length in ROOT is defined using pixels (usually), with the
- * conversion of pixels into printable formats using the old standard of 72DPI.
+ * conversion of pixels into printable formats using the old standard of 72 DPI.
  *
  * Here we provide functions for convert from printing units (inches, mm... etc),
  * to the standard ROOT length units, as well as commonly used dimension in
@@ -212,16 +212,16 @@ const std::string sim    = "Simulation";
 }/* cap  */
 
 /**
- * @details  Probably one of the worst offenders of magic number use, the that
- * of the styling variables. Unless you have memorised the contents of the
- * documentation, you would probably have no idea what someone else code is
- * doing to stylise the plots.
+ * @details  Probably one of the worst offenders of magic-number usage in @ROOT:
+ * that of the styling variables. Unless you have memorised the contents of the
+ * documentation, you would probably have no idea what someone else code is doing
+ * to stylise the plots.
  */
 namespace sty {
 
 /**
  * @{
- * @brief common settings used by @ROOT{TAttrFill}.
+ * @brief Predefined fill styles for @ROOT{TAttrFill}.
  * */
 const short fillnone      = 0;
 const short fillsolid     = 1001;
@@ -234,7 +234,11 @@ const short filldotsparse = 3003;
  * @brief  A human readable interface to hash-fill styles in @ROOT{TAttFill}.
  *
  * To be used with the distmm(), angle1(), and angle2() functions to make what
- * the hash is suppose to look like look more natural.
+ * the hash is suppose to look like look more natural. The call to a function
+ * would SetFillStyle Function would then be something like:
+ * ```
+ * myobject.SetFillStyle( fillhash(distmm(0.9), angle1(90), angle2(100)));
+ * ```
  *
  * @param  distance distance between hash lines
  * @param  angle1   angle of first hash lines

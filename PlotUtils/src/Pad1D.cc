@@ -137,6 +137,9 @@ Pad1D::SetLogy( int x )
   AutoSetYRange();
 }
 
+/**
+ * @brief Simple passthrough function
+ */
 void
 Pad1D::SetLogx( int x )
 {

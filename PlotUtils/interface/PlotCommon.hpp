@@ -67,24 +67,6 @@ public:
   AxisHist() const { return *AxisHistPtr(); }
 
   /**
-   * Making a Root object under the ownership of the RooPlot object.
-   * Using the variadic interface to allow for any sort of declaration type.
-   * @tparam ObjType The type of object you which to create (must be explicitly
-   *                 specified)
-   * @tparam Args    the arguments could be of any type nessesary.
-   * @param  args    any arguments required for a TObject inherited object.
-   * @return         Reference to the newly created object.
-   */
-  template<typename ObjType, typename ... Args>
-  ObjType&
-  MakeObj( Args ... args )
-  {
-    ObjType* ptr = new ObjType( args ... );
-    RooPlot::addObject( ptr );
-    return *ptr;
-  }
-
-  /**
    * Returning the last object plotted on the RooPlot object. Typically a
    * child class of TGraph, casting will fail if wrong type is passed.
    */
@@ -298,7 +280,6 @@ GetXmin( const TGraph& x  ){ return GetXmin( &x ); }
 extern double EstimateLatexWidth( const std::string& text );
 
 extern double EstimateLatexHeight( const std::string& text );
-
 
 }// plt
 

@@ -4,6 +4,14 @@ namespace usr {
 
 namespace plt {
 
+/**
+ * @detail Most of the colors are defined in:
+ * https://www.rapidtables.com/web/color/RGB_Color.html#color-table
+ *
+ * Which includes both British-English and American-English conventions of
+ * gray/grey. A few more standard colors used for CMS plots have also been
+ * defined.
+ */
 namespace col {
 
 extern const int maroon               = TColor::GetColor( "#800000" );

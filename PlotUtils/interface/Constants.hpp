@@ -142,16 +142,12 @@ extern const short mkropencross;
 extern const short mkropenstar;
 
 
-// Fill styles
 extern const short fillnone;
 extern const short fillsolid;
 extern const short filldotdense;
 extern const short filldot;
-extern const short filldotsparse;// all other fill styles are not defined.
+extern const short filldotsparse;
 
-// Fill style as defined in for TAttrFill.
-// Additional function will be added to make the function more readable:
-// fillhash(distmm(0.9),angle1(90),angle2(100))
 const short fillhash( unsigned short distance,
                       unsigned short angle1,
                       unsigned short angle2 );
@@ -175,8 +171,6 @@ extern const short linshortdash;
 
 /**
  * @brief Defining a more comprehensive list of colors
- *
- * The colors are defined in https://www.rapidtables.com/web/color/RGB_Color.html#color-table
  */
 namespace col
 {

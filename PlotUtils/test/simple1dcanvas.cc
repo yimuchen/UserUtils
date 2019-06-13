@@ -1,5 +1,5 @@
 /**
- * @file    pad1d_test.cc
+ * @file    simple1dcanvas.cc
  * @brief   Testing the simple 1d Canvas.
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
@@ -91,8 +91,6 @@ main( int argc, char* argv[] )
     c.DrawCMSLabel( "STACK TEST", "CWS" );
     c.DrawLuminosity( 133.7 );
     c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
-
-
 
     c.SaveAsPNG( "image/simple1dcanvas_stack.png",         72 );
     c.SaveAsPNG( "image/simple1dcanvas_stack_highres.png", 300 );

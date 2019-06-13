@@ -1,5 +1,5 @@
 /**
- * @file    ratiocanvas_test.cc
+ * @file    ratiocanvas.cc
  * @brief   Testing the default value settings of the ratiocanvas class
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */

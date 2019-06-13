@@ -1,3 +1,9 @@
+/**
+ * @file    latex.cc
+ * @brief   Testing the Latex dimesion estimation class. Also responsible for
+ *          generating the character width table in PlotCommon_Latex.cc
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else

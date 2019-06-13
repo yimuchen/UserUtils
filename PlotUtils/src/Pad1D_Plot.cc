@@ -567,6 +567,16 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
   return *ans;
 }
 
+
+//-------------------------------------------------------------------------------
+// Private Helper functions
+//-------------------------------------------------------------------------------
+
+/**
+ * @brief Helper function for generating RooAbsPdf plots onto a Pad.
+ *
+ * Throws and invalid_argument exception when the plotting call fails.
+ */
 TGraph&
 Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
 {
@@ -581,6 +591,11 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
   return _frame.LastPlot<TGraph>();
 }
 
+/**
+ * @brief Helper function for generating RooAbsData plots onto a Pad.
+ *
+ * Throws an invalid_argument exception when the plotting call fails.
+ */
 TGraphAsymmErrors&
 Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
 {
@@ -596,7 +611,12 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
   return _frame.LastPlot<TGraphAsymmErrors>();
 }
 
-/// Helper function
+/**
+ * @brief Automatically getting the TrackY option for a standalone TGraph is not
+ * specified.
+ *
+ * Details are given in the Pad1D::PlotGraph documentation
+ */
 int
 Pad1D::GraphTrackY( const RooArgContainer& arglist ) const
 {
@@ -625,6 +645,12 @@ Pad1D::GraphTrackY( const RooArgContainer& arglist ) const
   return TrackY::both;
 }
 
+/**
+ * @brief Changing the stored _datamin, and _datamax variable according to object
+ *
+ * Moving to a private helper function to reduce verbosity in main implementation
+ * function
+ */
 void
 Pad1D::TrackObjectY( const TObject& obj, const int tracky )
 {
@@ -660,13 +686,15 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
   AutoSetYRange();
 }
 
-
 }/* plt */
 
 }/* usr  */
 
+//-------------------------------------------------------------------------------
+// Static helper function
+//-------------------------------------------------------------------------------
 
-/// Static helper functions
+
 RooLinkedList
 MakeRooList( const usr::plt::RooArgContainer& arglist,
              const std::vector<std::string>&  exclude )

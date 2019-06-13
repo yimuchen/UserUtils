@@ -238,6 +238,13 @@ Ratio1DCanvas::PlotScale(
   return *ans;
 }
 
+/**
+ * @details
+ * Given a numerator histgram and denominator graph, this function generates the
+ * scale division results to the histogram/graph (see static method for details);
+ * and claims ownership of the newly generated histogram. The new histogram is
+ * then plotted on the bottom pad, with additional plotting method available.
+ */
 TH1D&
 Ratio1DCanvas::PlotScale(
   const TH1D&                   num,
@@ -294,6 +301,13 @@ Ratio1DCanvas::PlotScale(
   return *ans;
 }
 
+/**
+ * @details
+ * Given a numerator and denominator graph, this function generates the pull
+ * results to the two graphs (see static method for details); and claims
+ * ownership of the newly generated graph. The new graph is then plotted on the
+ * bottom pad, with additional plotting method available.
+ */
 TGraphAsymmErrors&
 Ratio1DCanvas::PlotPull(
   const TGraph&                 num,
@@ -318,7 +332,7 @@ Ratio1DCanvas::PlotPull(
 }
 
 /**
- * @brief dividing a histogram a/b by scaling the numerator by the denominator
+ * @brief dividing two histogram a/b by scaling the numerator by the denominator
  *
  * This function assumes that the numerator and denominator histogram objects
  * have identical binning. The bin content and the bin error of the numerator
@@ -358,6 +372,23 @@ Ratio1DCanvas::ScaleDivide(
   return ans;
 }
 
+/**
+ * @brief dividing a histogram by a graph. Calculated by scaling the numerator by
+ * the denominator
+ *
+ * This function determines the the denominator by getting the value of the graph
+ * at the bin center of the histogram. Uncertainties are also scaled by the same
+ * denominator value.
+ *
+ * If the bin content of the numerator or the denominator is 0, then the bin
+ * content of the resulting histogram would be set to the value cen (1) by
+ * default for aesthetic reasons.
+ *
+ * The output histogram would copy it's styling from the numerator histogram, and
+ * the user is responsible for handling the pointer ownership of the generated
+ * histogram.
+ */
+
 TH1D*
 Ratio1DCanvas::ScaleDivide(
   const TH1D*   num,
@@ -383,7 +414,6 @@ Ratio1DCanvas::ScaleDivide(
 
   return ans;
 }
-
 
 /**
  * @brief Dividing a graph by another graph by scaling the numerator by the
@@ -448,6 +478,19 @@ Ratio1DCanvas::ScaleDivide(
   return ans;
 }
 
+/**
+ * @brief Generating the pull diagram when comparing two graphs
+ *
+ * The resulting graph would have the following value:
+ * - gen.Y(x) = num.Y(x) - den.Y(x)
+ * - gen.ErrY(x) = num.ErrY(x) / den.ErrY(x)
+ * - gen.ErrX(x) = 0
+ *
+ * Interpolation is used on the denominator to obtain the error and value.
+ *
+ * In the special case that den.ErrY(x) is zero, gen.Y(x) is set to the cen value
+ * (defaults to 0 for aesthetic reasons).
+ */
 TGraphAsymmErrors*
 Ratio1DCanvas::PullDivide(
   const TGraph* num,

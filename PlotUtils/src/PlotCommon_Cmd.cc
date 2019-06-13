@@ -21,7 +21,7 @@ namespace plt {
  * @class RooArgContainer
  * @details We will not be using the @ROOT{RooLinkedList} class because
  * that has the issues of deleting the command objects after going out of
- * scope which has causes unintended cansequences.
+ * scope which causes unintended cansequences.
  */
 
 /**
@@ -72,7 +72,7 @@ RooArgContainer::Get( const std::string& name ) const
   return *iter;
 }
 
-// ------------------------------V---------------------------------------------//
+// ---------------------------------------------------------------------------//
 
 const std::string PlotUnder::CmdName = "PlotUnder";
 
@@ -90,7 +90,6 @@ PlotUnder::PlotUnder( const TObject* obj ):
     0,0, // char
     obj ){}
 
-
 // ---------------------------------------------------------------------------//
 
 /**
@@ -103,7 +102,6 @@ const std::string TrackY::CmdName = "TrackY";
  */
 TrackY::TrackY( const int i ) :
   RooCmdArg( CmdName.c_str(), i ){}
-
 
 // ---------------------------------------------------------------------------//
 
@@ -118,10 +116,7 @@ const std::string EntryText::CmdName = "EntryText";
 EntryText::EntryText( const std::string& str ) :
   RooCmdArg( CmdName.c_str(), 0, 0, 0, 0, str.c_str() ){}
 
-
-
 // ---------------------------------------------------------------------------//
-
 
 /**
  * @brief string for defining the RooCmdArg name
@@ -139,7 +134,6 @@ PlotType::PlotType( const int i ) :
  */
 PlotType::PlotType( const std::string& drawopt ) :
   RooCmdArg( CmdName.c_str(), plottype_dummy, 0, 0, 0, drawopt.c_str() ){}
-
 
 // ---------------------------------------------------------------------------//
 
