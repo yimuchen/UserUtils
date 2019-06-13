@@ -105,6 +105,7 @@ $(function() {
 <code>#include &quot;THStack.h&quot;</code><br />
 <code>#include &quot;TLegend.h&quot;</code><br />
 <code>#include &quot;TLine.h&quot;</code><br />
+<code>#include &quot;TProfile.h&quot;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div>
 <p><a href="Pad1D_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -113,9 +114,6 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html">usr::plt::Pad1D</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialized class for 1D data plotting.  <a href="classusr_1_1plt_1_1Pad1D.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structusr_1_1plt_1_1Pad1D_1_1legentry.html">usr::plt::Pad1D::legentry</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">simple class for storing legend entry.  <a href="structusr_1_1plt_1_1Pad1D_1_1legentry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -157,7 +155,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">RET_TYPE FUNC_NAME( TYPE&amp;, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt; &amp; );                \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE* x, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt; &amp;list ){   \</div><div class="line">    return FUNC_NAME( *x, list );                                             \</div><div class="line">  }                                                                           \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE&amp; x ){ <span class="keywordflow">return</span> FUNC_NAME( x, {} ); }          \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE* x ){ <span class="keywordflow">return</span> FUNC_NAME( x, {} ); }          \</div><div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                                 \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE&amp; x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ){ \</div><div class="line">    return FUNC_NAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) );           \</div><div class="line">  }                                                                           \</div><div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                                 \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE* x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ){ \</div><div class="line">    return FUNC_NAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) );           \</div><div class="line">  }</div></div><!-- fragment -->
+<b>Value:</b><div class="fragment"><div class="line">RET_TYPE FUNC_NAME( TYPE&amp;, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt; &amp; );                 \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE* x, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt; &amp;list ){    \</div><div class="line">    return FUNC_NAME( *x, list );                                              \</div><div class="line">  }                                                                            \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE&amp; x ){ <span class="keywordflow">return</span> FUNC_NAME( x, {} ); }           \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE* x ){ <span class="keywordflow">return</span> FUNC_NAME( x, {} ); }           \</div><div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                                  \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE&amp; x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ){ \</div><div class="line">    return FUNC_NAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) );            \</div><div class="line">  }                                                                            \</div><div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                                  \</div><div class="line">  inline RET_TYPE FUNC_NAME( TYPE* x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ){ \</div><div class="line">    return FUNC_NAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) );            \</div><div class="line">  }</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

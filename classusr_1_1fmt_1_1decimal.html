@@ -97,12 +97,12 @@ Inheritance diagram for usr::fmt::decimal:</div>
   </map>
 </div></div>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>decimal representation of a measurement with uncertainties. If the precision is set to negative, the precision is automatically <a class="el" href="classusr_1_1fmt_1_1decimal.html#a9dc11b667e066fbd2d68925de413a627">determined</a> </p>
+<div class="textblock"><p>decimal representation of a measurement with uncertainties. If the precision is set to negative, the precision is automatically [determined](<a class="el" href="classusr_1_1fmt_1_1decimal.html#a9dc11b667e066fbd2d68925de413a627">usr::fmt::decimal::SetPrecision()</a>) </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9e9d18860fffb5bc18a892a534316666"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1fmt_1_1decimal.html#a9e9d18860fffb5bc18a892a534316666">decimal</a> (const double input, const int <a class="el" href="classusr_1_1fmt_1_1decimal.html#ab99299f685b4cc4212505697045f7dbc">precision</a>=-base::precision_default)</td></tr>
-<tr class="memdesc:a9e9d18860fffb5bc18a892a534316666"><td class="mdescLeft">&#160;</td><td class="mdescRight">reimplementing a double input such that a common interface could be achieved.  <a href="#a9e9d18860fffb5bc18a892a534316666">More...</a><br /></td></tr>
+<tr class="memdesc:a9e9d18860fffb5bc18a892a534316666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-implementing a double input for common fmt interface.  <a href="#a9e9d18860fffb5bc18a892a534316666">More...</a><br /></td></tr>
 <tr class="separator:a9e9d18860fffb5bc18a892a534316666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae495833546bef18778ab7dc3a99102af"><td class="memItemLeft" align="right" valign="top"><a id="ae495833546bef18778ab7dc3a99102af"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1fmt_1_1decimal.html#ae495833546bef18778ab7dc3a99102af">decimal</a> (const <a class="el" href="classusr_1_1Measurement.html">Measurement</a> &amp;input, const int <a class="el" href="classusr_1_1fmt_1_1decimal.html#ab99299f685b4cc4212505697045f7dbc">precision</a>=-base::precision_default)</td></tr>
@@ -201,7 +201,7 @@ unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>_spacesep</b></td
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This construction means that the measreument without uncertainty would output the same values as if using a double. </p>
+<p>This construction means that the measurement without uncertainty would output the same values as if using a double. </p>
 
 </div>
 </div>
@@ -254,7 +254,7 @@ unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>_spacesep</b></td
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Note that this function essentially calles the <a class="el" href="classusr_1_1fmt_1_1base_1_1decimal.html" title="decimal representation of double.">base::decimal</a> methods for creating the string representation of a double three times, meaning that if the cental value and uncertainties are of wildly different orders of maganitude, the output could look very weird. </p>
+<p>Note that this function essentially calls the <a class="el" href="classusr_1_1fmt_1_1base_1_1decimal.html" title="decimal representation of double.">base::decimal</a> methods for creating the string representation of a double three times, meaning that if the central value and uncertainties are of wildly different orders of magnitude, the output could look very weird. </p>
 
 <p>Implements <a class="el" href="classusr_1_1fmt_1_1base_1_1format.html#acd5a08ed3dc48513e67c08d644e83da2">usr::fmt::base::format</a>.</p>
 

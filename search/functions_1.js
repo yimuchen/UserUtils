@@ -6,7 +6,7 @@ var searchData=
   ['abswidth',['AbsWidth',['../classusr_1_1plt_1_1PadBase.html#a3d48f1274d7ff9716d9e28558b955513',1,'usr::plt::PadBase']]],
   ['add',['Add',['../classusr_1_1plt_1_1Canvas.html#acd1af0d0a352883eca44de60c7f042d9',1,'usr::plt::Canvas']]],
   ['adddirscheme',['AddDirScheme',['../classusr_1_1ArgumentExtender.html#a81f81101f996c04f0738f28237a37826',1,'usr::ArgumentExtender::AddDirScheme(const ArgPathScheme &amp;)'],['../classusr_1_1ArgumentExtender.html#a01b49bea2f25e31e381baa20d311ce37',1,'usr::ArgumentExtender::AddDirScheme(const PathScheme &amp;)']]],
-  ['addlegendentry',['AddLegendEntry',['../classusr_1_1plt_1_1Pad1D.html#a1b01eaa9907b811a44e379b54c007a7d',1,'usr::plt::Pad1D::AddLegendEntry(TH1D &amp;, const std::string &amp;, const RooCmdArg &amp;)'],['../classusr_1_1plt_1_1Pad1D.html#a5af4540494edcc8c1d7464514516487d',1,'usr::plt::Pad1D::AddLegendEntry(TGraph &amp;, const std::string &amp;, const RooCmdArg &amp;)']]],
+  ['addlegendentry',['AddLegendEntry',['../classusr_1_1plt_1_1Pad1D.html#a13cd70b45b61ba135afa77eae787adc7',1,'usr::plt::Pad1D::AddLegendEntry(TObject &amp;, const std::string &amp;title, const std::string &amp;format)'],['../classusr_1_1plt_1_1Pad1D.html#a1b01eaa9907b811a44e379b54c007a7d',1,'usr::plt::Pad1D::AddLegendEntry(TH1D &amp;, const std::string &amp;, const RooCmdArg &amp;)'],['../classusr_1_1plt_1_1Pad1D.html#a5af4540494edcc8c1d7464514516487d',1,'usr::plt::Pad1D::AddLegendEntry(TGraph &amp;, const std::string &amp;, const RooCmdArg &amp;)']]],
   ['addlorentzvector',['AddLorentzVector',['../group__extendedvar.html#ga1c8259156309ee5cd6f565f72ca11a24',1,'usr']]],
   ['addnamescheme',['AddNameScheme',['../classusr_1_1ArgumentExtender.html#a09635a5b1a610e1831e68ae915767906',1,'usr::ArgumentExtender::AddNameScheme(const ArgPathScheme &amp;)'],['../classusr_1_1ArgumentExtender.html#afd68ab83d9ecae7a490540c41e9af7a5',1,'usr::ArgumentExtender::AddNameScheme(const PathScheme &amp;)']]],
   ['addoptions',['AddOptions',['../classusr_1_1ArgumentExtender.html#aa3527a9bf8ec6156a76ddfafe3deb86f',1,'usr::ArgumentExtender']]],
@@ -23,6 +23,6 @@ var searchData=
   ['autosetyrangehist',['AutoSetYRangeHist',['../classusr_1_1plt_1_1Pad1D.html#ac2b18db0d1bf7925ddbef5f2d64f55a1',1,'usr::plt::Pad1D']]],
   ['autosetyrangepull',['AutoSetYRangePull',['../classusr_1_1plt_1_1Pad1D.html#a1f89f62fc327fb3da36e549e392699c0',1,'usr::plt::Pad1D']]],
   ['autosetyrangeratio',['AutoSetYRangeRatio',['../classusr_1_1plt_1_1Pad1D.html#a037acd167dddd7224e486eea6e94dcb4',1,'usr::plt::Pad1D']]],
-  ['axishist',['AxisHist',['../classusr_1_1plt_1_1RooFrame.html#a5a3cdf9fbedf2fa8beb7b0db9edfc65b',1,'usr::plt::RooFrame']]],
-  ['axishistptr',['AxisHistPtr',['../classusr_1_1plt_1_1RooFrame.html#a8e92555923626bf6ad78e8bb300f8e4b',1,'usr::plt::RooFrame']]]
+  ['axishist',['AxisHist',['../classusr_1_1plt_1_1RooFrame.html#a5a3cdf9fbedf2fa8beb7b0db9edfc65b',1,'usr::plt::RooFrame::AxisHist()'],['../classusr_1_1plt_1_1RooFrame.html#ad0930853951ab1618cc82b6685be456c',1,'usr::plt::RooFrame::AxisHist() const']]],
+  ['axishistptr',['AxisHistPtr',['../classusr_1_1plt_1_1RooFrame.html#a8e92555923626bf6ad78e8bb300f8e4b',1,'usr::plt::RooFrame::AxisHistPtr()'],['../classusr_1_1plt_1_1RooFrame.html#a27fc9f3438907cd2aed1fc5f95b1e2db',1,'usr::plt::RooFrame::AxisHistPtr() const']]]
 ];

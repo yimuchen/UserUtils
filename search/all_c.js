@@ -1,17 +1,21 @@
 var searchData=
 [
   ['makebottomaxis',['MakeBottomAxis',['../classusr_1_1plt_1_1Ratio1DCanvas.html#a9b296377762b217b3e1a77b711121069',1,'usr::plt::Ratio1DCanvas']]],
+  ['makedatagraph',['MakeDataGraph',['../classusr_1_1plt_1_1Pad1D.html#ae475e3f98744af74f5311d7e9bc8b084',1,'usr::plt::Pad1D']]],
   ['makefile',['MakeFile',['../classusr_1_1ArgumentExtender.html#acdbbf38059793c4babfc5c54f54f068c',1,'usr::ArgumentExtender']]],
-  ['makelegend',['MakeLegend',['../classusr_1_1plt_1_1Pad1D.html#ae5bf698047480ab133b6738cc075d787',1,'usr::plt::Pad1D::MakeLegend()'],['../classusr_1_1plt_1_1Pad2DFlat.html#ad0435c1cfaa9764a37a9acaae5461eb3',1,'usr::plt::Pad2DFlat::MakeLegend()']]],
+  ['makelegend',['MakeLegend',['../classusr_1_1plt_1_1Pad2DFlat.html#ad0435c1cfaa9764a37a9acaae5461eb3',1,'usr::plt::Pad2DFlat']]],
   ['makeminos',['MakeMinos',['../group__StatUtils.html#gad3a18332279c800cf70994730ed4369e',1,'usr::MakeMinos(gsl_function *nll, const double initguess, const double min, const double max, const double confidencelevel)'],['../group__StatUtils.html#ga219a61ad08524fa8ad7e212c7007c99e',1,'usr::MakeMinos(usr::gsl::gsl_multifunc *nll, usr::gsl::gsl_multifunc *varfunction, gsl_vector *initguess, const double confidencelevel, gsl_vector *upperguess, gsl_vector *lowerguess)']]],
-  ['makeobj',['MakeObj',['../classusr_1_1plt_1_1RooFrame.html#a8dc4d98e0effed4f5fc5451df815300d',1,'usr::plt::RooFrame']]],
+  ['makeobj',['MakeObj',['../classusr_1_1plt_1_1PadBase.html#afdd68ff347ca1e8e2f213913576aa001',1,'usr::plt::PadBase']]],
   ['makeparent',['MakeParent',['../group__filesys.html#ga4b6764b80c87c7cfbf24f2b95f6f4d8e',1,'usr']]],
   ['makepdffile',['MakePDFFile',['../classusr_1_1ArgumentExtender.html#ad3a4a2d1abc35f9c21d01bd64d0c19e0',1,'usr::ArgumentExtender']]],
+  ['makepdfgraph',['MakePdfGraph',['../classusr_1_1plt_1_1Pad1D.html#a9d4ce99e1ffd88c5221601096dd899b1',1,'usr::plt::Pad1D']]],
   ['makepngfile',['MakePNGFile',['../classusr_1_1ArgumentExtender.html#aa71e1c6fe8f1cc2e5b210faca42f0083',1,'usr::ArgumentExtender']]],
   ['makequerystring',['MakeQueryString',['../group__ptreeutils.html#gad82b45677d5603ba785ccf308fc3422e',1,'usr::MakeQueryString(const std::vector&lt; std::string &gt; &amp;list)'],['../group__ptreeutils.html#ga3ae24d0afe1c69a8c80f087832c3d6a7',1,'usr::MakeQueryString(const std::string &amp;x, TS ... args)']]],
   ['maketexfile',['MakeTEXFile',['../classusr_1_1ArgumentExtender.html#a15b7f6cd63e25c3a2153750da6bdb8d1',1,'usr::ArgumentExtender']]],
+  ['maketf1graph',['MakeTF1Graph',['../classusr_1_1plt_1_1Pad1D.html#a75a77f21450b22c4f2f72ff41bf38a06',1,'usr::plt::Pad1D']]],
   ['maketxtfile',['MakeTXTFile',['../classusr_1_1ArgumentExtender.html#a42bc4dc1f8d368a8b7c9af11abf1e95f',1,'usr::ArgumentExtender']]],
   ['makevector',['MakeVector',['../group__VecUtils.html#ga0b48acfb60ec6f691f244db53f13213f',1,'usr::MakeVector(const ARGTYPE &amp;first, const VARTYPE &amp;... arg)'],['../group__VecUtils.html#ga68b8cbffbc5db818eadbaab5f2f50dc5',1,'usr::MakeVector(const ARGTYPE &amp;first)']]],
+  ['matchbrace',['MatchBrace',['../group__StringUtils.html#ga68f0d6df365265569822db34bd32ee78',1,'usr']]],
   ['matchtrgobj',['MatchTrgObj',['../group__triggermatching.html#ga1b5ec85126e10b3878a4d4b7bac4684e',1,'usr']]],
   ['miscellaneous_20maths_20functions_2e',['Miscellaneous maths functions.',['../group__mathmisc.html',1,'']]],
   ['maths_2ecc',['Maths.cc',['../Maths_8cc.html',1,'']]],
@@ -52,6 +56,7 @@ var searchData=
   ['mkrtriangledown',['mkrtriangledown',['../group__PlotUtilsConvert.html#gaf5b7f679bda4ce2ffd207d7fa5874450',1,'usr::plt::sty']]],
   ['mkrtriangleup',['mkrtriangleup',['../group__PlotUtilsConvert.html#ga473366bf20fc20a0fffd750ebb56ba89',1,'usr::plt::sty']]],
   ['mm',['mm',['../group__PlotUtilsConvert.html#ga2cc3e4b4cf1785ef216f35b8e2d91136',1,'usr::plt::len']]],
+  ['movetargettobefore',['MoveTargetToBefore',['../classusr_1_1plt_1_1PadBase.html#a82374297b57c2aea6b07d552e9b78338',1,'usr::plt::PadBase']]],
   ['muonvars_2ecc',['MuonVars.cc',['../MuonVars_8cc.html',1,'']]],
   ['math_20with_20concrete_20types_2e',['Math with concrete types.',['../group__STLMaths.html',1,'']]]
 ];

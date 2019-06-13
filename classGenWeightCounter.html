@@ -89,15 +89,15 @@ Inheritance diagram for GenWeightCounter:</div>
  <div class="center">
   <img src="classGenWeightCounter.png" usemap="#GenWeightCounter_map" alt=""/>
   <map id="GenWeightCounter_map" name="GenWeightCounter_map">
-<area href="classusr_1_1PluginAlias.html" title="class for reducting the verbosity of the various edm plugin calls." alt="usr::PluginAlias" shape="rect" coords="426,56,842,80"/>
+<area href="classusr_1_1PluginAlias.html" title="class for reducing the verbosity of the various edm plugin calls." alt="usr::PluginAlias" shape="rect" coords="426,56,842,80"/>
   </map>
 </div></div>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Addtional examples of how to allow a edm plugins to process run/lumi level production coudl be found in the CMSSW <a href="http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_10_1_7/doc/html/d0/d83/EventCountProducer_8cc_source.html">EventCountProducer</a> Class.</p>
+<div class="textblock"><p>Additional examples of how to allow a edm plugins to process run/lumi level production could be found in the CMSSW <a href="http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_10_1_7/doc/html/d0/d83/EventCountProducer_8cc_source.html">EventCountProducer</a> Class.</p>
 <p>The rational of this class is that the sum-of-weights is frequently used for calculating the selection efficiency and for isolating the impacts of generator uncertainties (PDF and QCD scale) on acceptance and theoretical cross sections.</p>
-<p>As the framework is setup such that run-level data can only be accessed at the end fo the run, the user must define the weight families that needs to be summed in the parameter set with the type <code>vint32</code> and under the name "idlist". Weights listed in EDM files under the specified id's would first be be divided by the weight under the central ID (i.e. the first id in the provided list, then the normalised weights would be summed and stored at cache level.</p>
-<p>One nuance that needs to be taken care of is the sign of the weights, since using negative weights is a common statergy to correct for higher order behaviours. The "divide" operation described earlier would only scale by the absolute value of the central weight, leaving the sign of the various weights untouched.</p>
-<p>Note that in the case that the user provides the weight id of 0, the input file is assumed to be for data, and the sum of events will be calculated instead (no addtional PDF/QCD weights would be calculated).</p>
+<p>As the framework is setup such that run-level data can only be accessed at the end fo the run, the user must define the weight families that needs to be summed in the parameter set with the type <code>vint32</code> and under the name "idlist". Weights listed in EDM files under the specified id's would first be be divided by the weight under the central ID (i.e. the first id in the provided list, then the normalized weights would be summed and stored at cache level.</p>
+<p>One nuance that needs to be taken care of is the sign of the weights, since using negative weights is a common strategy to correct for higher order behaviours. The "divide" operation described earlier would only scale by the absolute value of the central weight, leaving the sign of the various weights untouched.</p>
+<p>Note that in the case that the user provides the weight id of 0, the input file is assumed to be for data, and the sum of events will be calculated instead (no additional PDF/QCD weights would be calculated).</p>
 <p>For reading the outputs of this plugin, read the deatiled sections of the constructor. </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -144,12 +144,12 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_classusr_1_1PluginAlias"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classusr_1_1PluginAlias')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classusr_1_1PluginAlias.html">usr::PluginAlias</a></td></tr>
 <tr class="memitem:a4d206b103b9118cde4132222e769c01e inherit pro_methods_classusr_1_1PluginAlias"><td class="memTemplParams" colspan="2">template&lt;typename TYPE &gt; </td></tr>
 <tr class="memitem:a4d206b103b9118cde4132222e769c01e inherit pro_methods_classusr_1_1PluginAlias"><td class="memTemplItemLeft" align="right" valign="top">edm::EDGetToken&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1PluginAlias.html#a4d206b103b9118cde4132222e769c01e">GetToken</a> (const std::string &amp;configtag)</td></tr>
-<tr class="memdesc:a4d206b103b9118cde4132222e769c01e inherit pro_methods_classusr_1_1PluginAlias"><td class="mdescLeft">&#160;</td><td class="mdescRight">template class for getting the EdmToken from the initlializor configuration parameter set.  <a href="classusr_1_1PluginAlias.html#a4d206b103b9118cde4132222e769c01e">More...</a><br /></td></tr>
+<tr class="memdesc:a4d206b103b9118cde4132222e769c01e inherit pro_methods_classusr_1_1PluginAlias"><td class="mdescLeft">&#160;</td><td class="mdescRight">template class for getting the EdmToken from the initializer configuration parameter set.  <a href="classusr_1_1PluginAlias.html#a4d206b103b9118cde4132222e769c01e">More...</a><br /></td></tr>
 <tr class="separator:a4d206b103b9118cde4132222e769c01e inherit pro_methods_classusr_1_1PluginAlias"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9bf41018d012b5520d00a1ef959b491 inherit pro_methods_classusr_1_1PluginAlias"><td class="memTemplParams" colspan="2"><a id="ae9bf41018d012b5520d00a1ef959b491"></a>
 template&lt;typename TYPE &gt; </td></tr>
 <tr class="memitem:ae9bf41018d012b5520d00a1ef959b491 inherit pro_methods_classusr_1_1PluginAlias"><td class="memTemplItemLeft" align="right" valign="top">edm::EDGetToken&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1PluginAlias.html#ae9bf41018d012b5520d00a1ef959b491">GetRunToken</a> (const std::string &amp;configtag)</td></tr>
-<tr class="memdesc:ae9bf41018d012b5520d00a1ef959b491 inherit pro_methods_classusr_1_1PluginAlias"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same template function as <a class="el" href="classusr_1_1PluginAlias.html#a4d206b103b9118cde4132222e769c01e" title="template class for getting the EdmToken from the initlializor configuration parameter set.">GetToken()</a> except for getting Run level objects. <br /></td></tr>
+<tr class="memdesc:ae9bf41018d012b5520d00a1ef959b491 inherit pro_methods_classusr_1_1PluginAlias"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same template function as <a class="el" href="classusr_1_1PluginAlias.html#a4d206b103b9118cde4132222e769c01e" title="template class for getting the EdmToken from the initializer configuration parameter set.">GetToken()</a> except for getting Run level objects. <br /></td></tr>
 <tr class="separator:ae9bf41018d012b5520d00a1ef959b491 inherit pro_methods_classusr_1_1PluginAlias"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bbe23e50cb2288c761a7462a03570ad inherit pro_methods_classusr_1_1PluginAlias"><td class="memItemLeft" align="right" valign="top"><a id="a9bbe23e50cb2288c761a7462a03570ad"></a>
 TObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1PluginAlias.html#a9bbe23e50cb2288c761a7462a03570ad">GetFileObj</a> (const std::string &amp;filetag, const std::string objtag)</td></tr>
@@ -157,7 +157,7 @@ TObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="separator:a9bbe23e50cb2288c761a7462a03570ad inherit pro_methods_classusr_1_1PluginAlias"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a218ebfc8a02167caf2d0bd2c755cff2c inherit pro_methods_classusr_1_1PluginAlias"><td class="memItemLeft" align="right" valign="top"><a id="a218ebfc8a02167caf2d0bd2c755cff2c"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1PluginAlias.html#a218ebfc8a02167caf2d0bd2c755cff2c">GetFilePath</a> (const std::string &amp;filetag)</td></tr>
-<tr class="memdesc:a218ebfc8a02167caf2d0bd2c755cff2c inherit pro_methods_classusr_1_1PluginAlias"><td class="mdescLeft">&#160;</td><td class="mdescRight">getting the full path to a file. See staic function for full documentation. <br /></td></tr>
+<tr class="memdesc:a218ebfc8a02167caf2d0bd2c755cff2c inherit pro_methods_classusr_1_1PluginAlias"><td class="mdescLeft">&#160;</td><td class="mdescRight">getting the full path to a file. See static function for full documentation. <br /></td></tr>
 <tr class="separator:a218ebfc8a02167caf2d0bd2c755cff2c inherit pro_methods_classusr_1_1PluginAlias"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_classusr_1_1PluginAlias"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classusr_1_1PluginAlias')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classusr_1_1PluginAlias.html">usr::PluginAlias</a></td></tr>
 <tr class="memitem:ad24a93fe45ed6d985995d987064e8bda inherit pro_static_methods_classusr_1_1PluginAlias"><td class="memItemLeft" align="right" valign="top"><a id="ad24a93fe45ed6d985995d987064e8bda"></a>
@@ -194,8 +194,8 @@ static TObject *&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </table>
 </div><div class="memdoc">
 <p>The parameterset passed to the plugins requires two things:</p><ul>
-<li>an input tag telling the plugin where to extract the lhe information</li>
-<li>an vint32 telling the plugin which weight variation to take into calculation. If you unsure which weight variations you should use, see <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideDataFormatGeneratorInterface">this page</a> for more information. If you unsure which weight varitions is contained in your edm file, consider the <a class="el" href="DumpLHERunInfo_8cc.html">DumpLHERunInfo</a> command provided by yours truely.</li>
+<li>An input tag telling the plugin where to extract the lhe information</li>
+<li>A <code>vint32</code> telling the plugin which weight variation to take into calculation. If you unsure which weight variations you should use, see <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideDataFormatGeneratorInterface">this page</a> for more information. If you unsure which weight variations is contained in your edm file, consider the <a class="el" href="DumpLHERunInfo_8cc.html">DumpLHERunInfo</a> command provided by yours truly.</li>
 </ul>
 <p>The output is stored in the form of the new <a class="el" href="classusr_1_1Counter.html" title="Class exposed to the EDM ROOT framework to allow for run-level caching.">usr::Counter</a> class in the run level, under the name "EventsCount" (for the simple sum of events), and the "WeightSum&lt;id&gt;" for the sum-of-weight of a specific variation. </p>
 

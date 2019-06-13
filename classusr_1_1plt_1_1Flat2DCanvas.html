@@ -97,9 +97,12 @@ Inheritance diagram for usr::plt::Flat2DCanvas:</div>
 </div></div>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classusr_1_1plt_1_1Flat2DCanvas.html" title="Canvas containing a single 2D pad.">Flat2DCanvas</a> class is a canvas containing exactly <a class="el" href="classusr_1_1plt_1_1Pad2DFlat.html" title="Specialized class for 2D data object representation in x-y plane projections.">Pad2DFlat</a> instance. Its member functions are generated such that it looks like a users plotting calls are directly performed on the canvas, greatly simplifying the plotting process.</p>
-<p>This class is designed as a preset for simple data plotting, with the margin, dimension and font defaults tuned to produce decent, publication ready plots with minimal amount of user code.</p>
-<p>The following are a few examples of plotting using the <a class="el" href="classusr_1_1plt_1_1Flat2DCanvas.html" title="Canvas containing a single 2D pad.">Flat2DCanvas</a> (with the style/color settings and data filling code removed) </p>
-</div><table class="memberdecls">
+<p>The pad assumes that the plotted objects would be fill up the main axis frame, hence the choice of the CMS labels and luminosity labels being placed both outside the main axis frame. The legend and other text, should therefore be placed on the left of the main canvas.</p>
+<p>The following are a few examples of plotting using the <a class="el" href="classusr_1_1plt_1_1Flat2DCanvas.html" title="Canvas containing a single 2D pad.">Flat2DCanvas</a> (with the style/color settings and data filling code removed)</p>
+<div class="fragment"><div class="line"> {c++}</div><div class="line"><a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html">usr::plt::Flat2DCanvas</a> c;</div><div class="line"></div><div class="line"><span class="keyword">auto</span>&amp; gh = c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#ab2daeaef37f0986a7b75c1c7d975125a">PlotHist</a>( hist,</div><div class="line">  <a class="code" href="classusr_1_1plt_1_1Plot2DF.html">usr::plt::Plot2DF</a>( usr::plt::heat ) );</div><div class="line"><span class="keyword">auto</span>&amp; gf1 = c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#ae014601c06fdc62a80a2de05b3ded3a0">PlotFunc</a>( xyg,</div><div class="line">  <a class="code" href="classusr_1_1plt_1_1Plot2DF.html">usr::plt::Plot2DF</a>( usr::plt::cont ),</div><div class="line">  <a class="code" href="classusr_1_1plt_1_1EntryText.html">usr::plt::EntryText</a>( <span class="stringliteral">&quot;Model 1&quot;</span> )</div><div class="line">  );</div><div class="line"><span class="keyword">auto</span>&amp; gf2 = c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#ae014601c06fdc62a80a2de05b3ded3a0">PlotFunc</a>( xyg2,</div><div class="line">  <a class="code" href="classusr_1_1plt_1_1Plot2DF.html">usr::plt::Plot2DF</a>( usr::plt::cont ),</div><div class="line">  <a class="code" href="classusr_1_1plt_1_1EntryText.html">usr::plt::EntryText</a>( <span class="stringliteral">&quot;Model 2&quot;</span> )</div><div class="line">  );</div><div class="line"></div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#a6153c3ddeb068d9d4df79d4ab6b4b3e2">DrawCMSLabel</a>(<span class="stringliteral">&quot;2D plotting&quot;</span>, <span class="stringliteral">&quot;CWS&quot;</span> );</div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#a786106e8fd2ad892ab8be1e571b226cf">DrawLuminosity</a>( 133.7 );</div><div class="line"></div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#a90a30439c307be41273d2f51e15f55e1">Xaxis</a>().SetTitle( <span class="stringliteral">&quot;My X value&quot;</span> );</div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#a2df941a2e957c1deae8cf3908ad532a3">Yaxis</a>().SetTitle( <span class="stringliteral">&quot;My y value&quot;</span> );</div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#a0a99eb2c36332e3ba68f19c5f8729305">Zaxis</a>().SetTitle( <span class="stringliteral">&quot;Readout&quot;</span> );</div><div class="line"></div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Canvas.html#a2e014c6c79f6662acf19fa35230fc3d3">SaveAsPNG</a>( <span class="stringliteral">&quot;image/flat2dcanvas.png&quot;</span> , 72 );</div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Canvas.html#a2e014c6c79f6662acf19fa35230fc3d3">SaveAsPNG</a>( <span class="stringliteral">&quot;image/flat2dcanvas_highres.png&quot;</span> , 300 );</div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Canvas.html#adb1bdab94cec694db825eb1e085e7c67">SaveAsPDF</a>( <span class="stringliteral">&quot;image/flat2dcanvas.pdf&quot;</span> );</div></div><!-- fragment --><div class="image">
+<img src="flat2dcanvas.png" alt="flat2dcanvas.png"/>
+</div>
+ </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a848f11383a0e771901ce29058ffa7759"><td class="memItemLeft" align="right" valign="top"><a id="a848f11383a0e771901ce29058ffa7759"></a>
@@ -110,6 +113,15 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="classusr_1_1plt_1_1Pad2DFlat.html">Pad2DFlat</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Flat2DCanvas.html#a6d58608ae57abafc59b584fa03120861">Pad</a> ()</td></tr>
 <tr class="memdesc:a6d58608ae57abafc59b584fa03120861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning reference to the underlying <a class="el" href="classusr_1_1plt_1_1Pad2DFlat.html" title="Specialized class for 2D data object representation in x-y plane projections.">Pad2DFlat</a> instance. <br /></td></tr>
 <tr class="separator:a6d58608ae57abafc59b584fa03120861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e3318b18ddf11492e0c9e79f88f8cee"><td class="memItemLeft" align="right" valign="top"><a id="a7e3318b18ddf11492e0c9e79f88f8cee"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLogx</b> (int x=1)</td></tr>
+<tr class="separator:a7e3318b18ddf11492e0c9e79f88f8cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedb07aa13fd23c91b506b0d4925c4aa2"><td class="memItemLeft" align="right" valign="top"><a id="aedb07aa13fd23c91b506b0d4925c4aa2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLogy</b> (int x=1)</td></tr>
+<tr class="separator:aedb07aa13fd23c91b506b0d4925c4aa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76d5f3fe8054ba64321ca65943b3691a"><td class="memItemLeft" align="right" valign="top"><a id="a76d5f3fe8054ba64321ca65943b3691a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLogz</b> (int x=1)</td></tr>
+<tr class="separator:a76d5f3fe8054ba64321ca65943b3691a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ab2daeaef37f0986a7b75c1c7d975125a"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
 <tr class="memitem:ab2daeaef37f0986a7b75c1c7d975125a"><td class="memTemplItemLeft" align="right" valign="top">TH2D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Flat2DCanvas.html#ab2daeaef37f0986a7b75c1c7d975125a">PlotHist</a> (TH2D &amp;obj, Args ... args)</td></tr>
@@ -507,8 +519,8 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="ab2daeaef37f0986a7b75c1c7d975125a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2daeaef37f0986a7b75c1c7d975125a">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[1/2]</span></h2>
+<a id="a5fcb1a8b3e07d150273be877d5ada380"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fcb1a8b3e07d150273be877d5ada380">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -521,7 +533,7 @@ template&lt;typename ... Args&gt; </div>
         <tr>
           <td class="memname">TH2D&amp; usr::plt::Flat2DCanvas::PlotHist </td>
           <td>(</td>
-          <td class="paramtype">TH2D &amp;&#160;</td>
+          <td class="paramtype">TH2D *&#160;</td>
           <td class="paramname"><em>obj</em>, </td>
         </tr>
         <tr>
@@ -546,8 +558,8 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="a5fcb1a8b3e07d150273be877d5ada380"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fcb1a8b3e07d150273be877d5ada380">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[2/2]</span></h2>
+<a id="ab2daeaef37f0986a7b75c1c7d975125a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2daeaef37f0986a7b75c1c7d975125a">&#9670;&nbsp;</a></span>PlotHist() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -560,7 +572,7 @@ template&lt;typename ... Args&gt; </div>
         <tr>
           <td class="memname">TH2D&amp; usr::plt::Flat2DCanvas::PlotHist </td>
           <td>(</td>
-          <td class="paramtype">TH2D *&#160;</td>
+          <td class="paramtype">TH2D &amp;&#160;</td>
           <td class="paramname"><em>obj</em>, </td>
         </tr>
         <tr>

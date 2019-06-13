@@ -112,6 +112,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a83e17a1d972bde423f8f6478c6524861"><td class="memItemLeft" align="right" valign="top"><a id="a83e17a1d972bde423f8f6478c6524861"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PadBase</b> (const <a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;)=delete</td></tr>
 <tr class="separator:a83e17a1d972bde423f8f6478c6524861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45c672761e10f3ed026f3a1449ef7af"><td class="memItemLeft" align="right" valign="top"><a id="ac45c672761e10f3ed026f3a1449ef7af"></a>
+<a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#ac45c672761e10f3ed026f3a1449ef7af">SetTextAlign</a> (const <a class="el" href="classusr_1_1plt_1_1font.html#a0356629488473f96e1de978c9180ef2a">font::align</a>)</td></tr>
+<tr class="memdesc:ac45c672761e10f3ed026f3a1449ef7af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually setting text alignment options. <br /></td></tr>
+<tr class="separator:ac45c672761e10f3ed026f3a1449ef7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf916e59451a713c9741d327bb0b24d3"><td class="memItemLeft" align="right" valign="top"><a id="aaf916e59451a713c9741d327bb0b24d3"></a>
 <a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#aaf916e59451a713c9741d327bb0b24d3">WriteAtData</a> (const double, const double, const std::string &amp;)</td></tr>
 <tr class="memdesc:aaf916e59451a713c9741d327bb0b24d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writing latex text at data point. <br /></td></tr>
@@ -129,6 +133,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasObject</b> (const 
 <tr class="memitem:aef06c023448e3c1be9f4e7396acfd08c"><td class="memItemLeft" align="right" valign="top"><a id="aef06c023448e3c1be9f4e7396acfd08c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasObject</b> (const TObject *obj) const</td></tr>
 <tr class="separator:aef06c023448e3c1be9f4e7396acfd08c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdd68ff347ca1e8e2f213913576aa001"><td class="memTemplParams" colspan="2">template&lt;typename ObjType , typename ... Args&gt; </td></tr>
+<tr class="memitem:afdd68ff347ca1e8e2f213913576aa001"><td class="memTemplItemLeft" align="right" valign="top">ObjType &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#afdd68ff347ca1e8e2f213913576aa001">MakeObj</a> (Args ... args)</td></tr>
+<tr class="separator:afdd68ff347ca1e8e2f213913576aa001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37f415006d7b9cf246deb14e0f79f7a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a37f415006d7b9cf246deb14e0f79f7a4">ClaimObject</a> (TObject *)</td></tr>
+<tr class="memdesc:a37f415006d7b9cf246deb14e0f79f7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allowing the Pad to claim ownership of some plot object.  <a href="#a37f415006d7b9cf246deb14e0f79f7a4">More...</a><br /></td></tr>
+<tr class="separator:a37f415006d7b9cf246deb14e0f79f7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82374297b57c2aea6b07d552e9b78338"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a82374297b57c2aea6b07d552e9b78338">MoveTargetToBefore</a> (const TObject &amp;target, const TObject &amp;before)</td></tr>
+<tr class="memdesc:a82374297b57c2aea6b07d552e9b78338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moving a target object to before another object on the TPad.  <a href="#a82374297b57c2aea6b07d552e9b78338">More...</a><br /></td></tr>
+<tr class="separator:a82374297b57c2aea6b07d552e9b78338"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:afbfabf6fb1a2a1df860d5555c4aadd11"><td class="memItemLeft" align="right" valign="top"><a id="afbfabf6fb1a2a1df860d5555c4aadd11"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#afbfabf6fb1a2a1df860d5555c4aadd11">RelWidth</a> () const</td></tr>
@@ -250,6 +263,10 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#afa08613e61a1609166843f8d7a8a6fb1">_latex_cursory</a></td></tr>
 <tr class="memdesc:afa08613e61a1609166843f8d7a8a6fb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">coordinates to plot the next line of latex text, automatically updates when <a class="el" href="classusr_1_1plt_1_1PadBase.html#ab0eca500028d4a40300388a3684dfd9a" title="Writing text a designated cursor position.">WriteLine()</a> is called. <br /></td></tr>
 <tr class="separator:afa08613e61a1609166843f8d7a8a6fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bfeb0d6e0c0fa77d5ab88865564baea"><td class="memItemLeft" align="right" valign="top"><a id="a7bfeb0d6e0c0fa77d5ab88865564baea"></a>
+std::vector&lt; std::unique_ptr&lt; TObject &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a7bfeb0d6e0c0fa77d5ab88865564baea">_generated_objects</a></td></tr>
+<tr class="memdesc:a7bfeb0d6e0c0fa77d5ab88865564baea"><td class="mdescLeft">&#160;</td><td class="mdescRight">a lot of objects for plotting will be dynamically generated (ex. text objects ) The Pad object will then claim ownership of these objects <br /></td></tr>
+<tr class="separator:a7bfeb0d6e0c0fa77d5ab88865564baea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -313,6 +330,25 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Canvas</b></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a37f415006d7b9cf246deb14e0f79f7a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37f415006d7b9cf246deb14e0f79f7a4">&#9670;&nbsp;</a></span>ClaimObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void usr::plt::PadBase::ClaimObject </td>
+          <td>(</td>
+          <td class="paramtype">TObject *&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Mainly for internal use. </p>
+
+</div>
+</div>
 <a id="a313a3475752c7347003538df365a5ede"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a313a3475752c7347003538df365a5ede">&#9670;&nbsp;</a></span>Finalize()</h2>
 
@@ -366,6 +402,77 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Canvas</b></td></tr>
 <p>Leaving blank for base class. </p>
 
 <p>Reimplemented in <a class="el" href="classusr_1_1plt_1_1Pad1D.html#a009a13deb1306cf370785b602533739f">usr::plt::Pad1D</a>, and <a class="el" href="classusr_1_1plt_1_1Pad2DFlat.html#a08d04968e45fdf8177f2a55ded31ad20">usr::plt::Pad2DFlat</a>.</p>
+
+</div>
+</div>
+<a id="afdd68ff347ca1e8e2f213913576aa001"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdd68ff347ca1e8e2f213913576aa001">&#9670;&nbsp;</a></span>MakeObj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjType , typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ObjType&amp; usr::plt::PadBase::MakeObj </td>
+          <td>(</td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Making a Root object under the ownership of the RooPlot object. Using the variadic interface to allow for any sort of declaration type. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ObjType</td><td>The type of object you which to create (must be explicitly specified) </td></tr>
+    <tr><td class="paramname">Args</td><td>the arguments could be of any type necessary. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>any arguments required for a TObject inherited object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the newly created object. </dd></dl>
+
+</div>
+</div>
+<a id="a82374297b57c2aea6b07d552e9b78338"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82374297b57c2aea6b07d552e9b78338">&#9670;&nbsp;</a></span>MoveTargetToBefore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool usr::plt::PadBase::MoveTargetToBefore </td>
+          <td>(</td>
+          <td class="paramtype">const TObject &amp;&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TObject &amp;&#160;</td>
+          <td class="paramname"><em>before</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Basically a horrible hack to moving things around in the TPad's List of primitives. As <a href="https://root.cern.ch/doc/master/classTList.html">TList</a> has very limited amounts of exposure for various method that include the plots options, the function essentially dumps the links of the TList into a stack to reorder accordingly. </p>
 
 </div>
 </div>

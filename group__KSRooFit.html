@@ -89,13 +89,13 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga813a4725aa29a3b9d3c7c4afcf41b5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating the Kolmogorov&ndash;Smirov distance of a RooDataSet and a RooAbsPdf in term of a variable.  <a href="group__KSRooFit.html#ga813a4725aa29a3b9d3c7c4afcf41b5b7">More...</a><br /></td></tr>
 <tr class="separator:ga813a4725aa29a3b9d3c7c4afcf41b5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga05ac37c469276aab68853f4f8f35e166"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__KSRooFit.html#ga05ac37c469276aab68853f4f8f35e166">usr::KSProb</a> (RooDataSet &amp;dataset, RooAbsPdf &amp;pdf, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)</td></tr>
-<tr class="memdesc:ga05ac37c469276aab68853f4f8f35e166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the corresponding KS probablity after calculating the KS distance of between a data set and PDF.  <a href="group__KSRooFit.html#ga05ac37c469276aab68853f4f8f35e166">More...</a><br /></td></tr>
+<tr class="memdesc:ga05ac37c469276aab68853f4f8f35e166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the corresponding KS probability after calculating the KS distance of between a data set and PDF.  <a href="group__KSRooFit.html#ga05ac37c469276aab68853f4f8f35e166">More...</a><br /></td></tr>
 <tr class="separator:ga05ac37c469276aab68853f4f8f35e166"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9c016e9ad8e82c76d32a93a92d10b7cf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__KSRooFit.html#ga9c016e9ad8e82c76d32a93a92d10b7cf">usr::KSDistance</a> (RooDataSet &amp;set1, RooDataSet &amp;set2, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)</td></tr>
-<tr class="memdesc:ga9c016e9ad8e82c76d32a93a92d10b7cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating the Kolmogorov-Smirov distance between two data sets.  <a href="group__KSRooFit.html#ga9c016e9ad8e82c76d32a93a92d10b7cf">More...</a><br /></td></tr>
+<tr class="memdesc:ga9c016e9ad8e82c76d32a93a92d10b7cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating the Kolmogorov-Smirnov distance between two data sets.  <a href="group__KSRooFit.html#ga9c016e9ad8e82c76d32a93a92d10b7cf">More...</a><br /></td></tr>
 <tr class="separator:ga9c016e9ad8e82c76d32a93a92d10b7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga70a32044633a819474ba5aa8b9c0b0f6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__KSRooFit.html#ga70a32044633a819474ba5aa8b9c0b0f6">usr::KSProb</a> (RooDataSet &amp;set1, RooDataSet &amp;set2, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)</td></tr>
-<tr class="memdesc:ga70a32044633a819474ba5aa8b9c0b0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the KS probablity of two data sets.  <a href="group__KSRooFit.html#ga70a32044633a819474ba5aa8b9c0b0f6">More...</a><br /></td></tr>
+<tr class="memdesc:ga70a32044633a819474ba5aa8b9c0b0f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the KS probability of two data sets.  <a href="group__KSRooFit.html#ga70a32044633a819474ba5aa8b9c0b0f6">More...</a><br /></td></tr>
 <tr class="separator:ga70a32044633a819474ba5aa8b9c0b0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1c68d6543eaf51886df15dc6753d724d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__KSRooFit.html#ga1c68d6543eaf51886df15dc6753d724d">usr::KSProbAlt</a> (RooDataSet &amp;set1, RooDataSet &amp;set2, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)</td></tr>
 <tr class="memdesc:ga1c68d6543eaf51886df15dc6753d724d"><td class="mdescLeft">&#160;</td><td class="mdescRight">An alternative, effective p-value of the KS test for two data set.  <a href="group__KSRooFit.html#ga1c68d6543eaf51886df15dc6753d724d">More...</a><br /></td></tr>
@@ -195,7 +195,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The code for looping though the two data set is based on the ROOT implementation found in the TMath::KolmorogovTest() functions. Supporting up to two range cuts and weighted data sets. For the calculation of the effective number of events in a weighted data set, see the helper class <a class="el" href="structusr_1_1SimplifiedData.html" title="Helper structure for expressing a 1D data set (RooDataSet) simply as a list of numbers with weights.">SimplifiedData</a>. </p>
+<p>The code for looping though the two data set is based on the ROOT implementation found in the TMath::KolmogorovTest() functions. Supporting up to two range cuts and weighted data sets. For the calculation of the effective number of events in a weighted data set, see the helper class <a class="el" href="structusr_1_1SimplifiedData.html" title="Helper structure for expressing a 1D data set (RooDataSet) simply as a list of numbers with weights.">SimplifiedData</a>. </p>
 
 </div>
 </div>
@@ -336,7 +336,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>the alternative calculation is descibed in <a href="https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test">this</a> page. Hard limiting the calculation output to 1 for a more "sane" output value </p>
+<p>the alternative calculation is described in <a href="https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test">this</a> page. Hard limiting the calculation output to 1 for a more "sane" output value </p>
 
 </div>
 </div>

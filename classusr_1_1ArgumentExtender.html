@@ -162,7 +162,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memdesc:aa3527a9bf8ec6156a76ddfafe3deb86f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adding more options definition to the class.  <a href="#aa3527a9bf8ec6156a76ddfafe3deb86f">More...</a><br /></td></tr>
 <tr class="separator:aa3527a9bf8ec6156a76ddfafe3deb86f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e638edf8475fdfe95aef82d3ee74dcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1ArgumentExtender.html#a9e638edf8475fdfe95aef82d3ee74dcd">ParseOptions</a> (int argc, char **argv)</td></tr>
-<tr class="memdesc:a9e638edf8475fdfe95aef82d3ee74dcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">parsing the rpgoram input with the standard argc, argv interface.  <a href="#a9e638edf8475fdfe95aef82d3ee74dcd">More...</a><br /></td></tr>
+<tr class="memdesc:a9e638edf8475fdfe95aef82d3ee74dcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">parsing the program input with the standard argc, argv interface.  <a href="#a9e638edf8475fdfe95aef82d3ee74dcd">More...</a><br /></td></tr>
 <tr class="separator:a9e638edf8475fdfe95aef82d3ee74dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f9cb52dabdf584c55701d15c12bc074"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1ArgumentExtender.html#a0f9cb52dabdf584c55701d15c12bc074">CheckArg</a> (const std::string &amp;opt) const</td></tr>
 <tr class="memdesc:a0f9cb52dabdf584c55701d15c12bc074"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checking if the user input exists for an option.  <a href="#a0f9cb52dabdf584c55701d15c12bc074">More...</a><br /></td></tr>
@@ -346,7 +346,7 @@ PathScheme&#160;</td><td class="memItemRight" valign="bottom"><b>_namescheme</b>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>see, <a class="el" href="classusr_1_1ArgumentExtender.html#abed801178b0bae69c5988f4d8586de96" title="Construction of the class property tree with a list of files.">ArgumentExtender::_init()</a> for more details. </p>
+<p>see <a class="el" href="classusr_1_1ArgumentExtender.html#abed801178b0bae69c5988f4d8586de96" title="Construction of the class property tree with a list of files.">ArgumentExtender::_init()</a> for more details. </p>
 
 </div>
 </div>
@@ -433,8 +433,8 @@ template&lt;typename ... TS&gt; </div>
 </table>
 </div><div class="memdoc">
 <p>The constructor will ensure that the json structure for each entry under a given options is uniformed in the json file. Notice that the options listed in the json file will be considered a required arguments (hence the support for multiple json files).</p>
-<p>An execption would be thrown if any parsing error occurs. Multiple options with the same name would also be considered an exception.</p>
-<p>After sucessfully parsing the json file. The option <code>help/h</code> would be added to for use (if used, the class will diplay the defined options and exit). </p>
+<p>An exception would be thrown if any parsing error occurs. Multiple options with the same name would also be considered an exception.</p>
+<p>After successfully parsing the json file. The option <code>help/h</code> would be added to for use (if used, the class will diplay the defined options and exit). </p>
 
 </div>
 </div>
@@ -614,7 +614,7 @@ template&lt;typename TYPE  = std::string&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Should be called after the <a class="el" href="classusr_1_1ArgumentExtender.html#a9e638edf8475fdfe95aef82d3ee74dcd" title="parsing the rpgoram input with the standard argc, argv interface.">ParseOptions()</a> method has been called. </p>
+<p>Should be called after the <a class="el" href="classusr_1_1ArgumentExtender.html#a9e638edf8475fdfe95aef82d3ee74dcd" title="parsing the program input with the standard argc, argv interface.">ParseOptions()</a> method has been called. </p>
 
 </div>
 </div>
@@ -785,7 +785,7 @@ template&lt;typename TYPE  = std::string&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Raising exception if there is any error in parsing. Additional criterias that counts as an error in parsing includes:</p><ol type="1">
+<p>Raising exception if there is any error in parsing. Additional criteria that counts as an error in parsing includes:</p><ol type="1">
 <li>The json file contains an options not listed in the final options_description instance.</li>
 <li>A option listed in the json does not have a corresponding user input.</li>
 <li>The user input for an option listed in the json file doesn't match any of inputs listed in the json file.</li>

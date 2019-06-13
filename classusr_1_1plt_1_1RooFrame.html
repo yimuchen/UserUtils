@@ -115,13 +115,18 @@ Public Member Functions</h2></td></tr>
 TH1 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1RooFrame.html#a8e92555923626bf6ad78e8bb300f8e4b">AxisHistPtr</a> ()</td></tr>
 <tr class="memdesc:a8e92555923626bf6ad78e8bb300f8e4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">returning the internal histogram object used for axis plotting. <br /></td></tr>
 <tr class="separator:a8e92555923626bf6ad78e8bb300f8e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27fc9f3438907cd2aed1fc5f95b1e2db"><td class="memItemLeft" align="right" valign="top"><a id="a27fc9f3438907cd2aed1fc5f95b1e2db"></a>
+const TH1 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1RooFrame.html#a27fc9f3438907cd2aed1fc5f95b1e2db">AxisHistPtr</a> () const</td></tr>
+<tr class="memdesc:a27fc9f3438907cd2aed1fc5f95b1e2db"><td class="mdescLeft">&#160;</td><td class="mdescRight">returning the internal histogram object used for axis plotting. <br /></td></tr>
+<tr class="separator:a27fc9f3438907cd2aed1fc5f95b1e2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a3cdf9fbedf2fa8beb7b0db9edfc65b"><td class="memItemLeft" align="right" valign="top"><a id="a5a3cdf9fbedf2fa8beb7b0db9edfc65b"></a>
 TH1 &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1RooFrame.html#a5a3cdf9fbedf2fa8beb7b0db9edfc65b">AxisHist</a> ()</td></tr>
 <tr class="memdesc:a5a3cdf9fbedf2fa8beb7b0db9edfc65b"><td class="mdescLeft">&#160;</td><td class="mdescRight">returning reference to internal histogram object used for axis plotting (no null protection) <br /></td></tr>
 <tr class="separator:a5a3cdf9fbedf2fa8beb7b0db9edfc65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dc4d98e0effed4f5fc5451df815300d"><td class="memTemplParams" colspan="2">template&lt;typename ObjType , typename ... Args&gt; </td></tr>
-<tr class="memitem:a8dc4d98e0effed4f5fc5451df815300d"><td class="memTemplItemLeft" align="right" valign="top">ObjType &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1RooFrame.html#a8dc4d98e0effed4f5fc5451df815300d">MakeObj</a> (Args ... args)</td></tr>
-<tr class="separator:a8dc4d98e0effed4f5fc5451df815300d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0930853951ab1618cc82b6685be456c"><td class="memItemLeft" align="right" valign="top"><a id="ad0930853951ab1618cc82b6685be456c"></a>
+const TH1 &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1RooFrame.html#ad0930853951ab1618cc82b6685be456c">AxisHist</a> () const</td></tr>
+<tr class="memdesc:ad0930853951ab1618cc82b6685be456c"><td class="mdescLeft">&#160;</td><td class="mdescRight">returning reference to internal histogram object used for axis plotting (no null protection) <br /></td></tr>
+<tr class="separator:ad0930853951ab1618cc82b6685be456c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3126111c892480b970b09adbf6e6bd3d"><td class="memTemplParams" colspan="2">template&lt;typename ObjType &gt; </td></tr>
 <tr class="memitem:a3126111c892480b970b09adbf6e6bd3d"><td class="memTemplItemLeft" align="right" valign="top">ObjType &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1RooFrame.html#a3126111c892480b970b09adbf6e6bd3d">LastPlot</a> ()</td></tr>
 <tr class="separator:a3126111c892480b970b09adbf6e6bd3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,48 +177,6 @@ template&lt;typename ObjType &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Returning the last object plotted on the RooPlot object. Typically a child class of TGraph, casting will fail if wrong type is passed. </p>
-
-</div>
-</div>
-<a id="a8dc4d98e0effed4f5fc5451df815300d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dc4d98e0effed4f5fc5451df815300d">&#9670;&nbsp;</a></span>MakeObj()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ObjType , typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ObjType&amp; usr::plt::RooFrame::MakeObj </td>
-          <td>(</td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Making a Root object under the ownership of the RooPlot object. Using the variadic interface to allow for any sort of declaration type. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">ObjType</td><td>The type of object you which to create (must be explicitly specified) </td></tr>
-    <tr><td class="paramname">Args</td><td>the arguments could be of any type nessesary. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">args</td><td>any arguments required for a TObject inherited object. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to the newly created object. </dd></dl>
 
 </div>
 </div>

@@ -110,6 +110,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1RooArgContainer.html">usr::plt::RooArgContainer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple container for helping with RooCmdArg parsing.  <a href="classusr_1_1plt_1_1RooArgContainer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">usr::plt::PlotUnder</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1TrackY.html">usr::plt::TrackY</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot argument to specify which edges of data to keep track of.  <a href="classusr_1_1plt_1_1TrackY.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,8 +124,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Plot2DF.html">usr::plt::Plot2DF</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot argument to specify how data should be presented.  <a href="classusr_1_1plt_1_1Plot2DF.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1ShowFitErr.html">usr::plt::ShowFitErr</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot argument to plot a fitted TF1 with fit uncertainties.  <a href="classusr_1_1plt_1_1ShowFitErr.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1VisualizeError.html">usr::plt::VisualizeError</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot argument to plot a fitted TF1 with fit uncertainties. Intentionally using the same interface as the <a class="el" href="classusr_1_1plt_1_1VisualizeError.html" title="Plot argument to plot a fitted TF1 with fit uncertainties. Intentionally using the same interface as ...">VisualizeError</a> for <a href="https://root.cern.ch/doc/master/classRooAbsPdf.html">RooAbsPdf</a>.  <a href="classusr_1_1plt_1_1VisualizeError.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
@@ -152,11 +154,11 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac70d4a3111178c88eb424764694df2f2"><td class="memItemLeft" align="right" valign="top"><a id="ac70d4a3111178c88eb424764694df2f2"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::EstimateLatexWidth</b> (const std::string &amp;text)</td></tr>
+<tr class="memitem:ac70d4a3111178c88eb424764694df2f2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="PlotCommon_8hpp.html#ac70d4a3111178c88eb424764694df2f2">usr::plt::EstimateLatexWidth</a> (const std::string &amp;text)</td></tr>
+<tr class="memdesc:ac70d4a3111178c88eb424764694df2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Better estimation of the actual width (in units 'em') of a Latex string.  <a href="PlotCommon_8hpp.html#ac70d4a3111178c88eb424764694df2f2">More...</a><br /></td></tr>
 <tr class="separator:ac70d4a3111178c88eb424764694df2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18ff0d7d670dd97d4d0d743e2825e70f"><td class="memItemLeft" align="right" valign="top"><a id="a18ff0d7d670dd97d4d0d743e2825e70f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::EstimateLatexHeight</b> (const std::string &amp;text)</td></tr>
+<tr class="memitem:a18ff0d7d670dd97d4d0d743e2825e70f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="PlotCommon_8hpp.html#a18ff0d7d670dd97d4d0d743e2825e70f">usr::plt::EstimateLatexHeight</a> (const std::string &amp;text)</td></tr>
+<tr class="memdesc:a18ff0d7d670dd97d4d0d743e2825e70f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate of the height of a Latex string in 'em' units.  <a href="PlotCommon_8hpp.html#a18ff0d7d670dd97d4d0d743e2825e70f">More...</a><br /></td></tr>
 <tr class="separator:a18ff0d7d670dd97d4d0d743e2825e70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a891d509a96871438da319ab5f6bebb24"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="PlotCommon_8hpp.html#a891d509a96871438da319ab5f6bebb24">usr::plt::GetYmax</a> (const TH1D *)</td></tr>
@@ -199,6 +201,44 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::EstimateL
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Yi-Mu "Enoch" Chen </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2019-02-19 </dd></dl>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="file_a18ff0d7d670dd97d4d0d743e2825e70f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_a18ff0d7d670dd97d4d0d743e2825e70f">&#9670;&nbsp;</a></span>EstimateLatexHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double usr::plt::EstimateLatexHeight </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A line with no special characters is expected to be a line height of ~1.08em (using the height ot the tallest regular character in ROOT: The asterisk). A few processes are taken for fractions, for which we assume double line height with some margin. One-line decorators (subscripts, supscripts and square roots, simply adds an offset. The only special character that will the taken care of would be the integral character (<code>#int</code>), which we assume to be 2em tall. </p>
+
+</div>
+</div>
+<a id="file_ac70d4a3111178c88eb424764694df2f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ac70d4a3111178c88eb424764694df2f2">&#9670;&nbsp;</a></span>EstimateLatexWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double usr::plt::EstimateLatexWidth </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This functions sums the width of most printable ASCII characters with by a predefined table, as the Latex engine used in ROOT has very minimal kerning on the characeter sets. The table itself is generated using a ROOT script, using a Helvetic font (so estimates for Times font might be off). Special care is taken to remove decorators such as fractions, square-roots, left-right braces, and sub/sup-scripts. Non-ASCII characters (greek symbols, mathematical symbols... etc), are simply estimated to be a standard 'M' width. </p>
+
+</div>
+</div>
 <a id="file_a087d94d6d41677c01b05d6a02bf45419"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#file_a087d94d6d41677c01b05d6a02bf45419">&#9670;&nbsp;</a></span>GetXmax() <span class="overload">[1/2]</span></h2>
 

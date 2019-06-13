@@ -101,7 +101,7 @@ Inheritance diagram for usr::plt::Ratio1DCanvas:</div>
 <p>The <code>PlotObj</code> functions of the top pad is pass to the canvas, while additional functions are used for plotting the ratio/pull plots onto the bottom pad. The generated ratio/pull plot will be owned by the canvas and be destroyed when the canvas goes out of scope.</p>
 <p>The following is some examples of plots created with the <a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html" title="Canvas with exactly 2 Pad1D instances for comparison plots.">Ratio1DCanvas</a> class:</p>
 <h1>Stack plots with error and signal comparison</h1>
-<div class="fragment"><div class="line">plt::Ratio1DCanvas c;</div><div class="line"></div><div class="line">c.PlotHist( hist3, plt::PlotType( plt::histstack ), plt::EntryText( <span class="stringliteral">&quot;Bkg_{1}: VV&quot;</span> ) );</div><div class="line">c.PlotHist( hist2, plt::PlotType( plt::histstack ), plt::EntryText( <span class="stringliteral">&quot;Bkg_{2}: HH&quot;</span> ) );</div><div class="line">c.PlotHist( hist1, plt::PlotType( plt::histstack ), plt::EntryText( <span class="stringliteral">&quot;Bkg_{3}: TT&quot;</span> ) );</div><div class="line">c.PlotHist( histsum, plt::PlotType( plt::histerr ),   plt::EntryText( <span class="stringliteral">&quot;Bkg_{1} Unc.&quot;</span> ) );</div><div class="line">c.PlotHist( data, plt::PlotType( plt::scatter ),   plt::EntryText( <span class="stringliteral">&quot;Data&quot;</span> ) );</div><div class="line"></div><div class="line">c.PlotScale( histsum, histsum, plt::PlotType( plt::histerr ), plt::TrackY( plt::TrackY::none ) );</div><div class="line">c.PlotScale( data, histsum, plt::PlotType( plt::scatter ) );</div><div class="line"></div><div class="line">c.TopPad().SetHistAxisTitles( <span class="stringliteral">&quot;M_{THTHTH}&quot;</span>, plt::unit::GeVcc );</div><div class="line">c.BottomPad().SetHistAxisTitles( <span class="stringliteral">&quot;M_{THTHTH}&quot;</span>, plt::unit::GeVcc );</div><div class="line">c.BottomPad().Yaxis().SetTitle( <span class="stringliteral">&quot;Data/Sim.&quot;</span> );</div><div class="line"></div><div class="line">c.DrawCMSLabel( <span class="stringliteral">&quot;Ratio1DCanvas&quot;</span>, <span class="stringliteral">&quot;CWS&quot;</span> );</div><div class="line">c.DrawLuminosity( 133.7 );</div><div class="line">c.SaveAsPNG( <span class="stringliteral">&quot;testfig/ratio1dcanvas_test.png&quot;</span>, 144 );</div></div><!-- fragment --><div class="image">
+<div class="fragment"><div class="line">plt::Ratio1DCanvas c;</div><div class="line"></div><div class="line">c.<a class="code" href="classusr_1_1plt_1_1Flat2DCanvas.html#ab2daeaef37f0986a7b75c1c7d975125a">PlotHist</a>( hist3, plt::PlotType( plt::histstack ), plt::EntryText( <span class="stringliteral">&quot;Bkg_{1}: VV&quot;</span> ) );</div><div class="line">c.PlotHist( hist2, plt::PlotType( plt::histstack ), plt::EntryText( <span class="stringliteral">&quot;Bkg_{2}: HH&quot;</span> ) );</div><div class="line">c.PlotHist( hist1, plt::PlotType( plt::histstack ), plt::EntryText( <span class="stringliteral">&quot;Bkg_{3}: TT&quot;</span> ) );</div><div class="line">c.PlotHist( histsum, plt::PlotType( plt::histerr ),   plt::EntryText( <span class="stringliteral">&quot;Bkg_{1} Unc.&quot;</span> ) );</div><div class="line">c.PlotHist( data, plt::PlotType( plt::scatter ),   plt::EntryText( <span class="stringliteral">&quot;Data&quot;</span> ) );</div><div class="line"></div><div class="line">c.PlotScale( histsum, histsum, plt::PlotType( plt::histerr ), plt::TrackY( plt::TrackY::none ) );</div><div class="line">c.PlotScale( data, histsum, plt::PlotType( plt::scatter ) );</div><div class="line"></div><div class="line">c.TopPad().SetHistAxisTitles( <span class="stringliteral">&quot;M_{THTHTH}&quot;</span>, plt::unit::GeVcc );</div><div class="line">c.BottomPad().SetHistAxisTitles( <span class="stringliteral">&quot;M_{THTHTH}&quot;</span>, plt::unit::GeVcc );</div><div class="line">c.BottomPad().Yaxis().SetTitle( <span class="stringliteral">&quot;Data/Sim.&quot;</span> );</div><div class="line"></div><div class="line">c.DrawCMSLabel( <span class="stringliteral">&quot;Ratio1DCanvas&quot;</span>, <span class="stringliteral">&quot;CWS&quot;</span> );</div><div class="line">c.DrawLuminosity( 133.7 );</div><div class="line">c.SaveAsPNG( <span class="stringliteral">&quot;testfig/ratio1dcanvas_test.png&quot;</span>, 144 );</div></div><!-- fragment --><div class="image">
 <img src="ratio1dcanvas.png" alt="ratio1dcanvas.png"/>
 </div>
 <h1>Plotting with RooFit and fitting uncertainties</h1>
@@ -127,8 +127,7 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="classusr_1_1plt_1_1Bottom1DPad.html">Bottom1DPad</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a386041127a8cfc3c4f0b6f480de720a8">BottomPad</a> ()</td></tr>
 <tr class="memdesc:a386041127a8cfc3c4f0b6f480de720a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">returning reference to bottom pad object <br /></td></tr>
 <tr class="separator:a386041127a8cfc3c4f0b6f480de720a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add4a6ec4e38e614805d445b87fcc2b05"><td class="memItemLeft" align="right" valign="top"><a id="add4a6ec4e38e614805d445b87fcc2b05"></a>
-TGraphAsymmErrors &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>PlotPull</b> (const TGraph &amp;, const TGraph &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
+<tr class="memitem:add4a6ec4e38e614805d445b87fcc2b05"><td class="memItemLeft" align="right" valign="top">TGraphAsymmErrors &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#add4a6ec4e38e614805d445b87fcc2b05">PlotPull</a> (const TGraph &amp;, const TGraph &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
 <tr class="separator:add4a6ec4e38e614805d445b87fcc2b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1f78e35e8d6762a127a82ddb30490b3"><td class="memItemLeft" align="right" valign="top"><a id="ad1f78e35e8d6762a127a82ddb30490b3"></a>
 TGraph &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>PlotPull</b> (const TGraph &amp;num, const TGraph &amp;den)</td></tr>
@@ -258,6 +257,38 @@ template&lt;typename ... Args&gt; </td></tr>
 <tr class="memdesc:aff1838ff1b91df73c0bb9af9832c9274"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of two histogram onto bottom pad, returning reference to the newly constructed histogram.  <a href="#aff1838ff1b91df73c0bb9af9832c9274">More...</a><br /></td></tr>
 <tr class="separator:aff1838ff1b91df73c0bb9af9832c9274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a9dcf6f0629bb4a0fc4bfde76fbd33657"><td class="memItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a9dcf6f0629bb4a0fc4bfde76fbd33657">PlotScale</a> (const TH1D &amp;, const TGraph &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
+<tr class="memdesc:a9dcf6f0629bb4a0fc4bfde76fbd33657"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a9dcf6f0629bb4a0fc4bfde76fbd33657">More...</a><br /></td></tr>
+<tr class="separator:a9dcf6f0629bb4a0fc4bfde76fbd33657"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01d9d781179524d6569f98c5bc944f7d"><td class="memItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a01d9d781179524d6569f98c5bc944f7d">PlotScale</a> (const TH1D &amp;num, const TGraph &amp;den)</td></tr>
+<tr class="memdesc:a01d9d781179524d6569f98c5bc944f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a01d9d781179524d6569f98c5bc944f7d">More...</a><br /></td></tr>
+<tr class="separator:a01d9d781179524d6569f98c5bc944f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a048639032b8bc51d9c7f900f344811e5"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a048639032b8bc51d9c7f900f344811e5"><td class="memTemplItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a048639032b8bc51d9c7f900f344811e5">PlotScale</a> (const TH1D &amp;num, const TGraph &amp;den, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:a048639032b8bc51d9c7f900f344811e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a048639032b8bc51d9c7f900f344811e5">More...</a><br /></td></tr>
+<tr class="separator:a048639032b8bc51d9c7f900f344811e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a102345199de81d9098e40cb2794f63a7"><td class="memItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a102345199de81d9098e40cb2794f63a7">PlotScale</a> (const TH1D *num, const TGraph &amp;den)</td></tr>
+<tr class="memdesc:a102345199de81d9098e40cb2794f63a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a102345199de81d9098e40cb2794f63a7">More...</a><br /></td></tr>
+<tr class="separator:a102345199de81d9098e40cb2794f63a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92506defa16438f3bc3213072e39ce89"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a92506defa16438f3bc3213072e39ce89"><td class="memTemplItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a92506defa16438f3bc3213072e39ce89">PlotScale</a> (const TH1D *num, const TGraph &amp;den, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:a92506defa16438f3bc3213072e39ce89"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a92506defa16438f3bc3213072e39ce89">More...</a><br /></td></tr>
+<tr class="separator:a92506defa16438f3bc3213072e39ce89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a251e4a51207328cc6cf24afbd3b1c08e"><td class="memItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a251e4a51207328cc6cf24afbd3b1c08e">PlotScale</a> (const TH1D &amp;num, const TGraph *den)</td></tr>
+<tr class="memdesc:a251e4a51207328cc6cf24afbd3b1c08e"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a251e4a51207328cc6cf24afbd3b1c08e">More...</a><br /></td></tr>
+<tr class="separator:a251e4a51207328cc6cf24afbd3b1c08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6da38925a6e52ac15a141c4ce389491e"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a6da38925a6e52ac15a141c4ce389491e"><td class="memTemplItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a6da38925a6e52ac15a141c4ce389491e">PlotScale</a> (const TH1D &amp;num, const TGraph *den, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:a6da38925a6e52ac15a141c4ce389491e"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a6da38925a6e52ac15a141c4ce389491e">More...</a><br /></td></tr>
+<tr class="separator:a6da38925a6e52ac15a141c4ce389491e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a872d5ceaa4c945f667c7ef3c9ac4f729"><td class="memItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a872d5ceaa4c945f667c7ef3c9ac4f729">PlotScale</a> (const TH1D *num, const TGraph *den)</td></tr>
+<tr class="memdesc:a872d5ceaa4c945f667c7ef3c9ac4f729"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a872d5ceaa4c945f667c7ef3c9ac4f729">More...</a><br /></td></tr>
+<tr class="separator:a872d5ceaa4c945f667c7ef3c9ac4f729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65de33e0bf392da8ad04a4a5f7b68c7f"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a65de33e0bf392da8ad04a4a5f7b68c7f"><td class="memTemplItemLeft" align="right" valign="top">TH1D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a65de33e0bf392da8ad04a4a5f7b68c7f">PlotScale</a> (const TH1D *num, const TGraph *den, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:a65de33e0bf392da8ad04a4a5f7b68c7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of a histogram and a graph onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a65de33e0bf392da8ad04a4a5f7b68c7f">More...</a><br /></td></tr>
+<tr class="separator:a65de33e0bf392da8ad04a4a5f7b68c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a1a96597ec4cb0eb5ef7575feb2bcd133"><td class="memItemLeft" align="right" valign="top">TGraphAsymmErrors &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a1a96597ec4cb0eb5ef7575feb2bcd133">PlotScale</a> (const TGraph &amp;, const TGraph &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
 <tr class="memdesc:a1a96597ec4cb0eb5ef7575feb2bcd133"><td class="mdescLeft">&#160;</td><td class="mdescRight">plotting the scale division of two graphs onto bottom pad, returning reference to the newly constructed histogram.  <a href="#a1a96597ec4cb0eb5ef7575feb2bcd133">More...</a><br /></td></tr>
 <tr class="separator:a1a96597ec4cb0eb5ef7575feb2bcd133"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -350,13 +381,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a457cd7818a94f1f652fb1f4f7aa583e3"><td class="memItemLeft" align="right" valign="top">static TH1D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a457cd7818a94f1f652fb1f4f7aa583e3">ScaleDivide</a> (const TH1D *num, const TH1D *den, const double cen=1.)</td></tr>
-<tr class="memdesc:a457cd7818a94f1f652fb1f4f7aa583e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">dividing a histogram a/b by scaling the numerator by the denominator  <a href="#a457cd7818a94f1f652fb1f4f7aa583e3">More...</a><br /></td></tr>
+<tr class="memdesc:a457cd7818a94f1f652fb1f4f7aa583e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">dividing two histogram a/b by scaling the numerator by the denominator  <a href="#a457cd7818a94f1f652fb1f4f7aa583e3">More...</a><br /></td></tr>
 <tr class="separator:a457cd7818a94f1f652fb1f4f7aa583e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad1cfc4d8160ec220241aec5a8ed96cc"><td class="memItemLeft" align="right" valign="top">static TH1D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#aad1cfc4d8160ec220241aec5a8ed96cc">ScaleDivide</a> (const TH1D *num, const TGraph *den, const double cen=1.)</td></tr>
+<tr class="memdesc:aad1cfc4d8160ec220241aec5a8ed96cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">dividing a histogram by a graph. Calculated by scaling the numerator by the denominator  <a href="#aad1cfc4d8160ec220241aec5a8ed96cc">More...</a><br /></td></tr>
+<tr class="separator:aad1cfc4d8160ec220241aec5a8ed96cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab67f4d109ab36517a5d49891553e0362"><td class="memItemLeft" align="right" valign="top">static TGraphAsymmErrors *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#ab67f4d109ab36517a5d49891553e0362">ScaleDivide</a> (const TGraph *num, const TGraph *den, const double cen=1.)</td></tr>
 <tr class="memdesc:ab67f4d109ab36517a5d49891553e0362"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dividing a graph by another graph by scaling the numerator by the denominator.  <a href="#ab67f4d109ab36517a5d49891553e0362">More...</a><br /></td></tr>
 <tr class="separator:ab67f4d109ab36517a5d49891553e0362"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a966bf09ef15d887110015eff032cb2f8"><td class="memItemLeft" align="right" valign="top"><a id="a966bf09ef15d887110015eff032cb2f8"></a>
-static TGraphAsymmErrors *&#160;</td><td class="memItemRight" valign="bottom"><b>PullDivide</b> (const TGraph *num, const TGraph *den, const double cen=0)</td></tr>
+<tr class="memitem:a966bf09ef15d887110015eff032cb2f8"><td class="memItemLeft" align="right" valign="top">static TGraphAsymmErrors *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a966bf09ef15d887110015eff032cb2f8">PullDivide</a> (const TGraph *num, const TGraph *den, const double cen=0)</td></tr>
+<tr class="memdesc:a966bf09ef15d887110015eff032cb2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generating the pull diagram when comparing two graphs.  <a href="#a966bf09ef15d887110015eff032cb2f8">More...</a><br /></td></tr>
 <tr class="separator:a966bf09ef15d887110015eff032cb2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -439,8 +473,94 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="add4a6ec4e38e614805d445b87fcc2b05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add4a6ec4e38e614805d445b87fcc2b05">&#9670;&nbsp;</a></span>PlotPull()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors &amp; usr::plt::Ratio1DCanvas::PlotPull </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the pull results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="accba76ab251d3e43d3e3aa4729baad48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accba76ab251d3e43d3e3aa4729baad48">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[1/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
 <a id="a2e20d37e8c52b9f12dfb50c6c1651eac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e20d37e8c52b9f12dfb50c6c1651eac">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[1/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e20d37e8c52b9f12dfb50c6c1651eac">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[2/27]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -491,7 +611,7 @@ template&lt;typename ... Args&gt; </div>
 </div>
 </div>
 <a id="ae5e880fcae07dca53c286403e53eecff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5e880fcae07dca53c286403e53eecff">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[2/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5e880fcae07dca53c286403e53eecff">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[3/27]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -525,8 +645,45 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="adce39d7e537edf63270592bca1e586e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adce39d7e537edf63270592bca1e586e0">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[4/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
 <a id="ac678d54022251e73ba3fb71e087a3955"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac678d54022251e73ba3fb71e087a3955">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[3/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac678d54022251e73ba3fb71e087a3955">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[5/27]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -546,182 +703,6 @@ template&lt;typename ... Args&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const TH1D &amp;&#160;</td>
-          <td class="paramname"><em>den</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="accba76ab251d3e43d3e3aa4729baad48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accba76ab251d3e43d3e3aa4729baad48">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[4/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TH1D *&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TH1D &amp;&#160;</td>
-          <td class="paramname"><em>den</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="a53066e0c992b113fbf3fb395e5fab092"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53066e0c992b113fbf3fb395e5fab092">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[5/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TH1D &amp;&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TH1D *&#160;</td>
-          <td class="paramname"><em>den</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="a0742866a0864af5259b3985b952451c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0742866a0864af5259b3985b952451c7">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[6/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TH1D *&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TH1D *&#160;</td>
-          <td class="paramname"><em>den</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="aff1838ff1b91df73c0bb9af9832c9274"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff1838ff1b91df73c0bb9af9832c9274">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[7/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TH1D *&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TH1D *&#160;</td>
           <td class="paramname"><em>den</em>, </td>
         </tr>
         <tr>
@@ -753,7 +734,7 @@ template&lt;typename ... Args&gt; </div>
 </div>
 </div>
 <a id="a955df5de4ca963fe31c83849b9e1bab2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a955df5de4ca963fe31c83849b9e1bab2">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[8/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a955df5de4ca963fe31c83849b9e1bab2">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[6/27]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -789,8 +770,8 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="adce39d7e537edf63270592bca1e586e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adce39d7e537edf63270592bca1e586e0">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[9/18]</span></h2>
+<a id="a0742866a0864af5259b3985b952451c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0742866a0864af5259b3985b952451c7">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[7/27]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -801,13 +782,13 @@ template&lt;typename ... Args&gt; </div>
         <tr>
           <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
           <td>(</td>
-          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramtype">const TH1D *&#160;</td>
           <td class="paramname"><em>num</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramtype">const TH1D *&#160;</td>
           <td class="paramname"><em>den</em>&#160;</td>
         </tr>
         <tr>
@@ -826,8 +807,796 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="a53066e0c992b113fbf3fb395e5fab092"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53066e0c992b113fbf3fb395e5fab092">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[8/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="aff1838ff1b91df73c0bb9af9832c9274"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff1838ff1b91df73c0bb9af9832c9274">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[9/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator histogram, this function generates the scale division results to the two histograms (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a102345199de81d9098e40cb2794f63a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a102345199de81d9098e40cb2794f63a7">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[10/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a92506defa16438f3bc3213072e39ce89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92506defa16438f3bc3213072e39ce89">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[11/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a251e4a51207328cc6cf24afbd3b1c08e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a251e4a51207328cc6cf24afbd3b1c08e">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[12/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a01d9d781179524d6569f98c5bc944f7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01d9d781179524d6569f98c5bc944f7d">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[13/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a872d5ceaa4c945f667c7ef3c9ac4f729"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a872d5ceaa4c945f667c7ef3c9ac4f729">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[14/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a65de33e0bf392da8ad04a4a5f7b68c7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65de33e0bf392da8ad04a4a5f7b68c7f">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[15/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a6da38925a6e52ac15a141c4ce389491e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6da38925a6e52ac15a141c4ce389491e">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[16/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a9dcf6f0629bb4a0fc4bfde76fbd33657"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dcf6f0629bb4a0fc4bfde76fbd33657">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[17/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D &amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a048639032b8bc51d9c7f900f344811e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a048639032b8bc51d9c7f900f344811e5">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[18/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator histgram and denominator graph, this function generates the scale division results to the histogram/graph (see static method for details); and claims ownership of the newly generated histogram. The new histogram is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a3d20604e12f41bcc1dd836e1ec09d703"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d20604e12f41bcc1dd836e1ec09d703">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[19/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a0c466e00ecd6780fcb641ca1d4d74826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c466e00ecd6780fcb641ca1d4d74826">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[20/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a62181361699703e77e44fd4cba7cbd54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62181361699703e77e44fd4cba7cbd54">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[21/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a1a96597ec4cb0eb5ef7575feb2bcd133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a96597ec4cb0eb5ef7575feb2bcd133">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[22/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors &amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a8fa6e65995f42ffb07ab8ed945c755a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fa6e65995f42ffb07ab8ed945c755a0">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[23/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="a88c0a2feb0f619c5784db461e65959f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88c0a2feb0f619c5784db461e65959f6">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[24/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
+<a id="abed4a50b962ad7cc3b11256dee4e93cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abed4a50b962ad7cc3b11256dee4e93cd">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[25/27]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td>(</td>
+          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+
+</div>
+</div>
 <a id="a606a0c61a251ceb5bdad213f6b87164e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a606a0c61a251ceb5bdad213f6b87164e">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[10/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a606a0c61a251ceb5bdad213f6b87164e">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[26/27]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -863,270 +1632,8 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="a88c0a2feb0f619c5784db461e65959f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88c0a2feb0f619c5784db461e65959f6">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[11/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TGraph *&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TGraph *&#160;</td>
-          <td class="paramname"><em>den</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="a62181361699703e77e44fd4cba7cbd54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62181361699703e77e44fd4cba7cbd54">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[12/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TGraph *&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TGraph &amp;&#160;</td>
-          <td class="paramname"><em>den</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="a3d20604e12f41bcc1dd836e1ec09d703"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d20604e12f41bcc1dd836e1ec09d703">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[13/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TGraph &amp;&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TGraph *&#160;</td>
-          <td class="paramname"><em>den</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="abed4a50b962ad7cc3b11256dee4e93cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abed4a50b962ad7cc3b11256dee4e93cd">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[14/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TGraph &amp;&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TGraph *&#160;</td>
-          <td class="paramname"><em>den</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="a1a96597ec4cb0eb5ef7575feb2bcd133"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a96597ec4cb0eb5ef7575feb2bcd133">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[15/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraphAsymmErrors &amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TGraph &amp;&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TGraph &amp;&#160;</td>
-          <td class="paramname"><em>den</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
-          <td class="paramname"><em>arglist</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
-<a id="a0c466e00ecd6780fcb641ca1d4d74826"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c466e00ecd6780fcb641ca1d4d74826">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[16/18]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
-          <td>(</td>
-          <td class="paramtype">const TGraph *&#160;</td>
-          <td class="paramname"><em>num</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TGraph *&#160;</td>
-          <td class="paramname"><em>den</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
-
-</div>
-</div>
 <a id="a43343f35fb1b17a8ec171cf2795007d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43343f35fb1b17a8ec171cf2795007d6">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[17/18]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a43343f35fb1b17a8ec171cf2795007d6">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[27/27]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1162,40 +1669,32 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="a8fa6e65995f42ffb07ab8ed945c755a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fa6e65995f42ffb07ab8ed945c755a0">&#9670;&nbsp;</a></span>PlotScale() <span class="overload">[18/18]</span></h2>
+<a id="a966bf09ef15d887110015eff032cb2f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a966bf09ef15d887110015eff032cb2f8">&#9670;&nbsp;</a></span>PullDivide()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TGraphAsymmErrors&amp; usr::plt::Ratio1DCanvas::PlotScale </td>
+          <td class="memname">TGraphAsymmErrors * usr::plt::Ratio1DCanvas::PullDivide </td>
           <td>(</td>
-          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramtype">const TGraph *&#160;</td>
           <td class="paramname"><em>num</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const TGraph &amp;&#160;</td>
+          <td class="paramtype">const TGraph *&#160;</td>
           <td class="paramname"><em>den</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>cen</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1205,16 +1704,22 @@ template&lt;typename ... Args&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Given a numerator and denominator graph, this function generates the scale division results to the two graphs (see static method for details); and claims ownership of the newly generated graph. The new graph is then plotted on the bottom pad, with additional plotting method available. </p>
+<p>The resulting graph would have the following value:</p><ul>
+<li>gen.Y(x) = num.Y(x) - den.Y(x)</li>
+<li>gen.ErrY(x) = num.ErrY(x) / den.ErrY(x)</li>
+<li>gen.ErrX(x) = 0</li>
+</ul>
+<p>Interpolation is used on the denominator to obtain the error and value.</p>
+<p>In the special case that den.ErrY(x) is zero, gen.Y(x) is set to the cen value (defaults to 0 for aesthetic reasons). </p>
 
 </div>
 </div>
 <a id="a457cd7818a94f1f652fb1f4f7aa583e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a457cd7818a94f1f652fb1f4f7aa583e3">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a457cd7818a94f1f652fb1f4f7aa583e3">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1258,8 +1763,53 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="aad1cfc4d8160ec220241aec5a8ed96cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad1cfc4d8160ec220241aec5a8ed96cc">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D * usr::plt::Ratio1DCanvas::ScaleDivide </td>
+          <td>(</td>
+          <td class="paramtype">const TH1D *&#160;</td>
+          <td class="paramname"><em>num</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TGraph *&#160;</td>
+          <td class="paramname"><em>den</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>cen</em> = <code>1.</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function determines the the denominator by getting the value of the graph at the bin center of the histogram. Uncertainties are also scaled by the same denominator value.</p>
+<p>If the bin content of the numerator or the denominator is 0, then the bin content of the resulting histogram would be set to the value cen (1) by default for aesthetic reasons.</p>
+<p>The output histogram would copy it's styling from the numerator histogram, and the user is responsible for handling the pointer ownership of the generated histogram. </p>
+
+</div>
+</div>
 <a id="ab67f4d109ab36517a5d49891553e0362"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab67f4d109ab36517a5d49891553e0362">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab67f4d109ab36517a5d49891553e0362">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

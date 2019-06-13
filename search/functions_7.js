@@ -1,6 +1,7 @@
 var searchData=
 [
   ['gaussiannll',['GaussianNLL',['../group__StatUtils.html#ga4efccf4b965a098f1a0cb6ef10eb6976',1,'usr::stat']]],
+  ['gengraph',['GenGraph',['../classusr_1_1plt_1_1Pad1D.html#a3adb9a13f09641b64d845dcddc65c163',1,'usr::plt::Pad1D::GenGraph(RooAbsData &amp;data, RooLinkedList &amp;arglist)'],['../classusr_1_1plt_1_1Pad1D.html#afa11c06bc2f95bdff624a3b9806e1bd5',1,'usr::plt::Pad1D::GenGraph(RooAbsPdf &amp;pdf, RooLinkedList &amp;arglist)']]],
   ['genpathstring',['genPathString',['../classusr_1_1ArgumentExtender.html#a0cd1d65fda0fd6c5186214847955d3ed',1,'usr::ArgumentExtender']]],
   ['genweightcounter',['GenWeightCounter',['../classGenWeightCounter.html#a1ea9036fef7d328af162b1090beb1039',1,'GenWeightCounter']]],
   ['get',['Get',['../classusr_1_1plt_1_1RooArgContainer.html#a6d60ca79b6bc32eeae3dfd97c4f85edf',1,'usr::plt::RooArgContainer']]],
