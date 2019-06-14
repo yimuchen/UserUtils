@@ -374,7 +374,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     zero[i]   = 0;
   }
 
-  if( args.Has( VisualizeError::CmdName ) ){
+  if( !args.Has( VisualizeError::CmdName ) ){
     TGraph& graph = MakeObj<TGraph>( x.size(), x.data(), y.data() );
     graph.SetName( graphname.c_str() );
     return graph;
