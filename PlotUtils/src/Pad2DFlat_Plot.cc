@@ -57,6 +57,10 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     PlotObj( hist, "COLZ" );
     SetAxisFont();
     break;
+  case plot2df::heattext:
+    PlotObj( hist, "COLZ TEXT");
+    SetAxisFont();
+    break;
   case   plot2df::heatcont:
     PlotObj( hist, "COLZ" );
     SetAxisFont();

@@ -167,6 +167,105 @@ public:
   virtual ~EntryText(){}
 };
 
+/**
+ * @brief Modifier for text color.
+ */
+class TextColor : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  TextColor( const int color, const float alpha = 1 );
+  virtual ~TextColor(){}
+};
+
+/**
+ * @brief Modifier for text size.
+ *
+ */
+class TextSize : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  TextSize( const double size );
+  virtual ~TextSize(){}
+};
+
+/**
+ * @brief Line formatting arguments
+ */
+class LineColor : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  LineColor( const int color, const float alpha = 1 );
+  virtual ~LineColor(){}
+};
+
+class LineStyle : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  LineStyle( const short style );
+  virtual ~LineStyle(){};
+};
+
+class LineWidth : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  LineWidth( const short style );
+  virtual ~LineWidth(){};
+};
+
+/**
+ * @{
+ * @brief Fill formatting arguments
+ */
+class FillColor : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  FillColor( const int color, const float alpha = 1 );
+  virtual ~FillColor(){}
+};
+
+class FillStyle : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  FillStyle( const short style );
+  virtual ~FillStyle(){};
+};
+/** @} */
+
+/**
+ * @{
+ * @brief Marker formatting arguments
+ */
+class MarkerColor : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  MarkerColor( const int color, const float alpha = 1 );
+  virtual ~MarkerColor(){}
+};
+
+class MarkerStyle : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  MarkerStyle( const short style );
+  virtual ~MarkerStyle(){};
+};
+
+class MarkerSize : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  MarkerSize( const float style );
+  virtual ~MarkerSize(){};
+};
+/** @} */
 
 /**
  * @brief Enum for defining plot types. Putting this in global plt namespace
@@ -212,6 +311,7 @@ enum plot2df
 {
   plot2df_dummy = 10000,// < start at non-zero to avoid value collision.
   heat,// < Plot objects has head maps
+  heattext, // < Plot objects as heat maps with text in bin box
   heatcont,// < Plot object as heat maps with contours lines
   cont// < Plotting only contour lines
 };

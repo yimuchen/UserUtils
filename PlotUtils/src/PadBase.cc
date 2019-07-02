@@ -11,6 +11,8 @@
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
+#include "CmdSetAttr.hpp"
+
 #include <stack>
 
 namespace usr  {
@@ -132,13 +134,31 @@ PadBase::SetTextAlign( const font::align x )
  * @brief Writing latex text at data point.
  */
 PadBase&
-PadBase::WriteAtData( const double x, const double y, const std::string& line )
+PadBase::WriteAtData(
+  const double                  x,
+  const double                  y,
+  const std::string&            line,
+  const std::vector<RooCmdArg>& arglist )
 {
   TPad::cd();// We will still need to cd to pad to get the correct dimensions.
+
+  const RooArgContainer args( arglist,
+      {
+        TextColor( usr::plt::col::black ),
+        TextSize( FontSize() )
+      }
+                              );
 
   auto& newlatex = MakeObj<TLatex>( _latex );
   newlatex.SetNDC( false );
   newlatex.SetText( x, y, line.c_str() );
+  newlatex.SetTextColorAlpha(
+    args.Get( TextColor::CmdName ).getInt( 0 ),
+    args.Get( TextColor::CmdName ).getDouble( 0 )
+    );
+  newlatex.SetTextSize(
+    args.Get( TextSize::CmdName ).getDouble( 0 )
+    );
   PlotObj( newlatex, "" );
   return *this;
 }
@@ -150,17 +170,27 @@ PadBase::WriteAtData( const double x, const double y, const std::string& line )
  * The write line can be chained to write multiple lines of text:
  */
 PadBase&
-PadBase::WriteLine( const std::string& line )
+PadBase::WriteLine( const std::string&            line,
+                    const std::vector<RooCmdArg>& arglist  )
 {
   TPad::cd();
+
+  const RooArgContainer args( arglist,
+      {// Defining default arguments
+        TextColor( usr::plt::col::black ),// Black text
+        TextSize( FontSize() )// Canvas font settings
+      }
+                              );
 
   auto& newlatex = MakeObj<TLatex>( _latex );
   newlatex.SetNDC( true );
   newlatex.SetText( _latex_cursorx, _latex_cursory, line.c_str() );
+  SetTextAttr( newlatex, args );
   PlotObj( newlatex, "" );
 
-  _latex_cursory -= std::max( double( RelLineHeight() ),
-    EstimateLatexHeight( line )*FontSize()/AbsHeight() );
+  const double fsize = args.Get( TextSize::CmdName ).getDouble( 0 );
+  _latex_cursory -= std::max( double( RelLineHeight() * fsize / FontSize() ),
+    EstimateLatexHeight( line )* fsize /AbsHeight() );
   return *this;
 }
 

@@ -10,13 +10,16 @@
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/Filesystem.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
+#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
 #include "UserUtils/Common/STLUtils/Filesystem.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/Constants.hpp"
+#include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
-
 
 #include "TCanvas.h"
 #include "TLatex.h"
@@ -112,14 +115,38 @@ public:
   PadBase& SetTextCursor( const double, const double );
   PadBase& SetTextCursor( const double, const double, const font::align );
   PadBase& SetTextAlign( const font::align );
-  PadBase& WriteLine( const std::string& );
-  PadBase& WriteAtData( const double, const double, const std::string& );
+
+  PadBase& WriteLine( const std::string&,
+                      const std::vector<RooCmdArg>& );
+  inline PadBase&
+  WriteLine( const std::string& str )
+  { return WriteLine( str, {} ); }
+  template<typename ... Args>
+  inline PadBase&
+  WriteLine( const std::string& str,
+             const RooCmdArg& arg1, Args ... args )
+  { return WriteLine( str, usr::MakeVector<RooCmdArg>( arg1, args ... ) ); }
+
+
+  PadBase& WriteAtData( const double, const double, const std::string&,
+                        const std::vector<RooCmdArg>& );
+  inline PadBase&
+  WriteAtData( const double x, const double y, const std::string& str )
+  { return WriteAtData( x, y, str, {} ); }
+  template<typename ... Args>
+  inline PadBase&
+  WriteAtData( const double x, const double y, const std::string& str,
+               const RooCmdArg& arg1, Args ... args )
+  {
+    return WriteAtData( x, y, str,
+      usr::MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
 
   void PlotObj( TObject&, Option_t* = "" );
 
   /** @brief pointer interface to PlotObj */
   inline void
-  PlotObj( TObject* obj, Option_t* opt = "" ) {  PlotObj( *obj, opt ); }
+  PlotObj( TObject* obj, Option_t* opt = "" ){  PlotObj( *obj, opt ); }
 
   bool HasObject( const TObject& ) const;
   inline bool
@@ -138,8 +165,8 @@ public:
   ObjType&
   MakeObj( Args ... args )
   {
-    _generated_objects.emplace_back( new ObjType( args... ) );
-    return *dynamic_cast<ObjType*>(_generated_objects.back().get() );
+    _generated_objects.emplace_back( new ObjType( args ... ) );
+    return *dynamic_cast<ObjType*>( _generated_objects.back().get() );
   }
 
   void ClaimObject( TObject* );
@@ -167,7 +194,7 @@ protected:
   /** @brief a lot of objects for plotting will be dynamically generated (ex. text objects )
    * The Pad object will then claim ownership of these objects
    */
-  std::vector<std::unique_ptr<TObject>> _generated_objects;
+  std::vector<std::unique_ptr<TObject> > _generated_objects;
 
   /** @brief Getting the list of objects to be plotted on the pad */
   inline TList*

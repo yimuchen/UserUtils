@@ -9,6 +9,7 @@
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
+#include "CmdSetAttr.hpp"
 #include <boost/format.hpp>
 
 
@@ -22,34 +23,40 @@ namespace plt  {
  *
  * An extra margin based on the current axis tick-length would be added.
  */
-float Pad1D::InnerTextLeft() const
+float
+Pad1D::InnerTextLeft() const
 {
   return GetLeftMargin() + 1.5 * Yaxis().GetTickLength();
 }
 
-float Pad1D::InnerTextRight() const
+float
+Pad1D::InnerTextRight() const
 {
   return 1. - GetRightMargin() - 1.5 * Yaxis().GetTickLength();
 }
 
-float Pad1D::InnerTextHCenter() const
+float
+Pad1D::InnerTextHCenter() const
 {
-  return (InnerTextLeft() + InnerTextRight() ) /2 ;
+  return ( InnerTextLeft() + InnerTextRight() ) /2;
 }
 
-float Pad1D::InnerTextTop() const
+float
+Pad1D::InnerTextTop() const
 {
-  return  1 - GetTopMargin() - 1.5 * Xaxis().GetTickLength();
+  return 1 - GetTopMargin() - 1.5 * Xaxis().GetTickLength();
 }
 
-float Pad1D::InnerTextBottom() const
+float
+Pad1D::InnerTextBottom() const
 {
   return GetBottomMargin() + 1.5 * Xaxis().GetTickLength();
 }
 
-float Pad1D::InnerTextVCenter() const
+float
+Pad1D::InnerTextVCenter() const
 {
-  return (InnerTextTop() + InnerTextBottom() ) /2 ;
+  return ( InnerTextTop() + InnerTextBottom() ) /2;
 }
 /** @} */
 
@@ -65,15 +72,12 @@ float Pad1D::InnerTextVCenter() const
  */
 TLine&
 Pad1D::DrawHLine(
-  const double  y,
-  const Color_t c,
-  const Style_t s,
-  const Width_t w )
+  const double&                 y,
+  const std::vector<RooCmdArg>& arglist  )
 {
+  RooArgContainer args( arglist );
   TLine& line = MakeObj<TLine>( GetXaxisMin(), y, GetXaxisMax(), y );
-  line.SetLineColor( c );
-  line.SetLineStyle( s );
-  line.SetLineWidth( w );
+  SetLineAttr( line, args );
   PadBase::PlotObj( line );
   return line;
 }
@@ -90,19 +94,14 @@ Pad1D::DrawHLine(
  */
 TLine&
 Pad1D::DrawVLine(
-  const double  x,
-  const Color_t c,
-  const Style_t s,
-  const Width_t w )
+  const double&                 x,
+  const std::vector<RooCmdArg>& arglist )
 {
+  RooArgContainer args( arglist );
   TLine& line = MakeObj<TLine>(
-    x,
-    Yaxis().GetXmin(),
-    x,
-    Yaxis().GetXmax() );
-  line.SetLineColor( c );
-  line.SetLineStyle( s );
-  line.SetLineWidth( w );
+    x, Yaxis().GetXmin(),
+    x, Yaxis().GetXmax() );
+  SetLineAttr( line, args );
   PadBase::PlotObj( line );
   _linelist.push_back( &line );
   return line;
@@ -125,16 +124,11 @@ Pad1D::DrawVLine(
 void
 Pad1D::DrawCMSLabel( const std::string& tag, const std::string& main )
 {
-  const float tmp     = FontSize();
-  _latex.SetTextSize( Font().large() );
-
   SetTextCursor( InnerTextLeft(), InnerTextTop(), font::top_left );
-  WriteLine( "#bf{"+main+"}" );
+  WriteLine( "#bf{"+main+"}", TextSize( Font().large() ) );
   if( tag != "" ){
-    WriteLine( "#it{" + tag + "}" );
+    WriteLine( "#it{" + tag + "}", TextSize( Font().large() ) );
   }
-
-  _latex.SetTextSize( tmp );
 }
 
 /**

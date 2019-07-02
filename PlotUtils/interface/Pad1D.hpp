@@ -119,16 +119,25 @@ public:
    */
   DECLARE_PLOT_FUNCTIONS( PlotPdf, RooAbsPdf, TGraph& );
   /** @} */
+
+
+  /**
+   * @{
+   *  @brief function for drawing a horizontal line across pad
+   */
+  DECLARE_PLOT_FUNCTIONS( DrawHLine, const double, TLine& );
+  /** @} */
+
+  /**
+   * @{
+   * @brief Function for drawing a vertical along in the pad
+   */
+  DECLARE_PLOT_FUNCTIONS( DrawVLine, const double, TLine& );
+  /** @} */
+
+
 #undef DECLARE_PLOT_FUNCTIONS
 
-  TLine& DrawHLine( const double  y,
-                    const Color_t c,
-                    const Style_t s = 1,
-                    const Width_t w = 1 );
-  TLine& DrawVLine( const double  x,
-                    const Color_t c,
-                    const Style_t s = 1,
-                    const Width_t w = 1 );
   void DrawCMSLabel( const std::string&      = cap::prelim,
                      const std::string& main = "CMS" );
   void DrawLuminosity( const double luminosity );
@@ -137,10 +146,10 @@ public:
   // Common text settings
   float InnerTextLeft() const;
   float InnerTextRight() const;
-  float InnerTextHCenter() const ;
+  float InnerTextHCenter() const;
   float InnerTextTop() const;
   float InnerTextBottom() const;
-  float InnerTextVCenter() const ;
+  float InnerTextVCenter() const;
 
   // Axis and Range setting function
   TObject*     GetAxisObject() const;

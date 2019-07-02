@@ -176,7 +176,7 @@ void
 Bottom1DPad::SetAxisFont()
 {
   Pad1D::SetAxisFont();
-  Xaxis().SetTitleOffset( 2.5 );
+  Xaxis().SetTitleOffset( 3.8 );
   Yaxis().SetNdivisions( 503 );// Better ticks for axis box
   Yaxis().SetTitleOffset( 2.0 );
 }

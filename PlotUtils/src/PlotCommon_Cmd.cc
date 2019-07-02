@@ -6,6 +6,7 @@
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
+#include "RooFitResult.h"
 #include "TFitResult.h"
 
 #include <algorithm>
@@ -192,6 +193,51 @@ Plot2DF::Plot2DF( const std::string& drawopt ) :
   RooCmdArg( CmdName.c_str(), plot2df_dummy, 0, 0, 0, drawopt.c_str() ){}
 
 // ---------------------------------------------------------------------------//
+
+const std::string TextColor::CmdName = "TextColor";
+TextColor::TextColor( const int color, const float alpha ) :
+  RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
+
+const std::string TextSize::CmdName = "TextSize";
+TextSize::TextSize( const double size ) :
+  RooCmdArg( CmdName.c_str(), 0, 0, size ){}
+
+
+const std::string LineColor::CmdName = "LineColor";
+LineColor::LineColor( const int color, const float alpha ) :
+  RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
+
+const std::string LineStyle::CmdName = "LineStyle";
+LineStyle::LineStyle( const short style ) :
+  RooCmdArg( CmdName.c_str(), style ){}
+
+const std::string LineWidth::CmdName = "LineWidth";
+LineWidth::LineWidth( const short width ) :
+  RooCmdArg( CmdName.c_str(), width ){}
+
+
+const std::string FillColor::CmdName = "FillColor";
+FillColor::FillColor( const int color, const float alpha ) :
+  RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
+
+const std::string FillStyle::CmdName = "FillStyle";
+FillStyle::FillStyle( const short style ) :
+  RooCmdArg( RooFit::FillStyle( style ) ){}
+
+
+const std::string MarkerColor::CmdName = "MarkerColor";
+MarkerColor::MarkerColor( const int color, const float alpha ) :
+  RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
+
+const std::string MarkerStyle::CmdName = "MarkerStyle";
+MarkerStyle::MarkerStyle( const short style ) :
+  RooCmdArg( RooFit::MarkerStyle( style ) ){}
+
+const std::string MarkerSize::CmdName = "MarkerSize";
+MarkerSize::MarkerSize( const float size ) :
+  RooCmdArg( RooFit::MarkerSize( size ) ){}
+
+
 
 /**
  * @brief string for defining the RooCmdArg name

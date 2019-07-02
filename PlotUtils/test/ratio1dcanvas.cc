@@ -9,11 +9,11 @@
 #include "UserUtils/PlotUtils/Ratio1DCanvas.hpp"
 #endif
 
+#include "RooConstVar.h"
+#include "RooDataSet.h"
+#include "RooGaussian.h"
 #include "TH1D.h"
 #include "TRandom3.h"
-#include "RooGaussian.h"
-#include "RooDataSet.h"
-#include "RooConstVar.h"
 #include <iostream>
 
 namespace plt = usr::plt;
@@ -23,7 +23,7 @@ void
 SetDataStyle( T& x )
 {
   x.SetMarkerStyle( 20 );
-  x.SetMarkerSize( 0.5 );
+  x.SetMarkerSize(    0.5 );
   x.SetMarkerSize( kBlack );
 }
 
@@ -101,7 +101,7 @@ main( int argc, char* argv[] )
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
-    c.SaveAsPNG( "image/ratio1dcanvas.png", 72 );
+    c.SaveAsPNG(         "image/ratio1dcanvas.png",  72 );
     c.SaveAsPNG( "image/ratio1dcanvas_highres.png", 300 );
     c.SaveAsPDF( "image/ratio1dcanvas_highres.pdf" );
     // c.SaveAsCPP( "image/ratio1dcanvas_test.cc" );
@@ -112,8 +112,8 @@ main( int argc, char* argv[] )
     RooRealVar s( "s", "s", 1.5, 0, 5 );
     RooGaussian g( "g", "g", x, m, s );
     RooGaussian gx( "gx", "gx", x,
-      RooFit::RooConst( -1.85 ), RooFit::RooConst( 1.40 ) );
-    RooDataSet* d     = g.generate( RooArgSet( x ), 500 );
+                    RooFit::RooConst( -1.85 ), RooFit::RooConst( 1.40 ) );
+    RooDataSet* d     = g.generate( RooArgSet( x ), 1000 );
     RooFitResult* fit = g.fitTo( *d,
       RooFit::Save(),
       RooFit::Verbose( false ),
@@ -121,40 +121,45 @@ main( int argc, char* argv[] )
       RooFit::Warnings( false ),
       RooFit::PrintEvalErrors( 0 ) );
 
-    plt::Ratio1DCanvas c( plt::RangeByVar(x),
-      plt::Ratio1DCanvas::default_width );
+    plt::Ratio1DCanvas c( plt::RangeByVar( x ),
+                          plt::Ratio1DCanvas::default_width );
     // c.PlotData( d, RooFit::Invisible() );
-    auto& fitgraph = c.PlotPdf( g,
-      plt::EntryText( "Fitted Bkg." ),
-      RooFit::VisualizeError( *fit, 1, false ),
-      RooFit::Normalization( 500, RooAbsReal::NumEvent ) );
+
+    auto& datgraph = c.PlotData( d,
+      plt::EntryText( "Fake Data" ),
+      plt::MarkerStyle( 20 ),
+      plt::MarkerSize( 0.2 ),
+      plt::LineColor( kBlack ) );
+
+    std::cout << "Plotting fitted function" << std::endl;
+
     auto& altgraph = c.PlotPdf( gx,
       plt::EntryText( "Alt. Bkg. Model" ),
-      RooFit::Normalization( 500, RooAbsReal::NumEvent ) );
-    auto& datgraph = c.PlotData( d, plt::EntryText("Fake Data") );
+      plt::PlotUnder( datgraph ),
+      plt::LineColor( kRed ),
+      plt::FillColor( kPink, 1 ) );
 
-    datgraph.SetMarkerStyle( 20 );
-    datgraph.SetMarkerSize( 0.2 );
-    datgraph.SetLineColor( kBlack );
-    fitgraph.SetLineColor( kBlue );
-    fitgraph.SetFillColor( kCyan );
-    altgraph.SetLineColor( kRed );
-    altgraph.SetFillColorAlpha( kWhite, 0 );
+    auto& fitgraph = c.PlotPdf( g,
+      plt::VisualizeError( *fit, 1, false ),
+      plt::EntryText( "Fitted Bkg." ),
+      plt::PlotUnder( datgraph ),
+      plt::LineColor( usr::plt::col::blue ),
+      plt::FillColor( usr::plt::col::cyan )  );
 
     c.PlotScale( fitgraph, fitgraph,
-       plt::TrackY(plt::TrackY::none), plt::PlotType(plt::fittedfunc) );
+      plt::TrackY( plt::TrackY::none ), plt::PlotType( plt::fittedfunc ) );
     c.PlotScale( altgraph, fitgraph,
-       plt::TrackY(plt::TrackY::none), plt::PlotType(plt::simplefunc) );
+      plt::TrackY( plt::TrackY::none ), plt::PlotType( plt::simplefunc ) );
     c.PlotScale( datgraph, fitgraph,
-      plt::PlotType(plt::scatter) );
+      plt::PlotType( plt::scatter ) );
 
-    c.BottomPad().Yaxis().SetTitle("Data/Fit");
+    c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
-    c.SaveAsPNG("image/ratio1dcanvas_roofit.png", 72 );
-    c.SaveAsPNG("image/ratio1dcanvas_roofit_highres.png", 300 );
-    c.SaveAsPDF("image/ratio1dcanvas_roofit.pdf" );
+    c.SaveAsPNG(         "image/ratio1dcanvas_roofit.png",  72 );
+    c.SaveAsPNG( "image/ratio1dcanvas_roofit_highres.png", 300 );
+    c.SaveAsPDF( "image/ratio1dcanvas_roofit.pdf" );
   }
 
   return 0;

@@ -31,20 +31,26 @@ main( int argc, char* argv[] )
     }
 
     plt::Simple1DCanvas c;
-    c.PlotHist( h1, plt::PlotType( plt::scatter ), plt::EntryText( "Bkg. 1" ) );
-    c.PlotHist( h2, plt::PlotType( plt::hist ),    plt::EntryText( "Bkg. 2" ) );
-    c.PlotHist( h3, plt::PlotType( plt::histerr ), plt::EntryText( "Signal" ) );
+    c.PlotHist( h1,
+      plt::PlotType( plt::scatter ),
+      plt::EntryText( "Bkg. 1" ),
+      plt::LineColor( usr::plt::col::black ),
+      plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+      plt::MarkerColor( usr::plt::col::black ),
+      plt::MarkerSize( 0.2 ) );
+    c.PlotHist( h2,
+      plt::PlotType( plt::hist ),
+      plt::EntryText( "Bkg. 2" ),
+      plt::LineColor( usr::plt::col::blue ) );
+    c.PlotHist( h3,
+      plt::PlotType( plt::histerr ),
+      plt::EntryText( "Signal" ),
+      plt::FillColor( usr::plt::col::darkgray ),
+      plt::FillStyle( plt::sty::filldotdense ) );
     c.DrawCMSLabel( "ROOTOBJ TEST", "CWS" );
     c.DrawLuminosity( 133.7 );
     c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
 
-    // Styling
-    h1.SetLineColor( kBlack );
-    h1.SetMarkerStyle( 20 );
-    h1.SetMarkerSize( 0.2 );
-    h2.SetLineColor( kBlue );
-    h3.SetFillColor( kGray );
-    h3.SetFillStyle( plt::sty::filldotdense );
 
     c.SaveAsPNG( "image/simple1dcanvas.png",         72 );
     c.SaveAsPNG( "image/simple1dcanvas_highres.png", 300 );
@@ -67,26 +73,23 @@ main( int argc, char* argv[] )
       h3.Fill( r.Gaus( -2, 1 ), r.Gaus( 0.5, 0.1 ) );
     }
 
-    // Styling must happend before plotting
-    h1.SetFillStyle( plt::sty::fillsolid );
-    h1.SetFillColor( kCyan );
-    h1.SetLineColor( kCyan );
-    h2.SetFillStyle( plt::sty::filldotdense );
-    h2.SetFillColor( kPink );
-    h2.SetLineColor( kPink );
-    h3.SetLineColor( kBlue );
-
-
     plt::Simple1DCanvas c;
     c.PlotHist( h1,
       plt::PlotType( plt::histstack ),
-      plt::EntryText( "Bkg. 1" ) );
+      plt::EntryText( "Bkg. 1" ),
+      plt::FillStyle( plt::sty::fillsolid ),
+      plt::FillColor( plt::col::cyan ),
+      plt::LineColor( plt::col::cyan ) );
     c.PlotHist( h2,
       plt::PlotType( plt::histstack ),
-      plt::EntryText( "Bkg. 2" ) );
+      plt::EntryText( "Bkg. 2" ),
+      plt::FillStyle( plt::sty::filldotdense ),
+      plt::FillColor( plt::col::pink ),
+      plt::LineColor( plt::col::pink ) );
     c.PlotHist( h3,
       plt::PlotType( plt::hist ),
-      plt::EntryText( "Sig" ) );
+      plt::EntryText( "Sig" ),
+      plt::LineColor( usr::plt::col::blue ) );
 
     c.DrawCMSLabel( "STACK TEST", "CWS" );
     c.DrawLuminosity( 133.7 );
@@ -100,7 +103,6 @@ main( int argc, char* argv[] )
     c.SaveAsPNG( "image/simple1dcanvas_stack_log_highres.png", 300 );
     c.SaveAsPDF( "image/simple1dcanvas_stack_log.pdf" );
   }
-
 
   // ROOFIT testing
   {
@@ -118,16 +120,25 @@ main( int argc, char* argv[] )
     plt::Simple1DCanvas c2( plt::RangeByVar( x ),
                             plt::Simple1DCanvas::default_width );
 
-    auto& dgraph = c2.PlotData( d );
+
+    auto& dgraph = c2.PlotData( d,
+      plt::EntryText("Data?"),
+      plt::MarkerStyle( plt::sty::mkrcircle ),
+      plt::MarkerSize( 0.5 ),
+      plt::MarkerColor( plt::col::black ),
+      plt::LineColor( plt::col::black ) );
+
     auto& fgraph = c2.PlotPdf( g,
       RooFit::VisualizeError( *fit, 1, false ),
-      usr::plt::PlotUnder( dgraph ) );
+      plt::EntryText( "My Fit" ),
+      plt::PlotUnder( dgraph ),
+      plt::LineColor( plt::col::blue ),
+      plt::FillColor( plt::col::cyan )
+      );
 
-    dgraph.SetMarkerStyle( 20 );
-    dgraph.SetMarkerSize( 0.2 );
-    dgraph.SetLineColor( kBlack );
-    fgraph.SetLineColor( kBlue );
-    fgraph.SetFillColor( kCyan );
+    std::cout << dgraph.GetMarkerSize() << std::endl
+              << dgraph.GetMarkerStyle() << std::endl
+              << dgraph.GetMarkerColor() << std::endl;
 
     c2.DrawCMSLabel( "ROOFIT test", "CWS" );
     c2.DrawLuminosity( 133.7 );
@@ -140,8 +151,8 @@ main( int argc, char* argv[] )
     c2.SaveAsPNG( "image/simple1dcanvas_roofit_log.png",         72 );
     c2.SaveAsPNG( "image/simple1dcanvas_roofit_log_highres.png", 300 );
     c2.SaveAsPDF( "image/simple1dcanvas_roofit_log.pdf" );
+    c2.SaveToROOT("mytest.root", "roofit");
   }
-
 
   return 0;
 }

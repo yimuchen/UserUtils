@@ -112,8 +112,11 @@ Pad1D::AddLegendEntry(
   double y_width     = 0;
 
   for( int i = 0; i < graph.GetN() && plottype == plottype::scatter; ++i ){
-    x_width = graph.GetErrorXlow( i ) + graph.GetErrorXhigh( i );
-    y_width = graph.GetErrorYlow( i ) + graph.GetErrorYhigh( i );
+    x_width = std::max( x_width,
+      graph.GetErrorXlow( i ) + graph.GetErrorXhigh( i ) );
+    y_width = std::max( y_width,
+      graph.GetErrorYlow( i ) + graph.GetErrorYhigh( i ) );
+
     // Early exit if both are not zero.
     if( x_width != 0 && y_width != 0 ){ break; }
   }
@@ -130,7 +133,6 @@ Pad1D::AddLegendEntry(
     plottype == plottype::scatter    ? "P" + erropt :
     plotopt.getString( 0 )           ? "PLFE" :
     "";
-
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
@@ -205,7 +207,7 @@ Pad1D::FinalizeLegend( const align newposition )
                      valign == align::vcenter  ? InnerTextVCenter() - height /2 :
                      InnerTextTop() - height;
   const float xmax = xmin + width;
-  const float ymax  = ymin + height;
+  const float ymax = ymin + height;
 
   _legend.SetX1NDC( xmin );
   _legend.SetX2NDC( xmax );

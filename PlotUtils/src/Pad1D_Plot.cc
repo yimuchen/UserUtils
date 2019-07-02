@@ -15,6 +15,8 @@
 
 #include <random>
 
+#include "CmdSetAttr.hpp"
+
 #include "TDecompChol.h"
 #include "TFitResult.h"
 #include "TGraphErrors.h"
@@ -175,6 +177,11 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     }
   }
 
+  SetLineAttr( obj, args );
+  SetFillAttr( obj, args );
+  SetMarkAttr( obj, args );
+
+
   return obj;
 }
 
@@ -234,7 +241,6 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     std::cerr << "Cannot plot TGraphs with no data points!" << std::endl;
     return obj;
   }
-
 
   // Getting the flags
   const RooArgContainer args( arglist,
@@ -299,6 +305,11 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
       *args.Get( PlotUnder::CmdName ).getObject( 0 ) );
   }
 
+  // Setting styling attributes
+  SetLineAttr( obj, args );
+  SetFillAttr( obj, args );
+  SetMarkAttr( obj, args );
+
   return obj;
 }
 
@@ -319,10 +330,7 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
         PlotType(// Inserting default plotting style
           RooArgContainer::CheckList( arglist, VisualizeError::CmdName ) ?
           fittedfunc : simplefunc ),
-        RooFit::Precision(// Inserting default x precision
-          RooArgContainer::CheckList( arglist, "Precision" ) ?
-          0 : 1e-3
-          )
+        RooFit::Precision( 1e-3 )
       }
     );
 
@@ -387,14 +395,14 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     const std::vector<double> bestfit_param = fit->Parameters();
 
     // Getting matrix for random parameter generation
-    const TMatrixDSym cormatrix = fit->GetCorrelationMatrix();
+    const TMatrixDSym cormatrix = fit->GetCovarianceMatrix();
     const TMatrixD tmatrix      = TDecompChol( cormatrix ).GetU();
+    TVectorD vec( tmatrix.GetNrows() );
     std::mt19937 gen;
     std::normal_distribution pdf( 0.0, 1.0 );
 
     // Random sample for parameter space
     for( unsigned i = 0; i < psample; ++i ){
-      TVectorD vec( tmatrix.GetNrows() );
 
       // Generating random variation using gaussian
       for( int j = 0; j < vec.GetNrows(); ++j ){
@@ -402,7 +410,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
       }
 
       // Forcing the vector onto unit sphere, then transforming according to
-      // the Correlation matrix
+      // the covariance matrix
       vec = ( zval /sqrt( vec.Norm2Sqr() ) ) * vec;
       vec = tmatrix * vec;
 
@@ -470,9 +478,8 @@ Pad1D::PlotData(
   const std::vector<RooCmdArg>& arglist
   )
 {
-  static const RooCmdArg suppressxerror = RooFit::XErrorSize( 0 );// Default
   const RooArgContainer args(
-    args,
+    arglist,
       {
         PlotType( scatter ),
         TrackY( TrackY::max )
@@ -533,7 +540,7 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
 
   // Option for suppressing x error bars
   if( !args.Has( "Binning" ) ){
-    if( !_frame.getPlotVar()->getBinning().isUniform() ){
+    if( _frame.getPlotVar()->getBinning().isUniform() ){
       oplist.Add( suppressxerror.Clone() );
     }
   } else if( IsUniform( args.Get( "Binning" ) ) ){
@@ -592,7 +599,7 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
         PlotType( fittedfunc ) : PlotType( simplefunc )// default plot style.
       }
                               );
-  TGraph& ans = MakePdfGraph( pdf, args );
+  TGraph& ans = MakePdfGraph( pdf, arglist );
 
   if( !args.Has( "Invisible" ) ){// Allow for invisible stuff to exist
     if( _prevrangetype == rangetype::aut ){
@@ -617,17 +624,47 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
  * plot style of a single object, rather than two).
  */
 TGraph&
-Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& arglist )
+Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
 {
-  RooLinkedList roolist  = MakeRooList( arglist );
-  RooLinkedList roolist2 = MakeRooList( arglist, {"VisualizeError"} );
+  // Augmenting the Visualize Error command. We have to manually insert a
+  // RooArgSet containing all the floating variables directly in the
+  // VisualizeError instance. Otherwise the generation of the error band might
+  // fail.
+  auto CorrectVisError
+    = [this]( const RooAbsPdf& pdf,
+              const usr::plt::RooArgContainer& args ) -> RooCmdArg
+      {
+        if( args.Has( VisualizeError::CmdName ) ){
+          const RooCmdArg& cmd = args.Get( VisualizeError::CmdName );
+          if( cmd.getSet( 0 ) ){
+            // If Visualized Parameter set is already specified, then simply
+            // return the original parameter
+            return cmd;
+          } else {
+            RooCmdArg ans( cmd );
+            const RooFitResult& fit
+              = *dynamic_cast<const RooFitResult*>( cmd.getObject( 0 ) );
+            // Memory leak??
+            RooArgSet* cloneParams = pdf.getObservables( fit.floatParsFinal() );
+            ans.setSet( 0, *cloneParams );
+            this->ClaimObject( cloneParams );
+            return ans;
+          }
+        } else {
+          return RooCmdArg::none();
+        }
+      };
 
-  if( !arglist.Has( "VisualizeError" ) ){
+  const RooCmdArg viscmd = CorrectVisError( pdf, args );
+  RooLinkedList roolist  = MakeRooList( args, {VisualizeError::CmdName} );
+
+  if( args.Has( VisualizeError::CmdName ) ){
     // Nothing special needs to be done for simple plotting.
     return GenGraph( pdf, roolist );
   } else {
-    TGraph& centralgraph = GenGraph( pdf, roolist2 );
-    TGraph& errorgraph   = GenGraph( pdf, roolist );
+    TGraph& centralgraph = GenGraph( pdf, roolist );
+    roolist.Add( viscmd.Clone() );
+    TGraph& errorgraph = GenGraph( pdf, roolist );
 
     // Map for storing uncertainty
     std::map<double, std::pair<double, double> > fiterr;
@@ -762,10 +799,22 @@ MakeRooList( const usr::plt::RooArgContainer& arglist,
     if( arg.GetName()    == usr::plt::PlotType::CmdName
         || arg.GetName() == usr::plt::TrackY::CmdName
         || arg.GetName() == usr::plt::EntryText::CmdName
-        || arg.GetName() == usr::plt::PlotUnder::CmdName ){ continue; }
+        || arg.GetName() == usr::plt::PlotUnder::CmdName
+        || arg.GetName() == usr::plt::TextColor::CmdName
+        || arg.GetName() == usr::plt::TextSize::CmdName
+        || arg.GetName() == usr::plt::LineColor::CmdName
+        || arg.GetName() == usr::plt::LineStyle::CmdName
+        || arg.GetName() == usr::plt::LineWidth::CmdName
+        || arg.GetName() == usr::plt::FillColor::CmdName
+        || arg.GetName() == usr::plt::FillStyle::CmdName
+        || arg.GetName() == usr::plt::MarkerColor::CmdName
+        || arg.GetName() == usr::plt::MarkerStyle::CmdName
+        || arg.GetName() == usr::plt::MarkerSize::CmdName
+        ){ continue; }
     if( usr::FindValue( exclude,  std::string( arg.GetName() ) ) ){
       continue;
     }
+
     ans.Add( arg.Clone() );
   }
 
