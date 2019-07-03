@@ -4,9 +4,6 @@
 ../testbin/PlotUtils/usrutil_simple1dcanvas
 ../testbin/PlotUtils/usrutil_ratio1dcanvas
 ../testbin/PlotUtils/usrutil_flat2dcanvas
-# rsync $testdir/simple1dcanvas_roofit_test.png  image/
-# rsync $testdir/ratio1dcanvas_test.png          image/
-# rsync $testdir/ratio1dcanvas_roofit_test.png   image/
 
 # Generating CSS file
 sass style.scss:style.css --style compact
@@ -34,3 +31,5 @@ rm html/tab_s.png
 # Copying custom files
 mkdir -p html/customjs
 cp customjs/* html/customjs
+mkdir -p html/image
+cp image/* html/image

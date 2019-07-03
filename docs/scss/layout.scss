@@ -37,6 +37,36 @@
   margin-left: auto;
   margin-right: auto;
   text-align: justify;
+
+  .plot_example {
+    text-align: center;
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 10px;
+      overflow: hidden;
+      background-color: $maincolor;
+    }
+
+    li {
+      display: inline;
+      width: 10%;
+      float: center;
+    }
+
+    li a {
+      color: white;
+      text-align: center;
+      margin: 10px;
+      padding: 16px;
+      text-decoration: none;
+    }
+    li a:hover{
+      background-color: darken($maincolor,10);
+
+    }
+  }
 }
 
 .footer {
