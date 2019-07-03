@@ -29,6 +29,9 @@ main( int argc, char const* argv[] )
     cout << x << endl;
   }
 
+  cout << usr::fstr( "this is a test" ) << std::endl;
+  cout << usr::fstr( "My test %d\n", 1234) << std::endl;
+
 
   return 0;
 }

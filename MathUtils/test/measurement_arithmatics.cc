@@ -35,12 +35,13 @@ AddTest( const vector<Measurement>& list )
 
   const Measurement sum = SumUncorrelated( list );
 
-  cout << boost::format( "%40s & %15s & %15s & %15s" )
-    % ss.str()
-    % fmt::decimal( sum.CentralValue(),  8 )
-    % fmt::decimal( sum.AbsUpperError(), 8 )
-    % fmt::decimal( sum.AbsLowerError(), 8 )
-       <<endl;
+  cout <<
+    fstr( "%40s & %15s & %15s & %15s",
+    ss.str(),
+    fmt::decimal( sum.CentralValue(),  8 ),
+    fmt::decimal( sum.AbsUpperError(), 8 ),
+    fmt::decimal( sum.AbsLowerError(), 8 ) )
+       << endl;
 }
 
 
@@ -63,11 +64,11 @@ ProdTest( const vector<double> chain )
 
   const Measurement product = ProdUncorrelated( prodlist );
 
-  cout << boost::format("%30s & %15s & %15s & %15s")
-       % ss.str()
-       % fmt::decimal(product.CentralValue() , 8 )
-       % fmt::decimal(product.AbsUpperError()  , 8 )
-       % fmt::decimal(product.AbsLowerError()  , 8 )
+  cout << fstr( "%30s & %15s & %15s & %15s",
+    ss.str(),
+    fmt::decimal( product.CentralValue(),  8 ),
+    fmt::decimal( product.AbsUpperError(), 8 ),
+    fmt::decimal( product.AbsLowerError(), 8 ) )
        << endl;
 }
 
@@ -131,26 +132,17 @@ main( int argc, char const* argv[] )
        << ">>>> Addition testing: Partial addition to 100" << endl;
   {
     Measurement a = Poisson::Minos( 20 );
-    boost::format test( "%30s & %25s" );
-    cout << test
-      % "Direct value: "
-      % fmt::decimal( Poisson::Minos( 100 ), 4 )
-         << endl;
-    cout << test
-      % "(20+20+20+20+20)"
-      % fmt::decimal( Sum( a, a, a, a, a ), 4  )
-         << endl;
-    cout << test
-      % "(20+20)+(20+20+20)"
-      % fmt::decimal( Sum( Sum( a, a ), Sum( a, a, a ) ), 4  )
-         << endl;
-    cout << test
-      % "((20+20)+(20+20)+20)"
-      % fmt::decimal( Sum( Sum( a, a ), Sum( a, a ), a ), 4  )
-         << endl;
-    cout << test % "(((20+20)+20)+20)+20)"
-      % fmt::decimal( Sum( Sum( Sum( Sum( a, a ), a ), a ), a ), 4  )
-         << endl;
+    boost::format test( "%30s & %25s\n" );
+    cout << usr::fstr( test, "Direct value: ",
+      fmt::decimal( Poisson::Minos( 100 ),                     4 ) )
+         << usr::fstr( test, "(20+20+20+20+20)",
+      fmt::decimal( Sum( a, a, a, a, a ),                      4  ) )
+         << usr::fstr( test, "(20+20)+(20+20+20)",
+      fmt::decimal( Sum( Sum( a, a ), Sum( a, a, a ) ),        4  ) )
+         << usr::fstr( test, "((20+20)+(20+20)+20)", fmt::decimal( Sum( Sum( a, a ), Sum( a, a ), a ), 4  ) )
+         << usr::fstr( test, "(((20+20)+20)+20)+20)",
+      fmt::decimal( Sum( Sum( Sum( Sum( a, a ), a ), a ), a ), 4  ) )
+         << std::flush;
 
   }
 
