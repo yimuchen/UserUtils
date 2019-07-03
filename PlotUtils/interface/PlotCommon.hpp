@@ -72,10 +72,7 @@ public:
   template<typename ObjType>
   ObjType&
   LastPlot()
-  {
-    ObjType& ans = *( dynamic_cast<ObjType*>( getObject( numItems() -1 ) ) );
-    return ans;
-  }
+  { return *( dynamic_cast<ObjType*>( getObject( numItems() -1 ) ) ); }
 };
 
 /**

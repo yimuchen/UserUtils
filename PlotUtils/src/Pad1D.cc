@@ -85,7 +85,7 @@ void
 Pad1D::InitDraw()
 {
   // Setting axis digits
-  TGaxis::SetMaxDigits(4);
+  TGaxis::SetMaxDigits( 4 );
 
   // Early exit if no RooPlot is required;
   if( !_frame.AxisHistPtr() ){ return; }
@@ -133,9 +133,14 @@ Pad1D::~Pad1D()
  * called to adjust the Y axis range appropriately.
  */
 void
-Pad1D::SetLogy( int x )
+Pad1D::SetLogy( int flag )
 {
-  TPad::SetLogy( x );
+  TPad::SetLogy( flag );
+  if( flag && !CheckLogy() ){
+    std::cerr << "[PAD1D] Data-objects y-values in Pad1D is not "
+      "positive definite. Unsetting the log option." << std::endl;
+    TPad::SetLogy( 0 );
+  }
   AutoSetYRange();
 }
 
@@ -143,9 +148,49 @@ Pad1D::SetLogy( int x )
  * @brief Simple passthrough function
  */
 void
-Pad1D::SetLogx( int x )
+Pad1D::SetLogx( int flag )
 {
-  TPad::SetLogx( x );
+  TPad::SetLogx( flag );
+  if( flag && !CheckLogx() ){
+    std::cerr << "[PAD1D] Data-objects x-values in Pad1D is not "
+      "positive definite. Unsetting the log option." << std::endl;
+    TPad::SetLogx( 0 );
+  }
+}
+
+/**
+ * @brief Checking if the data in the plot objects are positive definite.
+ *
+ * To avoid the case where there are negative numbers or zeros in the plot data
+ * when setting the plot range to be log scaled. All plot objects with values
+ * less than 0 with have it's contents shifted to the minimal positive double.
+ */
+bool
+Pad1D::CheckLogy() const
+{
+  for( const auto&& obj : *GetListOfPrimitives() ){
+    if( obj->InheritsFrom( TH1D::Class() ) ){
+      if( obj == GetAxisObject() ){ continue; }// Ignoring the axis object
+      const TH1D* h = dynamic_cast<TH1D*>( obj );
+      if( GetYmin( h ) < 0.0 ){
+        // Only need to check for negative weights for histograms
+        return false;
+        }
+    } else if( obj->InheritsFrom( TGraph::Class() ) ){
+      const TGraph* g = dynamic_cast<TGraph*>( obj );
+
+      if( GetYmin( g ) < 0.0 ){
+        return false; }
+    }
+  }
+
+  return true;
+}
+
+bool
+Pad1D::CheckLogx() const
+{
+  return Xaxis().GetXmin() >= 0;
 }
 
 }/* plt */

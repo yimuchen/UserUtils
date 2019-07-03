@@ -103,7 +103,6 @@ main( int argc, char* argv[] )
     c.SaveAsPNG(         "image/ratio1dcanvas.png",  72 );
     c.SaveAsPNG( "image/ratio1dcanvas_highres.png", 300 );
     c.SaveAsPDF( "image/ratio1dcanvas_highres.pdf" );
-    // c.SaveAsCPP( "image/ratio1dcanvas_test.cc" );
   }
   {// RooFit Testing
     RooRealVar x( "x", "x", -10, 10, plt::unit::GeVcc.c_str() );
@@ -151,6 +150,7 @@ main( int argc, char* argv[] )
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
+    c.SetLogy(1);
     c.SaveAsPNG( "image/ratio1dcanvas_roofit.png",  72 );
     c.SaveAsPNG( "image/ratio1dcanvas_roofit_highres.png", 300 );
     c.SaveAsPDF( "image/ratio1dcanvas_roofit.pdf" );

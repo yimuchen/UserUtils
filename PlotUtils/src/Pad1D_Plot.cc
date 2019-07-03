@@ -14,6 +14,7 @@
 #endif
 
 #include <random>
+#include <limits>
 
 #include "CmdSetAttr.hpp"
 
@@ -251,7 +252,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
-    auto& axishist = MakeObj<TH1F>(
+    auto& axishist = MakeObj<TH1D>(
       ( genaxisname + RandomString( 6 ) ).c_str(),
       "",
       10, GetXmin( obj ), GetXmax( obj ) );
@@ -336,9 +337,9 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
-    auto& axishist = MakeObj<TH1F>(
-      ( "axishist" + RandomString( 10 ) ).c_str(),
-      ( "axishist" + RandomString( 10 ) ).c_str(),
+    auto& axishist = MakeObj<TH1D>(
+      ( genaxisname + RandomString( 10 ) ).c_str(),
+      "",
       10, func.GetXmin(), func.GetXmax() );
     axishist.SetStats( 0 );
     PadBase::PlotObj( axishist, "AXIS" );
@@ -658,7 +659,7 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
   const RooCmdArg viscmd = CorrectVisError( pdf, args );
   RooLinkedList roolist  = MakeRooList( args, {VisualizeError::CmdName} );
 
-  if( args.Has( VisualizeError::CmdName ) ){
+  if( !args.Has( VisualizeError::CmdName ) ){
     // Nothing special needs to be done for simple plotting.
     return GenGraph( pdf, roolist );
   } else {
@@ -717,7 +718,20 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
     throw std::invalid_argument(
       "Bad argument list or object, plotting failed" );
   }
-  return _frame.LastPlot<TGraph>();
+
+  auto& graph = _frame.LastPlot<TGraph>();
+  graph.SetName( (pdf.GetName() + RandomString(6)).c_str() );
+
+  // Since this is a PDF and there is no weighting issue, we
+  // enforce the fact that the graph should be positive definite.
+  for( int i = 0 ; i < graph.GetN() ; ++i ){
+    const double x = graph.GetX()[i];
+    const double y = graph.GetY()[i];
+    if( y <= 0.0 ){
+      graph.SetPoint( i, x, 1e-50 );
+    }
+  }
+  return graph;
 }
 
 /**

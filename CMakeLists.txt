@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(SiPMControl)
+project(UserUtils)
 
 ## Compilter settings
 set(CMAKE_CXX_COMPILE_FEATURES cxx_range_for )

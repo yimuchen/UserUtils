@@ -28,8 +28,6 @@ Pad1D::_init_legend()
   _legend.SetTextSize( ParentCanvas().Font().size() );
   _legend.SetBorderSize( 0 );
   _legend.SetFillColorAlpha( 0, 0 );
-  // Cannot preemptively plot the Legend. While till the finalization function is
-  // called.
 }
 
 
@@ -174,8 +172,7 @@ Pad1D::FinalizeLegend( const align newposition )
   // Early exit if Legend wasn't requested
   if( !_legend.GetListOfPrimitives() ){ return; }
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
-
-  if( !TPad::FindObject( &_legend ) ){PadBase::PlotObj( _legend );}
+  if( !TPad::FindObject( &_legend ) ){ PlotObj( _legend, "" ); }
 
   TPad::cd();
   double width  = 0;

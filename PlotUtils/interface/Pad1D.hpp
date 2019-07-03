@@ -272,6 +272,8 @@ protected:
   TGraphAsymmErrors& GenGraph( RooAbsData& data, RooLinkedList& arglist );
   TGraph&            GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist );
 
+  bool CheckLogy() const;
+  bool CheckLogx() const;
 };
 
 }/* plt */
