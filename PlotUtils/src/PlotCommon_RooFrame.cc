@@ -65,6 +65,7 @@ RangeByVar::RangeByVar(
 
 /**
  * @class RooFrame
+ * @ingroup PlotUtilsCore
  * @details
  * An simple wrapper object designed to expose additional features of the
  * RooPlot class (the internal TH1 used for axis plotting) and a feature for

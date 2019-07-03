@@ -34,7 +34,7 @@ namespace plt  {
  *
  * The width and height parameters are in the standard ROOT dimensions units
  * (pixels). For publication dimensions like inches and centimeters, see
- * the functions defined in [PlotUtilsConvert](@ref PlotUtilsConvert).
+ * the functions defined in [PlotUtilsConstants](@ref PlotUtilsConstants).
  */
 Canvas::Canvas(
   const length_t width,

@@ -1,3 +1,8 @@
+/**
+ * @file    PlotCommon_Cmd.cc
+ * @brief   Implementation of RooArgCmd related custom classes.
+ * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
+ */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
@@ -194,49 +199,132 @@ Plot2DF::Plot2DF( const std::string& drawopt ) :
 
 // ---------------------------------------------------------------------------//
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string TextColor::CmdName = "TextColor";
+
+/**
+ * @class TextColor
+ * @brief Defining text color via the color index + alpha value convention.
+ */
 TextColor::TextColor( const int color, const float alpha ) :
   RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
 
+// ---------------------------------------------------------------------------//
+
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string TextSize::CmdName = "TextSize";
+
+/**
+ * @class TextSize
+ * @brief Defining text size using the standard double notation (>1 is in
+ * pixels), (<1 is in ratio to the pad width)
+ */
 TextSize::TextSize( const double size ) :
   RooCmdArg( CmdName.c_str(), 0, 0, size ){}
 
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string LineColor::CmdName = "LineColor";
+
+/**
+ * @class LineColor
+ * @brief Defining Line color via the color index + alpha value convention.
+ */
 LineColor::LineColor( const int color, const float alpha ) :
   RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string LineStyle::CmdName = "LineStyle";
+
+/**
+ * @class LineStyle
+ * @brief Defining Line style via the style index (see namespace usr::plt::sty)
+ */
 LineStyle::LineStyle( const short style ) :
   RooCmdArg( CmdName.c_str(), style ){}
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string LineWidth::CmdName = "LineWidth";
+
+/**
+ * @class LineWidth
+ * @brief Defining line width via number of pixels
+ */
 LineWidth::LineWidth( const short width ) :
   RooCmdArg( CmdName.c_str(), width ){}
 
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string FillColor::CmdName = "FillColor";
+
+/**
+ * @class FillColor
+ * @brief Defining Fill color via color index and alpha value
+ */
 FillColor::FillColor( const int color, const float alpha ) :
   RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string FillStyle::CmdName = "FillStyle";
+
+/**
+ * @class LineStyle
+ * @brief Defining fill style via the style index (see namespace usr::plt::sty)
+ */
 FillStyle::FillStyle( const short style ) :
   RooCmdArg( RooFit::FillStyle( style ) ){}
 
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string MarkerColor::CmdName = "MarkerColor";
+
+/**
+ * @class MarkerColor
+ * @brief Defining Marker color via color index and alpha value
+ */
 MarkerColor::MarkerColor( const int color, const float alpha ) :
   RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string MarkerStyle::CmdName = "MarkerStyle";
+
+/**
+ * @class MarkerStyle
+ * @brief Defining marker style via the style index (see namespace usr::plt::sty)
+ */
 MarkerStyle::MarkerStyle( const short style ) :
   RooCmdArg( RooFit::MarkerStyle( style ) ){}
 
+/**
+ * @brief string for defining the RooCmdArg name
+ */
 const std::string MarkerSize::CmdName = "MarkerSize";
+
+
+/**
+ * @class MarkerSize
+ * @brief Defining MarkerSize  via number of pixels/8.
+ */
 MarkerSize::MarkerSize( const float size ) :
   RooCmdArg( RooFit::MarkerSize( size ) ){}
-
 
 
 /**

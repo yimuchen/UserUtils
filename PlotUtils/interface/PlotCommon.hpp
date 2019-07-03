@@ -110,7 +110,6 @@ private:
  * @{
  */
 
-
 /**
  * @brief Simple container for helping with RooCmdArg parsing.
  */
@@ -128,8 +127,7 @@ public:
 };
 
 /**
- * @brief
- *
+ * @brief Specifying the plot object to be placed under another.
  */
 class PlotUnder : public RooCmdArg
 {
@@ -167,9 +165,8 @@ public:
   virtual ~EntryText(){}
 };
 
-/**
- * @brief Modifier for text color.
- */
+// ------------------------------------------------------------------------------
+
 class TextColor : public RooCmdArg
 {
 public:
@@ -178,10 +175,6 @@ public:
   virtual ~TextColor(){}
 };
 
-/**
- * @brief Modifier for text size.
- *
- */
 class TextSize : public RooCmdArg
 {
 public:
@@ -190,9 +183,8 @@ public:
   virtual ~TextSize(){}
 };
 
-/**
- * @brief Line formatting arguments
- */
+// ------------------------------------------------------------------------------
+
 class LineColor : public RooCmdArg
 {
 public:
@@ -217,10 +209,8 @@ public:
   virtual ~LineWidth(){};
 };
 
-/**
- * @{
- * @brief Fill formatting arguments
- */
+// ------------------------------------------------------------------------------
+
 class FillColor : public RooCmdArg
 {
 public:
@@ -236,12 +226,9 @@ public:
   FillStyle( const short style );
   virtual ~FillStyle(){};
 };
-/** @} */
 
-/**
- * @{
- * @brief Marker formatting arguments
- */
+// ------------------------------------------------------------------------------
+
 class MarkerColor : public RooCmdArg
 {
 public:
@@ -265,7 +252,8 @@ public:
   MarkerSize( const float style );
   virtual ~MarkerSize(){};
 };
-/** @} */
+
+// ------------------------------------------------------------------------------
 
 /**
  * @brief Enum for defining plot types. Putting this in global plt namespace
@@ -311,7 +299,7 @@ enum plot2df
 {
   plot2df_dummy = 10000,// < start at non-zero to avoid value collision.
   heat,// < Plot objects has head maps
-  heattext, // < Plot objects as heat maps with text in bin box
+  heattext,// < Plot objects as heat maps with text in bin box
   heatcont,// < Plot object as heat maps with contours lines
   cont// < Plotting only contour lines
 };
@@ -357,41 +345,57 @@ public:
 
 
 /**
+ * @addtogroup PlotUtilsHelper
  * @{
- * @brief Getting the min/max x-y values of a plotting object
  */
 
+/**
+ * @{
+ * @brief Getting the min-max value for a histogram object
+ */
 extern double GetYmax( const TH1D* );
 extern double GetYmin( const TH1D* );
-extern double GetYmax( const TGraph* );
-extern double GetYmin( const TGraph* );
-extern double GetYmin( const THStack* );
-extern double GetYmax( const THStack* );
-extern double GetXmax( const TGraph* );
-extern double GetXmin( const TGraph* );
-
 inline double
 GetYmax( const TH1D& x ){ return GetYmax( &x ); }
-
 inline double
 GetYmin( const TH1D& x ){ return GetYmin( &x ); }
+/** @} */
 
+/**
+ * @{
+ * @brief getting the min-max x/y value for a TGraph object
+ */
+extern double GetYmax( const TGraph* );
+extern double GetYmin( const TGraph* );
+extern double GetXmax( const TGraph* );
+extern double GetXmin( const TGraph* );
 inline double
 GetYmax( const TGraph& x ){ return GetYmax( &x ); }
-
 inline double
 GetYmin( const TGraph& x ){ return GetYmin( &x ); }
-
 inline double
 GetXmax( const TGraph& x ){ return GetXmax( &x ); }
-
 inline double
 GetXmin( const TGraph& x  ){ return GetXmin( &x ); }
 /** @} */
 
-extern double EstimateLatexWidth( const std::string& text );
+/**
+ * @{
+ * @brief Gettin the min-max value for a THStack object.
+ **/
+extern double GetYmin( const THStack* );
+extern double GetYmax( const THStack* );
+/** @} */
 
+/**
+ * @{
+ * @brief Estimating dimension of a ROOT flavoured latex string
+ * } */
+extern double EstimateLatexWidth( const std::string& text );
 extern double EstimateLatexHeight( const std::string& text );
+/** @} */
+
+/** @} */
 
 }// plt
 

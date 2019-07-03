@@ -63,12 +63,9 @@ Pad1D::InnerTextVCenter() const
 /**
  * @brief Drawing horizontal line
  *
- * Drawing a horizontal line across the pad at a fixed y value.
- * @param  y y value to plot the line
- * @param  c Color of the line using ROOT color indexing
- * @param  s Style of line using ROOT color indexing
- * @param  w Width of the line in pixels
- * @return   Return a reference to the created line for additional user styling.
+ * Drawing a horizontal line across the pad at a fixed y value. Accepts the
+ * LineColor, LineStyle, LineWidth options for change the styling of the line.
+ * Also returns a reference to the line generated.
  */
 TLine&
 Pad1D::DrawHLine(
@@ -85,12 +82,9 @@ Pad1D::DrawHLine(
 /**
  * @brief Drawing vertical line
  *
- * Drawing a vertical line on the pad at a fixed x value.
- * @param  x x value to plot the line
- * @param  c Color of the line using ROOT color indexing
- * @param  s Style of line using ROOT color indexing
- * @param  w Width of the line in pixels
- * @return   Return a reference to the created line for additional user styling.
+ * Drawing a vertical line across the pad at a fixed x value. Accepts the
+ * LineColor, LineStyle, LineWidth options for change the styling of the line.
+ * Also return a reference to the line generated.
  */
 TLine&
 Pad1D::DrawVLine(

@@ -14,7 +14,7 @@ namespace usr  {
 namespace plt  {
 
 /**
- * @defgroup PlotUtilsConvert PlotUtilsConvert
+ * @defgroup PlotUtilsConstants PlotUtilsConstants
  * @ingroup PlotUtils
  * @brief ROOT plotting's magic number conversion functions and constants.
  * @{
@@ -24,12 +24,12 @@ namespace plt  {
 typedef unsigned length_t;
 
 /**
- * @brief length converion functions and constants.
+ * @brief length conversion functions and constants.
  */
 namespace len {
 
 /**
- * @addtogroup PlotUtilsConvert
+ * @addtogroup PlotUtilsConstants
  * @{
  */
 extern const unsigned ROOT_DPI;
@@ -48,7 +48,7 @@ extern length_t a4textheight_default();
 
 /**
  * @brief Container for a font setting and size conversion.
- * @ingroup PlotUtilsConvert
+ * @ingroup PlotUtilsConstants
  */
 class font
 {
@@ -129,7 +129,7 @@ extern const std::string sim;
 namespace sty  {
 
 /**
- * @addtogroup PlotUtilsConvert
+ * @addtogroup PlotUtilsConstants
  * @{
  */
 
@@ -167,7 +167,6 @@ extern const short anglenone;
 extern const short angle1( const float );
 extern const short angle2( const float );
 
-
 // Line style
 extern const short linsolid;
 extern const short lindotted;
@@ -179,12 +178,16 @@ extern const short linshortdash;
 
 }/* sty  */
 
-
 /**
  * @brief Defining a more comprehensive list of colors
  */
 namespace col
 {
+
+/**
+ * @addtogroup PlotUtilsConstants
+ * @{
+ */
 extern const int maroon;
 extern const int darkred;
 extern const int brown;
@@ -332,8 +335,9 @@ extern const int lightgray;
 extern const int gray;
 extern const int bzgreen;
 extern const int bzyellow;
-}// col
+/** @} */
 
+}// col
 
 /** @} */
 

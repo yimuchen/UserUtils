@@ -276,7 +276,7 @@ Pad1D::AutoSetYRange( const rangetype type )
 void
 Pad1D::AutoSetYRangeHist()
 {
-  if( !GetLogy() ){  // None log scale
+  if( !GetLogy() ){// None log scale
     const double diff = _datamax - _datamin;
     SetYaxisMax( _datamin + diff * 1.25 );
     SetYaxisMin( _datamin );
@@ -299,7 +299,7 @@ Pad1D::AutoSetYRangeHist()
 void
 Pad1D::AutoSetYRangeGraph()
 {
-  if( !GetLogy() ){  // None log scale
+  if( !GetLogy() ){// None log scale
     const double diff = _datamax - _datamin;
     SetYaxisMax( _datamin + diff * 1.2 );
     SetYaxisMin( _datamax - diff * 1.1 );
@@ -403,7 +403,7 @@ Pad1D::SetHistAxisTitles(
 
   // y axis part is more complicated.
   boost::format uniwidthfmt( "Events/ %s" );
-  boost::format varwidthfmt( "Events" );
+  static const std::string varwidthfmt = "Events";
 
   const std::string binwidthstr
     = forcebinwidth != autobinwidth ? forcebinwidth :
@@ -412,13 +412,13 @@ Pad1D::SetHistAxisTitles(
   // At most 2 digits after decimal point, stripping trailing zeros
   const std::string den
     = binwidthstr == "1" && unit == "" ? "" :
-      boost::str( boost::format( "[ %s %s ]" )%binwidthstr%unit );
+      fstr( "[ %s %s ]", binwidthstr, unit );
 
   const std::string ytitle
-    = Xaxis().IsVariableBinSize()       ? boost::str( varwidthfmt ) :
-      forcebinwidth == forcevarbinwidth ? boost::str( varwidthfmt ) :
-      den == ""                         ? boost::str( varwidthfmt ) :
-      boost::str( uniwidthfmt % den );
+    = Xaxis().IsVariableBinSize()       ? varwidthfmt :
+      forcebinwidth == forcevarbinwidth ? varwidthfmt :
+      den == ""                         ? varwidthfmt :
+      fstr( uniwidthfmt, den );
 
   SetAxisTitle( Yaxis(), ytitle );
 }
