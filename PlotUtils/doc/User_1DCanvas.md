@@ -20,62 +20,122 @@ This class is designed as a preset for simple data plotting, with the margin,
 dimension and font defaults tuned to produce decent, publication ready plots
 with minimal amount of user code.
 
-The following are a few examples of plotting using the Simple1DCanvas (with
-the style/color settings and data filling code removed)
+The following are a few examples of plotting using the Simple1DCanvas (with the
+data filling code removed)
 
 # Plotting style with individual histograms
 
 ```cpp
-  plt::Simple1DCanvas c;
-  c.PlotHist( h1, plt::PlotType( plt::scatter ), plt::EntryText( "Bkg. 1" ) );
-  c.PlotHist( h2, plt::PlotType( plt::hist ), plt::EntryText( "Bkg_{2}" ) );
-  c.PlotHist( h3, plt::PlotType( plt::histerr ), plt::EntryText( "Signal" ) );
-  c.DrawCMSLabel( "ROOTOBJ TEST", "CWS" );
-  c.DrawLuminosity( 133.7 );
-  c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
-  c.SetLogy( 1 );
-  c.SaveAsPNG( "simple1dcanvas_log.png", 144 );
+    plt::Simple1DCanvas c;
+    c.PlotHist( h1,
+      plt::PlotType( plt::scatter ),
+      plt::EntryText( "Bkg. 1" ),
+      plt::LineColor( usr::plt::col::black ),
+      plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+      plt::MarkerColor( usr::plt::col::black ),
+      plt::MarkerSize( 0.2 ) );
+    c.PlotHist( h2,
+      plt::PlotType( plt::hist ),
+      plt::EntryText( "Bkg. 2" ),
+      plt::LineColor( usr::plt::col::blue ) );
+    c.PlotHist( h3,
+      plt::PlotType( plt::histerr ),
+      plt::EntryText( "Signal" ),
+      plt::FillColor( usr::plt::col::darkgray ),
+      plt::FillStyle( plt::sty::filldotdense ) );
+
+    c.DrawCMSLabel( "ROOTOBJ TEST", "CWS" );
+    c.DrawLuminosity( 133.7 );
+    c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
+
+    c.SetLogy( 1 );
+    c.SaveAsPNG( "image/simple1dcanvas_log.png", 72 );
 ```
 
-@image html simple1dcanvas_log.png
+<div class="plot_example">
+<img src="image/simple1dcanvas_log.png"/>
+
+<ul>
+  <li><a href="image/simple1dcanvas_log.png">72dpi output</a></li>
+  <li><a href="image/simple1dcanvas_log_highres.png">300dpi output</a></li>
+  <li><a href="image/simple1dcanvas_log.pdf">PDF output</a></li>
+  </ul>
+</div>
 
 # Plotting with stacked histograms
 
 ```cpp
-plt::Simple1DCanvas c;
-c.PlotHist( h1, plt::PlotType( plt::histstack ), plt::EntryText("Bkg. 1") );
-c.PlotHist( h2, plt::PlotType( plt::histstack ), plt::EntryText("Bkg. 2") );
-c.PlotHist( h3, plt::PlotType( plt::hist ), plt::EntryText("Sig") );
-c.DrawCMSLabel( "STACK TEST", "CWS" );
-c.DrawLuminosity( 133.7 );
-c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
-c.SaveAsPNG( "testfig/simple1dcanvas_stack.png", 144 );
+    plt::Simple1DCanvas c;
+    c.PlotHist( h1,
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg. 1" ),
+      plt::FillStyle( plt::sty::fillsolid ),
+      plt::FillColor( plt::col::cyan ),
+      plt::LineColor( plt::col::cyan ) );
+    c.PlotHist( h2,
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg. 2" ),
+      plt::FillStyle( plt::sty::filldotdense ),
+      plt::FillColor( plt::col::pink ),
+      plt::LineColor( plt::col::pink ) );
+    c.PlotHist( h3,
+      plt::PlotType( plt::hist ),
+      plt::EntryText( "Sig" ),
+      plt::LineColor( usr::plt::col::blue ) );
+
+    c.DrawCMSLabel( "STACK TEST", "CWS" );
+    c.DrawLuminosity( 133.7 );
+    c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
+
+    c.SaveAsPNG( "image/simple1dcanvas_stack.png",         72 );
 ```
 
-@image html simple1dcanvas_stack.png
+<div class="plot_example">
+<img src="image/simple1dcanvas_stack.png"/>
+
+<ul>
+  <li><a href="image/simple1dcanvas_stack.png">72dpi output</a></li>
+  <li><a href="image/simple1dcanvas_stack_highres.png">300dpi output</a></li>
+  <li><a href="image/simple1dcanvas_stack.pdf">PDF output</a></li>
+  </ul>
+</div>
 
 # Plotting with RooFit
 
 ```cpp
-plt::Simple1DCanvas c2( plt::RangeByVar( x ) );
+    plt::Simple1DCanvas c2( x );
 
-auto& dgraph = c2.PlotData( d );
-auto& fgraph = c2.PlotPdf( g, RooFit::VisualizeError( *fit, 1, false ) );
-// Styling made EASY!
-dgraph.SetMarkerSize( 2 );
-dgraph.SetLineColor( kBlack );
-fgraph.SetLineColor( kBlue );
-fgraph.SetFillColor( kCyan );
+    c2.PlotData( d,
+      plt::EntryText("Data?"),
+      plt::MarkerStyle( plt::sty::mkrcircle ),
+      plt::MarkerSize( 0.5 ),
+      plt::MarkerColor( plt::col::black ),
+      plt::LineColor( plt::col::black ) );
 
-c2.DrawCMSLabel( "ROOFIT test", "CWS" );
-c2.DrawLuminosity( 133.7 );
-c2.SetHistAxisTitles( "M_{HHHHH}", plt::unit::GeVcc );
+    c2.PlotPdf( g,
+      RooFit::VisualizeError( *fit, 1, false ),
+      plt::EntryText( "My Fit" ),
+      plt::PlotUnder( dgraph ),
+      plt::LineColor( plt::col::blue ),
+      plt::FillColor( plt::col::cyan )
+      );
 
-c2.SaveAsPNG( "testfig/simple1dcanvas_roofit_test.png", 144 );
+    c2.DrawCMSLabel( "ROOFIT test", "CWS" );
+    c2.DrawLuminosity( 133.7 );
+    c2.SetHistAxisTitles( "M_{HHHHH}", plt::unit::GeVcc );
+
+    c2.SaveAsPNG( "image/simple1dcanvas_roofit.png",         72 );
 ```
 
-@image html simple1dcanvas_roofit.png
+<div class="plot_example">
+<img src="image/simple1dcanvas_roofit.png"/>
 
+<ul>
+  <li><a href="image/simple1dcanvas_roofit.png">72dpi output</a></li>
+  <li><a href="image/simple1dcanvas_roofit_highres.png">300dpi output</a></li>
+  <li><a href="image/simple1dcanvas_roofit.pdf">PDF output</a></li>
+  </ul>
+</div>
 
 @class   usr::plt::Ratio1DCanvas
 @ingroup PlotUtilsUser
@@ -96,58 +156,104 @@ The following is some examples of plots created with the Ratio1DCanvas class:
 # Stack plots with error and signal comparison
 
 ```cpp
-plt::Ratio1DCanvas c;
+    plt::Ratio1DCanvas c;
 
-c.PlotHist( hist3, plt::PlotType( plt::histstack ), plt::EntryText( "Bkg_{1}: VV" ) );
-c.PlotHist( hist2, plt::PlotType( plt::histstack ), plt::EntryText( "Bkg_{2}: HH" ) );
-c.PlotHist( hist1, plt::PlotType( plt::histstack ), plt::EntryText( "Bkg_{3}: TT" ) );
-c.PlotHist( histsum, plt::PlotType( plt::histerr ),   plt::EntryText( "Bkg_{1} Unc." ) );
-c.PlotHist( data, plt::PlotType( plt::scatter ),   plt::EntryText( "Data" ) );
+    c.PlotHist( hist3,
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg_{1}: VV" ),
+      plt::FillColor( plt::col::blue ),
+      plt::LineColor( plt::col::blue ) );
+    c.PlotHist( hist2,
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg_{2}: HH" ),
+      plt::FillColor( plt::col::red ),
+      plt::LineColor( plt::col::red ) );
+    c.PlotHist( hist1,
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg_{3}: TT" ),
+      plt::FillColor( plt::col::cyan ),
+      plt::LineColor( plt::col::cyan ) );
+    c.PlotHist( histsum,
+      plt::PlotType( plt::histerr ),
+      plt::EntryText( "Bkg_{1} Unc." ),
+      plt::FillStyle( plt::sty::filldotdense ),
+      plt::FillColor( plt::col::darkgray ) );
+    c.PlotHist( data,
+      plt::PlotType( plt::scatter ),
+      plt::EntryText( "Data" ),
+      plt::MarkerStyle( 20 ),
+      plt::MarkerSize( 0.2 ),
+      plt::LineColor( plt::col::black ) );
 
-c.PlotScale( histsum, histsum, plt::PlotType( plt::histerr ), plt::TrackY( plt::TrackY::none ) );
-c.PlotScale( data, histsum, plt::PlotType( plt::scatter ) );
+    c.PlotScale( histsum, histsum,
+      plt::PlotType( plt::histerr ),
+      plt::TrackY( plt::TrackY::none ) );
+    c.PlotScale( data, histsum,
+      plt::PlotType( plt::scatter ) );
 
-c.TopPad().SetHistAxisTitles( "M_{THTHTH}", plt::unit::GeVcc );
-c.BottomPad().SetHistAxisTitles( "M_{THTHTH}", plt::unit::GeVcc );
-c.BottomPad().Yaxis().SetTitle( "Data/Sim." );
+    c.TopPad().SetHistAxisTitles( "M_{THTHTH}", plt::unit::GeVcc );
+    c.BottomPad().SetHistAxisTitles( "M_{THTHTH}", plt::unit::GeVcc );
+    c.BottomPad().Yaxis().SetTitle( "Data/Sim." );
 
-c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
-c.DrawLuminosity( 133.7 );
-c.SaveAsPNG( "testfig/ratio1dcanvas_test.png", 144 );
+    c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
+    c.DrawLuminosity( 133.7 );
+    c.SaveAsPNG(         "image/ratio1dcanvas.png",  72 );
 ```
 
-@image html ratio1dcanvas.png
+<div class="plot_example">
+<img src="image/ratio1dcanvas.png"/>
+
+<ul>
+  <li><a href="image/ratio1dcanvas.png">72dpi output</a></li>
+  <li><a href="image/ratio1dcanvas_highres.png">300dpi output</a></li>
+  <li><a href="image/ratio1dcanvas.pdf">PDF output</a></li>
+  </ul>
+</div>
+
 
 # Plotting with RooFit and fitting uncertainties
 
 ```cpp
-plt::Ratio1DCanvas c( plt::RangeByVar(x) );
+    plt::Ratio1DCanvas c( x );
+    auto& datgraph = c.PlotData( d,
+      plt::EntryText( "Fake Data" ),
+      plt::MarkerStyle( 20 ),
+      plt::MarkerSize( 0.2 ),
+      plt::LineColor( kBlack ) );
 
-auto& fitgraph = c.PlotPdf( g, plt::EntryText( "Fitted Bkg." ),
-                               RooFit::VisualizeError( *fit, 1, false ),
-                               RooFit::Normalization( 500, RooAbsReal::NumEvent ) );
-auto& altgraph = c.PlotPdf( gx,  plt::EntryText( "Alt. Bkg. Model" ),
-                                 RooFit::Normalization( 500, RooAbsReal::NumEvent ) );
+    auto& altgraph = c.PlotPdf( gx,
+      plt::EntryText( "Alt. Bkg. Model" ),
+      plt::PlotUnder( datgraph ),
+      plt::LineColor( plt::col::red ),
+      plt::FillColor( plt::col::pink ) );
 
-auto& datgraph = c.PlotData( d, plt::EntryText("Fake Data") );
+    auto& fitgraph = c.PlotPdf( g,
+      plt::VisualizeError( *fit, 1, false ),
+      plt::EntryText( "Fitted Bkg." ),
+      plt::PlotUnder( datgraph ),
+      plt::LineColor( usr::plt::col::blue ),
+      plt::FillColor( usr::plt::col::cyan )  );
 
-// Styling made Easy!
-datgraph.SetMarkerStyle( 20 );
-...
+    c.PlotScale( fitgraph, fitgraph,
+      plt::TrackY( plt::TrackY::none ), plt::PlotType( plt::fittedfunc ) );
+    c.PlotScale( altgraph, fitgraph,
+      plt::TrackY( plt::TrackY::none ), plt::PlotType( plt::simplefunc ) );
+    c.PlotScale( datgraph, fitgraph,
+      plt::PlotType( plt::scatter ) );
 
-c.PlotScale( fitgraph, fitgraph,
-             plt::TrackY(plt::TrackY::none),
-             plt::PlotType(plt::fittedfunc) );
-c.PlotScale( altgraph, fitgraph,
-             plt::TrackY(plt::TrackY::none),
-             plt::PlotType(plt::simplefunc) );
-c.PlotScale( datgraph, fitgraph,
-             plt::PlotType(plt::scatter) );
+    c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
 
-c.BottomPad().Yaxis().SetTitle("Data/Fit");
-c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
-c.DrawLuminosity( 133.7 );
-c.SaveAsPNG("testfig/ratio1dcanvas_roofit_test.png",144);
+    c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
+    c.DrawLuminosity( 133.7 );
+    c.SaveAsPNG( "image/ratio1dcanvas_roofit.png",  72 );
 ```
 
-@image html ratio1dcanvas_roofit.png
+<div class="plot_example">
+<img src="image/ratio1dcanvas_roofit.png"/>
+
+<ul>
+  <li><a href="image/ratio1dcanvas_roofit.png">72dpi output</a></li>
+  <li><a href="image/ratio1dcanvas_roofit_highres.png">300dpi output</a></li>
+  <li><a href="image/ratio1dcanvas_roofit.pdf">PDF output</a></li>
+  </ul>
+</div>

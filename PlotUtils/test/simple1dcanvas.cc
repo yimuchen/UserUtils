@@ -51,10 +51,6 @@ main( int argc, char* argv[] )
     c.DrawLuminosity( 133.7 );
     c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
 
-
-    c.SaveAsPNG( "image/simple1dcanvas.png",         72 );
-    c.SaveAsPNG( "image/simple1dcanvas_highres.png", 300 );
-    c.SaveAsPDF( "image/simple1dcanvas.pdf" );
     c.SetLogy( 1 );
     c.SaveAsPNG( "image/simple1dcanvas_log.png",         72 );
     c.SaveAsPNG( "image/simple1dcanvas_log_highres.png", 300 );
@@ -117,9 +113,8 @@ main( int argc, char* argv[] )
       RooFit::PrintLevel( -1 ),
       RooFit::Warnings( false ),
       RooFit::PrintEvalErrors( 0 ) );
-    plt::Simple1DCanvas c2( plt::RangeByVar( x ),
-                            plt::Simple1DCanvas::default_width );
 
+    plt::Simple1DCanvas c2( x );
 
     auto& dgraph = c2.PlotData( d,
       plt::EntryText("Data?"),
@@ -128,17 +123,13 @@ main( int argc, char* argv[] )
       plt::MarkerColor( plt::col::black ),
       plt::LineColor( plt::col::black ) );
 
-    auto& fgraph = c2.PlotPdf( g,
+    c2.PlotPdf( g,
       RooFit::VisualizeError( *fit, 1, false ),
       plt::EntryText( "My Fit" ),
       plt::PlotUnder( dgraph ),
       plt::LineColor( plt::col::blue ),
       plt::FillColor( plt::col::cyan )
       );
-
-    std::cout << dgraph.GetMarkerSize() << std::endl
-              << dgraph.GetMarkerStyle() << std::endl
-              << dgraph.GetMarkerColor() << std::endl;
 
     c2.DrawCMSLabel( "ROOFIT test", "CWS" );
     c2.DrawLuminosity( 133.7 );
@@ -147,11 +138,6 @@ main( int argc, char* argv[] )
     c2.SaveAsPNG( "image/simple1dcanvas_roofit.png",         72 );
     c2.SaveAsPNG( "image/simple1dcanvas_roofit_highres.png", 300 );
     c2.SaveAsPDF( "image/simple1dcanvas_roofit.pdf" );
-    c2.SetLogy( 1 );
-    c2.SaveAsPNG( "image/simple1dcanvas_roofit_log.png",         72 );
-    c2.SaveAsPNG( "image/simple1dcanvas_roofit_log_highres.png", 300 );
-    c2.SaveAsPDF( "image/simple1dcanvas_roofit_log.pdf" );
-    c2.SaveToROOT("mytest.root", "roofit");
   }
 
   return 0;

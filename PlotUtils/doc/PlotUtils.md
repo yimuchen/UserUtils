@@ -12,15 +12,18 @@ into the following subpackages:
   User level classes to allow for presentation ready plots with minimal user
   code.
 
+- [PlotUtilsArgument](@ref PlotUtilsArgument)
+  List of arguments that can be used for plotting.
+
+- [PlotUtilsHelper](@ref PlotUtilsHelper)
+  Functions to help with plot object property computations.
+
 - [PlotUtilsCore](@ref PlotUtilsCore):
   Are the key wrapper classes that *restricts* the usage of ROOT plotting
   objects, wrapping the plotting APIs of ROOT into more intuitive methods,
   which hopefully improves code readability. Also includes classes for
   conventional styling conventions used by the CMS collaboration.
 
-- [PlotUtilsConvert](@ref PlotUtilsConvert)
+- [PlotUtilsConstants](@ref PlotUtilsConstants)
   Translation of the many magic numbers used in ROOTs plotting API to human
   readable constants and functions.
-
-- [PlotUtilsArgument](@ref PlotUtilsArgument)
-  List of arguments that can be used for plotting.

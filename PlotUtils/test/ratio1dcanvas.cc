@@ -59,39 +59,38 @@ main( int argc, char* argv[] )
           histsum.GetBinContent( i ) ) );
     }
 
-    // Styling
-    data.SetLineColor( kBlack );
-    data.SetMarkerStyle( 20 );
-    data.SetMarkerSize( 0.2 );
-
-    histsum.SetFillStyle( plt::sty::filldotdense );
-    histsum.SetFillColor( kGray );
-
-    hist1.SetFillStyle( plt::sty::fillsolid );
-    hist1.SetFillColor( kCyan );
-    hist1.SetLineColor( kCyan );
-    hist2.SetFillStyle( plt::sty::fillsolid );
-    hist2.SetFillColor( kRed );
-    hist2.SetLineColor( kRed );
-    hist3.SetFillStyle( plt::sty::fillsolid );
-    hist3.SetFillColor( kBlue );
-    hist3.SetLineColor( kBlue );
-
     plt::Ratio1DCanvas c;
 
     c.PlotHist( hist3,
-      plt::PlotType( plt::histstack ), plt::EntryText( "Bkg_{1}: VV" ) );
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg_{1}: VV" ),
+      plt::FillColor( plt::col::blue ),
+      plt::LineColor( plt::col::blue ) );
     c.PlotHist( hist2,
-      plt::PlotType( plt::histstack ), plt::EntryText( "Bkg_{2}: HH" ) );
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg_{2}: HH" ),
+      plt::FillColor( plt::col::red ),
+      plt::LineColor( plt::col::red ) );
     c.PlotHist( hist1,
-      plt::PlotType( plt::histstack ), plt::EntryText( "Bkg_{3}: TT" ) );
+      plt::PlotType( plt::histstack ),
+      plt::EntryText( "Bkg_{3}: TT" ),
+      plt::FillColor( plt::col::cyan ),
+      plt::LineColor( plt::col::cyan ) );
     c.PlotHist( histsum,
-      plt::PlotType( plt::histerr ),   plt::EntryText( "Bkg_{1} Unc." ) );
+      plt::PlotType( plt::histerr ),
+      plt::EntryText( "Bkg_{1} Unc." ),
+      plt::FillStyle( plt::sty::filldotdense ),
+      plt::FillColor( plt::col::darkgray ) );
     c.PlotHist( data,
-      plt::PlotType( plt::scatter ),   plt::EntryText( "Data" ) );
+      plt::PlotType( plt::scatter ),
+      plt::EntryText( "Data" ),
+      plt::MarkerStyle( 20 ),
+      plt::MarkerSize( 0.2 ),
+      plt::LineColor( plt::col::black ) );
 
     c.PlotScale( histsum, histsum,
-      plt::PlotType( plt::histerr ), plt::TrackY( plt::TrackY::none ) );
+      plt::PlotType( plt::histerr ),
+      plt::TrackY( plt::TrackY::none ) );
     c.PlotScale( data, histsum,
       plt::PlotType( plt::scatter ) );
 
@@ -121,23 +120,18 @@ main( int argc, char* argv[] )
       RooFit::Warnings( false ),
       RooFit::PrintEvalErrors( 0 ) );
 
-    plt::Ratio1DCanvas c( plt::RangeByVar( x ),
-                          plt::Ratio1DCanvas::default_width );
-    // c.PlotData( d, RooFit::Invisible() );
-
+    plt::Ratio1DCanvas c( x );
     auto& datgraph = c.PlotData( d,
       plt::EntryText( "Fake Data" ),
       plt::MarkerStyle( 20 ),
       plt::MarkerSize( 0.2 ),
       plt::LineColor( kBlack ) );
 
-    std::cout << "Plotting fitted function" << std::endl;
-
     auto& altgraph = c.PlotPdf( gx,
       plt::EntryText( "Alt. Bkg. Model" ),
       plt::PlotUnder( datgraph ),
-      plt::LineColor( kRed ),
-      plt::FillColor( kPink, 1 ) );
+      plt::LineColor( plt::col::red ),
+      plt::FillColor( plt::col::pink ) );
 
     auto& fitgraph = c.PlotPdf( g,
       plt::VisualizeError( *fit, 1, false ),
@@ -157,7 +151,7 @@ main( int argc, char* argv[] )
 
     c.DrawCMSLabel( "Ratio1DCanvas", "CWS" );
     c.DrawLuminosity( 133.7 );
-    c.SaveAsPNG(         "image/ratio1dcanvas_roofit.png",  72 );
+    c.SaveAsPNG( "image/ratio1dcanvas_roofit.png",  72 );
     c.SaveAsPNG( "image/ratio1dcanvas_roofit_highres.png", 300 );
     c.SaveAsPDF( "image/ratio1dcanvas_roofit.pdf" );
   }
