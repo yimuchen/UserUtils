@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['fillhash',['fillhash',['../group__PlotUtilsConvert.html#ga79302735a2c99770006008dfc618bbfe',1,'usr::plt::sty']]],
+  ['fillhash',['fillhash',['../group__PlotUtilsConstants.html#ga79302735a2c99770006008dfc618bbfe',1,'usr::plt::sty']]],
   ['finalize',['Finalize',['../classusr_1_1plt_1_1PadBase.html#a313a3475752c7347003538df365a5ede',1,'usr::plt::PadBase::Finalize()'],['../classusr_1_1plt_1_1Canvas.html#a68af6d076f9c9d6c4d5e9104d051d097',1,'usr::plt::Canvas::Finalize()'],['../classusr_1_1plt_1_1Pad1D.html#a4299da435d73d91ce3f872d625324d58',1,'usr::plt::Pad1D::Finalize()'],['../classusr_1_1plt_1_1Pad2DFlat.html#a8cd8012f1144277821d7d8a24836da57',1,'usr::plt::Pad2DFlat::Finalize()']]],
   ['finalizelegend',['FinalizeLegend',['../classusr_1_1plt_1_1Pad1D.html#a2743c3322507660b44f1ccd3da82c14b',1,'usr::plt::Pad1D']]],
   ['findvalue',['FindValue',['../group__VecUtils.html#ga79c7ced21df9a6914bab33c3e2b3d0f3',1,'usr::FindValue(std::vector&lt; OBJTYPE &gt; &amp;vec, const OBJTYPE &amp;x)'],['../VectorUtils_8hpp.html#a574d3c59d2009e3b32b62003ecc1406c',1,'usr::FindValue(const std::vector&lt; OBJTYPE &gt; &amp;vec, const OBJTYPE &amp;x)']]],
@@ -13,5 +13,6 @@ var searchData=
   ['format',['format',['../classusr_1_1fmt_1_1base_1_1format.html#afe2742964dcde2c7fc9ed394c6089845',1,'usr::fmt::base::format']]],
   ['frameobj',['FrameObj',['../classusr_1_1plt_1_1Pad1D.html#a198138c5f550494aa1945daed22a8a09',1,'usr::plt::Pad1D::FrameObj()'],['../classusr_1_1plt_1_1Pad1D.html#a8d7381a3ba207f448546f3d4f432f15d',1,'usr::plt::Pad1D::FrameObj() const']]],
   ['fromjsonfile',['FromJsonFile',['../group__ptreeutils.html#ga3fd9097f3169385edc34c0f5b86bb1d1',1,'usr']]],
-  ['fromjsonfiles',['FromJsonFiles',['../group__ptreeutils.html#gacce78189256c8c6c8a8fde73d92510f1',1,'usr::FromJsonFiles(const std::vector&lt; std::string &gt; &amp;filelist)'],['../group__ptreeutils.html#ga5c67877695a7890d9785c279b263e286',1,'usr::FromJsonFiles(const std::string &amp;x, TS ... args)']]]
+  ['fromjsonfiles',['FromJsonFiles',['../group__ptreeutils.html#gacce78189256c8c6c8a8fde73d92510f1',1,'usr::FromJsonFiles(const std::vector&lt; std::string &gt; &amp;filelist)'],['../group__ptreeutils.html#ga5c67877695a7890d9785c279b263e286',1,'usr::FromJsonFiles(const std::string &amp;x, TS ... args)']]],
+  ['fstr',['fstr',['../group__StringUtils.html#gae3891b1759cf97064e44c1fbf58dcdc3',1,'usr::fstr(boost::format &amp;fmt)'],['../group__StringUtils.html#ga3fe44131138b1d21af46eee1155ed60e',1,'usr::fstr(boost::format &amp;fmt, TYPE &amp;&amp;T, ARGS &amp;&amp;... args)'],['../group__StringUtils.html#ga2954a2dac72b959640466a4fee9c4df4',1,'usr::fstr(const std::string &amp;fmt, ARGS &amp;&amp;... args)']]]
 ];

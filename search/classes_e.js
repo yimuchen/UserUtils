@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['weightprodsum',['WeightProdSum',['../classWeightProdSum.html',1,'']]]
+  ['visualizeerror',['VisualizeError',['../classusr_1_1plt_1_1VisualizeError.html',1,'usr::plt']]]
 ];

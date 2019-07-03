@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['scientific',['scientific',['../classusr_1_1fmt_1_1scientific.html',1,'usr::fmt::scientific'],['../classusr_1_1fmt_1_1base_1_1scientific.html',1,'usr::fmt::base::scientific']]],
-  ['separator',['separator',['../classusr_1_1separator.html',1,'usr']]],
-  ['simple1dcanvas',['Simple1DCanvas',['../classusr_1_1plt_1_1Simple1DCanvas.html',1,'usr::plt']]],
-  ['simplifiedcdf',['SimplifiedCDF',['../structusr_1_1SimplifiedCDF.html',1,'usr']]],
-  ['simplifieddata',['SimplifiedData',['../structusr_1_1SimplifiedData.html',1,'usr']]]
+  ['rangebyvar',['RangeByVar',['../structusr_1_1plt_1_1RangeByVar.html',1,'usr::plt']]],
+  ['ratio1dcanvas',['Ratio1DCanvas',['../classusr_1_1plt_1_1Ratio1DCanvas.html',1,'usr::plt']]],
+  ['rooargcontainer',['RooArgContainer',['../classusr_1_1plt_1_1RooArgContainer.html',1,'usr::plt']]],
+  ['rooframe',['RooFrame',['../classusr_1_1plt_1_1RooFrame.html',1,'usr::plt']]]
 ];

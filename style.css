@@ -239,6 +239,11 @@ th.markdownTableHeadCenter, td.markdownTableBodyCenter { text-align: center; }
 .header .headertitle .title .ingroups a { white-space: nowrap; }
 
 .contents { max-width: 1000px; margin-left: auto; margin-right: auto; text-align: justify; }
+.contents .plot_example { text-align: center; }
+.contents .plot_example ul { list-style-type: none; margin: 0; padding: 10px; overflow: hidden; background-color: #000088; }
+.contents .plot_example li { display: inline; width: 10%; float: center; }
+.contents .plot_example li a { color: white; text-align: center; margin: 10px; padding: 16px; text-decoration: none; }
+.contents .plot_example li a:hover { background-color: #000055; }
 
 .footer { max-width: 1000px; margin-left: auto; margin-right: auto; }
 

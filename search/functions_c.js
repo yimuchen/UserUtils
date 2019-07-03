@@ -23,6 +23,6 @@ var searchData=
   ['mergetrees',['MergeTrees',['../group__ptreeutils.html#ga6cb1a858b07d074bb2b42035ee80c820',1,'usr']]],
   ['minos',['Minos',['../group__StatUtils.html#ga4297f6d91c493da8f49e2d45cd7d90ad',1,'usr::Efficiency::Minos()'],['../group__StatUtils.html#gac060ae17a78f343777a1b42570fc4f76',1,'usr::Poisson::Minos()']]],
   ['minoserror',['MinosError',['../group__StatUtils.html#ga98aed8caedf62f24a217a17d5c257dd1',1,'usr::stat::MinosError(gsl_function *nllfunction, double &amp;guess, double &amp;min, double &amp;max, const double confidencelevel)'],['../group__StatUtils.html#ga3f1da6d463a04c0da4c80dd3857301c1',1,'usr::stat::MinosError(usr::gsl::gsl_multifunc *nllfunction, usr::gsl::gsl_multifunc *varfunction, gsl_vector *initguess, double &amp;central, double &amp;min, double &amp;max, const double confidencelevel, gsl_vector *upperguess, gsl_vector *lowerguess)']]],
-  ['mm',['mm',['../group__PlotUtilsConvert.html#ga2cc3e4b4cf1785ef216f35b8e2d91136',1,'usr::plt::len']]],
+  ['mm',['mm',['../group__PlotUtilsConstants.html#ga2cc3e4b4cf1785ef216f35b8e2d91136',1,'usr::plt::len']]],
   ['movetargettobefore',['MoveTargetToBefore',['../classusr_1_1plt_1_1PadBase.html#a82374297b57c2aea6b07d552e9b78338',1,'usr::plt::PadBase']]]
 ];

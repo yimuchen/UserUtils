@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['textcolor',['TextColor',['../classusr_1_1plt_1_1TextColor.html',1,'usr::plt']]],
+  ['textsize',['TextSize',['../classusr_1_1plt_1_1TextSize.html',1,'usr::plt']]],
   ['time_2ehpp',['Time.hpp',['../Time_8hpp.html',1,'']]],
   ['tiny',['tiny',['../classusr_1_1plt_1_1font.html#a3a80993b3d993d9b7f569c3fdfee65e6',1,'usr::plt::font']]],
   ['top1dpad',['Top1DPad',['../classusr_1_1plt_1_1Top1DPad.html',1,'usr::plt']]],

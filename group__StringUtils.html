@@ -113,8 +113,130 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <tr class="memitem:ga450ca72ef4fd852e3d5179aff271286a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__StringUtils.html#ga450ca72ef4fd852e3d5179aff271286a">usr::NextOpenBrace</a> (const std::string &amp;x, const unsigned start)</td></tr>
 <tr class="memdesc:ga450ca72ef4fd852e3d5179aff271286a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finding the next opening brace character after the given position.  <a href="group__StringUtils.html#ga450ca72ef4fd852e3d5179aff271286a">More...</a><br /></td></tr>
 <tr class="separator:ga450ca72ef4fd852e3d5179aff271286a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae3891b1759cf97064e44c1fbf58dcdc3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__StringUtils.html#gae3891b1759cf97064e44c1fbf58dcdc3">usr::fstr</a> (boost::format &amp;fmt)</td></tr>
+<tr class="memdesc:gae3891b1759cf97064e44c1fbf58dcdc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic interface for generating formmatted strings.  <a href="group__StringUtils.html#gae3891b1759cf97064e44c1fbf58dcdc3">More...</a><br /></td></tr>
+<tr class="separator:gae3891b1759cf97064e44c1fbf58dcdc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3fe44131138b1d21af46eee1155ed60e"><td class="memTemplParams" colspan="2">template&lt;typename TYPE , typename ... ARGS&gt; </td></tr>
+<tr class="memitem:ga3fe44131138b1d21af46eee1155ed60e"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__StringUtils.html#ga3fe44131138b1d21af46eee1155ed60e">usr::fstr</a> (boost::format &amp;fmt, TYPE &amp;&amp;T, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga3fe44131138b1d21af46eee1155ed60e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic interface for generating formmatted strings.  <a href="group__StringUtils.html#ga3fe44131138b1d21af46eee1155ed60e">More...</a><br /></td></tr>
+<tr class="separator:ga3fe44131138b1d21af46eee1155ed60e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2954a2dac72b959640466a4fee9c4df4"><td class="memTemplParams" colspan="2">template&lt;typename ... ARGS&gt; </td></tr>
+<tr class="memitem:ga2954a2dac72b959640466a4fee9c4df4"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__StringUtils.html#ga2954a2dac72b959640466a4fee9c4df4">usr::fstr</a> (const std::string &amp;fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga2954a2dac72b959640466a4fee9c4df4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic interface for generating formmatted strings.  <a href="group__StringUtils.html#ga2954a2dac72b959640466a4fee9c4df4">More...</a><br /></td></tr>
+<tr class="separator:ga2954a2dac72b959640466a4fee9c4df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gae3891b1759cf97064e44c1fbf58dcdc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae3891b1759cf97064e44c1fbf58dcdc3">&#9670;&nbsp;</a></span>fstr() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string usr::fstr </td>
+          <td>(</td>
+          <td class="paramtype">boost::format &amp;&#160;</td>
+          <td class="paramname"><em>fmt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The use of this function function would be more similar to the printf of C. With the function returning a std::string instead of printing to a stream. This is intended to simply boost::format calls were complicated formatting isn't required. For examples:</p>
+<div class="fragment"><div class="line"> {c++}</div><div class="line">std::cout &lt;&lt; <a class="code" href="group__StringUtils.html#gae3891b1759cf97064e44c1fbf58dcdc3">fstr</a>(<span class="stringliteral">&quot;%d %d&quot;</span>, myint, myunsigned ) &lt;&lt; std::endl;</div></div><!-- fragment --> 
+</div>
+</div>
+<a id="ga3fe44131138b1d21af46eee1155ed60e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3fe44131138b1d21af46eee1155ed60e">&#9670;&nbsp;</a></span>fstr() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TYPE , typename ... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string usr::fstr </td>
+          <td>(</td>
+          <td class="paramtype">boost::format &amp;&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TYPE &amp;&amp;&#160;</td>
+          <td class="paramname"><em>T</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The use of this function function would be more similar to the printf of C. With the function returning a std::string instead of printing to a stream. This is intended to simply boost::format calls were complicated formatting isn't required. For examples:</p>
+<div class="fragment"><div class="line"> {c++}</div><div class="line">std::cout &lt;&lt; <a class="code" href="group__StringUtils.html#gae3891b1759cf97064e44c1fbf58dcdc3">fstr</a>(<span class="stringliteral">&quot;%d %d&quot;</span>, myint, myunsigned ) &lt;&lt; std::endl;</div></div><!-- fragment --> 
+</div>
+</div>
+<a id="ga2954a2dac72b959640466a4fee9c4df4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2954a2dac72b959640466a4fee9c4df4">&#9670;&nbsp;</a></span>fstr() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string usr::fstr </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The use of this function function would be more similar to the printf of C. With the function returning a std::string instead of printing to a stream. This is intended to simply boost::format calls were complicated formatting isn't required. For examples:</p>
+<div class="fragment"><div class="line"> {c++}</div><div class="line">std::cout &lt;&lt; <a class="code" href="group__StringUtils.html#gae3891b1759cf97064e44c1fbf58dcdc3">fstr</a>(<span class="stringliteral">&quot;%d %d&quot;</span>, myint, myunsigned ) &lt;&lt; std::endl;</div></div><!-- fragment --> 
+</div>
+</div>
 <a id="ga68f0d6df365265569822db34bd32ee78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga68f0d6df365265569822db34bd32ee78">&#9670;&nbsp;</a></span>MatchBrace()</h2>
 

@@ -124,7 +124,7 @@ Inheritance diagram for usr::plt::Pad1D:</div>
 </li>
 <li><b><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a></b> tells the object to be added to the legend on the pad. What is to be presented in the legend would be automatically determined by the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> passed to the plot function.</li>
 <li><b><a class="el" href="classusr_1_1plt_1_1VisualizeError.html" title="Plot argument to plot a fitted TF1 with fit uncertainties. Intentionally using the same interface as ...">VisualizeError</a></b> is now extended to include TF1, which takes a TFitResult to interpret for the error band should be drawn.</li>
-<li><b><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a></b>. In ROOT, the first plotted objects are always placed at the back of the canvas. Sometimes this is not desireable, since the a object that is plotted later might want to be placed in the background, while required to be calculated only after a certain object has been generated (an example that comes to mind is the plotting of the RooFit objects, where the plotting of <a href="https://root.cern.ch/doc/master/classRooAbsPdf.html">RooAbsPdf</a>s depends on the existence of a <a href="https://root.cern.ch/doc/master/classRooAbsData.html">RooAbsData</a> object, unless explicitly specified). This option will be force a later plotted object to be behind a certain target.</li>
+<li><b><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a></b>. In ROOT, the first plotted objects are always placed at the back of the canvas. Sometimes this is not desireable, since the a object that is plotted later might want to be placed in the background, while required to be calculated only after a certain object has been generated (an example that comes to mind is the plotting of the RooFit objects, where the plotting of <a href="https://root.cern.ch/doc/master/classRooAbsPdf.html">RooAbsPdf</a>s depends on the existence of a <a href="https://root.cern.ch/doc/master/classRooAbsData.html">RooAbsData</a> object, unless explicitly specified). This option will be force a later plotted object to be behind a certain target.</li>
 </ul>
 <h1>Additional Pad plotting behavior enhancements</h1>
 <ul>
@@ -155,12 +155,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac78728a4674c71faf294a8ac515ee583"><td class="memItemLeft" align="right" valign="top"><a id="ac78728a4674c71faf294a8ac515ee583"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Pad1D</b> (const <a class="el" href="classusr_1_1plt_1_1Pad1D.html">Pad1D</a> &amp;)=delete</td></tr>
 <tr class="separator:ac78728a4674c71faf294a8ac515ee583"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66e5f1062dbb4fd7260611c0bca15af6"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a66e5f1062dbb4fd7260611c0bca15af6">DrawHLine</a> (const double y, const Color_t c, const Style_t s=1, const Width_t w=1)</td></tr>
-<tr class="memdesc:a66e5f1062dbb4fd7260611c0bca15af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drawing horizontal line.  <a href="#a66e5f1062dbb4fd7260611c0bca15af6">More...</a><br /></td></tr>
-<tr class="separator:a66e5f1062dbb4fd7260611c0bca15af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acee0dc4fd45c30f5a600c8de46810b4c"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#acee0dc4fd45c30f5a600c8de46810b4c">DrawVLine</a> (const double x, const Color_t c, const Style_t s=1, const Width_t w=1)</td></tr>
-<tr class="memdesc:acee0dc4fd45c30f5a600c8de46810b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drawing vertical line.  <a href="#acee0dc4fd45c30f5a600c8de46810b4c">More...</a><br /></td></tr>
-<tr class="separator:acee0dc4fd45c30f5a600c8de46810b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad95f7f3a6915f6721df119241ef0ee1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#aad95f7f3a6915f6721df119241ef0ee1">DrawCMSLabel</a> (const std::string &amp;=cap::prelim, const std::string &amp;main=&quot;CMS&quot;)</td></tr>
 <tr class="memdesc:aad95f7f3a6915f6721df119241ef0ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Drawing CMS label.  <a href="#aad95f7f3a6915f6721df119241ef0ee1">More...</a><br /></td></tr>
 <tr class="separator:aad95f7f3a6915f6721df119241ef0ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -336,6 +330,48 @@ const <a class="el" href="classusr_1_1plt_1_1RooFrame.html">RooFrame</a> &amp;&#
 <tr class="memdesc:adbf97fbac03051b083ead9a1b60bbd6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plotting RooFit's <a href="https://root.cern.ch/doc/master/classRooAbsPdf.html">RooAbsPdf</a>s.  <a href="#adbf97fbac03051b083ead9a1b60bbd6f">More...</a><br /></td></tr>
 <tr class="separator:adbf97fbac03051b083ead9a1b60bbd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a1eca42db9e402fb0d3d954b86226c379"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a1eca42db9e402fb0d3d954b86226c379">DrawHLine</a> (const double &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
+<tr class="memdesc:a1eca42db9e402fb0d3d954b86226c379"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for drawing a horizontal line across pad  <a href="#a1eca42db9e402fb0d3d954b86226c379">More...</a><br /></td></tr>
+<tr class="separator:a1eca42db9e402fb0d3d954b86226c379"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4eee1fd6f47e6f17db38b4e6b5570ef"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#aa4eee1fd6f47e6f17db38b4e6b5570ef">DrawHLine</a> (const double *x, const std::vector&lt; RooCmdArg &gt; &amp;list)</td></tr>
+<tr class="memdesc:aa4eee1fd6f47e6f17db38b4e6b5570ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for drawing a horizontal line across pad  <a href="#aa4eee1fd6f47e6f17db38b4e6b5570ef">More...</a><br /></td></tr>
+<tr class="separator:aa4eee1fd6f47e6f17db38b4e6b5570ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63db7da215d5ef78a72bacb12f363a2f"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a63db7da215d5ef78a72bacb12f363a2f">DrawHLine</a> (const double &amp;x)</td></tr>
+<tr class="memdesc:a63db7da215d5ef78a72bacb12f363a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for drawing a horizontal line across pad  <a href="#a63db7da215d5ef78a72bacb12f363a2f">More...</a><br /></td></tr>
+<tr class="separator:a63db7da215d5ef78a72bacb12f363a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0617dc7ea21a4a9bd8b3b26489ceb41"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#ac0617dc7ea21a4a9bd8b3b26489ceb41">DrawHLine</a> (const double *x)</td></tr>
+<tr class="memdesc:ac0617dc7ea21a4a9bd8b3b26489ceb41"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for drawing a horizontal line across pad  <a href="#ac0617dc7ea21a4a9bd8b3b26489ceb41">More...</a><br /></td></tr>
+<tr class="separator:ac0617dc7ea21a4a9bd8b3b26489ceb41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f6d0ad72c654bef02f1fa631efc37b"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a41f6d0ad72c654bef02f1fa631efc37b"><td class="memTemplItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a41f6d0ad72c654bef02f1fa631efc37b">DrawHLine</a> (const double &amp;x, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:a41f6d0ad72c654bef02f1fa631efc37b"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for drawing a horizontal line across pad  <a href="#a41f6d0ad72c654bef02f1fa631efc37b">More...</a><br /></td></tr>
+<tr class="separator:a41f6d0ad72c654bef02f1fa631efc37b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e766df640f6c6adb69097e39f0d9949"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a1e766df640f6c6adb69097e39f0d9949"><td class="memTemplItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a1e766df640f6c6adb69097e39f0d9949">DrawHLine</a> (const double *x, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:a1e766df640f6c6adb69097e39f0d9949"><td class="mdescLeft">&#160;</td><td class="mdescRight">function for drawing a horizontal line across pad  <a href="#a1e766df640f6c6adb69097e39f0d9949">More...</a><br /></td></tr>
+<tr class="separator:a1e766df640f6c6adb69097e39f0d9949"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a4279640d7943bcb7b307ca8696e1e430"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a4279640d7943bcb7b307ca8696e1e430">DrawVLine</a> (const double &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
+<tr class="memdesc:a4279640d7943bcb7b307ca8696e1e430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for drawing a vertical along in the pad.  <a href="#a4279640d7943bcb7b307ca8696e1e430">More...</a><br /></td></tr>
+<tr class="separator:a4279640d7943bcb7b307ca8696e1e430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3735273829af0abfbb997b26f58db0cc"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a3735273829af0abfbb997b26f58db0cc">DrawVLine</a> (const double *x, const std::vector&lt; RooCmdArg &gt; &amp;list)</td></tr>
+<tr class="memdesc:a3735273829af0abfbb997b26f58db0cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for drawing a vertical along in the pad.  <a href="#a3735273829af0abfbb997b26f58db0cc">More...</a><br /></td></tr>
+<tr class="separator:a3735273829af0abfbb997b26f58db0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a359856570e93dee949ce9d4a61325efe"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a359856570e93dee949ce9d4a61325efe">DrawVLine</a> (const double &amp;x)</td></tr>
+<tr class="memdesc:a359856570e93dee949ce9d4a61325efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for drawing a vertical along in the pad.  <a href="#a359856570e93dee949ce9d4a61325efe">More...</a><br /></td></tr>
+<tr class="separator:a359856570e93dee949ce9d4a61325efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70ec92c52687e47d962c67104987f595"><td class="memItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a70ec92c52687e47d962c67104987f595">DrawVLine</a> (const double *x)</td></tr>
+<tr class="memdesc:a70ec92c52687e47d962c67104987f595"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for drawing a vertical along in the pad.  <a href="#a70ec92c52687e47d962c67104987f595">More...</a><br /></td></tr>
+<tr class="separator:a70ec92c52687e47d962c67104987f595"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe95b06b2bbe76cabd7cb7bed7b6f175"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:abe95b06b2bbe76cabd7cb7bed7b6f175"><td class="memTemplItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#abe95b06b2bbe76cabd7cb7bed7b6f175">DrawVLine</a> (const double &amp;x, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:abe95b06b2bbe76cabd7cb7bed7b6f175"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for drawing a vertical along in the pad.  <a href="#abe95b06b2bbe76cabd7cb7bed7b6f175">More...</a><br /></td></tr>
+<tr class="separator:abe95b06b2bbe76cabd7cb7bed7b6f175"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989966fbcf06a0342fb3810d66867242"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a989966fbcf06a0342fb3810d66867242"><td class="memTemplItemLeft" align="right" valign="top">TLine &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a989966fbcf06a0342fb3810d66867242">DrawVLine</a> (const double *x, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:a989966fbcf06a0342fb3810d66867242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for drawing a vertical along in the pad.  <a href="#a989966fbcf06a0342fb3810d66867242">More...</a><br /></td></tr>
+<tr class="separator:a989966fbcf06a0342fb3810d66867242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a6286bbdce471b0378338fc95190907ca"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad1D.html#a6286bbdce471b0378338fc95190907ca">InnerTextLeft</a> () const</td></tr>
 <tr class="memdesc:a6286bbdce471b0378338fc95190907ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function for getting a nice text placement in the corner of a Pad.  <a href="#a6286bbdce471b0378338fc95190907ca">More...</a><br /></td></tr>
 <tr class="separator:a6286bbdce471b0378338fc95190907ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -423,10 +459,24 @@ const TAxis &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#ac45c672761e10f3ed026f3a1449ef7af">SetTextAlign</a> (const <a class="el" href="classusr_1_1plt_1_1font.html#a0356629488473f96e1de978c9180ef2a">font::align</a>)</td></tr>
 <tr class="memdesc:ac45c672761e10f3ed026f3a1449ef7af inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually setting text alignment options. <br /></td></tr>
 <tr class="separator:ac45c672761e10f3ed026f3a1449ef7af inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf916e59451a713c9741d327bb0b24d3 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a id="aaf916e59451a713c9741d327bb0b24d3"></a>
-<a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#aaf916e59451a713c9741d327bb0b24d3">WriteAtData</a> (const double, const double, const std::string &amp;)</td></tr>
-<tr class="memdesc:aaf916e59451a713c9741d327bb0b24d3 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writing latex text at data point. <br /></td></tr>
-<tr class="separator:aaf916e59451a713c9741d327bb0b24d3 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a26e8940e656d5e5580bca19c5c8fbe inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a id="a4a26e8940e656d5e5580bca19c5c8fbe"></a>
+<a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>WriteLine</b> (const std::string &amp;str)</td></tr>
+<tr class="separator:a4a26e8940e656d5e5580bca19c5c8fbe inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6e57b236ba14bedcd7ce79a879a612a inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memTemplParams" colspan="2"><a id="aa6e57b236ba14bedcd7ce79a879a612a"></a>
+template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:aa6e57b236ba14bedcd7ce79a879a612a inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>WriteLine</b> (const std::string &amp;str, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="separator:aa6e57b236ba14bedcd7ce79a879a612a inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d956c026f65089b07e9b2f57d406bfd inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a id="a0d956c026f65089b07e9b2f57d406bfd"></a>
+<a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a0d956c026f65089b07e9b2f57d406bfd">WriteAtData</a> (const double, const double, const std::string &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
+<tr class="memdesc:a0d956c026f65089b07e9b2f57d406bfd inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writing latex text at data point. <br /></td></tr>
+<tr class="separator:a0d956c026f65089b07e9b2f57d406bfd inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f3899cd32159c067db3f5a1b6a1bce9 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a id="a8f3899cd32159c067db3f5a1b6a1bce9"></a>
+<a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>WriteAtData</b> (const double x, const double y, const std::string &amp;str)</td></tr>
+<tr class="separator:a8f3899cd32159c067db3f5a1b6a1bce9 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0eac8c8b06129f5cb9fd818dea888115 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memTemplParams" colspan="2"><a id="a0eac8c8b06129f5cb9fd818dea888115"></a>
+template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:a0eac8c8b06129f5cb9fd818dea888115 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>WriteAtData</b> (const double x, const double y, const std::string &amp;str, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="separator:a0eac8c8b06129f5cb9fd818dea888115 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada457a73a1a38327303a6ffc9f19a6a2 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#ada457a73a1a38327303a6ffc9f19a6a2">PlotObj</a> (TObject &amp;, Option_t *=&quot;&quot;)</td></tr>
 <tr class="memdesc:ada457a73a1a38327303a6ffc9f19a6a2 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface to superseed the <code>TObject::Draw()</code> for generating plots.  <a href="classusr_1_1plt_1_1PadBase.html#ada457a73a1a38327303a6ffc9f19a6a2">More...</a><br /></td></tr>
 <tr class="separator:ada457a73a1a38327303a6ffc9f19a6a2 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -523,9 +573,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="memitem:a6faf9627393e23d615e8c3bf5cc688d9 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a6faf9627393e23d615e8c3bf5cc688d9">SetTextCursor</a> (const double, const double, const <a class="el" href="classusr_1_1plt_1_1font.html#a0356629488473f96e1de978c9180ef2a">font::align</a>)</td></tr>
 <tr class="memdesc:a6faf9627393e23d615e8c3bf5cc688d9 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writing text a designated cursor position.  <a href="classusr_1_1plt_1_1PadBase.html#a6faf9627393e23d615e8c3bf5cc688d9">More...</a><br /></td></tr>
 <tr class="separator:a6faf9627393e23d615e8c3bf5cc688d9 inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0eca500028d4a40300388a3684dfd9a inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#ab0eca500028d4a40300388a3684dfd9a">WriteLine</a> (const std::string &amp;)</td></tr>
-<tr class="memdesc:ab0eca500028d4a40300388a3684dfd9a inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writing text a designated cursor position.  <a href="classusr_1_1plt_1_1PadBase.html#ab0eca500028d4a40300388a3684dfd9a">More...</a><br /></td></tr>
-<tr class="separator:ab0eca500028d4a40300388a3684dfd9a inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f530ac7f6aeee4b2bdf6465548f9ec inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a18f530ac7f6aeee4b2bdf6465548f9ec">WriteLine</a> (const std::string &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
+<tr class="memdesc:a18f530ac7f6aeee4b2bdf6465548f9ec inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writing text a designated cursor position.  <a href="classusr_1_1plt_1_1PadBase.html#a18f530ac7f6aeee4b2bdf6465548f9ec">More...</a><br /></td></tr>
+<tr class="separator:a18f530ac7f6aeee4b2bdf6465548f9ec inherit pub_methods_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -667,7 +717,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <tr class="separator:aa064196d8f70fecac62b72fcc93fcb58 inherit pro_attribs_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa08613e61a1609166843f8d7a8a6fb1 inherit pro_attribs_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a id="afa08613e61a1609166843f8d7a8a6fb1"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#afa08613e61a1609166843f8d7a8a6fb1">_latex_cursory</a></td></tr>
-<tr class="memdesc:afa08613e61a1609166843f8d7a8a6fb1 inherit pro_attribs_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">coordinates to plot the next line of latex text, automatically updates when <a class="el" href="classusr_1_1plt_1_1PadBase.html#ab0eca500028d4a40300388a3684dfd9a" title="Writing text a designated cursor position.">WriteLine()</a> is called. <br /></td></tr>
+<tr class="memdesc:afa08613e61a1609166843f8d7a8a6fb1 inherit pro_attribs_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">coordinates to plot the next line of latex text, automatically updates when <a class="el" href="classusr_1_1plt_1_1PadBase.html#a18f530ac7f6aeee4b2bdf6465548f9ec" title="Writing text a designated cursor position.">WriteLine()</a> is called. <br /></td></tr>
 <tr class="separator:afa08613e61a1609166843f8d7a8a6fb1 inherit pro_attribs_classusr_1_1plt_1_1PadBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bfeb0d6e0c0fa77d5ab88865564baea inherit pro_attribs_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top"><a id="a7bfeb0d6e0c0fa77d5ab88865564baea"></a>
 std::vector&lt; std::unique_ptr&lt; TObject &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a7bfeb0d6e0c0fa77d5ab88865564baea">_generated_objects</a></td></tr>
@@ -1092,8 +1142,194 @@ minimum" would be hard clipped at 1e-6. </p>
 
 </div>
 </div>
-<a id="a66e5f1062dbb4fd7260611c0bca15af6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66e5f1062dbb4fd7260611c0bca15af6">&#9670;&nbsp;</a></span>DrawHLine()</h2>
+<a id="aa4eee1fd6f47e6f17db38b4e6b5570ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4eee1fd6f47e6f17db38b4e6b5570ef">&#9670;&nbsp;</a></span>DrawHLine() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawHLine </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>list</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing horizontal line.</p>
+<p>Drawing a horizontal line across the pad at a fixed y value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also returns a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a63db7da215d5ef78a72bacb12f363a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63db7da215d5ef78a72bacb12f363a2f">&#9670;&nbsp;</a></span>DrawHLine() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawHLine </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing horizontal line.</p>
+<p>Drawing a horizontal line across the pad at a fixed y value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also returns a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="ac0617dc7ea21a4a9bd8b3b26489ceb41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0617dc7ea21a4a9bd8b3b26489ceb41">&#9670;&nbsp;</a></span>DrawHLine() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawHLine </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing horizontal line.</p>
+<p>Drawing a horizontal line across the pad at a fixed y value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also returns a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a41f6d0ad72c654bef02f1fa631efc37b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f6d0ad72c654bef02f1fa631efc37b">&#9670;&nbsp;</a></span>DrawHLine() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawHLine </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing horizontal line.</p>
+<p>Drawing a horizontal line across the pad at a fixed y value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also returns a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a1e766df640f6c6adb69097e39f0d9949"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e766df640f6c6adb69097e39f0d9949">&#9670;&nbsp;</a></span>DrawHLine() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawHLine </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing horizontal line.</p>
+<p>Drawing a horizontal line across the pad at a fixed y value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also returns a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a1eca42db9e402fb0d3d954b86226c379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eca42db9e402fb0d3d954b86226c379">&#9670;&nbsp;</a></span>DrawHLine() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1101,26 +1337,14 @@ minimum" would be hard clipped at 1e-6. </p>
         <tr>
           <td class="memname">TLine &amp; usr::plt::Pad1D::DrawHLine </td>
           <td>(</td>
-          <td class="paramtype">const double&#160;</td>
+          <td class="paramtype">const double &amp;&#160;</td>
           <td class="paramname"><em>y</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Color_t&#160;</td>
-          <td class="paramname"><em>c</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Style_t&#160;</td>
-          <td class="paramname"><em>s</em> = <code>1</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Width_t&#160;</td>
-          <td class="paramname"><em>w</em> = <code>1</code>&#160;</td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1129,16 +1353,8 @@ minimum" would be hard clipped at 1e-6. </p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Drawing a horizontal line across the pad at a fixed y value. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">y</td><td>y value to plot the line </td></tr>
-    <tr><td class="paramname">c</td><td>Color of the line using ROOT color indexing </td></tr>
-    <tr><td class="paramname">s</td><td>Style of line using ROOT color indexing </td></tr>
-    <tr><td class="paramname">w</td><td>Width of the line in pixels </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Return a reference to the created line for additional user styling. </dd></dl>
+<p>Drawing horizontal line.</p>
+<p>Drawing a horizontal line across the pad at a fixed y value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also returns a reference to the line generated. </p>
 
 </div>
 </div>
@@ -1190,8 +1406,8 @@ minimum" would be hard clipped at 1e-6. </p>
 
 </div>
 </div>
-<a id="acee0dc4fd45c30f5a600c8de46810b4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acee0dc4fd45c30f5a600c8de46810b4c">&#9670;&nbsp;</a></span>DrawVLine()</h2>
+<a id="a4279640d7943bcb7b307ca8696e1e430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4279640d7943bcb7b307ca8696e1e430">&#9670;&nbsp;</a></span>DrawVLine() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1199,26 +1415,14 @@ minimum" would be hard clipped at 1e-6. </p>
         <tr>
           <td class="memname">TLine &amp; usr::plt::Pad1D::DrawVLine </td>
           <td>(</td>
-          <td class="paramtype">const double&#160;</td>
+          <td class="paramtype">const double &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Color_t&#160;</td>
-          <td class="paramname"><em>c</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Style_t&#160;</td>
-          <td class="paramname"><em>s</em> = <code>1</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Width_t&#160;</td>
-          <td class="paramname"><em>w</em> = <code>1</code>&#160;</td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1227,16 +1431,194 @@ minimum" would be hard clipped at 1e-6. </p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Drawing a vertical line on the pad at a fixed x value. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">x</td><td>x value to plot the line </td></tr>
-    <tr><td class="paramname">c</td><td>Color of the line using ROOT color indexing </td></tr>
-    <tr><td class="paramname">s</td><td>Style of line using ROOT color indexing </td></tr>
-    <tr><td class="paramname">w</td><td>Width of the line in pixels </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Return a reference to the created line for additional user styling. </dd></dl>
+<p>Drawing vertical line.</p>
+<p>Drawing a vertical line across the pad at a fixed x value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also return a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a3735273829af0abfbb997b26f58db0cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3735273829af0abfbb997b26f58db0cc">&#9670;&nbsp;</a></span>DrawVLine() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawVLine </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>list</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing vertical line.</p>
+<p>Drawing a vertical line across the pad at a fixed x value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also return a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a359856570e93dee949ce9d4a61325efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a359856570e93dee949ce9d4a61325efe">&#9670;&nbsp;</a></span>DrawVLine() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawVLine </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing vertical line.</p>
+<p>Drawing a vertical line across the pad at a fixed x value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also return a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="abe95b06b2bbe76cabd7cb7bed7b6f175"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe95b06b2bbe76cabd7cb7bed7b6f175">&#9670;&nbsp;</a></span>DrawVLine() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawVLine </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing vertical line.</p>
+<p>Drawing a vertical line across the pad at a fixed x value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also return a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a989966fbcf06a0342fb3810d66867242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a989966fbcf06a0342fb3810d66867242">&#9670;&nbsp;</a></span>DrawVLine() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawVLine </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing vertical line.</p>
+<p>Drawing a vertical line across the pad at a fixed x value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also return a reference to the line generated. </p>
+
+</div>
+</div>
+<a id="a70ec92c52687e47d962c67104987f595"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70ec92c52687e47d962c67104987f595">&#9670;&nbsp;</a></span>DrawVLine() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TLine&amp; usr::plt::Pad1D::DrawVLine </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Drawing vertical line.</p>
+<p>Drawing a vertical line across the pad at a fixed x value. Accepts the <a class="el" href="classusr_1_1plt_1_1LineColor.html" title="Defining Line color via the color index + alpha value convention.">LineColor</a>, <a class="el" href="classusr_1_1plt_1_1LineStyle.html" title="Defining Line style via the style index (see namespace usr::plt::sty)">LineStyle</a>, <a class="el" href="classusr_1_1plt_1_1LineWidth.html" title="Defining line width via number of pixels.">LineWidth</a> options for change the styling of the line. Also return a reference to the line generated. </p>
 
 </div>
 </div>
@@ -1743,7 +2125,7 @@ minimum" would be hard clipped at 1e-6. </p>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classusr_1_1plt_1_1RooArgContainer.html">RooArgContainer</a> &amp;&#160;</td>
-          <td class="paramname"><em>arglist</em>&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2013,8 +2395,37 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="ad70690f2d8160849df791765b6cda04b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad70690f2d8160849df791765b6cda04b">&#9670;&nbsp;</a></span>PlotFunc() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph &amp; usr::plt::Pad1D::PlotFunc </td>
+          <td>(</td>
+          <td class="paramtype">TF1 &amp;&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Plotting a TF1 object is done by generating a TGraph with 300 samples points across the x axis, and plotting the TGraph instead. All TGraph plotting options will be available for the TF1 plotting. There is a new plotting options <a class="el" href="classusr_1_1plt_1_1VisualizeError.html" title="Plot argument to plot a fitted TF1 with fit uncertainties. Intentionally using the same interface as ...">VisualizeError</a>, which generates a TGraphErrors graph by randomly sampling the parameter space according to the correlation matrix given by a <a href="https://root.cern.ch/doc/master/classTFitResult.html">TFitResult</a>. </p>
+
+</div>
+</div>
 <a id="a98d5a41991b79a01fe2be16014d8e069"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98d5a41991b79a01fe2be16014d8e069">&#9670;&nbsp;</a></span>PlotFunc() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a98d5a41991b79a01fe2be16014d8e069">&#9670;&nbsp;</a></span>PlotFunc() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2045,35 +2456,6 @@ template&lt;typename ... Args&gt; </div>
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
-</div><div class="memdoc">
-<p>Plotting a TF1 object is done by generating a TGraph with 300 samples points across the x axis, and plotting the TGraph instead. All TGraph plotting options will be available for the TF1 plotting. There is a new plotting options <a class="el" href="classusr_1_1plt_1_1VisualizeError.html" title="Plot argument to plot a fitted TF1 with fit uncertainties. Intentionally using the same interface as ...">VisualizeError</a>, which generates a TGraphErrors graph by randomly sampling the parameter space according to the correlation matrix given by a <a href="https://root.cern.ch/doc/master/classTFitResult.html">TFitResult</a>. </p>
-
-</div>
-</div>
-<a id="ad70690f2d8160849df791765b6cda04b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad70690f2d8160849df791765b6cda04b">&#9670;&nbsp;</a></span>PlotFunc() <span class="overload">[2/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph &amp; usr::plt::Pad1D::PlotFunc </td>
-          <td>(</td>
-          <td class="paramtype">TF1 &amp;&#160;</td>
-          <td class="paramname"><em>func</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
-          <td class="paramname"><em>arglist</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
 </div><div class="memdoc">
 <p>Plotting a TF1 object is done by generating a TGraph with 300 samples points across the x axis, and plotting the TGraph instead. All TGraph plotting options will be available for the TF1 plotting. There is a new plotting options <a class="el" href="classusr_1_1plt_1_1VisualizeError.html" title="Plot argument to plot a fitted TF1 with fit uncertainties. Intentionally using the same interface as ...">VisualizeError</a>, which generates a TGraphErrors graph by randomly sampling the parameter space according to the correlation matrix given by a <a href="https://root.cern.ch/doc/master/classTFitResult.html">TFitResult</a>. </p>
 
@@ -2223,11 +2605,13 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="ae6dadacc5bf0b7d99d46c5a93568abba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6dadacc5bf0b7d99d46c5a93568abba">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[1/6]</span></h2>
+<a id="a4f1196fe82af6bb02ca7536bde5b9aee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f1196fe82af6bb02ca7536bde5b9aee">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2235,9 +2619,25 @@ template&lt;typename ... Args&gt; </div>
         <tr>
           <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotGraph </td>
           <td>(</td>
-          <td class="paramtype">TGraph &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
+          <td class="paramtype">TGraph *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -2256,7 +2656,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting </p>
 
@@ -2305,14 +2705,53 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+</ul>
+<p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting </p>
+
+</div>
+</div>
+<a id="ae6dadacc5bf0b7d99d46c5a93568abba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6dadacc5bf0b7d99d46c5a93568abba">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotGraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraph &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting of the TGraph object has the following supporting options:</p>
+<ul>
+<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
+<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
+<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
+<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
+</ul>
+</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting </p>
 
 </div>
 </div>
 <a id="aa1e28adae679e94e37deb2950b46af4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1e28adae679e94e37deb2950b46af4b">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1e28adae679e94e37deb2950b46af4b">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2344,14 +2783,14 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting </p>
 
 </div>
 </div>
 <a id="a8782257efd5be01aa6f4f805e734e8a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8782257efd5be01aa6f4f805e734e8a8">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8782257efd5be01aa6f4f805e734e8a8">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2401,64 +2840,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
-</ul>
-<p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting </p>
-
-</div>
-</div>
-<a id="a4f1196fe82af6bb02ca7536bde5b9aee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f1196fe82af6bb02ca7536bde5b9aee">&#9670;&nbsp;</a></span>PlotGraph() <span class="overload">[5/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotGraph </td>
-          <td>(</td>
-          <td class="paramtype">TGraph *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting of the TGraph object has the following supporting options:</p>
-<ul>
-<li><code><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a></code>: Defining how the data should be represented on the Pad. The supported types are:<ul>
-<li><code>plottype::simplefunc</code>(default): single polyline joining the data points. This is used if the graph represents a function sample.</li>
-<li><code>plottype::fittedfunc</code>: a polyline joining the data points with the Y error represented with a shaded region. This is used if the graph represents a function sample with additional sampling for fitting uncertainties</li>
-<li><code>plottype::scatter</code>: plotting the data as data points with error bars. Unlike the histograms, this would not attempt to adjust the x error bars.</li>
-</ul>
-</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting </p>
 
@@ -2499,7 +2881,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, both the maximum and minimum will be tracked if this graph is the first thing to be plotted on the pad (excluding the histogram used for handling the axis), otherwise, nothing will be tracked.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting </p>
 
@@ -2558,7 +2940,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, only the max values of the histogram would be used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc()</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
 
@@ -2609,7 +2991,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, only the max values of the histogram would be used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc()</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
 
@@ -2650,7 +3032,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, only the max values of the histogram would be used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc()</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
 
@@ -2691,7 +3073,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, only the max values of the histogram would be used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc()</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
 
@@ -2734,7 +3116,7 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, only the max values of the histogram would be used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc()</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
 
@@ -2793,50 +3175,14 @@ template&lt;typename ... Args&gt; </div>
 </li>
 <li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
 <li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added histogram. By default, only the max values of the histogram would be used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a>: Specifying the that plot object be plotted underneath a specific object. Not that if the object specified in <a class="el" href="classusr_1_1plt_1_1PlotUnder.html" title="Specifying the plot object to be placed under another.">PlotUnder</a> is not found in the pad, this option will have no effect and will raise no excpetions.</li>
 </ul>
 <p>One side note is that fitted functions will have its DrawOptions cleared from the histogram! The user should be the one explicitly invoking the plotting behavior, given more freedom to what the final plot will look like (See the <a class="el" href="classusr_1_1plt_1_1Pad1D.html#ad70690f2d8160849df791765b6cda04b" title="Plotting ROOT flavoured 1D function.">Pad1D::PlotFunc()</a> method for more details). This design aspect is in stark contrast with the design of ROOT objects. So beware of unwanted behaviour. </p>
 
 </div>
 </div>
-<a id="a9b7b84d34c8ad13901d9f4fd9f3ac6a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b7b84d34c8ad13901d9f4fd9f3ac6a2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[1/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph &amp; usr::plt::Pad1D::PlotPdf </td>
-          <td>(</td>
-          <td class="paramtype">RooAbsPdf &amp;&#160;</td>
-          <td class="paramname"><em>pdf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
-          <td class="paramname"><em>arglist</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
-<ul>
-<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options, with the excpetion of the RooFit::DrawOptions method.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. If not specified, the simplefunc or fittedfunc methods will be used, depending on if the RooFit::VisualizeError is used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
-</ul>
-<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the Pad. </p>
-
-</div>
-</div>
 <a id="a6a8075c0596d982ee2cbae7bb04ccb59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a8075c0596d982ee2cbae7bb04ccb59">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a8075c0596d982ee2cbae7bb04ccb59">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2850,92 +3196,6 @@ template&lt;typename ... Args&gt; </div>
           <td class="paramtype">RooAbsPdf &amp;&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
-<ul>
-<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options, with the excpetion of the RooFit::DrawOptions method.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. If not specified, the simplefunc or fittedfunc methods will be used, depending on if the RooFit::VisualizeError is used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
-</ul>
-<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the Pad. </p>
-
-</div>
-</div>
-<a id="a04d9c075d2d06ffd1ca4e7ae6f98d0f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04d9c075d2d06ffd1ca4e7ae6f98d0f2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[3/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotPdf </td>
-          <td>(</td>
-          <td class="paramtype">RooAbsPdf *&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
-<ul>
-<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options, with the excpetion of the RooFit::DrawOptions method.</li>
-<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. If not specified, the simplefunc or fittedfunc methods will be used, depending on if the RooFit::VisualizeError is used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
-<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
-</ul>
-<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the Pad. </p>
-
-</div>
-</div>
-<a id="adbf97fbac03051b083ead9a1b60bbd6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbf97fbac03051b083ead9a1b60bbd6f">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[4/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotPdf </td>
-          <td>(</td>
-          <td class="paramtype">RooAbsPdf *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
-          <td class="paramname"><em>arg1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -2956,7 +3216,7 @@ template&lt;typename ... Args&gt; </div>
 </div>
 </div>
 <a id="a40d9f540fa71eb04b9cdefe08c2990b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40d9f540fa71eb04b9cdefe08c2990b2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a40d9f540fa71eb04b9cdefe08c2990b2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2999,8 +3259,44 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="a9b7b84d34c8ad13901d9f4fd9f3ac6a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b7b84d34c8ad13901d9f4fd9f3ac6a2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph &amp; usr::plt::Pad1D::PlotPdf </td>
+          <td>(</td>
+          <td class="paramtype">RooAbsPdf &amp;&#160;</td>
+          <td class="paramname"><em>pdf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
+<ul>
+<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options, with the excpetion of the RooFit::DrawOptions method.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. If not specified, the simplefunc or fittedfunc methods will be used, depending on if the RooFit::VisualizeError is used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
+</ul>
+<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the Pad. </p>
+
+</div>
+</div>
 <a id="a7c2c07eee329b6b2d8e7345e32e19af4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c2c07eee329b6b2d8e7345e32e19af4">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c2c07eee329b6b2d8e7345e32e19af4">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3051,8 +3347,60 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="a2a85570690ce79e065b083eab26c471b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a85570690ce79e065b083eab26c471b">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[1/6]</span></h2>
+<a id="adbf97fbac03051b083ead9a1b60bbd6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbf97fbac03051b083ead9a1b60bbd6f">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotPdf </td>
+          <td>(</td>
+          <td class="paramtype">RooAbsPdf *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
+<ul>
+<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options, with the excpetion of the RooFit::DrawOptions method.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. If not specified, the simplefunc or fittedfunc methods will be used, depending on if the RooFit::VisualizeError is used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
+</ul>
+<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the Pad. </p>
+
+</div>
+</div>
+<a id="a04d9c075d2d06ffd1ca4e7ae6f98d0f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04d9c075d2d06ffd1ca4e7ae6f98d0f2">&#9670;&nbsp;</a></span>PlotPdf() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3061,9 +3409,9 @@ template&lt;typename ... Args&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TH1D&amp; usr::plt::Pad1D::PlotProfile </td>
+          <td class="memname">TGraph&amp; usr::plt::Pad1D::PlotPdf </td>
           <td>(</td>
-          <td class="paramtype">TProfile &amp;&#160;</td>
+          <td class="paramtype">RooAbsPdf *&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3074,43 +3422,19 @@ template&lt;typename ... Args&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Plotting a TProfile object.</p>
-<p>Due to inheritance between TProfile and the TH1D, the original PlotHist doesn't work with TProfile. Instead, this functions generates a new TH1D from the TProfile using the ProjectionX function. The return value would then be the newly generated histogram. So beware of unexpected behaviour. </p>
-
-</div>
-</div>
-<a id="aafca9980d69d1e09ce049d158b0e584e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aafca9980d69d1e09ce049d158b0e584e">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[2/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TH1D &amp; usr::plt::Pad1D::PlotProfile </td>
-          <td>(</td>
-          <td class="paramtype">TProfile &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Plotting a TProfile object.</p>
-<p>Due to inheritance between TProfile and the TH1D, the original PlotHist doesn't work with TProfile. Instead, this functions generates a new TH1D from the TProfile using the ProjectionX function. The return value would then be the newly generated histogram. So beware of unexpected behaviour. </p>
+<p>Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object and plotting the graphs onto the TPad. The supported options are:</p>
+<ul>
+<li><em>Any</em> RooCmdArg supported by the RooAbsData::plotOn function. These will take precedence to custom defined options, with the excpetion of the RooFit::DrawOptions method.</li>
+<li><a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a>: Specifying the representation for the data object on the Pad. Any of the types valid for the PlotGraph functions would be valid. If not specified, the simplefunc or fittedfunc methods will be used, depending on if the RooFit::VisualizeError is used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1EntryText.html" title="Argument for defining text to place in legend.">EntryText</a>: String to add in the legend entry. If this options is not present, then this object will NOT appear in the generated legend. Notice that the attributes to display in the legend would be generated from the <a class="el" href="classusr_1_1plt_1_1PlotType.html" title="Plot argument to specify how data should be presented.">PlotType</a> used.</li>
+<li><a class="el" href="classusr_1_1plt_1_1TrackY.html" title="Plot argument to specify which edges of data to keep track of.">TrackY</a>: Whether or not the y-axis range should be adjusted according to the newly added graph. By default, RooPdf objects would not be used to adjust the axis range.</li>
+</ul>
+<p>Additional automation of options include additional generation for RooFit::VisualizeError. The stock RooPlot generates are contour line for the uncertainty range rather than a line with error, making styling of a PDF with uncertainty rather tedious. This functions takes the generated TGraphs by the RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph will be placed under the ownership of the Pad. </p>
 
 </div>
 </div>
 <a id="ab2b64024ae2f57df69e9f040a31cb4e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2b64024ae2f57df69e9f040a31cb4e7">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2b64024ae2f57df69e9f040a31cb4e7">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3148,7 +3472,7 @@ template&lt;typename ... Args&gt; </div>
 </div>
 </div>
 <a id="a9e2bc2b251e12c8dd880435bdff42dcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e2bc2b251e12c8dd880435bdff42dcc">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e2bc2b251e12c8dd880435bdff42dcc">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3175,8 +3499,36 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
+<a id="a2a85570690ce79e065b083eab26c471b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a85570690ce79e065b083eab26c471b">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D&amp; usr::plt::Pad1D::PlotProfile </td>
+          <td>(</td>
+          <td class="paramtype">TProfile &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Plotting a TProfile object.</p>
+<p>Due to inheritance between TProfile and the TH1D, the original PlotHist doesn't work with TProfile. Instead, this functions generates a new TH1D from the TProfile using the ProjectionX function. The return value would then be the newly generated histogram. So beware of unexpected behaviour. </p>
+
+</div>
+</div>
 <a id="afc20ed94bc8da43e68a207fd34403d6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc20ed94bc8da43e68a207fd34403d6d">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afc20ed94bc8da43e68a207fd34403d6d">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3215,6 +3567,36 @@ template&lt;typename ... Args&gt; </div>
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+<p>Plotting a TProfile object.</p>
+<p>Due to inheritance between TProfile and the TH1D, the original PlotHist doesn't work with TProfile. Instead, this functions generates a new TH1D from the TProfile using the ProjectionX function. The return value would then be the newly generated histogram. So beware of unexpected behaviour. </p>
+
+</div>
+</div>
+<a id="aafca9980d69d1e09ce049d158b0e584e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafca9980d69d1e09ce049d158b0e584e">&#9670;&nbsp;</a></span>PlotProfile() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TH1D &amp; usr::plt::Pad1D::PlotProfile </td>
+          <td>(</td>
+          <td class="paramtype">TProfile &amp;&#160;</td>
+          <td class="paramname"><em>obj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 <p>Plotting a TProfile object.</p>
 <p>Due to inheritance between TProfile and the TH1D, the original PlotHist doesn't work with TProfile. Instead, this functions generates a new TH1D from the TProfile using the ProjectionX function. The return value would then be the newly generated histogram. So beware of unexpected behaviour. </p>

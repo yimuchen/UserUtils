@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['a4textheight_5fdefault',['a4textheight_default',['../group__PlotUtilsConvert.html#gac710f9dcffcd7209e3f5ceaa0fdf4ae0',1,'usr::plt::len']]],
-  ['a4textwidth_5fdefault',['a4textwidth_default',['../group__PlotUtilsConvert.html#ga4a1b87221141f7e1f045437098d0db2f',1,'usr::plt::len']]],
+  ['a4textheight_5fdefault',['a4textheight_default',['../group__PlotUtilsConstants.html#gac710f9dcffcd7209e3f5ceaa0fdf4ae0',1,'usr::plt::len']]],
+  ['a4textwidth_5fdefault',['a4textwidth_default',['../group__PlotUtilsConstants.html#ga4a1b87221141f7e1f045437098d0db2f',1,'usr::plt::len']]],
   ['absheight',['AbsHeight',['../classusr_1_1plt_1_1PadBase.html#a0b43e2ee33b0a9640aaeb5dd6bcd6189',1,'usr::plt::PadBase']]],
   ['abswidth',['AbsWidth',['../classusr_1_1plt_1_1PadBase.html#a3d48f1274d7ff9716d9e28558b955513',1,'usr::plt::PadBase']]],
   ['add',['Add',['../classusr_1_1plt_1_1Canvas.html#acd1af0d0a352883eca44de60c7f042d9',1,'usr::plt::Canvas']]],
@@ -10,8 +10,8 @@ var searchData=
   ['addlorentzvector',['AddLorentzVector',['../group__extendedvar.html#ga1c8259156309ee5cd6f565f72ca11a24',1,'usr']]],
   ['addnamescheme',['AddNameScheme',['../classusr_1_1ArgumentExtender.html#a09635a5b1a610e1831e68ae915767906',1,'usr::ArgumentExtender::AddNameScheme(const ArgPathScheme &amp;)'],['../classusr_1_1ArgumentExtender.html#afd68ab83d9ecae7a490540c41e9af7a5',1,'usr::ArgumentExtender::AddNameScheme(const PathScheme &amp;)']]],
   ['addoptions',['AddOptions',['../classusr_1_1ArgumentExtender.html#aa3527a9bf8ec6156a76ddfafe3deb86f',1,'usr::ArgumentExtender']]],
-  ['angle1',['angle1',['../group__PlotUtilsConvert.html#ga5c6dc97605047439033ad2b0997c432d',1,'usr::plt::sty']]],
-  ['angle2',['angle2',['../group__PlotUtilsConvert.html#ga1d9ac4c3387bef2a494e1cb6770128ce',1,'usr::plt::sty']]],
+  ['angle1',['angle1',['../group__PlotUtilsConstants.html#ga5c6dc97605047439033ad2b0997c432d',1,'usr::plt::sty']]],
+  ['angle2',['angle2',['../group__PlotUtilsConstants.html#ga1d9ac4c3387bef2a494e1cb6770128ce',1,'usr::plt::sty']]],
   ['arg',['Arg',['../classusr_1_1ArgumentExtender.html#a590da0152e8a69fd06fe8f4fe84bb38e',1,'usr::ArgumentExtender']]],
   ['argext',['ArgExt',['../classusr_1_1ArgumentExtender.html#a58b78660bc41f3ae2b25ea019367acb8',1,'usr::ArgumentExtender']]],
   ['arglist',['ArgList',['../classusr_1_1ArgumentExtender.html#a84b85c615af9f0683a4bc509a0e6dcf8',1,'usr::ArgumentExtender']]],
