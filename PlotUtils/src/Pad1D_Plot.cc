@@ -13,8 +13,8 @@
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
-#include <random>
 #include <limits>
+#include <random>
 
 #include "CmdSetAttr.hpp"
 
@@ -397,7 +397,11 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 
     // Getting matrix for random parameter generation
     const TMatrixDSym cormatrix = fit->GetCovarianceMatrix();
-    const TMatrixD tmatrix      = TDecompChol( cormatrix ).GetU();
+    TDecompChol decomp          = TDecompChol( cormatrix );
+    decomp.Decompose();
+    TMatrixD tmatrix = decomp.GetU();
+    tmatrix.T();
+
     TVectorD vec( tmatrix.GetNrows() );
     std::mt19937 gen;
     std::normal_distribution pdf( 0.0, 1.0 );
@@ -432,7 +436,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     // Reseting the function parameters to best value
     func.SetParameters( bestfit_param.data() );
 
-    TGraphAsymmErrors& graph = MakeObj<TGraphAsymmErrors>(  x.size(),
+    TGraphAsymmErrors& graph = MakeObj<TGraphAsymmErrors>( x.size(),
       x.data(), y.data(),
       zero.data(), zero.data(),
       yerrlo.data(), yerrhi.data() );
@@ -720,17 +724,18 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
   }
 
   auto& graph = _frame.LastPlot<TGraph>();
-  graph.SetName( (pdf.GetName() + RandomString(6)).c_str() );
+  graph.SetName( ( pdf.GetName() + RandomString( 6 ) ).c_str() );
 
   // Since this is a PDF and there is no weighting issue, we
   // enforce the fact that the graph should be positive definite.
-  for( int i = 0 ; i < graph.GetN() ; ++i ){
+  for( int i = 0; i < graph.GetN(); ++i ){
     const double x = graph.GetX()[i];
     const double y = graph.GetY()[i];
     if( y <= 0.0 ){
       graph.SetPoint( i, x, 1e-50 );
     }
   }
+
   return graph;
 }
 

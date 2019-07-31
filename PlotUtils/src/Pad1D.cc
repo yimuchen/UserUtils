@@ -168,23 +168,7 @@ Pad1D::SetLogx( int flag )
 bool
 Pad1D::CheckLogy() const
 {
-  for( const auto&& obj : *GetListOfPrimitives() ){
-    if( obj->InheritsFrom( TH1D::Class() ) ){
-      if( obj == GetAxisObject() ){ continue; }// Ignoring the axis object
-      const TH1D* h = dynamic_cast<TH1D*>( obj );
-      if( GetYmin( h ) < 0.0 ){
-        // Only need to check for negative weights for histograms
-        return false;
-        }
-    } else if( obj->InheritsFrom( TGraph::Class() ) ){
-      const TGraph* g = dynamic_cast<TGraph*>( obj );
-
-      if( GetYmin( g ) < 0.0 ){
-        return false; }
-    }
-  }
-
-  return true;
+  return GetDataMin() > 0 ;
 }
 
 bool

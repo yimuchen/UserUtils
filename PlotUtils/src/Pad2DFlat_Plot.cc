@@ -8,6 +8,7 @@
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
+#include "CmdSetAttr.hpp"
 #include "TLegendEntry.h"
 
 namespace usr {
@@ -67,7 +68,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     PlotObj( hist, "CONT3 SAME" );
     break;
   case  plot2df::cont:
-    PlotObj( hist, "CONT3" );
+    PlotObj( hist, "CONT3 SAME" );
     SetAxisFont();
     break;
   case plot2df_dummy:
@@ -84,6 +85,10 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     _legend.AddEntry( &hist,
       args.Get( EntryText::CmdName ).getString( 0 ), legopt.c_str() );
   }
+
+  SetLineAttr( hist, args );
+  SetFillAttr( hist, args );
+  SetMarkAttr( hist, args );
 
   return hist;
 }
@@ -157,6 +162,10 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
     _legend.AddEntry( &graph,
       args.Get( EntryText::CmdName ).getString( 0 ), legopt.c_str() );
   }
+
+  SetLineAttr( graph, args );
+  SetFillAttr( graph, args );
+  SetMarkAttr( graph, args );
 
   return graph;
 }
@@ -245,6 +254,10 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
     _legend.AddEntry( &graph,
       args.Get( EntryText::CmdName ).getString( 0 ), legopt.c_str() );
   }
+
+  SetLineAttr( graph, args );
+  SetFillAttr( graph, args );
+  SetMarkAttr( graph, args );
 
   return graph;
 }
