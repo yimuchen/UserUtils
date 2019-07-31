@@ -14,8 +14,6 @@
 #include "UserUtils/Common/SystemUtils/Time.hpp"
 #endif
 
-#include <boost/format.hpp>
-
 #include <array>
 #include <cstdio>
 #include <iostream>
@@ -130,11 +128,12 @@ WaitProcess(
 
     if( proc_count == 0 ){ break; }
 
-    cout << boost::format( "\r[%s|%s] %d instance(s) of [%s]..." )
-      % GetEnv( "HOSTNAME" )
-      % time_string
-      % proc_count
-      % x
+    cout <<
+      usr::fstr( "\r[%s|%s] %d instance(s) of [%s]...",
+      GetEnv( "HOSTNAME" ),
+      time_string,
+      proc_count,
+      x )
          << flush;
 
     SleepMillSec( sleeptime );

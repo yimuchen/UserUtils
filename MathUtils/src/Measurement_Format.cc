@@ -5,14 +5,15 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
 #else
 #include "UserUtils/Common/Maths.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/Measurement.hpp"
 #endif
 
 #include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
 #include <regex>
 #include <string>
 
@@ -68,13 +69,10 @@ decimal::str() const
     const std::string up  = base::decimal( _upper ).dupsetting( *this ).str();
     const std::string lo  = base::decimal( _lower ).dupsetting( *this ).str();
 
-    boost::format symmfmt( "%s\\pm%s" );
-    boost::format asymfmt( "%s^{+%s}_{-%s}" );
-
     if( up == lo ){// string-wise comparison!
-      return boost::str( symmfmt % cen % up );
+      return usr::fstr( "%s\\pm%s", cen, up );
     } else {
-      return boost::str( asymfmt % cen % up % lo );
+      return usr::fstr( "%s^{+%s}_{-%s}", cen, up, lo );
     }
   }
 }
@@ -159,24 +157,18 @@ scientific::scientific( const Measurement& input, const int p ) :
 std::string
 scientific::str() const
 {
-  boost::format symmbase( "%s\\pm%s" );
-  boost::format asymbase( "%s^{+%s}_{-%s}" );
-
-  boost::format symmexpfmt( "(%s)\\times10^{%d}" );
-  boost::format asymexpfmt( "%s\\times10^{%d}" );
-
   const std::string cen  = base::decimal( _central ).dupsetting( *this ).str();
   const std::string up   = base::decimal( _upper ).dupsetting( *this ).str();
   const std::string lo   = decimal( _lower ).dupsetting( *this ).str();
   const std::string base =
     ( up == lo && _upper == 0 ) ? cen :
-    ( up == lo )                ? boost::str( symmbase % cen % up ) :
-    boost::str( asymbase % cen % up % lo );
+    ( up == lo )                ? usr::fstr( "%s\\pm%s", cen, up ) :
+    usr::fstr( "%s^{+%s}_{-%s}", cen, up, lo );
 
   const std::string ans =
     ( _exp == 0 )               ? base :
-    ( up == lo && _upper != 0 ) ? boost::str( symmexpfmt % base % _exp ) :
-    boost::str( asymexpfmt % base % _exp );
+    ( up == lo && _upper != 0 ) ? usr::fstr( "(%s)\\times10^{%d}", base, _exp ) :
+    usr::fstr( "%s\\times10^{%d}", base, _exp );
 
   return ans;
 }
@@ -272,16 +264,16 @@ scientific::SetPrecision()
 template<>
 Measurement
 GetSingle<Measurement>(
-  const pt::ptree& tree,
+  const pt::ptree&   tree,
   const std::string& query )
 {
   const std::vector<double> input = GetList<double>( tree, query );
   if( input.size() == 0 ){
-    return Measurement(1,0,0);// Returning unit for empty input
+    return Measurement( 1, 0, 0 );// Returning unit for empty input
   } else if( input.size() == 1 ){
-    return Measurement(input.at(0),0,0);
+    return Measurement( input.at( 0 ), 0, 0 );
   } else if( input.size() == 2 ){
-    return Measurement(input.at(0),input.at(1),input.at(1));
+    return Measurement( input.at( 0 ), input.at( 1 ), input.at( 1 ) );
   } else {
     return Measurement( input[0], input[1], input[2] );
   }

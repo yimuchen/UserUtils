@@ -24,11 +24,11 @@ testdecimal( double x )
        << usr::separator() << endl;
 
   for( int i = 0; i < 30; ++i ){
-    cout << boost::format( "Precision: %3d | %40s | %40s | %40s" )
-      % i
-      % usr::fmt::base::decimal( x, i )
-      % usr::fmt::base::decimal( x, -i )
-      % usr::fmt::base::decimal( x, i ).spacestr( "  " ) << endl;
+    usr::fout( "Precision: %3d | %40s | %40s | %40s",
+      i,
+      usr::fmt::base::decimal( x, i ),
+      usr::fmt::base::decimal( x, -i ),
+      usr::fmt::base::decimal( x, i ).spacestr( " " ).str() );
   }
 
   cout << usr::separator() << endl;
@@ -38,11 +38,10 @@ void
 testscientific( double x )
 {
   for( int i = 0; i < 30; ++i ){
-    cout <<
-      boost::format( "Precision %3d | %40s | %40s " )
-        % i
-        % usr::fmt::base::scientific( x, i )
-        % usr::fmt::base::scientific( x, i ).spacestr( "  " ) << endl;
+    usr::fout( "Precision %3d | %40s | %40s\n",
+      i,
+      usr::fmt::base::scientific( x, i ).str(),
+      usr::fmt::base::scientific( x, i ).spacestr( "  " ).str() );
   }
 
   cout << usr::separator() << endl;

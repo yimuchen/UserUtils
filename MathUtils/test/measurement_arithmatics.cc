@@ -17,7 +17,6 @@
 #include <sstream>
 #include <vector>
 
-#include <boost/format.hpp>
 using namespace std;
 using namespace usr;
 
@@ -35,13 +34,11 @@ AddTest( const vector<Measurement>& list )
 
   const Measurement sum = SumUncorrelated( list );
 
-  cout <<
-    fstr( "%40s & %15s & %15s & %15s",
+  usr::fout( "%40s & %15s & %15s & %15s",
     ss.str(),
     fmt::decimal( sum.CentralValue(),  8 ),
     fmt::decimal( sum.AbsUpperError(), 8 ),
-    fmt::decimal( sum.AbsLowerError(), 8 ) )
-       << endl;
+    fmt::decimal( sum.AbsLowerError(), 8 ) );
 }
 
 
@@ -58,7 +55,7 @@ ProdTest( const vector<double> chain )
   ss << chain.front() << flush;
 
   for( size_t i = 0; i < chain.size()-1; ++i ){
-    ss << boost::format( "->%lg" ) % chain[i+1] << flush;
+    ss << usr::fstr( "->%lg", chain[i+1] ) << flush;
     prodlist.push_back( Efficiency::Minos( chain[i+1], chain[i] ) );
   }
 
@@ -132,18 +129,17 @@ main( int argc, char const* argv[] )
        << ">>>> Addition testing: Partial addition to 100" << endl;
   {
     Measurement a = Poisson::Minos( 20 );
-    boost::format test( "%30s & %25s\n" );
-    cout << usr::fstr( test, "Direct value: ",
-      fmt::decimal( Poisson::Minos( 100 ),                     4 ) )
-         << usr::fstr( test, "(20+20+20+20+20)",
-      fmt::decimal( Sum( a, a, a, a, a ),                      4  ) )
-         << usr::fstr( test, "(20+20)+(20+20+20)",
-      fmt::decimal( Sum( Sum( a, a ), Sum( a, a, a ) ),        4  ) )
-         << usr::fstr( test, "((20+20)+(20+20)+20)", fmt::decimal( Sum( Sum( a, a ), Sum( a, a ), a ), 4  ) )
-         << usr::fstr( test, "(((20+20)+20)+20)+20)",
-      fmt::decimal( Sum( Sum( Sum( Sum( a, a ), a ), a ), a ), 4  ) )
-         << std::flush;
-
+    const std::string test( "%30s & %25s\n" );
+    usr::fout( test, "Direct value: ",
+      fmt::decimal( Poisson::Minos( 100 ), 4 ) );
+    usr::fout( test, "(20+20+20+20+20)",
+      fmt::decimal( Sum( a, a, a, a, a ), 4  ) );
+    usr::fout( test, "(20+20)+(20+20+20)",
+      fmt::decimal( Sum( Sum( a, a ), Sum( a, a, a ) ), 4  ) );
+    usr::fout( test, "((20+20)+(20+20)+20)",
+      fmt::decimal( Sum( Sum( a, a ), Sum( a, a ), a ), 4  ) );
+    usr::fout( test, "(((20+20)+20)+20)+20)",
+      fmt::decimal( Sum( Sum( Sum( Sum( a, a ), a ), a ), a ), 4  ) );
   }
 
 

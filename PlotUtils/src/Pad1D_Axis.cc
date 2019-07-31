@@ -402,7 +402,6 @@ Pad1D::SetHistAxisTitles(
   SetAxisTitle( Xaxis(), title, unit );
 
   // y axis part is more complicated.
-  boost::format uniwidthfmt( "Events/ %s" );
   const std::string varwidthfmt = "Events";
 
   const std::string binwidthstr
@@ -412,13 +411,13 @@ Pad1D::SetHistAxisTitles(
   // At most 2 digits after decimal point, stripping trailing zeros
   const std::string den
     = binwidthstr == "1" && unit == "" ? "" :
-      boost::str( boost::format("[ %s %s ]") % binwidthstr % unit );
+      usr::fstr( "[ %s %s ]", binwidthstr, unit );
 
   const std::string ytitle
     = Xaxis().IsVariableBinSize()       ? varwidthfmt :
       forcebinwidth == forcevarbinwidth ? varwidthfmt :
       den == ""                         ? varwidthfmt :
-      boost::str( uniwidthfmt % den );
+      usr::fstr( "Events/ %s", den );
 
   SetAxisTitle( Yaxis(), ytitle );
 }

@@ -38,10 +38,10 @@ main( int argc, char* argv[] )
     };
 
     for( const auto& test : test_string_list ){
-      cout << boost::format("Testing [%s]:") % test << endl;
+      usr::fout("Testing [%s]:\n", test );
 
       for( const auto& output : usr::GlobLocal( test ) ){
-        cout << boost::format( "\t%s" ) % output << endl;
+        usr::fout( "\t%s\n",  output );
       }
     }
   }

@@ -32,6 +32,9 @@ main( int argc, char const* argv[] )
   cout << usr::fstr( "this is a test" ) << std::endl;
   cout << usr::fstr( "My test %d\n", 1234) << std::endl;
 
+  usr::fout( "this is a test\n" );
+  usr::fout( "My test %d\n", 1234) << std::endl;
+
 
   return 0;
 }

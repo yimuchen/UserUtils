@@ -5,14 +5,15 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #else
 #include "UserUtils/Common/ArgumentExtender.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/exception/diagnostic_information.hpp>
 #include <boost/foreach.hpp>
-#include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/program_options/errors.hpp>
 
@@ -375,9 +376,7 @@ ArgumentExtender::genPathString( const ArgPathScheme& x ) const
 {
   if( !CheckArg( x.option ) ){ return ""; }
 
-  boost::format genfmt( "%s%s" );
   const std::string optstring = x.pathstring;
-
   std::string inputstring;
 
   // If casting false, the string will simply be empty
@@ -390,7 +389,7 @@ ArgumentExtender::genPathString( const ArgPathScheme& x ) const
   boost::replace_all( inputstring, ".", "p" );
   boost::replace_all( inputstring, " ", "-" );
 
-  return ( genfmt % optstring % inputstring ).str();
+  return usr::fstr( "%s%s", optstring, inputstring );
 }
 
 }/* usr */

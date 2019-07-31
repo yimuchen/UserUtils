@@ -155,9 +155,7 @@ Pad1D::DrawLuminosity( const std::string& x )
 void
 Pad1D::DrawLuminosity( const double lumi )
 {
-  DrawLuminosity(
-    boost::str( boost::format( "%.1f fb^{-1} (13 TeV)" ) % lumi )
-    );
+  DrawLuminosity( usr::fstr( "%.1f fb^{-1} (13 TeV)", lumi ) );
 }
 
 /**

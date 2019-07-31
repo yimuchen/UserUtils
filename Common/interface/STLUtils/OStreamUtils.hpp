@@ -9,6 +9,12 @@
 
 #include <iostream>
 
+#ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#endif
+
 namespace usr {
 
 /**
@@ -47,6 +53,17 @@ public:
   ~separator();
   friend std ::ostream& operator<<( std::ostream&, const separator& );
 };
+
+/**
+ * @brief Variadic interface for printf like stream output
+ *
+ * Details are implemented in the usr::fstr  function
+ */
+template<typename... ARGS>
+inline
+std::ostream& fout( ARGS... args ){
+  return std::cout << usr::fstr( std::forward<ARGS>(args)... ) << std::flush;
+}
 
 /** @} */
 

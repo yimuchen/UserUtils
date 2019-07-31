@@ -36,7 +36,7 @@ Pad2DFlat::DrawCMSLabel( const std::string& tag, const std::string& main )
   _latex.SetTextSize( Font().large() );
 
   SetTextCursor( cursorx, cursory, font::bottom_left );
-  WriteLine( (boost::format("#bf{%s} #it{%s}") % main % tag).str() );
+  WriteLine( usr::fstr("#bf{%s} #it{%s}", main, tag ) );
   _latex.SetTextSize( tmp );
 }
 
@@ -69,9 +69,7 @@ Pad2DFlat::DrawLuminosity( const std::string& x )
 void
 Pad2DFlat::DrawLuminosity( const double lumi )
 {
-  DrawLuminosity(
-    ( boost::format( "%.1f fb^{-1} (13 TeV)" ) % lumi ).str()
-    );
+  DrawLuminosity( usr::fstr( "%.1f fb^{-1} (13 TeV)", lumi ) );
 }
 
 }

@@ -7,13 +7,14 @@
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #else
 #include "UserUtils/Common/Format.hpp"
 #include "UserUtils/Common/Maths.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
 #include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
 #include <cmath>
 #include <regex>
 #include <string>
@@ -62,10 +63,7 @@ std::string
 decimal::str() const
 {
   const unsigned op_precision = std::min( abs( _precision ), abs( max_precision ) );
-  std::string retstr          =
-    boost::str( boost::format(
-      boost::str( boost::format( "%%.%df" )% op_precision )
-      )% _input );
+  std::string retstr          = usr::fstr( usr::fstr( "%%.%df", op_precision ), _input );
 
   // stripping trailing zero after decimal point
   if( _precision < 0 && retstr.find( '.' ) != std::string::npos ){
@@ -81,16 +79,13 @@ decimal::str() const
     while( space > 0 ){
       if( retstr.find( '.' ) != std::string::npos ){
         // If decimal point exists, expand around decimal point
-        boost::format bfexp( "(.*\\d)(\\d{%d}\\..*)" );
-        boost::format afexp( "(.*\\.\\d{%d})(\\d.*)" );
-        const std::regex beforedec( boost::str( bfexp % space ) );
-        const std::regex afterdec( boost::str( afexp % space ) );
-        retstr = std::regex_replace( retstr, beforedec, "$1"+_spacestr+"$2" );
-        retstr = std::regex_replace( retstr, afterdec,  "$1"+_spacestr+"$2" );
+        const std::regex before( usr::fstr( "(.*\\d)(\\d{%d}\\..*)", space ) );
+        const std::regex after(  usr::fstr( "(.*\\.\\d{%d})(\\d.*)", space ) );
+        retstr = std::regex_replace( retstr, before, "$1"+_spacestr+"$2" );
+        retstr = std::regex_replace( retstr, after,  "$1"+_spacestr+"$2" );
       } else {
-        // If decimal point doesnt exist, expand around right most side
-        boost::format bfexp( "(.*\\d)(\\d{%d})" );
-        const std::regex beforedec( boost::str( bfexp % space ) );
+        // If decimal point doesn't exist, expand around right most side
+        const std::regex beforedec(  usr::fstr( "(.*\\d)(\\d{%d})", space ) );
         retstr = std::regex_replace( retstr, beforedec, "$1"+_spacestr+"$2" );
       }
       space -= _spacesep;
@@ -121,8 +116,7 @@ scientific::str() const
   // largest exponent should be around ~300
   // no need of additional formatting.
   const std::string ans
-    = ( _exp == 0 ) ?  base :
-      boost::str( boost::format( "%s \\times 10^{%d}" ) % base % _exp );
+    = ( _exp == 0 ) ?  base : usr::fstr( "%s \\times 10^{%d}", base, _exp );
   return ans;
 }
 

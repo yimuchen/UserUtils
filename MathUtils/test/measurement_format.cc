@@ -60,16 +60,10 @@ main( int argc, char const* argv[] )
     const Measurement y( 123, 10.23, 10.21 );
 
     for( int i = 0; i < 6; ++i ){
-      cout << boost::format( "%50s | %50s" )
-        % fmt::decimal( x, i )
-        % fmt::scientific( x, i )
-           << endl;
+      usr::fout( "%50s|%50s\n", fmt::decimal( x, i ), fmt::scientific( x, i ) );
     }
     for( int i = 0; i < 6; ++i ){
-      cout << boost::format( "%50s | %50s" )
-        % fmt::decimal( y, i )
-        % fmt::scientific( y, i )
-           << endl;
+      usr::fout( "%50s|%50s\n", fmt::decimal( y, i ), fmt::scientific( y, i ) );
     }
   }
 
@@ -85,15 +79,9 @@ main( int argc, char const* argv[] )
     };
 
     for( const auto& m : list ){
-      cout << boost::format( "%20s | %20s" )
-        % fmt::decimal( m, -1 )
-        % fmt::scientific( m, -1 )
-           << endl;
+      usr::fout( "%20s|%20s\n", fmt::decimal( m,-1 ), fmt::scientific( m,-1 ) );
     }
   }
-
-  // cout << ">>> Small Measurement testing" << endl;
-  // }
 
   return 0;
 }
