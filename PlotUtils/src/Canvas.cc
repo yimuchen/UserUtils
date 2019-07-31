@@ -13,6 +13,7 @@
 #include "UserUtils/PlotUtils/Constants.hpp"
 #endif
 
+#include "TError.h"
 #include "TFile.h"
 
 #include <boost/format.hpp>
@@ -116,14 +117,14 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
-    "-sstdout=/dev/null",// Supperssing error messages
+    "-sstdout=/dev/null",        // Supperssing error messages
     "-sDEVICE=pdfwrite",
     "-dCompatibilityLevel=1.4",
     "-dPDFSETTINGS=/screen",
     // Getting rid of the external transparent margin
     "-dUseCropBox",
-    ( boost::format( "-sOutputFile=%s" )% tmp2path.string() ).str(),
-    "-f", tmppath
+    usr::fstr( "-sOutputFile=%s", tmp2path.string() ),
+    "-f",                        tmppath
   };
 
   if( !run_ghostscript( gs_fixrotate ) ){
@@ -141,8 +142,8 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "gs",
     "-dNODISPLAY",
     "-dQUIET",
-    ( boost::format( "-sstdout=%s" )%dimpath.string() ).str(),
-    ( boost::format( "-sFileName=%s" )%tmp2path.string() ).str(),
+    usr::fstr( "-sstdout=%s",   dimpath.string() ),
+    usr::fstr( "-sFileName=%s", tmp2path.string() ),
     "-c",
     "FileName (r) file "
     "runpdfbegin 1 1 pdfpagecount {"
@@ -181,12 +182,12 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dBATCH",
     "-sDEVICE=pdfwrite",
     "-dCompatibilityLevel=1.4",
-    ( boost::format( "-dDEVICEWIDTHPOINTS=%d" )%newwidth ).str(),
-    ( boost::format( "-dDEVICEHEIGHTPOINTS=%d" )%newheight ).str(),
+    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  newwidth ),
+    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", newheight ),
     "-dFIXEDMEDIA",
     "-dPDFFitPage",
-    ( boost::format( "-sOutputFile=%s" ) % filepath.string() ).str(),
-    "-f", tmp2path
+    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
+    "-f",                                tmp2path
   };
 
   if( !run_ghostscript( gs_fixscale ) ){
@@ -198,7 +199,6 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   }
 
   //  Exit norminally.
-  std::cout << "Saved Canvas to " << filepath << std::endl;
   fs::remove( tmp2path );
 }
 
@@ -233,23 +233,23 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
-    "-sstdout=/dev/null",// suppressing all error
+    "-sstdout=/dev/null",                // suppressing all error
     "-sDEVICE=pngalpha",
-    ( boost::format( "-sOutputFile=%s" )%filepath.string() ).str(),
-    ( boost::format( "-r%d" )%dpi ).str(),
-    ( boost::format( "-dDEVICEWIDTHPOINTS=%d" )%( Width()*scale ) ).str(),
-    ( boost::format( "-dDEVICEHEIGHTPOINTS=%d" )%( Height()*scale ) ).str(),
-    "-dUseCropBox",// Trimming the PDF file
+    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
+    usr::fstr( "-r%d",                    dpi ),
+    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  Width()*scale ),
+    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", Height()*scale ),
+    "-dUseCropBox",                      // Trimming the PDF file
     "-f",
     tmppath };
 
   if( run_ghostscript( gs_png ) ){
-    std::cout << "Saving Canvas to " << filepath << std::endl;
     fs::remove( tmppath );
   } else {
     std::cout << "Ghostscript conversion failed, saving via in-built root "
               << "function (Display maybe bad!)" << std::endl;
     fs::remove( tmppath );
+    gErrorIgnoreLevel = kWarning;
     TCanvas::SaveAs( filepath.c_str() );
   }
 }
@@ -267,8 +267,10 @@ void
 Canvas::SaveToROOT( const fs::path& filepath, const std::string& objname )
 {
   Finalize( filepath );
+  gErrorIgnoreLevel = kWarning;
   TFile* myfile = TFile::Open( filepath.c_str(), "UPDATE" );
   TCanvas::Write( objname.c_str(), TFile::kOverwrite );
+  myfile->Close();
   delete myfile;
 }
 
@@ -284,9 +286,10 @@ void
 Canvas::SaveAsCPP( const fs::path& filepath )
 {
   Finalize( filepath );
-  const std::string tempfile = boost::str( boost::format( "/tmp/%s_%s.cxx" )
-    % RandomString( 6 )
-    % filepath.stem().string() );
+  const std::string tempfile
+    = usr::fstr( "/tmp/%s_%s.cxx", RandomString( 6 ), filepath.stem().string() );
+
+  gErrorIgnoreLevel = kWarning;
   TCanvas::SaveAs( tempfile.c_str() );
 
   fs::copy( tempfile, filepath );
@@ -302,10 +305,11 @@ Canvas::SaveAsCPP( const fs::path& filepath )
 fs::path
 Canvas::SaveTempPDF( const fs::path& finalpath )
 {
-  const std::string temppdf = boost::str( boost::format( "/tmp/%s_%s.pdf" )
-    % usr::RandomString( 6 )
-    % finalpath.stem().string() );
+  const std::string temppdf = usr::fstr( "/tmp/%s_%s.pdf",
+    usr::RandomString( 6 ),
+    finalpath.stem().string() );
 
+  gErrorIgnoreLevel = kWarning;
   TCanvas::SaveAs( temppdf.c_str() );
   return temppdf;
 }
