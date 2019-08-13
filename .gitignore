@@ -18,6 +18,11 @@ Makefile
 CMakeFiles/
 CMakeCache.txt
 
+## Python binding-auto generation files
+**/plugins/*.*
+!**/plugins/*.hpp
+!**/plugins/*.xml
+
 # Specific file exclusion
 # [relative/path/to/file]
 docs/html/

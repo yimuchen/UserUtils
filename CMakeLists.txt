@@ -32,6 +32,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib )
 include_directories( ${CMAKE_HOME_DIRECTORY}/include )
 include_directories( ${ROOT_INCLUDE_DIRS} )
 
+## Explicity running the python binding generations
+execute_process(COMMAND ${CMAKE_HOME_DIRECTORY}/GenReflex.sh)
 
 ## Libraries compile instructions are defined in directory
 add_subdirectory(Common)

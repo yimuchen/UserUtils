@@ -21,3 +21,8 @@ file(GLOB math_test_files "test/*.cc")
 foreach(math_test_file ${math_test_files})
   make_mathutils_test( ${math_test_file} )
 endforeach()
+
+## Reflex Python-binding generation
+file(GLOB PyMATH_src  plugins/MathUtils_rflx.cc)
+add_library( pyMathUtils SHARED ${PyMATH_src})
+target_link_libraries( pyMathUtils  MathUtils )
