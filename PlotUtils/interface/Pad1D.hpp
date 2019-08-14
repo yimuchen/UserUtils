@@ -8,11 +8,13 @@
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
+#include "UserUtils/Common/interface/RootUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
+#include "UserUtils/Common/RootUtils.hpp"
 #include "UserUtils/PlotUtils/Canvas.hpp"
 #include "UserUtils/PlotUtils/Constants.hpp"
 #include "UserUtils/PlotUtils/PlotCommon.hpp"

@@ -1,4 +1,5 @@
 <use name="UserUtils/Common"/>
+<use name="UserUtils/MathUtils"/>
 <use name="UserUtils/PlotUtils"/>
 
 <flags CXXFLAGS="-g"/>

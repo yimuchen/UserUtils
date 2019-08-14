@@ -107,21 +107,6 @@ private:
  * @{
  */
 
-/**
- * @brief Simple container for helping with RooCmdArg parsing.
- */
-class RooArgContainer : public std::vector<RooCmdArg>
-{
-public:
-  RooArgContainer( const std::vector<RooCmdArg>& arg_list,
-                   const std::vector<RooCmdArg>& default_list = {} );
-  virtual ~RooArgContainer();
-
-  const RooCmdArg& Get( const std::string& name ) const;
-  bool             Has( const std::string& name ) const;
-  static bool      CheckList( const std::vector<RooCmdArg>&,
-                              const std::string& name );
-};
 
 /**
  * @brief Specifying the plot object to be placed under another.
@@ -130,9 +115,12 @@ class PlotUnder : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  PlotUnder( const RooCmdArg* x ) : RooCmdArg( *x ){}
   PlotUnder( const TObject& );
   PlotUnder( const TObject* );
   virtual ~PlotUnder(){}
+  inline const TObject&
+  obj() const { return *getObject( 0 ); }
 };
 
 /**
@@ -146,9 +134,11 @@ public:
     none, min, max, both, aut
   };
   static const std::string CmdName;
+  TrackY( const RooCmdArg* x ) : RooCmdArg( *x ){}
   TrackY( int x = aut );
   virtual
   ~TrackY(){}
+  inline operator int() const { return getInt( 0 ); }
 };
 
 /**
@@ -158,8 +148,12 @@ class EntryText : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  EntryText( const RooCmdArg* x ) : RooCmdArg( *x ){}
   EntryText( const std::string& );
   virtual ~EntryText(){}
+  inline operator std::string() const { return getString( 0 ); }
+  inline const char*
+  c_str() const { return getString( 0 );}
 };
 
 // ------------------------------------------------------------------------------
@@ -168,16 +162,24 @@ class TextColor : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  TextColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
   TextColor( const int color, const float alpha = 1 );
   virtual ~TextColor(){}
+  inline int
+  Col() const { return getInt( 0 ); }
+  inline float
+  Alpha() const { return getDouble( 0 ); }
 };
 
 class TextSize : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  TextSize( const RooCmdArg* x ) : RooCmdArg( *x ){}
   TextSize( const double size );
   virtual ~TextSize(){}
+  inline operator double() const { return getDouble( 0 );
+  }
 };
 
 // ------------------------------------------------------------------------------
@@ -186,24 +188,35 @@ class LineColor : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  LineColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
   LineColor( const int color, const float alpha = 1 );
   virtual ~LineColor(){}
+  inline int
+  Col() const { return getInt( 0 ); }
+  inline float
+  Alpha() const { return getDouble( 0 ); }
 };
 
 class LineStyle : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  LineStyle( const RooCmdArg* x ) : RooCmdArg( *x ){}
   LineStyle( const short style );
   virtual ~LineStyle(){};
+  inline operator short() const { return getInt( 0 );
+  }
 };
 
 class LineWidth : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  LineWidth( const RooCmdArg* x ) : RooCmdArg( *x ){}
   LineWidth( const short style );
   virtual ~LineWidth(){};
+  inline operator short() const { return getInt( 0 );
+  }
 };
 
 // ------------------------------------------------------------------------------
@@ -212,16 +225,24 @@ class FillColor : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  FillColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
   FillColor( const int color, const float alpha = 1 );
   virtual ~FillColor(){}
+  inline int
+  Col() const { return getInt( 0 ); }
+  inline float
+  Alpha() const { return getDouble( 0 ); }
 };
 
 class FillStyle : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  FillStyle( const RooCmdArg* x ) : RooCmdArg( *x ){}
   FillStyle( const short style );
   virtual ~FillStyle(){};
+  inline operator short() const { return getInt( 0 );
+  }
 };
 
 // ------------------------------------------------------------------------------
@@ -230,24 +251,35 @@ class MarkerColor : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  MarkerColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
   MarkerColor( const int color, const float alpha = 1 );
   virtual ~MarkerColor(){}
+  inline int
+  Col() const { return getInt( 0 ); }
+  inline float
+  Alpha() const { return getDouble( 0 ); }
 };
 
 class MarkerStyle : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  MarkerStyle( const RooCmdArg* x ) : RooCmdArg( *x ){}
   MarkerStyle( const short style );
   virtual ~MarkerStyle(){};
+  inline operator short() const { return getInt( 0 );
+  }
 };
 
 class MarkerSize : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  MarkerSize( const RooCmdArg* x ) : RooCmdArg( *x ){}
   MarkerSize( const float style );
   virtual ~MarkerSize(){};
+  inline operator double() const { return getDouble( 0 );
+  }
 };
 
 // ------------------------------------------------------------------------------
@@ -275,6 +307,7 @@ class PlotType : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  PlotType( const RooCmdArg* x ) : RooCmdArg( *x ){}
   /** @brief Enum interface for plottype input */
   PlotType( const int );
 
@@ -282,8 +315,12 @@ public:
   PlotType( const std::string& );
   virtual
   ~PlotType(){}
-  inline int
-  get() const { return getInt( 0 ); }
+  inline operator int() const { return getInt( 0 );
+  }
+  inline std::string
+  str() const { return getString( 0 ); }
+  inline const char*
+  c_str() const { return getString( 0 ); }
 };
 
 
@@ -308,6 +345,7 @@ class Plot2DF : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  Plot2DF( const RooCmdArg* x ) : RooCmdArg( *x ){}
   /** @brief Enum interface for plottype input */
   Plot2DF( const int );
 
@@ -315,6 +353,12 @@ public:
   Plot2DF( const std::string& );
   virtual
   ~Plot2DF(){}
+  inline
+  operator int() const { return getInt( 0 ); }
+  inline std::string
+  str() const { return getString( 0 ); }
+  inline const char*
+  c_str() const { return getString( 0 ); }
 };
 
 /**
@@ -326,6 +370,7 @@ class VisualizeError : public RooCmdArg
 {
 public:
   static const std::string CmdName;
+  VisualizeError( const RooCmdArg* x ) : RooCmdArg( *x ){}
   VisualizeError( const TFitResultPtr&,
                   const double z = 1 );
   VisualizeError( const RooFitResult&,
@@ -335,6 +380,10 @@ public:
                   const RooArgSet& param,
                   const double     z = 1,
                   const bool       linearmethod = true  );
+  const RooFitResult& GetRooFitResult() const;
+  const TFitResult&   GetTFitResult() const;
+  const RooArgSet&    set() const;
+  bool                has_set() const;
   virtual ~VisualizeError(){}
 };
 
@@ -397,7 +446,5 @@ extern double EstimateLatexHeight( const std::string& text );
 }// plt
 
 }// usr
-
-
 
 #endif

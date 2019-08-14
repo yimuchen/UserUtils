@@ -1,7 +1,9 @@
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
+//#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
+#include "UserUtils/Common/interface/RootUtils.hpp"
 #else
-#include "UserUtils/PlotUtils/PlotCommon.hpp"
+#include "UserUtils/Common/RootUtils.hpp"
+// #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
 #include "TAttText.h"
@@ -10,13 +12,13 @@
 #include "TAttMarker.h"
 
 extern void SetTextAttr( TAttText& obj,
-  const usr::plt::RooArgContainer& args  );
+  const usr::RooArgContainer& args  );
 
 extern void SetLineAttr( TAttLine& obj,
-  const usr::plt::RooArgContainer& args  );
+  const usr::RooArgContainer& args  );
 
 extern void SetFillAttr( TAttFill& obj,
-  const usr::plt::RooArgContainer& args  );
+  const usr::RooArgContainer& args  );
 
 extern void SetMarkAttr( TAttMarker& obj,
-  const usr::plt::RooArgContainer& args  );
+  const usr::RooArgContainer& args  );

@@ -3,6 +3,7 @@ add_library(Common SHARED ${Common_src})
 target_link_libraries( Common
   ${Boost_LIBRARIES}
   ${PYTHON_LIBRARIES}
+  ${ROOT_LIBRARIES}
   stdc++fs
 )
 

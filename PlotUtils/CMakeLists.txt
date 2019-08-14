@@ -13,7 +13,7 @@ function(make_plotutils_test testfile)
   add_executable( ${testbin} ${testfile} )
   set_target_properties( ${testbin} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/testbin/PlotUtils )
-  target_link_libraries( ${testbin} PlotUtils )
+  target_link_libraries( ${testbin} PlotUtils MathUtils )
 endfunction()
 
 ## Listing all unit test functions to perform
@@ -22,6 +22,3 @@ foreach(plot_test_file ${plot_test_files})
   make_plotutils_test( ${plot_test_file} )
 endforeach()
 
-## Reflex Python-binding generation
-add_library( pyPlotUtils SHARED plugins/PlotUtils_rflx.cc)
-target_link_libraries( pyPlotUtils  PlotUtils )

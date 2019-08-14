@@ -26,11 +26,6 @@
 // static variables for new object generation
 static const std::string genaxisname = "axishist";
 
-// static helper functions for parsing options
-static RooLinkedList MakeRooList(
-  const usr::plt::RooArgContainer& args,
-  const std::vector<std::string>&  exclude = {} );
-
 namespace usr  {
 
 namespace plt {
@@ -114,7 +109,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   }
 
   // Running the draw commands.
-  const int pt = args.Get( PlotType::CmdName ).getInt( 0 );
+  const int pt = args.Get<PlotType>();
 
   // Flushing the _working stack if hist is no longer used
   if( pt != histstack && _workingstack ){
@@ -148,40 +143,35 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     _workingstack->Add( &obj, "HIST" );
     break;
   case plottype::plottype_dummy:
-    PlotObj( obj, ( std::string( args.Get( PlotType::CmdName ).getString( 0 ) )
-                    +" SAME" ).c_str() );
+    PlotObj( obj, ( args.Get<PlotType>().str()+" SAME" ).c_str() );
     break;
   default:
     std::cerr << "Skipping over invalid value ("<< pt <<")" << std::endl;
   }
 
   if( _workingstack ){
-    TrackObjectY( *_workingstack, args.Get( TrackY::CmdName ).getInt( 0 ) );
+    TrackObjectY( *_workingstack, args.Get<TrackY>() );
   } else {
-    TrackObjectY( obj, args.Get( TrackY::CmdName ).getInt( 0 ) );
+    TrackObjectY( obj, args.Get<TrackY>() );
   }
 
   // Adding legend
-  if( args.Has( EntryText::CmdName ) ){
-    const std::string leg = args.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( obj, leg, args.Get( PlotType::CmdName ) );
+  if( args.Has<EntryText>() ){
+    AddLegendEntry( obj, args.Get<EntryText>(), args.Get<PlotType>() );
   }
 
   // Moving to under something
-  if( args.Has( PlotUnder::CmdName ) ){
+  if( args.Has<PlotUnder>() ){
     if( _workingstack ){
-      PadBase::MoveTargetToBefore( *_workingstack,
-        *args.Get( PlotUnder::CmdName ).getObject( 0 ) );
+      PadBase::MoveTargetToBefore( *_workingstack, args.Get<PlotUnder>() );
     } else {
-      PadBase::MoveTargetToBefore( obj,
-        *args.Get( PlotUnder::CmdName ).getObject( 0 ) );
+      PadBase::MoveTargetToBefore( obj, args.Get<PlotUnder>() );
     }
   }
 
   SetLineAttr( obj, args );
   SetFillAttr( obj, args );
   SetMarkAttr( obj, args );
-
 
   return obj;
 }
@@ -269,7 +259,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     func->SetBit( TF1::kNotDraw, true );
   }
 
-  const int pt = args.Get( PlotType::CmdName ).getInt( 0 );
+  const int pt = args.Get<PlotType>();
 
   switch( pt ){
   case simplefunc:
@@ -284,7 +274,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     PadBase::PlotObj( obj, "PZ0" );
     break;
   case plottype_dummy:
-    PlotObj( obj, args.Get( PlotType::CmdName ).getString( 0 ) );
+    PlotObj( obj, args.Get<PlotType>().c_str() );
     break;
 
   default:
@@ -292,18 +282,16 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     break;
   }
 
-  TrackObjectY( obj, args.Get( TrackY::CmdName ).getInt( 0 ) );
+  TrackObjectY( obj, args.Get<TrackY>() );
 
   // Adding legend
-  if( args.Has( EntryText::CmdName ) ){
-    const std::string leg = args.Get( EntryText::CmdName ).getString( 0 );
-    AddLegendEntry( obj, leg, args.Get( PlotType::CmdName ) );
+  if( args.Has<EntryText>() ){
+    AddLegendEntry( obj, args.Get<EntryText>(), args.Get<PlotType>() );
   }
 
   // Moving to under something
-  if( args.Has( PlotUnder::CmdName ) ){
-    PadBase::MoveTargetToBefore( obj,
-      *args.Get( PlotUnder::CmdName ).getObject( 0 ) );
+  if( args.Has<PlotUnder>() ){
+    PadBase::MoveTargetToBefore( obj, args.Get<PlotUnder>() );
   }
 
   // Setting styling attributes
@@ -383,20 +371,19 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     zero[i]   = 0;
   }
 
-  if( !args.Has( VisualizeError::CmdName ) ){
+  if( !args.Has<VisualizeError>() ){
     TGraph& graph = MakeObj<TGraph>( x.size(), x.data(), y.data() );
     graph.SetName( graphname.c_str() );
     return graph;
   } else {
-    const TFitResult* fit
-      = dynamic_cast<const TFitResult*>(
-          args.Get( VisualizeError::CmdName ).getObject( 0 ) );
-    const double zval = args.Get( VisualizeError::CmdName ).getDouble( 0 );
+    const auto cmd    = args.Get<VisualizeError>();
+    const auto& fit   = cmd.GetTFitResult();
+    const double zval = cmd.getDouble( 0 );
 
-    const std::vector<double> bestfit_param = fit->Parameters();
+    const std::vector<double> bestfit_param = fit.Parameters();
 
     // Getting matrix for random parameter generation
-    const TMatrixDSym cormatrix = fit->GetCovarianceMatrix();
+    const TMatrixDSym cormatrix = fit.GetCovarianceMatrix();
     TDecompChol decomp          = TDecompChol( cormatrix );
     decomp.Decompose();
     TMatrixD tmatrix = decomp.GetU();
@@ -521,7 +508,7 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
   // RooCmdArg for suppressing the X errors in the final graph
   static const RooCmdArg suppressxerror = RooFit::XErrorSize( 0 );
   // Generating the requirements for actual RooFit PlotOn calls
-  RooLinkedList oplist = MakeRooList( args );
+  RooLinkedList oplist = args.MakeRooList();
 
   auto IsUniform
     = [this]( const RooCmdArg& cmd ) -> bool {
@@ -637,18 +624,17 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
   // fail.
   auto CorrectVisError
     = [this]( const RooAbsPdf& pdf,
-              const usr::plt::RooArgContainer& args ) -> RooCmdArg
+              const usr::RooArgContainer& args ) -> RooCmdArg
       {
-        if( args.Has( VisualizeError::CmdName ) ){
-          const RooCmdArg& cmd = args.Get( VisualizeError::CmdName );
-          if( cmd.getSet( 0 ) ){
+        if( args.Has<VisualizeError>() ){
+          auto& cmd = args.Get<VisualizeError>();
+          if( cmd.has_set() ){
             // If Visualized Parameter set is already specified, then simply
             // return the original parameter
             return cmd;
           } else {
             RooCmdArg ans( cmd );
-            const RooFitResult& fit
-              = *dynamic_cast<const RooFitResult*>( cmd.getObject( 0 ) );
+            const auto& fit = cmd.GetRooFitResult();
             // Memory leak??
             RooArgSet* cloneParams = pdf.getObservables( fit.floatParsFinal() );
             ans.setSet( 0, *cloneParams );
@@ -661,9 +647,9 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
       };
 
   const RooCmdArg viscmd = CorrectVisError( pdf, args );
-  RooLinkedList roolist  = MakeRooList( args, {VisualizeError::CmdName} );
+  RooLinkedList roolist  = args.MakeRooList( {VisualizeError::CmdName} );
 
-  if( !args.Has( VisualizeError::CmdName ) ){
+  if( !args.Has<VisualizeError>() ){
     // Nothing special needs to be done for simple plotting.
     return GenGraph( pdf, roolist );
   } else {
@@ -715,7 +701,7 @@ TGraph&
 Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
 {
   // Suppressing plotting messages
-  RooMsgService::instance().setSilentMode( true );
+  RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
 
   RooPlot* test = pdf.plotOn( &_frame, arglist );
   if( !test ){
@@ -748,7 +734,7 @@ TGraphAsymmErrors&
 Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
 {
   // Suppressing plotting messages
-  RooMsgService::instance().setSilentMode( true );
+  RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
 
   // Generating plotting information
   RooPlot* test = data.plotOn( &_frame, arglist );
@@ -803,39 +789,3 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
 }/* plt */
 
 }/* usr  */
-
-// ------------------------------------------------------------------------------
-// Static helper function
-// ------------------------------------------------------------------------------
-RooLinkedList
-MakeRooList( const usr::plt::RooArgContainer& arglist,
-             const std::vector<std::string>&  exclude )
-{
-  RooLinkedList ans;
-
-  for( const auto& arg : arglist ){
-    // Ignoring custom arguments
-    if( arg.GetName()    == usr::plt::PlotType::CmdName
-        || arg.GetName() == usr::plt::TrackY::CmdName
-        || arg.GetName() == usr::plt::EntryText::CmdName
-        || arg.GetName() == usr::plt::PlotUnder::CmdName
-        || arg.GetName() == usr::plt::TextColor::CmdName
-        || arg.GetName() == usr::plt::TextSize::CmdName
-        || arg.GetName() == usr::plt::LineColor::CmdName
-        || arg.GetName() == usr::plt::LineStyle::CmdName
-        || arg.GetName() == usr::plt::LineWidth::CmdName
-        || arg.GetName() == usr::plt::FillColor::CmdName
-        || arg.GetName() == usr::plt::FillStyle::CmdName
-        || arg.GetName() == usr::plt::MarkerColor::CmdName
-        || arg.GetName() == usr::plt::MarkerStyle::CmdName
-        || arg.GetName() == usr::plt::MarkerSize::CmdName
-        ){ continue; }
-    if( usr::FindValue( exclude,  std::string( arg.GetName() ) ) ){
-      continue;
-    }
-
-    ans.Add( arg.Clone() );
-  }
-
-  return ans;
-}

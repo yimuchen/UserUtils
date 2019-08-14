@@ -5,8 +5,10 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
+#include "UserUtils/MathUtils/interface/RooFitExt.hpp"
 #else
 #include "UserUtils/PlotUtils/Ratio1DCanvas.hpp"
+#include "UserUtils/MathUtils/RooFitExt.hpp"
 #endif
 
 #include "RooConstVar.h"
@@ -112,12 +114,8 @@ main( int argc, char* argv[] )
     RooGaussian gx( "gx", "gx", x,
                     RooFit::RooConst( -1.85 ), RooFit::RooConst( 1.40 ) );
     RooDataSet* d     = g.generate( RooArgSet( x ), 1000 );
-    RooFitResult* fit = g.fitTo( *d,
-      RooFit::Save(),
-      RooFit::Verbose( false ),
-      RooFit::PrintLevel( -1 ),
-      RooFit::Warnings( false ),
-      RooFit::PrintEvalErrors( 0 ) );
+
+    RooFitResult* fit = usr::FitPDFToData( g, *d, RooFit::Save() );
 
     plt::Ratio1DCanvas c( x );
     auto& datgraph = c.PlotData( d,

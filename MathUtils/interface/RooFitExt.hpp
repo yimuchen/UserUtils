@@ -1,12 +1,19 @@
 /**
  * @file   RooFitExt.hpp
-*  @brief  Extension to some mathematical computations for RooFit objects
-*  @author Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
-*/
+ *  @brief  Extension to some mathematical computations for RooFit objects
+ *  @author Yi-Mu "Enoch" Chen [ ensc@hep1.phys.ntu.edu.tw ]
+ */
 #ifndef USERUTILS_MATHUTILS_ROOFITEXT_HPP
 #define USERUTILS_MATHUTILS_ROOFITEXT_HPP
 
+#ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
+#endif
+
 #include <RooAbsPdf.h>
+#include <RooCmdArg.h>
 #include <RooDataSet.h>
 
 namespace usr {
@@ -66,10 +73,81 @@ extern double KSProbAlt(
   );
 /* @} */
 
-}/* usr */
+/**
+ * @defgroup RooFitEnhance RooFitEnhance
+ * @brief    Nicer routines for running RooFit routines functions in
+ * @ingroup  MathUtils
+ * @details
+ * RooFit Routines are sometimes excessively verbose to type out, or require too
+ * much intervention. These functions aim to trim down the verbosity of writing
+ * certain functions.
+ * @{
+ */
 
-#define USR_ROOFIT_SILENCE \
-RooFit::Verbose(false), RooFit::PrintLevel(-1), \
-Warnings(false), PrintEvalErrors(-1)
+/**
+ * @{
+ * @brief Fitting routing with arbitrary many arguments and disables screen
+ * output by default.
+ */
+extern RooFitResult* FitPDFToData(
+  RooAbsPdf&, RooAbsData&,
+  const std::vector<RooCmdArg>& cmdargs
+  );
+
+inline RooFitResult*
+FitPDFToData(
+  RooAbsPdf& pdf, RooAbsData& data ){ return FitPDFToData( pdf, data, {} ); }
+
+template<typename ... Args>
+inline RooFitResult*
+FitPDFToData(
+  RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1, Args ... args )
+{
+  return FitPDFToData( pdf, data, MakeVector<RooCmdArg>( arg1, args ... ) );
+}
+/* @} */
+
+class MaxFitIteration : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  MaxFitIteration( const RooCmdArg* x ) : RooCmdArg( *x ){}
+  MaxFitIteration( unsigned x );
+  virtual
+  ~MaxFitIteration(){}
+  inline
+  operator unsigned() const { return getInt( 0 ); }
+};
+
+/**
+ * @{
+ * @brief Running the Fit Routine until converge or pass certain amount of fit
+ * calls.
+ */
+extern RooFitResult* ConvergeFitPDFToData(
+  RooAbsPdf&, RooAbsData&,
+  const std::vector<RooCmdArg>& cmdargs
+  );
+
+inline RooFitResult*
+ConvergeFitPDFToData(
+  RooAbsPdf& pdf, RooAbsData& data )
+{
+  return ConvergeFitPDFToData( pdf, data, {} );
+}
+
+template<typename ... Args>
+inline RooFitResult*
+ConvergeFitPDFToData(
+  RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1, Args ... args )
+{
+  return ConvergeFitPDFToData( pdf, data,
+    MakeVector<RooCmdArg>( arg1, args ... ) );
+}
+/** @} */
+
+/** @}  */
+
+}/* usr */
 
 #endif/* end of include guard: USERUTILS_MATHUTILS_ROOFITEXT_HPP */

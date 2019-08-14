@@ -37,7 +37,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist,
                               { Plot2DF( plot2df::heat )  } );
 
-  const int opt = args.Get( Plot2DF::CmdName ).getInt( 0 );
+  const int opt = args.Get<Plot2DF>();
 
   const std::string legopt = opt == plot2df::heat ? "" :
                              opt == plot2df::heatcont ? "L" :
@@ -59,7 +59,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     SetAxisFont();
     break;
   case plot2df::heattext:
-    PlotObj( hist, "COLZ TEXT");
+    PlotObj( hist, "COLZ TEXT" );
     SetAxisFont();
     break;
   case   plot2df::heatcont:
@@ -72,8 +72,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     SetAxisFont();
     break;
   case plot2df_dummy:
-    PlotObj( hist, ( std::string( args.Get( Plot2DF::CmdName ).getString( 0 ) )
-                     +" SAME" ).c_str() );
+    PlotObj( hist, ( args.Get<Plot2DF>().str() + " SAME" ).c_str() );
     break;
 
   default:
@@ -81,9 +80,8 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     break;
   }
 
-  if( args.Has( EntryText::CmdName ) ){
-    _legend.AddEntry( &hist,
-      args.Get( EntryText::CmdName ).getString( 0 ), legopt.c_str() );
+  if( args.Has<EntryText>() ){
+    _legend.AddEntry( &hist, args.Get<EntryText>().c_str(), legopt.c_str() );
   }
 
   SetLineAttr( hist, args );
@@ -116,7 +114,7 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist,
                               { Plot2DF( plot2df::heat )  } );
 
-  const int opt = args.Get( Plot2DF::CmdName ).getInt( 0 );
+  const int opt = args.Get<Plot2DF>();
 
   const std::string legopt = opt == plot2df::heat ? "" :
                              opt == plot2df::heatcont ? "L" :
@@ -150,7 +148,7 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
     PlotObj( graph, "CONT3 SAME" );
     break;
   case plot2df_dummy:
-    PlotObj( graph, args.Get( Plot2DF::CmdName ).getString( 0 ) );
+    PlotObj( graph, args.Get<Plot2DF>().c_str() );
     break;
 
   default:
@@ -158,9 +156,8 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
     break;
   }
 
-  if( args.Has( EntryText::CmdName ) ){
-    _legend.AddEntry( &graph,
-      args.Get( EntryText::CmdName ).getString( 0 ), legopt.c_str() );
+  if( args.Has<EntryText>() ){
+    _legend.AddEntry( &graph, args.Get<EntryText>().c_str(), legopt.c_str() );
   }
 
   SetLineAttr( graph, args );
@@ -219,16 +216,10 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
 TGraph&
 Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist );
+  const RooArgContainer args( arglist,
+    {PlotType(plottype::scatter) } );
 
-  const int opt =
-    !args.Has( PlotType::CmdName ) ? plottype::scatter :
-    args.Get( PlotType::CmdName ).getString( 0 ) ? plottype_dummy :
-    args.Get( PlotType::CmdName ).getInt( 0 );
-  std::string optraw =
-    !args.Has( Plot2DF::CmdName ) ?  "" :
-    !args.Get( Plot2DF::CmdName ).getString( 0 ) ? "" :
-    args.Get( Plot2DF::CmdName ).getString( 0 );
+  const int opt =args.Get<PlotType>();
 
   std::string legopt = "PLE";
 
@@ -238,10 +229,9 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   } else if( opt == plottype::simplefunc ){
     PadBase::PlotObj( graph, "L" );
     legopt = "L";
-  } else if( opt == plottype_dummy && optraw != "" ){
+  } else if( opt == plottype_dummy ){
     // Special case for raw options parsing. (Must remove axis and add string)
-    ToUpper( optraw );
-    PadBase::PlotObj( graph, optraw.c_str() );
+    PadBase::PlotObj( graph, args.Get<PlotType>().c_str() );
   } else {// Skipping over stuff
     std::cerr << "Skipping over invalid value" << std::endl;
   }
@@ -250,9 +240,8 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   graph.GetHistogram()->SetMaximum( usr::plt::GetYmax( graph ) );
   graph.GetHistogram()->SetMinimum( usr::plt::GetYmin( graph ) );
 
-  if( args.Has( EntryText::CmdName ) ){
-    _legend.AddEntry( &graph,
-      args.Get( EntryText::CmdName ).getString( 0 ), legopt.c_str() );
+  if( args.Has<EntryText>() ){
+    _legend.AddEntry( &graph, args.Get<EntryText>().c_str(), legopt.c_str() );
   }
 
   SetLineAttr( graph, args );
@@ -292,9 +281,9 @@ Pad2DFlat::MakeLegend()
   width *= 1.1;// Relieving spacing a little
   width += 1.0 * LineHeight();// Reserving space for legend icon boxes.
 
-  const float xmin = 0.5 * float(LineHeight() ) / AbsWidth();
+  const float xmin = 0.5 * float( LineHeight() ) / AbsWidth();
   const float ymax = 1   - GetTopMargin();
-  const float xmax = GetLeftMargin() - 5*float(LineHeight() ) / AbsWidth();
+  const float xmax = GetLeftMargin() - 5*float( LineHeight() ) / AbsWidth();
   const float ymin = ymax - height/ AbsHeight();
   _legend.SetX1NDC( xmin );
   _legend.SetX2NDC( xmax );

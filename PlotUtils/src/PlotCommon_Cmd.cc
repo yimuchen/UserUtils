@@ -4,10 +4,14 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/RootUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
+#include "UserUtils/Common/RootUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
@@ -22,98 +26,13 @@ namespace usr {
 
 namespace plt {
 
-
-/**
- * @class RooArgContainer
- * @details We will not be using the @ROOT{RooLinkedList} class because
- * that has the issues of deleting the command objects after going out of
- * scope which causes unintended cansequences.
- */
-
-/**
- * @brief constructing out argument container from a std::vector.
- *
- * This is not directly a copy constructor, but add additional detection routines
- * so that the command names in arglist are unique. The second list is a list of
- * default argument to be added if the corresponding arguments don't exist in the
- * `arglist` input (if not specified, no default arguments will be added.).
- */
-RooArgContainer::RooArgContainer(
-  const std::vector<RooCmdArg>& arglist,
-  const std::vector<RooCmdArg>& default_list )
-{
-  std::set<std::string> nameset;
-
-  for( const auto& arg : arglist ){
-    if( nameset.insert( arg.GetName() ).second ){
-      push_back( arg );
-    }
-  }
-
-  for( const auto& arg : default_list ){
-    if( nameset.insert( arg.GetName() ).second ){
-      push_back( arg );
-    }
-  }
-}
-
-/** @brief Nothing to do... */
-RooArgContainer::~RooArgContainer(){}
-
-/**
- * @brief Checking if the argument list has a command of a given name.
- */
-bool
-RooArgContainer::Has( const std::string& name ) const
-{
-  auto iter = std::find_if( begin(), end(),
-    [&name]( const RooCmdArg& item ){
-        return item.GetName() == name;
-      } );
-  return iter != end();
-}
-
-/**
- * @brief Returning the argument in the list with a given name.
- *
- * @details No not-found protection would be performed.
- */
-const RooCmdArg&
-RooArgContainer::Get( const std::string& name ) const
-{
-  auto iter = std::find_if( begin(), end(),
-    [&name]( const RooCmdArg& item ){
-        return item.GetName() == name;
-      } );
-  return *iter;
-}
-
-/**
- * @brief Function for checking if an argument already exists in a list of
- * RooCmdArgs.
- *
- * Useful for when determining default plotting arguments.
- */
-bool
-RooArgContainer::CheckList( const std::vector<RooCmdArg>& arglist,
-                            const std::string&            name )
-{
-  auto iter = std::find_if( arglist.begin(), arglist.end(),
-    [&name]( const RooCmdArg& item ){
-        return item.GetName() == name;
-      } );
-  return iter != arglist.end();
-}
-
 /**
  * @{
  * @addtogroup PlotUtilsArgument
  */
 // ---------------------------------------------------------------------------//
 
-/** @brief command name */
-const std::string PlotUnder::CmdName = "PlotUnder";
-
+USRUTILS_COMMON_REGISTERCMD( PlotUnder );
 /**
  * @{
  * @brief Request that the plotted object be placed underneath the target object
@@ -135,10 +54,7 @@ PlotUnder::PlotUnder( const TObject* obj ) :
 
 // ---------------------------------------------------------------------------//
 
-/**
- * @brief command name
- */
-const std::string TrackY::CmdName = "TrackY";
+USRUTILS_COMMON_REGISTERCMD( TrackY );
 
 /**
  * @brief define track y via enum
@@ -148,10 +64,7 @@ TrackY::TrackY( const int i ) :
 
 // ---------------------------------------------------------------------------//
 
-/**
- * @brief strong for defining the RooCmdArg name
- */
-const std::string EntryText::CmdName = "EntryText";
+USRUTILS_COMMON_REGISTERCMD( EntryText );
 
 /**
  * @brief define entry text string.
@@ -161,10 +74,7 @@ EntryText::EntryText( const std::string& str ) :
 
 // ---------------------------------------------------------------------------//
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string PlotType::CmdName = "PlotType";
+USRUTILS_COMMON_REGISTERCMD( PlotType );
 
 /**
  * @brief defining plot type via enum
@@ -180,10 +90,7 @@ PlotType::PlotType( const std::string& drawopt ) :
 
 // ---------------------------------------------------------------------------//
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string Plot2DF::CmdName = "Plot2DF";
+USRUTILS_COMMON_REGISTERCMD( Plot2DF );
 
 /**
  * @brief defining plot type via enum
@@ -199,10 +106,7 @@ Plot2DF::Plot2DF( const std::string& drawopt ) :
 
 // ---------------------------------------------------------------------------//
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string TextColor::CmdName = "TextColor";
+USRUTILS_COMMON_REGISTERCMD( TextColor );
 
 /**
  * @class TextColor
@@ -213,10 +117,7 @@ TextColor::TextColor( const int color, const float alpha ) :
 
 // ---------------------------------------------------------------------------//
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string TextSize::CmdName = "TextSize";
+USRUTILS_COMMON_REGISTERCMD( TextSize );
 
 /**
  * @class TextSize
@@ -226,12 +127,9 @@ const std::string TextSize::CmdName = "TextSize";
 TextSize::TextSize( const double size ) :
   RooCmdArg( CmdName.c_str(), 0, 0, size ){}
 
+// ---------------------------------------------------------------------------//
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string LineColor::CmdName = "LineColor";
-
+USRUTILS_COMMON_REGISTERCMD( LineColor )
 /**
  * @class LineColor
  * @brief Defining Line color via the color index + alpha value convention.
@@ -239,11 +137,7 @@ const std::string LineColor::CmdName = "LineColor";
 LineColor::LineColor( const int color, const float alpha ) :
   RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string LineStyle::CmdName = "LineStyle";
-
+USRUTILS_COMMON_REGISTERCMD( LineStyle );
 /**
  * @class LineStyle
  * @brief Defining Line style via the style index (see namespace usr::plt::sty)
@@ -251,11 +145,7 @@ const std::string LineStyle::CmdName = "LineStyle";
 LineStyle::LineStyle( const short style ) :
   RooCmdArg( CmdName.c_str(), style ){}
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string LineWidth::CmdName = "LineWidth";
-
+USRUTILS_COMMON_REGISTERCMD( LineWidth );
 /**
  * @class LineWidth
  * @brief Defining line width via number of pixels
@@ -263,12 +153,8 @@ const std::string LineWidth::CmdName = "LineWidth";
 LineWidth::LineWidth( const short width ) :
   RooCmdArg( CmdName.c_str(), width ){}
 
-
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string FillColor::CmdName = "FillColor";
-
+// ---------------------------------------------------------------------------//
+USRUTILS_COMMON_REGISTERCMD( FillColor );
 /**
  * @class FillColor
  * @brief Defining Fill color via color index and alpha value
@@ -276,11 +162,7 @@ const std::string FillColor::CmdName = "FillColor";
 FillColor::FillColor( const int color, const float alpha ) :
   RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string FillStyle::CmdName = "FillStyle";
-
+USRUTILS_COMMON_REGISTERCMD( FillStyle );
 /**
  * @class LineStyle
  * @brief Defining fill style via the style index (see namespace usr::plt::sty)
@@ -288,12 +170,8 @@ const std::string FillStyle::CmdName = "FillStyle";
 FillStyle::FillStyle( const short style ) :
   RooCmdArg( RooFit::FillStyle( style ) ){}
 
-
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string MarkerColor::CmdName = "MarkerColor";
-
+// ---------------------------------------------------------------------------//
+USRUTILS_COMMON_REGISTERCMD( MarkerColor );
 /**
  * @class MarkerColor
  * @brief Defining Marker color via color index and alpha value
@@ -301,11 +179,7 @@ const std::string MarkerColor::CmdName = "MarkerColor";
 MarkerColor::MarkerColor( const int color, const float alpha ) :
   RooCmdArg( CmdName.c_str(), color, 0, alpha ){}
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string MarkerStyle::CmdName = "MarkerStyle";
-
+USRUTILS_COMMON_REGISTERCMD( MarkerStyle );
 /**
  * @class MarkerStyle
  * @brief Defining marker style via the style index (see namespace usr::plt::sty)
@@ -313,12 +187,7 @@ const std::string MarkerStyle::CmdName = "MarkerStyle";
 MarkerStyle::MarkerStyle( const short style ) :
   RooCmdArg( RooFit::MarkerStyle( style ) ){}
 
-/**
- * @brief string for defining the RooCmdArg name
- */
-const std::string MarkerSize::CmdName = "MarkerSize";
-
-
+USRUTILS_COMMON_REGISTERCMD( MarkerSize );
 /**
  * @class MarkerSize
  * @brief Defining MarkerSize  via number of pixels/8.
@@ -326,14 +195,10 @@ const std::string MarkerSize::CmdName = "MarkerSize";
 MarkerSize::MarkerSize( const float size ) :
   RooCmdArg( RooFit::MarkerSize( size ) ){}
 
-
+// ---------------------------------------------------------------------------//
+USRUTILS_COMMON_REGISTERCMD( VisualizeError );
 /**
- * @brief string for defining the RooCmdArg name
- */
-const std::string VisualizeError::CmdName = "VisualizeError";
-
-/**
- * @brief defining plot type via ROOT draw strings
+ * @brief Switch for presenting fit uncertainty in fit.
  */
 VisualizeError::VisualizeError( const TFitResultPtr& fit, const double z ) :
   RooCmdArg( CmdName.c_str(),
@@ -352,6 +217,30 @@ VisualizeError::VisualizeError( const RooFitResult& fit,
                                 const double        z,
                                 const bool          linearmethod ) :
   RooCmdArg( RooFit::VisualizeError( fit, param, z, linearmethod ) ){}
+
+const RooFitResult&
+VisualizeError::GetRooFitResult() const
+{
+  return *dynamic_cast<const RooFitResult*>( this->getObject( 0 ) );
+}
+
+const TFitResult&
+VisualizeError::GetTFitResult() const
+{
+  return *dynamic_cast<const TFitResult*>( this->getObject( 0 ) );
+}
+
+const RooArgSet&
+VisualizeError::set() const
+{
+  return *getSet( 0 );
+};
+
+bool
+VisualizeError::has_set() const
+{
+  return getSet( 0 );
+};
 
 /** @} */
 

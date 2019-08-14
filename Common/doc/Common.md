@@ -12,3 +12,7 @@ cases.
 This sub-packages aims to do just that, specializing the STL and boost libraries
 to cases most commonly used during my HEP analysis trip, as well as providing
 additional classes that are of more general purpose with only STL interactions.
+
+Aside from STL and boost function enhancements, this library also provides some
+ROOT container manipulator classes and functions that are handy for the latter
+classes in the more specialized libraries.
