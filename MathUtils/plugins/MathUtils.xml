@@ -1,6 +1,0 @@
-<lcgdict>
-    <class name="Measurement"/>
-    <function name="NormalCDF"/>
-    <function name="GetConfidenceLevel"/>
-    <function name="GetSigmaInterval"/>
-</lcgdict>

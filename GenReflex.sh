@@ -2,7 +2,7 @@
 # Helper script for generating the the reflection CPP files for python binding
 
 HOME_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-BINDING_PKG="MathUtils"
+BINDING_PKG="MathUtils PlotUtils"
 
 for PKG in $BINDING_PKG; do
   DIR_NAME=$HOME_DIR/${PKG}/plugins/

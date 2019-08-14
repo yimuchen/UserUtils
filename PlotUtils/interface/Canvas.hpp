@@ -204,7 +204,7 @@ protected:
 /*-----------------------------------------------------------------------------
  *  Detailed documentation in doc/
    --------------------------------------------------------------------------*/
-class Canvas : protected TCanvas
+class Canvas : public TCanvas
 {
 public:
   Canvas (
@@ -214,19 +214,6 @@ public:
     );
   virtual ~Canvas ();
 
-  /**
-   * Creating a pad under the ownership of the canvas. Note that these pads
-   * will be destroyed when the canvas goes out of scope. Immediately after
-   * the pads are constructed, the virtual method PadBase::InitDraw() would be
-   * called.
-   * @tparam PadType Any children class of PadBase is allowed.
-   * @tparam Args    Any additional types needed for the constructor is allowed
-   * @param  padsize The use of a PadSize for the construction of a Pad is
-   *                 mandatory for all PadBase children classes
-   * @param  args    Any additional arguments that might be needed for the
-   *                 pad constructor
-   * @return         Returns a reference to the newly constructed argument.
-   */
   template<typename PadType, typename ... Args>
   PadType&
   Add( const PadSize& padsize, Args ... args )

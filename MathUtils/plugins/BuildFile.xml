@@ -1,7 +1,0 @@
-<library name="pyMathUtils" file="MathUtils_rflx.cpp">
-  <use name="UserUtils/MathUtils"/>
-  <flags EDM_PLUGIN="1"/>
-</library>
-
-
-

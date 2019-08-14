@@ -23,6 +23,5 @@ foreach(math_test_file ${math_test_files})
 endforeach()
 
 ## Reflex Python-binding generation
-file(GLOB PyMATH_src  plugins/MathUtils_rflx.cc)
-add_library( pyMathUtils SHARED ${PyMATH_src})
+add_library( pyMathUtils SHARED plugins/MathUtils_rflx.cc)
 target_link_libraries( pyMathUtils  MathUtils )
