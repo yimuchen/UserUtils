@@ -204,7 +204,7 @@ protected:
 /*-----------------------------------------------------------------------------
  *  Detailed documentation in doc/
    --------------------------------------------------------------------------*/
-class Canvas : public TCanvas
+class Canvas : protected TCanvas
 {
 public:
   Canvas (
