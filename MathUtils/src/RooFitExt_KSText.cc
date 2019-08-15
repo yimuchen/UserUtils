@@ -1,8 +1,9 @@
 /**
- * @file    RooFitExt.cc
+ * @file RooFitExt_KSText.cc
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
- * @brief   Implementing extended RooFit functions
+ * @brief   Implementing extended RooFit functions for KSTest computation
  */
+
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
 #else

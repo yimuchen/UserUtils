@@ -4,16 +4,16 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/RootUtils/TListUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
+#include "UserUtils/Common/RootUtils/TListUtils.hpp"
 #include "UserUtils/PlotUtils/Canvas.hpp"
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
 #include "CmdSetAttr.hpp"
-
-#include <stack>
 
 namespace usr  {
 
@@ -243,14 +243,10 @@ PadBase::HasObject( const TObject& obj ) const
 bool
 PadBase::MoveTargetToBefore( const TObject& target, const TObject& before )
 {
-  struct objopt
-  {
-    TObject*    obj;
-    std::string opt;
-  };
-
   if( !GetListOfPrimitives() ){ return false; }
+  return MoveObjectToBefore( GetListOfPrimitives(), target, before );
 
+  /*
   // Finding the link to where the targets should be moved.
   TObjLink* beforelink = GetListOfPrimitives()->FirstLink();
 
@@ -295,6 +291,7 @@ PadBase::MoveTargetToBefore( const TObject& target, const TObject& before )
   }
 
   return true;
+  */
 }
 
 

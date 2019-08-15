@@ -5,8 +5,10 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
+#include "UserUtils/MathUtils/interface/RooFitExt.hpp"
 #else
 #include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
+#include "UserUtils/MathUtils/RooFitExt.hpp"
 #endif
 
 #include "RooDataSet.h"
@@ -107,12 +109,7 @@ main( int argc, char* argv[] )
     RooRealVar s( "s", "s", 2, 0, 5 );
     RooGaussian g( "g", "g", x, m, s );
     RooDataSet* d     = g.generate( RooArgSet( x ), 800 );
-    RooFitResult* fit = g.fitTo( *d,
-      RooFit::Save(),
-      RooFit::Verbose( false ),
-      RooFit::PrintLevel( -1 ),
-      RooFit::Warnings( false ),
-      RooFit::PrintEvalErrors( 0 ) );
+    RooFitResult* fit = usr::FitPDFToData( g, *d, RooFit::Save() );
 
     plt::Simple1DCanvas c2( x );
 

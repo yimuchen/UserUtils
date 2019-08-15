@@ -192,7 +192,7 @@ Solve1D(
 }
 
 /**
- * @brief handy parameter-less function for [later uses](@ref SumUncorrelated())
+ * @brief handy parameter-less function for later uses.
  */
 double
 sum( const gsl_vector* x, void* )
@@ -207,7 +207,7 @@ sum( const gsl_vector* x, void* )
 }
 
 /**
- * @brief handy parameter-less function for [later use](@ref ProdUncorrelated())
+ * @brief handy parameter-less function for later use.
  */
 double
 product( const gsl_vector* x, void* )

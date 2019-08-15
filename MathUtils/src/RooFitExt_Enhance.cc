@@ -1,8 +1,8 @@
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/RootUtils.hpp"
+#include "UserUtils/Common/interface/RootUtils/RooArgContainer.hpp"
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
 #else
-#include "UserUtils/Common/RootUtils.hpp"
+#include "UserUtils/Common/RootUtils/RooArgContainer.hpp"
 #include "UserUtils/MathUtils/RooFitExt.hpp"
 #endif
 
@@ -15,10 +15,10 @@ namespace usr
 /**
  * @details
  * This uses the variadic interface to allow for arbitrarily many RooCmdArgs to
- * be added to the fit (instead of being hard capped at 10). By default, it also
- * adds all of the variables required to suppress the outputs. Users can still
- * enable the RooFit messages by explicitly adding back the commands such as
- * RooFit::Verbose( kTRUE ).
+ * be added to the fit (instead of being hard capped at just 10 RooCmdArgs). By
+ * default, it also adds all of the variables required to suppress the outputs.
+ * Users can still enable the RooFit messages by explicitly adding back the
+ * commands such as RooFit::Verbose( kTRUE ).
  */
 extern RooFitResult*
 FitPDFToData(
@@ -42,9 +42,11 @@ MaxFitIteration::MaxFitIteration( unsigned x ) :
   RooCmdArg( MaxFitIteration::CmdName.c_str(), x ){}
 
 /**
- * @{
- * @brief Running the Fit Routine until converge or pass certain amount of fit
- * calls.
+ * @details
+ * Running the PDF fit routine multiple times until the resulting RooFitResults
+ * returns a nominal exit code (status() == 0). You can use the New RooCmdArg
+ * `usr::MaxFitIteration` fo specify the maximum number of fit interation to
+ * perform (defaults to 10).
  */
 extern RooFitResult*
 ConvergeFitPDFToData(
@@ -81,4 +83,4 @@ ConvergeFitPDFToData(
   return status;
 }
 
-} /* namespace usr */
+}/* namespace usr */

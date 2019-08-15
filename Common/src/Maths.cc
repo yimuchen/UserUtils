@@ -55,6 +55,7 @@ IntPower( double base, int exp )
   if( exp < 0 ){ return IntPower( 1./base, -exp ); }
   double ans = 1;
 
+
   for( int x = 1; x; x <<= 1, base *= base ){
     if( x & exp ){ ans *= base; }
   }

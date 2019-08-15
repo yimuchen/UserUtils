@@ -4,12 +4,12 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/RootUtils.hpp"
+#include "UserUtils/Common/interface/RootUtils/RooArgContainer.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
-#include "UserUtils/Common/RootUtils.hpp"
+#include "UserUtils/Common/RootUtils/RooArgContainer.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/PlotCommon.hpp"

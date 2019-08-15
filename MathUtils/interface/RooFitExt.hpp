@@ -75,8 +75,8 @@ extern double KSProbAlt(
 
 /**
  * @defgroup RooFitEnhance RooFitEnhance
- * @brief    Nicer routines for running RooFit routines functions in
  * @ingroup  MathUtils
+ * @brief    Nicer routines for running RooFit routines functions in
  * @details
  * RooFit Routines are sometimes excessively verbose to type out, or require too
  * much intervention. These functions aim to trim down the verbosity of writing

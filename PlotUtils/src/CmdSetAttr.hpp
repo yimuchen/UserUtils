@@ -1,9 +1,10 @@
+#ifndef USERUTILS_PLOTUTILS_SRC_CMDSETATTR_HPP
+#define USERUTILS_PLOTUTILS_SRC_CMDSETATTR_HPP
+
 #ifdef CMSSW_GIT_HASH
-//#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
-#include "UserUtils/Common/interface/RootUtils.hpp"
+#include "UserUtils/Common/interface/RootUtil/RooArgContainer.hpp"
 #else
-#include "UserUtils/Common/RootUtils.hpp"
-// #include "UserUtils/PlotUtils/PlotCommon.hpp"
+#include "UserUtils/Common/RootUtils/RooArgContainer.hpp"
 #endif
 
 #include "TAttText.h"
@@ -22,3 +23,5 @@ extern void SetFillAttr( TAttFill& obj,
 
 extern void SetMarkAttr( TAttMarker& obj,
   const usr::RooArgContainer& args  );
+
+#endif
