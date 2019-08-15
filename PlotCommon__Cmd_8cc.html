@@ -78,6 +78,8 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">PlotCommon_Cmd.cc File Reference</div>  </div>
 </div><!--header-->
@@ -85,14 +87,66 @@ $(function() {
 
 <p>Implementation of RooArgCmd related custom classes.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;UserUtils/Common/STLUtils/StringUtils.hpp&quot;</code><br />
+<div class="textblock"><code>#include &quot;UserUtils/Common/RootUtils/RooArgContainer.hpp&quot;</code><br />
+<code>#include &quot;UserUtils/Common/STLUtils/StringUtils.hpp&quot;</code><br />
+<code>#include &quot;UserUtils/Common/STLUtils/VectorUtils.hpp&quot;</code><br />
 <code>#include &quot;UserUtils/PlotUtils/PlotCommon.hpp&quot;</code><br />
 <code>#include &quot;RooFitResult.h&quot;</code><br />
 <code>#include &quot;TFitResult.h&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;set&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-</div><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a17aa835053321072e7949a38c1ef6d84"><td class="memItemLeft" align="right" valign="top"><a id="a17aa835053321072e7949a38c1ef6d84"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (TrackY)</td></tr>
+<tr class="separator:a17aa835053321072e7949a38c1ef6d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28448e0ce9d22e52704e2dc052502993"><td class="memItemLeft" align="right" valign="top"><a id="a28448e0ce9d22e52704e2dc052502993"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (EntryText)</td></tr>
+<tr class="separator:a28448e0ce9d22e52704e2dc052502993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4657441ede64cc458e2929bef862e99"><td class="memItemLeft" align="right" valign="top"><a id="ae4657441ede64cc458e2929bef862e99"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (PlotType)</td></tr>
+<tr class="separator:ae4657441ede64cc458e2929bef862e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd85f714671bd42690d8d77065012082"><td class="memItemLeft" align="right" valign="top"><a id="acd85f714671bd42690d8d77065012082"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (Plot2DF)</td></tr>
+<tr class="separator:acd85f714671bd42690d8d77065012082"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83df0d3233a78edb2659c6c5238a5c31"><td class="memItemLeft" align="right" valign="top"><a id="a83df0d3233a78edb2659c6c5238a5c31"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (TextColor)</td></tr>
+<tr class="separator:a83df0d3233a78edb2659c6c5238a5c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a726d64450b68997eec394c13164b8437"><td class="memItemLeft" align="right" valign="top"><a id="a726d64450b68997eec394c13164b8437"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (TextSize)</td></tr>
+<tr class="separator:a726d64450b68997eec394c13164b8437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0524118939d0818d4b06312490bd20c"><td class="memItemLeft" align="right" valign="top"><a id="ab0524118939d0818d4b06312490bd20c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (LineStyle)</td></tr>
+<tr class="separator:ab0524118939d0818d4b06312490bd20c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab612a51723357281ce7c2e26973414f3"><td class="memItemLeft" align="right" valign="top"><a id="ab612a51723357281ce7c2e26973414f3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (LineWidth)</td></tr>
+<tr class="separator:ab612a51723357281ce7c2e26973414f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17c4d04c109f38cfa403943fb6900840"><td class="memItemLeft" align="right" valign="top"><a id="a17c4d04c109f38cfa403943fb6900840"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (FillColor)</td></tr>
+<tr class="separator:a17c4d04c109f38cfa403943fb6900840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a079568bc2a5e0ffece866d8d6e8a98b5"><td class="memItemLeft" align="right" valign="top"><a id="a079568bc2a5e0ffece866d8d6e8a98b5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (FillStyle)</td></tr>
+<tr class="separator:a079568bc2a5e0ffece866d8d6e8a98b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa210a5a05ae009442a08f2376c24ad5e"><td class="memItemLeft" align="right" valign="top"><a id="aa210a5a05ae009442a08f2376c24ad5e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (MarkerColor)</td></tr>
+<tr class="separator:aa210a5a05ae009442a08f2376c24ad5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12dccae5e15da0dfa64021335728c474"><td class="memItemLeft" align="right" valign="top"><a id="a12dccae5e15da0dfa64021335728c474"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (MarkerStyle)</td></tr>
+<tr class="separator:a12dccae5e15da0dfa64021335728c474"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72daec32ce843cfed99fd1d1b3ba2eb2"><td class="memItemLeft" align="right" valign="top"><a id="a72daec32ce843cfed99fd1d1b3ba2eb2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (MarkerSize)</td></tr>
+<tr class="separator:a72daec32ce843cfed99fd1d1b3ba2eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b11f269ed06c01d81a02f16a5ceece0"><td class="memItemLeft" align="right" valign="top"><a id="a4b11f269ed06c01d81a02f16a5ceece0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (VisualizeError)</td></tr>
+<tr class="separator:a4b11f269ed06c01d81a02f16a5ceece0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aacbc01e2087266200719d402aacd3ddb"><td class="memItemLeft" align="right" valign="top"><a id="aacbc01e2087266200719d402aacd3ddb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::USRUTILS_COMMON_REGISTERCMD</b> (PlotUnder)</td></tr>
+<tr class="separator:aacbc01e2087266200719d402aacd3ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd><a href="https://github.com/yimuchen">Yi-Mu "Enoch" Chen</a> </dd></dl>
 </div></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->

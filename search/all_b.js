@@ -9,7 +9,7 @@ var searchData=
   ['lindotted',['lindotted',['../group__PlotUtilsConstants.html#ga34c19cbd04b81b5613caad45bfc96896',1,'usr::plt::sty']]],
   ['linearvariancenll',['LinearVarianceNLL',['../group__StatUtils.html#ga0cc9def7b06377667d7ae5ad7cca6e73',1,'usr']]],
   ['linecolor',['LineColor',['../classusr_1_1plt_1_1LineColor.html',1,'usr::plt']]],
-  ['lineheight',['LineHeight',['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase::LineHeight()'],['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font::lineheight()']]],
+  ['lineheight',['lineheight',['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font::lineheight()'],['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase::LineHeight()']]],
   ['linestyle',['LineStyle',['../classusr_1_1plt_1_1LineStyle.html',1,'usr::plt']]],
   ['linewidth',['LineWidth',['../classusr_1_1plt_1_1LineWidth.html',1,'usr::plt']]],
   ['linshortdash',['linshortdash',['../group__PlotUtilsConstants.html#gafe36a61b0f7fa922b7048e3f305d5368',1,'usr::plt::sty']]],

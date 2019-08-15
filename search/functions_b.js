@@ -4,5 +4,5 @@ var searchData=
   ['lastplot',['LastPlot',['../classusr_1_1plt_1_1RooFrame.html#a3126111c892480b970b09adbf6e6bd3d',1,'usr::plt::RooFrame']]],
   ['legend',['Legend',['../classusr_1_1plt_1_1Pad1D.html#a55bcfa71a9850382836d41acbf4ede6e',1,'usr::plt::Pad1D::Legend()'],['../classusr_1_1plt_1_1Pad2DFlat.html#a28b3e22ba4b49a27a9eb6b7aeeb32ce6',1,'usr::plt::Pad2DFlat::Legend()']]],
   ['linearvariancenll',['LinearVarianceNLL',['../group__StatUtils.html#ga0cc9def7b06377667d7ae5ad7cca6e73',1,'usr']]],
-  ['lineheight',['LineHeight',['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase::LineHeight()'],['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font::lineheight()']]]
+  ['lineheight',['lineheight',['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font::lineheight()'],['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase::LineHeight()']]]
 ];

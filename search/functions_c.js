@@ -11,6 +11,7 @@ var searchData=
   ['makepdfgraph',['MakePdfGraph',['../classusr_1_1plt_1_1Pad1D.html#a9d4ce99e1ffd88c5221601096dd899b1',1,'usr::plt::Pad1D']]],
   ['makepngfile',['MakePNGFile',['../classusr_1_1ArgumentExtender.html#aa71e1c6fe8f1cc2e5b210faca42f0083',1,'usr::ArgumentExtender']]],
   ['makequerystring',['MakeQueryString',['../group__ptreeutils.html#gad82b45677d5603ba785ccf308fc3422e',1,'usr::MakeQueryString(const std::vector&lt; std::string &gt; &amp;list)'],['../group__ptreeutils.html#ga3ae24d0afe1c69a8c80f087832c3d6a7',1,'usr::MakeQueryString(const std::string &amp;x, TS ... args)']]],
+  ['makeroolist',['MakeRooList',['../classusr_1_1RooArgContainer.html#adc519e8b9db676bde5947371442c8597',1,'usr::RooArgContainer']]],
   ['maketexfile',['MakeTEXFile',['../classusr_1_1ArgumentExtender.html#a15b7f6cd63e25c3a2153750da6bdb8d1',1,'usr::ArgumentExtender']]],
   ['maketf1graph',['MakeTF1Graph',['../classusr_1_1plt_1_1Pad1D.html#a75a77f21450b22c4f2f72ff41bf38a06',1,'usr::plt::Pad1D']]],
   ['maketxtfile',['MakeTXTFile',['../classusr_1_1ArgumentExtender.html#a42bc4dc1f8d368a8b7c9af11abf1e95f',1,'usr::ArgumentExtender']]],

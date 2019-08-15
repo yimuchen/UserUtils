@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vector_20enhancements',['Vector enhancements',['../group__VecUtils.html',1,'']]]
+  ['trigger_20matching',['Trigger Matching',['../group__triggermatching.html',1,'']]]
 ];

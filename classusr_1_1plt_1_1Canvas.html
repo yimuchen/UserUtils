@@ -121,8 +121,9 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Canvas.html#a828f62b52eac36f33d6bc69b21e0130f">~Canvas</a> ()</td></tr>
 <tr class="memdesc:a828f62b52eac36f33d6bc69b21e0130f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all the pad instances from memory stack. <br /></td></tr>
 <tr class="separator:a828f62b52eac36f33d6bc69b21e0130f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd1af0d0a352883eca44de60c7f042d9"><td class="memTemplParams" colspan="2">template&lt;typename PadType , typename ... Args&gt; </td></tr>
-<tr class="memitem:acd1af0d0a352883eca44de60c7f042d9"><td class="memTemplItemLeft" align="right" valign="top">PadType &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Canvas.html#acd1af0d0a352883eca44de60c7f042d9">Add</a> (const <a class="el" href="structusr_1_1plt_1_1PadSize.html">PadSize</a> &amp;padsize, Args ... args)</td></tr>
+<tr class="memitem:acd1af0d0a352883eca44de60c7f042d9"><td class="memTemplParams" colspan="2"><a id="acd1af0d0a352883eca44de60c7f042d9"></a>
+template&lt;typename PadType , typename ... Args&gt; </td></tr>
+<tr class="memitem:acd1af0d0a352883eca44de60c7f042d9"><td class="memTemplItemLeft" align="right" valign="top">PadType &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Add</b> (const <a class="el" href="structusr_1_1plt_1_1PadSize.html">PadSize</a> &amp;padsize, Args ... args)</td></tr>
 <tr class="separator:acd1af0d0a352883eca44de60c7f042d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2875e3c4f81b96a310cf975a237a6354"><td class="memTemplParams" colspan="2">template&lt;typename PadType  = PadBase&gt; </td></tr>
 <tr class="memitem:a2875e3c4f81b96a310cf975a237a6354"><td class="memTemplItemLeft" align="right" valign="top">PadType &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Canvas.html#a2875e3c4f81b96a310cf975a237a6354">GetPad</a> (const unsigned i)</td></tr>
@@ -209,59 +210,6 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="acd1af0d0a352883eca44de60c7f042d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd1af0d0a352883eca44de60c7f042d9">&#9670;&nbsp;</a></span>Add()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename PadType , typename ... Args&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">PadType&amp; usr::plt::Canvas::Add </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structusr_1_1plt_1_1PadSize.html">PadSize</a> &amp;&#160;</td>
-          <td class="paramname"><em>padsize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args ...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Creating a pad under the ownership of the canvas. Note that these pads will be destroyed when the canvas goes out of scope. Immediately after the pads are constructed, the virtual method <a class="el" href="classusr_1_1plt_1_1PadBase.html#a923d211f54162b8ecb301f4daeba87e6" title="Additional initializations to be performed by the pad after it has been spawned on the canvas.">PadBase::InitDraw()</a> would be called. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">PadType</td><td>Any children class of <a class="el" href="classusr_1_1plt_1_1PadBase.html" title="Baseline enhancement to the TPad object and pad–canvas hierarchy implementation.">PadBase</a> is allowed. </td></tr>
-    <tr><td class="paramname">Args</td><td>Any additional types needed for the constructor is allowed </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">padsize</td><td>The use of a <a class="el" href="structusr_1_1plt_1_1PadSize.html" title="A constructor helper class for Pad objects.">PadSize</a> for the construction of a Pad is mandatory for all <a class="el" href="classusr_1_1plt_1_1PadBase.html" title="Baseline enhancement to the TPad object and pad–canvas hierarchy implementation.">PadBase</a> children classes </td></tr>
-    <tr><td class="paramname">args</td><td>Any additional arguments that might be needed for the pad constructor </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Returns a reference to the newly constructed argument. </dd></dl>
-
-</div>
-</div>
 <a id="a68af6d076f9c9d6c4d5e9104d051d097"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68af6d076f9c9d6c4d5e9104d051d097">&#9670;&nbsp;</a></span>Finalize()</h2>
 

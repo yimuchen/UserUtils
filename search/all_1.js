@@ -5,7 +5,6 @@ var searchData=
   ['abs_5fepsilon',['abs_epsilon',['../group__GSLUtils.html#gac1d5748cde8eeef5ca7dccded4b28bc1',1,'usr::gsl']]],
   ['absheight',['AbsHeight',['../classusr_1_1plt_1_1PadBase.html#a0b43e2ee33b0a9640aaeb5dd6bcd6189',1,'usr::plt::PadBase']]],
   ['abswidth',['AbsWidth',['../classusr_1_1plt_1_1PadBase.html#a3d48f1274d7ff9716d9e28558b955513',1,'usr::plt::PadBase']]],
-  ['add',['Add',['../classusr_1_1plt_1_1Canvas.html#acd1af0d0a352883eca44de60c7f042d9',1,'usr::plt::Canvas']]],
   ['adddirscheme',['AddDirScheme',['../classusr_1_1ArgumentExtender.html#a81f81101f996c04f0738f28237a37826',1,'usr::ArgumentExtender::AddDirScheme(const ArgPathScheme &amp;)'],['../classusr_1_1ArgumentExtender.html#a01b49bea2f25e31e381baa20d311ce37',1,'usr::ArgumentExtender::AddDirScheme(const PathScheme &amp;)']]],
   ['addlegendentry',['AddLegendEntry',['../classusr_1_1plt_1_1Pad1D.html#a13cd70b45b61ba135afa77eae787adc7',1,'usr::plt::Pad1D::AddLegendEntry(TObject &amp;, const std::string &amp;title, const std::string &amp;format)'],['../classusr_1_1plt_1_1Pad1D.html#a1b01eaa9907b811a44e379b54c007a7d',1,'usr::plt::Pad1D::AddLegendEntry(TH1D &amp;, const std::string &amp;, const RooCmdArg &amp;)'],['../classusr_1_1plt_1_1Pad1D.html#a5af4540494edcc8c1d7464514516487d',1,'usr::plt::Pad1D::AddLegendEntry(TGraph &amp;, const std::string &amp;, const RooCmdArg &amp;)']]],
   ['addlorentzvector',['AddLorentzVector',['../group__extendedvar.html#ga1c8259156309ee5cd6f565f72ca11a24',1,'usr']]],
