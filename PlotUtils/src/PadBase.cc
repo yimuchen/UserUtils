@@ -235,63 +235,15 @@ PadBase::HasObject( const TObject& obj ) const
 /**
  * @brief Moving a target object to before another object on the TPad
  *
- * Basically a horrible hack to moving things around in the TPad's List of
- * primitives. As @ROOT{TList} has very limited amounts of exposure for various
- * method that include the plots options, the function essentially dumps the
- * links of the TList into a stack to reorder accordingly.
+ * Will return false if either:
+ * 1. The Pad is empty.
+ * 2. The `before` instance doesn't exist on the pad.
  */
 bool
 PadBase::MoveTargetToBefore( const TObject& target, const TObject& before )
 {
   if( !GetListOfPrimitives() ){ return false; }
   return MoveObjectToBefore( GetListOfPrimitives(), target, before );
-
-  /*
-  // Finding the link to where the targets should be moved.
-  TObjLink* beforelink = GetListOfPrimitives()->FirstLink();
-
-  while( beforelink && beforelink->GetObject() != &before ){
-    beforelink = beforelink->Next();
-  }
-
-  if( !beforelink ){ return false; }
-  beforelink = beforelink->Prev();
-
-  // Flushing all the stuff behind into a target position.
-  std::stack<objopt> otherlinks;
-  std::stack<objopt> targetlinks;
-
-  TObjLink* link = GetListOfPrimitives()->LastLink();
-
-  while( link != beforelink ){
-    const objopt temp = { link->GetObject(), link->GetOption() };
-    if( link->GetObject() == &target ){
-      targetlinks.push( temp );
-    } else {
-      otherlinks.push( temp );
-    }
-    link = link->Prev();
-    GetListOfPrimitives()->RemoveLast();
-  }
-
-  // Inserting targets
-  while( !targetlinks.empty() ){
-    GetListOfPrimitives()->Add(
-      targetlinks.top().obj,
-      targetlinks.top().opt.c_str() );
-    targetlinks.pop();
-  }
-
-  // Inserting the rest of the stuff.
-  while( !otherlinks.empty() ){
-    GetListOfPrimitives()->Add(
-      otherlinks.top().obj,
-      otherlinks.top().opt.c_str() );
-    otherlinks.pop();
-  }
-
-  return true;
-  */
 }
 
 

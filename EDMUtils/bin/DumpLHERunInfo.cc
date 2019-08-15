@@ -9,7 +9,7 @@
  * DumpLHERunInfo file.root
  * ```
  * The LHE production information of the first run would be printed out.
- * Notice that the "tag" (type of prodution information) would be printed
+ * Notice that the "tag" (type of production information) would be printed
  * before each line, so you can combine with grep commands to get specific
  * parts of the production information.
  */

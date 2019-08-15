@@ -28,10 +28,21 @@ public:
                    const std::vector<RooCmdArg>& default_list = {} );
   virtual ~RooArgContainer();
 
+  /**
+   * @brief Template function for casting the result of Get() into a specific
+   * type of RooCmdArg.
+   *
+   * This allow for access to more human readable version of the values stored in
+   * the RooCmdArg.
+   */
   template<typename TYPE>
   inline const TYPE
   Get() const { return TYPE( &Get( TYPE::CmdName ) ); }
 
+  /**
+   * @brief Template function for checking if a certain type of RooCmdArg exists
+   * in the container. Reduces verbosity.
+   */
   template<typename TYPE>
   inline bool
   Has() const { return Has( TYPE::CmdName ); }

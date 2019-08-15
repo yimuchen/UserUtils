@@ -140,12 +140,11 @@ StdDev( const std::vector<double>& vec )
   return std::sqrt( sq/vec.size() );
 }
 
-
 /**
- * @brief Rounding to closes multiple of target number
+ * @brief Rounding to closest multiple of target number
  *
- * The return value will be a multiple of the target number target that is
- * closest to the original input.
+ * The return value will be a multiple of the target number that is closest to
+ * the original input.
  */
 double
 RoundTo( const double x, const double target )
@@ -153,12 +152,24 @@ RoundTo( const double x, const double target )
   return target * std::round( x / target );
 }
 
+/**
+ * @brief Rounding up to the closest multiple of target number
+ *
+ * The return value will be the minimal multiple of the target number that is
+ * greater than the input x.
+ */
 double
 RoundUp( const double x, const double target )
 {
   return target * std::ceil( x/target );
 }
 
+/**
+ * @brief Rounding down to the closest multiple of the target number.
+ *
+ * The return value will be the maximum multiple of the target number that is
+ * smaller than the input x.
+ */
 double
 RoundDown( const double x, const double target )
 {
