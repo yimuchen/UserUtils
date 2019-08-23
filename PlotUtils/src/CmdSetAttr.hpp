@@ -2,7 +2,7 @@
 #define USERUTILS_PLOTUTILS_SRC_CMDSETATTR_HPP
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/RootUtil/RooArgContainer.hpp"
+#include "UserUtils/Common/interface/RootUtils/RooArgContainer.hpp"
 #else
 #include "UserUtils/Common/RootUtils/RooArgContainer.hpp"
 #endif
