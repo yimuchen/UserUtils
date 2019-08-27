@@ -52,6 +52,36 @@ decimal::decimal( const Measurement& input, const int p ) :
 }
 
 /**
+ * @brief Construct using a RooRealVar status.
+ */
+decimal::decimal( const RooRealVar& input, const int p ) :
+  _central( input.getVal() ),
+  _upper( fabs( input.getErrorHi() ) ),
+  _lower( fabs( input.getErrorLo() ) )
+{
+  if( p < 0 ){
+    SetPrecision();
+  } else {
+    precision( p );
+  }
+}
+
+/**
+ * @brief Construct using a RooRealVar status.
+ */
+decimal::decimal( const RooRealVar* input, const int p ) :
+  _central( input->getVal() ),
+  _upper( fabs( input->getErrorHi() ) ),
+  _lower( fabs( input->getErrorLo() ) )
+{
+  if( p < 0 ){
+    SetPrecision();
+  } else {
+    precision( p );
+  }
+}
+
+/**
  * @brief main operation for creating a latex string.
  *
  * @details Note that this function essentially calls the base::decimal
@@ -149,13 +179,47 @@ scientific::scientific( const Measurement& input, const int p ) :
 }
 
 /**
+ * @brief Construct using a RooRealVar instance
+ */
+scientific::scientific( const RooRealVar& input, const int p ) :
+  _central( input.getVal() ),
+  _upper( fabs( input.getErrorHi() ) ),
+  _lower( fabs( input.getErrorLo() ) ),
+  _exp( 0 )
+{
+  SetExponent();
+  if( p < 0 ){
+    SetPrecision();
+  } else {
+    precision( p );
+  }
+}
+
+/**
+ * @brief Construct using a RooRealVar instance
+ */
+scientific::scientific( const RooRealVar* input, const int p ) :
+  _central( input->getVal() ),
+  _upper( fabs( input->getErrorHi() ) ),
+  _lower( fabs( input->getErrorLo() ) ),
+  _exp( 0 )
+{
+  SetExponent();
+  if( p < 0 ){
+    SetPrecision();
+  } else {
+    precision( p );
+  }
+}
+
+/**
  * @brief implementing the virtual function.
  *
  * The function attempts to use the simplest form to represent the uncertainty,
  * using as little latex symbols as possible.
  */
-std::string
-scientific::str() const
+  std::string
+  scientific::str() const
 {
   const std::string cen  = base::decimal( _central ).dupsetting( *this ).str();
   const std::string up   = base::decimal( _upper ).dupsetting( *this ).str();

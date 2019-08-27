@@ -103,6 +103,10 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   obj.SetStats( 0 );
   obj.SetTitle( "" );
 
+  // Removing the poly marker from TSpectrum search function
+  TObject* polymarker = obj.GetListOfFunctions()->FindObject("TPolyMarker");
+  obj.GetListOfFunctions()->RecursiveRemove( polymarker );
+
   // Forcing fit functions to not be drawn
   for( const auto&& func : *( obj.GetListOfFunctions() ) ){
     func->SetBit( TF1::kNotDraw, true );

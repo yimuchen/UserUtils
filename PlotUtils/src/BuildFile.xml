@@ -3,7 +3,7 @@
 
 <use name="UserUtils/Common"/>
 
-<flags CXXFLAGS="-g -lgs -lMagick++-7"/>
+<flags CXXFLAGS="-g -lgs"/>
 
 <export>
    <lib name="1"/>

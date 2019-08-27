@@ -7,16 +7,18 @@
 #define USERUTILS_MATHUTILS_MEASUREMENT_FORMAT_HPP
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #else
-#include "UserUtils/Common/Format.hpp"
 #include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/Format.hpp"
 #include "UserUtils/MathUtils/Measurement/Measurement.hpp"
 #endif
 
 #include <string>
+
+#include "RooRealVar.h"
 
 namespace usr {
 
@@ -35,6 +37,12 @@ public:
   decimal(
     const Measurement& input,
     const int          precision = -base::precision_default );
+  decimal(
+    const RooRealVar& input,
+    const int         precision = -base::precision_default );
+  decimal(
+    const RooRealVar* input,
+    const int         precision = -base::precision_default );
 
   virtual
   ~decimal (){}
@@ -64,6 +72,12 @@ public:
   scientific(
     const Measurement& input,
     const int          precision = -1 ); // default to auto for
+  scientific(
+    const RooRealVar& input,
+    const int         precision = -1 );
+  scientific(
+    const RooRealVar* input,
+    const int         precision = -1 );
   virtual
   ~scientific  (){}
 
