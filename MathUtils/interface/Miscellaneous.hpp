@@ -7,6 +7,9 @@
 #ifndef USERUTILS_MATHUTILS_COMMON_HPP
 #define USERUTILS_MATHUTILS_COMMON_HPP
 
+#include "TMatrixD.h"
+#include "TMatrixDSym.h"
+
 namespace usr {
 
 /**
@@ -22,6 +25,8 @@ extern bool Intersect(
   const double p4x, const double p4y,
   double& intx, double& inty
   );
+
+extern TMatrixD DecompCorvariance( const TMatrixDSym& m );
 
 /** @} */
 

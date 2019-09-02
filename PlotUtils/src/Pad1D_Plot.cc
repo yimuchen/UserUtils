@@ -6,10 +6,12 @@
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#include "UserUtils/MathUtils/interface/Miscellaneous.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #else
 #include "UserUtils/Common/Maths.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/MathUtils/Miscellaneous.hpp"
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
@@ -104,7 +106,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   obj.SetTitle( "" );
 
   // Removing the poly marker from TSpectrum search function
-  TObject* polymarker = obj.GetListOfFunctions()->FindObject("TPolyMarker");
+  TObject* polymarker = obj.GetListOfFunctions()->FindObject( "TPolyMarker" );
   obj.GetListOfFunctions()->RecursiveRemove( polymarker );
 
   // Forcing fit functions to not be drawn
@@ -388,10 +390,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 
     // Getting matrix for random parameter generation
     const TMatrixDSym cormatrix = fit.GetCovarianceMatrix();
-    TDecompChol decomp          = TDecompChol( cormatrix );
-    decomp.Decompose();
-    TMatrixD tmatrix = decomp.GetU();
-    tmatrix.T();
+    const TMatrixD tmatrix      = usr::DecompCorvariance( cormatrix );
 
     TVectorD vec( tmatrix.GetNrows() );
     std::mt19937 gen;

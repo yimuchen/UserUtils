@@ -2,8 +2,9 @@
 <use name="boost"/>
 
 <use name="UserUtils/Common"/>
+<use name="UserUtils/MathUtils"/>
 
-<flags CXXFLAGS="-g -lgs"/>
+<flags CXXFLAGS="-g"/>
 
 <export>
    <lib name="1"/>
