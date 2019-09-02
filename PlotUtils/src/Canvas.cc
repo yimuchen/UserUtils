@@ -21,8 +21,6 @@
 #include <iostream>
 #include <string>
 
-#include <ghostscript/iapi.h>
-#include <ghostscript/ierrors.h>
 
 static bool run_ghostscript( const std::vector<std::string>& );
 
@@ -130,7 +128,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   if( !run_ghostscript( gs_fixrotate ) ){
     std::cerr << "Error in starting ghostscript processes, saving as "
               << "unaltered PDF file" << std::endl;
-    fs::copy( tmppath, filepath );
+    fs::copy( tmppath, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmppath );
     return;
   }
@@ -154,7 +152,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   if( !run_ghostscript( gs_getdim ) ){
     std::cerr << "Cannot get PDF file dimensions, saving a unscaled version "
               << "of the PDF " << std::endl;
-    fs::copy( tmp2path, filepath );
+    fs::copy( tmp2path, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmp2path );
     fs::remove( dimpath );
     return;
@@ -193,7 +191,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   if( !run_ghostscript( gs_fixscale ) ){
     std::cerr << "Error in running rescaling processes, saving as "
               << "unscaled PDF file" << std::endl;
-    fs::copy( tmp2path, filepath );
+    fs::copy( tmp2path, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmp2path );
     return;
   }
@@ -292,7 +290,7 @@ Canvas::SaveAsCPP( const fs::path& filepath )
   gErrorIgnoreLevel = kWarning;
   TCanvas::SaveAs( tempfile.c_str() );
 
-  fs::copy( tempfile, filepath );
+  fs::copy( tempfile, filepath, fs::copy_options::overwrite_existing  );
   fs::remove( tempfile );
 }
 
@@ -319,6 +317,9 @@ Canvas::SaveTempPDF( const fs::path& finalpath )
 }/* usr  */
 
 // Running Ghostscript API
+#ifndef CMSSW_GIT_HASH
+#include <ghostscript/iapi.h>
+#include <ghostscript/ierrors.h>
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
@@ -361,3 +362,34 @@ run_ghostscript( const std::vector<std::string>& args )
     return false;
   }
 }
+#else
+#include "UserUtils/Common/interface/SystemUtils/Command.hpp"
+bool
+run_ghostscript( const std::vector<std::string>& args )
+{
+  static const char legalchar[] = "abcdefghijklmnopqrstuvwxyz"
+                                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                  "0123456789"
+                                  "._-=/ (){}\n\"";
+  std::string cmd;
+
+  for( const auto arg : args ){
+    if( arg.find(' ') != std::string::npos ){
+      cmd += "\"" + arg + "\"";
+    } else {
+      cmd += arg;
+    }
+    cmd += " ";
+  }
+
+  if( cmd.find_first_not_of( legalchar ) != std::string::npos ){
+    std::cout << "Command contains illegal character: ["
+              << cmd[cmd.find_first_not_of( legalchar )] << "]"
+              << std::endl;
+    return false;
+  } else {
+    usr::GetCMDOutput( cmd );
+    return true;
+  }
+}
+#endif
