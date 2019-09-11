@@ -12,9 +12,11 @@
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #else
 #include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/interface/StringUtils.hpp"
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #endif
 
@@ -30,7 +32,7 @@ public:
   /**
    *@ brief Initialization without additional json file
    */
-  ArgumentExtender() {}
+  ArgumentExtender(){ _init( {} ); }
 
   /**
    * @brief initialization from single json file.
@@ -50,11 +52,9 @@ public:
    * @brief varidaic initialization for multiple json files.
    * @details see ArgumentExtender::_init() for more details.
    */
-  template<typename ... TS>
-  ArgumentExtender( const std::string& first, TS ... others );
+  template<typename ... TS> ArgumentExtender( const std::string& first, TS ... others );
 
-  virtual
-  ~ArgumentExtender ();
+  virtual ~ArgumentExtender ();
 
   ArgumentExtender& AddOptions( const po::options_description& optdesc );
   void              ParseOptions( int argc, char** argv );
@@ -74,7 +74,7 @@ public:
    * type.
    */
   template<typename TYPE = std::string>
-  TYPE ArgOpt( const std::string& opt, const TYPE& val ) const ;
+  TYPE ArgOpt( const std::string& opt, const TYPE& val ) const;
 
   /**
    * @brief template function for getting the user input list to an option.
@@ -112,11 +112,14 @@ public:
   /**
    * @brief Simple wrapper for Argument naming scheme for filename generation.
    */
-  struct ArgPathScheme{
-    ArgPathScheme( const std::string& opt, const std::string fstring ):
-      option(opt), pathstring( fstring ) {}
-    ArgPathScheme( const std::string& opt ):
-      option(opt), pathstring( opt ) {}
+  struct ArgPathScheme
+  {
+    ArgPathScheme( const std::string& opt, const std::string fstring ) :
+      option( opt ),
+      pathstring( fstring ){}
+    ArgPathScheme( const std::string& opt ) :
+      option( opt ),
+      pathstring( opt ){}
     std::string option;
     std::string pathstring;
   };
@@ -135,12 +138,14 @@ public:
    * @brief
    * @{
    */
-  fs::path MakeFile( const std::string&, const std::string& ) const ;
+  fs::path MakeFile( const std::string&, const std::string& ) const;
   fs::path MakePDFFile( const std::string& ) const;
   fs::path MakePNGFile( const std::string& ) const;
   fs::path MakeTXTFile( const std::string& ) const;
   fs::path MakeTEXFile( const std::string& ) const;
   /** @} */
+
+  void PrintHelpAndExit() const;
 
 protected:
 
@@ -161,13 +166,15 @@ private:
   po::options_description _optdesc;
   po::variables_map _argmap;
 
-  fs::path   _prefix;
+  fs::path _prefix;
   PathScheme _dirscheme;
   PathScheme _namescheme;
 
-  void _init( const std::vector<std::string>& filelist );
-  std::string genPathString( const ArgPathScheme& ) const ;
+  void        _init( const std::vector<std::string>& filelist );
+  std::string genPathString( const ArgPathScheme& ) const;
 };
+
+
 
 /*-----------------------------------------------------------------------------
  *  Template implementation
@@ -179,12 +186,18 @@ ArgumentExtender::ArgumentExtender( const std::string& first, TS ... others )
 template<typename T>
 T
 ArgumentExtender::Arg( const std::string& opt ) const
-{ return _argmap[opt].as<T>(); }
+{
+  if( !CheckArg( opt ) ){
+    throw std::invalid_argument(
+      usr::fstr( "Option [%s] doesn't exists, see --help output", opt ) );
+  }
+  return _argmap[opt].as<T>();
+}
 
 template<typename T>
 T
 ArgumentExtender::ArgOpt( const std::string& opt, const T& val ) const
-{ return CheckArg(opt)? Arg<T>(opt) : val ; }
+{ return CheckArg( opt ) ? Arg<T>( opt ) : val; }
 
 template<typename T>
 std::vector<T>
@@ -199,5 +212,33 @@ ArgumentExtender::ArgExt( const std::string& opt, const std::string& exttag ) co
 }
 
 }/* usr */
+
+
+namespace boost
+{
+namespace program_options
+{
+/**
+ * @brief Template short hand for assigning a option with a default value
+ */
+template<typename T>
+value_semantic*
+defvalue( const T def )
+{
+  return boost::program_options::value<T>()->default_value( def );
+}
+
+/**
+ * @brief Template short had for assign a option to take multiple tokens.
+ */
+template<typename T>
+value_semantic*
+multivalue()
+{
+  return boost::program_options::value<std::vector<T> >()->multitoken();
+}
+
+} /* program_options */
+} /* boost */
 
 #endif/* end of include guard: USERUTILS_COMMON_OPTSNAMER_HPP */

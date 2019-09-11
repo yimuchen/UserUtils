@@ -211,10 +211,19 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
     }
   }
 
-  if( CheckArg( "help" ) ){// Early exit in case of help option
-    std::cerr << Description() << std::endl;
-    std::exit( EXIT_SUCCESS );
+  if( CheckArg( "help" ) ){
+    PrintHelpAndExit();
   }
+}
+
+/**
+ * @brief Printing help message of arguments and exit the program.
+ */
+void
+ArgumentExtender::PrintHelpAndExit() const
+{
+  std::cerr << Description() << std::endl;
+  std::exit( EXIT_SUCCESS );
 }
 
 /**
