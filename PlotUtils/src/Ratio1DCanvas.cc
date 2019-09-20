@@ -102,7 +102,7 @@ Ratio1DCanvas::_init_margin( const float gap )
 {
   SetTopMargin( 1.5*Font().lineheight()/Height() );
   SetLeftMargin( 3.5*Font().lineheight()/Width() );
-  SetBottomMargin( 2.0*Font().lineheight()/Height() );
+  SetBottomMargin( 2.2*Font().lineheight()/Height() );
   SetRightMargin(
     std::max(
       ( 3.5*Font().lineheight()/Height() - ( 3.5*Font().lineheight()/Width() ) )

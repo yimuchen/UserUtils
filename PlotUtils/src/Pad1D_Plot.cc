@@ -300,7 +300,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     PadBase::MoveTargetToBefore( obj, args.Get<PlotUnder>() );
   }
 
-  // Setting styling attributes
+  // Setting styling attribute
   SetLineAttr( obj, args );
   SetFillAttr( obj, args );
   SetMarkAttr( obj, args );
