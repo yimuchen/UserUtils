@@ -77,7 +77,7 @@ struct SimplifiedData
  * \f]
  *
  * In the case that two ranges is requested (say to test the goodness-of-fit
- * for a side band fit result), the effective CDF is construted such that CDF
+ * for a side band fit result), the effective CDF is constructed such that CDF
  * is continuous for all values of \f$x\f$, an returns values 0/1 at the far
  * edges of the ranges. So effectively, given the two ranges \f$[a,b]\f$ and
  * \f$[c,d]\f$:
@@ -125,7 +125,7 @@ bool CheckCutCmd( const RooCmdArg& cmd, RooRealVar& x );
 
 
 /**
- * @brief Calculating the Kolmogorov--Smirov distance of a RooDataSet and a
+ * @brief Calculating the Kolmogorov--Smirnov distance of a RooDataSet and a
  *        RooAbsPdf in term of a variable.
  *
  * The calculation routine supports:
@@ -151,7 +151,7 @@ KSDistance(
   double maxdist = 0;
 
   for( const auto& evt : sim.dataset ){
-    // emperical cdf is the sum of weights
+    // empirical cdf is the sum of weights
     // (normalization handled latter for stability )
     const double val = evt.first;
     const double wgt = evt.second;
