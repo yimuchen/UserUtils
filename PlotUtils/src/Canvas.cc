@@ -185,7 +185,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dFIXEDMEDIA",
     "-dPDFFitPage",
     usr::fstr( "-sOutputFile=%s",         filepath.string() ),
-    "-f",                                tmp2path
+    "-f", tmp2path
   };
 
   if( !run_ghostscript( gs_fixscale ) ){

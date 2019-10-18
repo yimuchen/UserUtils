@@ -189,7 +189,8 @@ ArgumentExtender::Arg( const std::string& opt ) const
 {
   if( !CheckArg( opt ) ){
     throw std::invalid_argument(
-      usr::fstr( "Option [%s] doesn't exists, see --help output", opt ) );
+      usr::fstr( "Option [%s] was not provided as a program options, "
+        ", see --help output", opt ) );
   }
   return _argmap[opt].as<T>();
 }
@@ -202,7 +203,14 @@ ArgumentExtender::ArgOpt( const std::string& opt, const T& val ) const
 template<typename T>
 std::vector<T>
 ArgumentExtender::ArgList( const std::string& opt ) const
-{ return _argmap[opt].as<std::vector<T> >(); }
+{
+  if( !CheckArg( opt ) ){
+    throw std::invalid_argument(
+      usr::fstr( "Option [%s] was not provided as a program options, "
+        ", see --help output", opt ) );
+  }
+  return _argmap[opt].as<std::vector<T> >();
+}
 
 template<typename T>
 T
@@ -238,7 +246,7 @@ multivalue()
   return boost::program_options::value<std::vector<T> >()->multitoken();
 }
 
-} /* program_options */
-} /* boost */
+}/* program_options */
+}/* boost */
 
 #endif/* end of include guard: USERUTILS_COMMON_OPTSNAMER_HPP */
