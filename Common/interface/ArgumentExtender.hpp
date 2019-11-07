@@ -16,7 +16,7 @@
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #else
 #include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
-#include "UserUtils/Common/interface/StringUtils.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #endif
 

@@ -196,6 +196,12 @@ MarkerSize::MarkerSize( const float size ) :
   RooCmdArg( RooFit::MarkerSize( size ) ){}
 
 // ---------------------------------------------------------------------------//
+USRUTILS_COMMON_REGISTERCMD( ScaleY );
+ScaleY::ScaleY( const double s ) :
+  RooCmdArg( CmdName.c_str(), 0, 0, s ){}
+
+
+// ---------------------------------------------------------------------------//
 USRUTILS_COMMON_REGISTERCMD( VisualizeError );
 /**
  * @brief Switch for presenting fit uncertainty in fit.

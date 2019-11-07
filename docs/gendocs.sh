@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Getting the images
-../testbin/PlotUtils/usrutil_simple1dcanvas
-../testbin/PlotUtils/usrutil_ratio1dcanvas
-../testbin/PlotUtils/usrutil_flat2dcanvas
+#../testbin/PlotUtils/usrutil_simple1dcanvas
+#../testbin/PlotUtils/usrutil_ratio1dcanvas
+#../testbin/PlotUtils/usrutil_flat2dcanvas
 
 # Generating CSS file
 sass style.scss:style.css --style compact

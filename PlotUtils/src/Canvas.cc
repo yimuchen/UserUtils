@@ -316,10 +316,21 @@ Canvas::SaveTempPDF( const fs::path& finalpath )
 
 }/* usr  */
 
-// Running Ghostscript API
 #ifndef CMSSW_GIT_HASH
+
 #include <ghostscript/iapi.h>
 #include <ghostscript/ierrors.h>
+
+/**
+ * @brief Running ghostscript using the [official
+ * API](https://www.ghostscript.com/doc/current/API.htm)
+ *
+ * The official API basically takes in a list of strings that one would ususally
+ * type in the command line interface, and pass it into the API functions. The
+ * function returns false if any of the API functions fail to run nominally. In
+ * the case that the API is not available (in CMSSW), the program run a standard
+ * command via the <cstdio> interface.
+ */
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
@@ -362,7 +373,9 @@ run_ghostscript( const std::vector<std::string>& args )
     return false;
   }
 }
+
 #else
+
 #include "UserUtils/Common/interface/SystemUtils/Command.hpp"
 bool
 run_ghostscript( const std::vector<std::string>& args )
@@ -392,4 +405,5 @@ run_ghostscript( const std::vector<std::string>& args )
     return true;
   }
 }
+
 #endif

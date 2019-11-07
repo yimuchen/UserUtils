@@ -315,8 +315,7 @@ public:
   PlotType( const std::string& );
   virtual
   ~PlotType(){}
-  inline operator int() const { return getInt( 0 );
-  }
+  inline operator int() const { return getInt( 0 ); }
   inline std::string
   str() const { return getString( 0 ); }
   inline const char*
@@ -324,6 +323,18 @@ public:
 };
 
 
+/**
+ * @brief Plot argument to scale a data by a specific amount.
+ */
+class ScaleY : public RooCmdArg
+{
+public:
+  static const std::string CmdName ;
+  ScaleY ( const RooCmdArg* x ) : RooCmdArg( *x ) {}
+  ScaleY( const double s );
+  virtual ~ScaleY() {}
+  inline operator double() const { return getDouble(0); }
+};
 
 /**
  * @brief Enum for defining plot for 2D plot types. Putting this in global plt

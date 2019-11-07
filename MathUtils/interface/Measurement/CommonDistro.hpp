@@ -57,8 +57,6 @@ extern Measurement Minos(
 
 };// Poisson
 
-/** @} */
-
 }/* usr */
 
 #endif/* end of include guard: USERUTILS_MATHUTILS_EFFICIENCY_HPP */
