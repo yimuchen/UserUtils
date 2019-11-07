@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ostream_20helpers',['ostream Helpers',['../group__ostreamutils.html',1,'']]]
+  ['ostream_20helpers_1023',['ostream Helpers',['../group__ostreamutils.html',1,'']]]
 ];
