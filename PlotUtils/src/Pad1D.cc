@@ -138,8 +138,8 @@ Pad1D::SetLogy( int flag )
   TPad::SetLogy( flag );
   if( flag && !CheckLogy() ){
     std::cerr << "[PAD1D] Data-objects y-values in Pad1D is not "
-      "positive definite. Unsetting the log option." << std::endl;
-    TPad::SetLogy( 0 );
+      "positive definite. Plot may break!" << std::endl;
+    // TPad::SetLogy( 0 );
   }
   AutoSetYRange();
 }
