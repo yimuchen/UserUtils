@@ -22,8 +22,8 @@ namespace usr {
 Measurement::Measurement()
 {
   _central_value = 0;
-  _error_up     = 0;
-  _error_down   = 0;
+  _error_up      = 0;
+  _error_down    = 0;
 }
 
 /**
@@ -77,8 +77,8 @@ Measurement&
 Measurement::operator=( const Measurement& x )
 {
   _central_value = x._central_value;
-  _error_up     = x._error_up;
-  _error_down   = x._error_down;
+  _error_up      = x._error_up;
+  _error_down    = x._error_down;
   return *this;
 }
 
@@ -101,7 +101,7 @@ Measurement::NormParam() const
 Measurement&
 Measurement::operator+=( const Measurement& x )
 {
-  *this = Sum( *this, x );
+  *this = (*this) + x ;
   return *this;
 }
 
@@ -110,7 +110,7 @@ Measurement::operator+=( const Measurement& x )
 Measurement&
 Measurement::operator*=( const Measurement& x )
 {
-  *this = Prod( *this, x );
+  *this = (*this) * x ;
   return *this;
 }
 
@@ -119,7 +119,13 @@ Measurement::operator*=( const Measurement& x )
 Measurement
 Measurement::operator+( const Measurement& x ) const
 {
-  return Sum( *this, x );
+  if( x.AbsUpperError() == 0 && x.AbsLowerError() == 0 ){
+    return ( *this ) + x.CentralValue();
+  } else if( this->AbsUpperError() == 0 && this->AbsLowerError() == 0 ){
+    return x + this->CentralValue();
+  } else {
+    return Sum( *this, x );
+  }
 }
 
 /******************************************************************************/
@@ -127,7 +133,13 @@ Measurement::operator+( const Measurement& x ) const
 Measurement
 Measurement::operator*( const Measurement& x ) const
 {
-  return Prod( *this, x );
+  if( x.AbsUpperError() == 0 && x.AbsLowerError() == 0 ){
+    return ( *this ) * x.CentralValue();
+  } else if( this->AbsUpperError() == 0 && this->AbsLowerError() == 0 ){
+    return x + this->CentralValue();
+  } else {
+    return Prod( *this, x );
+  }
 }
 
 /*******************************************************************************
@@ -146,7 +158,7 @@ Measurement::operator+=( const double x )
 Measurement&
 Measurement::operator-=( const double x )
 {
-  _central_value -= x ;
+  _central_value -= x;
   return *this;
 }
 
@@ -156,8 +168,8 @@ Measurement&
 Measurement::operator*=( const double x )
 {
   _central_value *= x;
-  _error_up     *= fabs( x );
-  _error_down   *= fabs( x );
+  _error_up      *= fabs( x );
+  _error_down    *= fabs( x );
   return *this;
 }
 
@@ -167,8 +179,8 @@ Measurement&
 Measurement::operator/=( const double x )
 {
   _central_value /= x;
-  _error_up     /= fabs( x );
-  _error_down   /= fabs( x );
+  _error_up      /= fabs( x );
+  _error_down    /= fabs( x );
   return *this;
 }
 
@@ -187,7 +199,7 @@ Measurement
 Measurement::operator-( const double x ) const
 {
   Measurement ans( *this );
-  ans -= x ;
+  ans -= x;
   return ans;
 }
 
@@ -228,7 +240,7 @@ operator-( const double y, const Measurement& x )
     y-x.CentralValue(),
     x.AbsLowerError(),
     x.AbsUpperError()
-  );
+    );
 }
 
 /*----------------------------------------------------------------------------*/
