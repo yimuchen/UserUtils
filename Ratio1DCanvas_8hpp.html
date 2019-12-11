@@ -161,7 +161,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">RET_TYPE&amp; FUNC_NAME(                                                       \</div>
-<div class="line">    <span class="keyword">const</span> NUM_TYPE&amp;, <span class="keyword">const</span> DEN_TYPE&amp;, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt; &amp; );      \</div>
+<div class="line">    <span class="keyword">const</span> NUM_TYPE&amp;, <span class="keyword">const</span> DEN_TYPE&amp;, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt;&amp; );      \</div>
 <div class="line">  inline NUM_TYPE&amp; FUNC_NAME( <span class="keyword">const</span> NUM_TYPE &amp; num, <span class="keyword">const</span> DEN_TYPE &amp; den ){  \</div>
 <div class="line">    return FUNC_NAME( num, den, {} ); }                                      \</div>
 <div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                                \</div>
@@ -175,14 +175,14 @@ Macros</h2></td></tr>
 <div class="line">  inline RET_TYPE&amp;                                                           \</div>
 <div class="line">  FUNC_NAME( <span class="keyword">const</span> NUM_TYPE* num, <span class="keyword">const</span> DEN_TYPE &amp; den,                      \</div>
 <div class="line">    <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args )                                  \</div>
-<div class="line">  { <span class="keywordflow">return</span> FUNC_NAME( *num, den, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); }\</div>
+<div class="line">  { <span class="keywordflow">return</span> FUNC_NAME( *num, den, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); } \</div>
 <div class="line">  inline RET_TYPE&amp; FUNC_NAME( <span class="keyword">const</span> NUM_TYPE &amp; num, <span class="keyword">const</span> DEN_TYPE* den ){   \</div>
 <div class="line">    return FUNC_NAME( num, *den, {} ); }                                     \</div>
 <div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                                \</div>
 <div class="line">  inline RET_TYPE&amp;                                                           \</div>
 <div class="line">  FUNC_NAME( <span class="keyword">const</span> NUM_TYPE &amp; num, <span class="keyword">const</span> DEN_TYPE* den,                      \</div>
 <div class="line">    <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args )                                  \</div>
-<div class="line">  { <span class="keywordflow">return</span> FUNC_NAME( num, *den, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); }\</div>
+<div class="line">  { <span class="keywordflow">return</span> FUNC_NAME( num, *den, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); } \</div>
 <div class="line">  inline RET_TYPE&amp; FUNC_NAME( <span class="keyword">const</span> NUM_TYPE* num, <span class="keyword">const</span> DEN_TYPE* den ){    \</div>
 <div class="line">    return FUNC_NAME( *num, *den, {} ); }                                    \</div>
 <div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                                \</div>

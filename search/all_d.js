@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['nextopenbrace_302',['NextOpenBrace',['../group__StringUtils.html#ga450ca72ef4fd852e3d5179aff271286a',1,'usr']]],
-  ['normalcdf_303',['NormalCDF',['../group__StatUtils.html#ga6037ac91f9206bae9d43cec076be8df7',1,'usr::stat']]],
-  ['numofthreads_304',['NumOfThreads',['../group__SystemCommands.html#gaa681beffa063f4b185432938efa026e7',1,'usr']]]
+  ['nextopenbrace_303',['NextOpenBrace',['../group__StringUtils.html#ga450ca72ef4fd852e3d5179aff271286a',1,'usr']]],
+  ['normalcdf_304',['NormalCDF',['../group__StatUtils.html#ga6037ac91f9206bae9d43cec076be8df7',1,'usr::stat']]],
+  ['numofthreads_305',['NumOfThreads',['../group__SystemCommands.html#gaa681beffa063f4b185432938efa026e7',1,'usr']]]
 ];

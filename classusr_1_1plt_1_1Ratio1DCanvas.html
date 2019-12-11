@@ -468,12 +468,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a457cd7818a94f1f652fb1f4f7aa583e3"><td class="memItemLeft" align="right" valign="top">static TH1D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a457cd7818a94f1f652fb1f4f7aa583e3">ScaleDivide</a> (const TH1D *num, const TH1D *den, const double cen=1.)</td></tr>
 <tr class="memdesc:a457cd7818a94f1f652fb1f4f7aa583e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">dividing two histogram a/b by scaling the numerator by the denominator  <a href="classusr_1_1plt_1_1Ratio1DCanvas.html#a457cd7818a94f1f652fb1f4f7aa583e3">More...</a><br /></td></tr>
 <tr class="separator:a457cd7818a94f1f652fb1f4f7aa583e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad1cfc4d8160ec220241aec5a8ed96cc"><td class="memItemLeft" align="right" valign="top">static TH1D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#aad1cfc4d8160ec220241aec5a8ed96cc">ScaleDivide</a> (const TH1D *num, const TGraph *den, const double cen=1.)</td></tr>
-<tr class="memdesc:aad1cfc4d8160ec220241aec5a8ed96cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">dividing a histogram by a graph. Calculated by scaling the numerator by the denominator  <a href="classusr_1_1plt_1_1Ratio1DCanvas.html#aad1cfc4d8160ec220241aec5a8ed96cc">More...</a><br /></td></tr>
-<tr class="separator:aad1cfc4d8160ec220241aec5a8ed96cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab67f4d109ab36517a5d49891553e0362"><td class="memItemLeft" align="right" valign="top">static TGraphAsymmErrors *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#ab67f4d109ab36517a5d49891553e0362">ScaleDivide</a> (const TGraph *num, const TGraph *den, const double cen=1.)</td></tr>
-<tr class="memdesc:ab67f4d109ab36517a5d49891553e0362"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dividing a graph by another graph by scaling the numerator by the denominator.  <a href="classusr_1_1plt_1_1Ratio1DCanvas.html#ab67f4d109ab36517a5d49891553e0362">More...</a><br /></td></tr>
-<tr class="separator:ab67f4d109ab36517a5d49891553e0362"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ecd099e754327ff38d1bd9ee72640c5"><td class="memItemLeft" align="right" valign="top">static TH1D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a5ecd099e754327ff38d1bd9ee72640c5">ScaleDivide</a> (const TH1D *num, const TGraph *den, const double cen=1., const bool extrapolate=false)</td></tr>
+<tr class="memdesc:a5ecd099e754327ff38d1bd9ee72640c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">dividing a histogram by a graph. Calculated by scaling the numerator by the denominator  <a href="classusr_1_1plt_1_1Ratio1DCanvas.html#a5ecd099e754327ff38d1bd9ee72640c5">More...</a><br /></td></tr>
+<tr class="separator:a5ecd099e754327ff38d1bd9ee72640c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ee232b4f0fbc0e5b3256b0ac0d4e886"><td class="memItemLeft" align="right" valign="top">static TGraphAsymmErrors *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a6ee232b4f0fbc0e5b3256b0ac0d4e886">ScaleDivide</a> (const TGraph *num, const TGraph *den, const double cen=1., const bool extrapolate=false)</td></tr>
+<tr class="memdesc:a6ee232b4f0fbc0e5b3256b0ac0d4e886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dividing a graph by another graph by scaling the numerator by the denominator.  <a href="classusr_1_1plt_1_1Ratio1DCanvas.html#a6ee232b4f0fbc0e5b3256b0ac0d4e886">More...</a><br /></td></tr>
+<tr class="separator:a6ee232b4f0fbc0e5b3256b0ac0d4e886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a966bf09ef15d887110015eff032cb2f8"><td class="memItemLeft" align="right" valign="top">static TGraphAsymmErrors *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Ratio1DCanvas.html#a966bf09ef15d887110015eff032cb2f8">PullDivide</a> (const TGraph *num, const TGraph *den, const double cen=0)</td></tr>
 <tr class="memdesc:a966bf09ef15d887110015eff032cb2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generating the pull diagram when comparing two graphs.  <a href="classusr_1_1plt_1_1Ratio1DCanvas.html#a966bf09ef15d887110015eff032cb2f8">More...</a><br /></td></tr>
 <tr class="separator:a966bf09ef15d887110015eff032cb2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1803,8 +1803,8 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="ab67f4d109ab36517a5d49891553e0362"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab67f4d109ab36517a5d49891553e0362">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[1/3]</span></h2>
+<a id="a6ee232b4f0fbc0e5b3256b0ac0d4e886"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ee232b4f0fbc0e5b3256b0ac0d4e886">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1828,7 +1828,13 @@ template&lt;typename ... Args&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>cen</em> = <code>1.</code>&#160;</td>
+          <td class="paramname"><em>cen</em> = <code>1.</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>extrapolate</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1847,8 +1853,8 @@ template&lt;typename ... Args&gt; </div>
 
 </div>
 </div>
-<a id="aad1cfc4d8160ec220241aec5a8ed96cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad1cfc4d8160ec220241aec5a8ed96cc">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[2/3]</span></h2>
+<a id="a5ecd099e754327ff38d1bd9ee72640c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ecd099e754327ff38d1bd9ee72640c5">&#9670;&nbsp;</a></span>ScaleDivide() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1872,7 +1878,13 @@ template&lt;typename ... Args&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double&#160;</td>
-          <td class="paramname"><em>cen</em> = <code>1.</code>&#160;</td>
+          <td class="paramname"><em>cen</em> = <code>1.</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>extrapolate</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
