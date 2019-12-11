@@ -83,12 +83,10 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   }
 
   // Getting the flags
-  const RooArgContainer args( arglist,
-      {
+  const RooArgContainer args( arglist, {
         PlotType( hist ),
         TrackY( TrackY::max )
-      }
-                              );
+      } );
 
   if( !GetAxisObject() ){
     // MUST ust a clone, otherwise messes with THStack

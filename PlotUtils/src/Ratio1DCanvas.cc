@@ -224,16 +224,13 @@ Ratio1DCanvas::PlotScale(
   BottomPad().FrameObj().addObject( ans );
 
   // Parsing arguments.
-  const RooArgContainer args( arglist );
-  const RooCmdArg pltopt =
-    args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
-    PlotType( plt::hist );
-  const RooCmdArg trkopt =
-    args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
-    TrackY( TrackY::both );
+  const RooArgContainer args( arglist, {
+        PlotType( plt::hist ),
+        TrackY( TrackY::both )
+      } );
 
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
-  BottomPad().PlotHist( ans, pltopt, trkopt );
+  BottomPad().PlotHist( ans, args );
 
   return *ans;
 }
@@ -252,20 +249,20 @@ Ratio1DCanvas::PlotScale(
   const std::vector<RooCmdArg>& arglist
   )
 {
-  TH1D* ans = ScaleDivide( &num, &den );
-  BottomPad().FrameObj().addObject( ans );
-
   // Parsing arguments.
-  const RooArgContainer args( arglist );
-  const RooCmdArg pltopt =
-    args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
-    PlotType( plt::hist );
-  const RooCmdArg trkopt =
-    args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
-    TrackY( TrackY::both );
+  const RooArgContainer args( arglist, {
+        PlotType( plt::hist ),
+        TrackY( TrackY::both ),
+        ExtrapolateInRatio( kFALSE )
+      } );
 
+  // Generating the scaled histogram object
+  TH1D* ans = ScaleDivide( &num, &den, 1.0, args.Get<ExtrapolateInRatio>() );
+
+  // Plotting.
+  BottomPad().FrameObj().addObject( ans );
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
-  BottomPad().PlotHist( ans, pltopt, trkopt );
+  BottomPad().PlotHist( ans, args );
 
   return *ans;
 }
@@ -284,19 +281,18 @@ Ratio1DCanvas::PlotScale(
   const TGraph&                 den,
   const std::vector<RooCmdArg>& arglist )
 {
-  TGraphAsymmErrors* ans = ScaleDivide( &num, &den );
+  const RooArgContainer args( arglist, {
+        PlotType( plt::simplefunc ),
+        TrackY( TrackY::both ),
+        ExtrapolateInRatio( kFALSE )
+      } );
+
+  TGraphAsymmErrors* ans
+    = ScaleDivide( &num, &den, 1.0, args.Get<ExtrapolateInRatio>() );
+
   BottomPad().FrameObj().addObject( ans );
-
-  const RooArgContainer args( arglist );
-  const RooCmdArg pltopt =
-    args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
-    PlotType( plt::simplefunc );
-  const RooCmdArg trkopt =
-    args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
-    TrackY( TrackY::both );
-
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
-  BottomPad().PlotGraph( ans, pltopt, trkopt );
+  BottomPad().PlotGraph( ans, args );
 
   return *ans;
 }
@@ -314,19 +310,16 @@ Ratio1DCanvas::PlotPull(
   const TGraph&                 den,
   const std::vector<RooCmdArg>& arglist )
 {
+  const RooArgContainer args( arglist, {
+        PlotType( scatter ),
+        TrackY( TrackY::both )
+      } );
+
   TGraphAsymmErrors* ans = PullDivide( &num, &den );
+
   BottomPad().FrameObj().addObject( ans );
-
-  const RooArgContainer args( arglist );
-  const RooCmdArg pltopt =
-    args.Has( PlotType::CmdName ) ? args.Get( PlotType::CmdName ) :
-    PlotType( scatter );
-  const RooCmdArg trkopt =
-    args.Has( TrackY::CmdName ) ? args.Get( TrackY::CmdName ) :
-    TrackY( TrackY::both );
-
   BottomPad().RangeType() = Pad1D::rangetype::pull;
-  BottomPad().PlotGraph( ans, pltopt, trkopt );
+  BottomPad().PlotGraph( ans, args );
 
   return *ans;
 }
@@ -393,10 +386,14 @@ TH1D*
 Ratio1DCanvas::ScaleDivide(
   const TH1D*   num,
   const TGraph* den,
-  const double  cen
+  const double  cen,
+  const bool    extrapolate
   )
 {
   TH1D* ans = new TH1D( *num );
+
+  const double xmin = GetXmin( den );
+  const double xmax = GetXmax( den );
 
   for( int i = 0; i < num->GetNcells(); ++i ){
     const double x = num->GetBinCenter( i );
@@ -404,6 +401,9 @@ Ratio1DCanvas::ScaleDivide(
     const double e = num->GetBinError( i );
     const double d = den->Eval( x );
     if( n == 0 || d == 0 ){
+      ans->SetBinContent( i, cen );
+      ans->SetBinError( i, 0 );
+    } else if( !extrapolate && ( x < xmin || x > xmax ) ){
       ans->SetBinContent( i, cen );
       ans->SetBinError( i, 0 );
     } else {
@@ -434,19 +434,17 @@ TGraphAsymmErrors*
 Ratio1DCanvas::ScaleDivide(
   const TGraph* num,
   const TGraph* den,
-  const double  cen
-  )
+  const double  cen,
+  const bool    extrapolate  )
 {
-  TGraphAsymmErrors* ans = new TGraphAsymmErrors( num->GetN() );
-  // duplicating style
-  ans->SetLineColor( num->GetLineColor() );
-  ans->SetLineStyle( num->GetLineStyle() );
-  ans->SetLineWidth( num->GetLineWidth() );
-  ans->SetFillColor( num->GetFillColor() );
-  ans->SetFillStyle( num->GetFillStyle() );
-  ans->SetMarkerColor( num->GetMarkerColor() );
-  ans->SetMarkerStyle( num->GetMarkerStyle() );
-  ans->SetMarkerSize( num->GetMarkerSize() );
+  const double xmin = GetXmin( den );
+  const double xmax = GetXmax( den );
+  std::vector<double> x_list;
+  std::vector<double> y_list;
+  std::vector<double> xerrlo_list;
+  std::vector<double> xerrhi_list;
+  std::vector<double> yerrlo_list;
+  std::vector<double> yerrhi_list;
 
   for( int i = 0; i < num->GetN(); ++i ){
     const double origx  = num->GetX()[i];
@@ -458,22 +456,56 @@ Ratio1DCanvas::ScaleDivide(
 
     const double deny = den->Eval( origx );
 
-    if( deny == 0 || origy == 0 ){
-      ans->SetPoint( i, origx, cen );
-      ans->SetPointError( i, 0, 0, 0, 0 );
+    if( !extrapolate && ( origx < xmin || origx > xmax ) ){
+      // Do nothing
+    } else if( deny == 0 || origy == 0 ){
+      x_list.push_back( origx );
+      y_list.push_back( cen );
+      xerrlo_list.push_back( 0 );
+      xerrhi_list.push_back( 0 );
+      yerrlo_list.push_back( 0 );
+      yerrhi_list.push_back( 0 );
     } else {
-      ans->SetPoint( i, origx, origy / deny );
-      ans->SetPointError(
-        i,
-        xerrlo, xerrhi,
-        yerrlo/deny, yerrhi/deny );
+      x_list.push_back( origx );
+      y_list.push_back( origy/deny );
+      xerrlo_list.push_back( xerrlo );
+      xerrhi_list.push_back( xerrhi );
+      yerrlo_list.push_back( yerrlo/deny );
+      yerrhi_list.push_back( yerrhi/deny );
+    }
+
+    if( y_list.back() < 0.8 ){
+      std::cout << i << " "
+                << origx << " "
+                << origy << std::endl;
     }
   }
+
+  assert( x_list.size() == y_list.size() );
+  assert( x_list.size() == xerrlo_list.size() );
+  assert( x_list.size() == xerrhi_list.size() );
+  assert( x_list.size() == yerrlo_list.size() );
+  assert( x_list.size() == yerrhi_list.size() );
+
+  TGraphAsymmErrors* ans
+    = new TGraphAsymmErrors( x_list.size()
+                           , x_list.data(), y_list.data()
+                           , xerrlo_list.data(), xerrhi_list.data()
+                           , yerrlo_list.data(), yerrhi_list.data() );
 
   ans->SetTitle( "" );
   ans->GetXaxis()->SetLimits(
     num->GetXaxis()->GetXmin(),
     num->GetXaxis()->GetXmax() );
+  // duplicating style
+  ans->SetLineColor( num->GetLineColor() );
+  ans->SetLineStyle( num->GetLineStyle() );
+  ans->SetLineWidth( num->GetLineWidth() );
+  ans->SetFillColor( num->GetFillColor() );
+  ans->SetFillStyle( num->GetFillStyle() );
+  ans->SetMarkerColor( num->GetMarkerColor() );
+  ans->SetMarkerStyle( num->GetMarkerStyle() );
+  ans->SetMarkerSize( num->GetMarkerSize() );
 
   return ans;
 }

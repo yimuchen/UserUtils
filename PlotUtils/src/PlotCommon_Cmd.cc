@@ -248,6 +248,13 @@ VisualizeError::has_set() const
   return getSet( 0 );
 };
 
+// ---------------------------------------------------------------------------//
+USRUTILS_COMMON_REGISTERCMD( ExtrapolateInRatio );
+
+ExtrapolateInRatio::ExtrapolateInRatio( const int flag ) :
+  RooCmdArg( CmdName.c_str(), flag ){}
+
+
 /** @} */
 
 }

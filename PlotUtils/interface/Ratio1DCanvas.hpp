@@ -95,12 +95,14 @@ public:
   static TH1D* ScaleDivide(
     const TH1D*   num,
     const TGraph* den,
-    const double  cen = 1. );
+    const double  cen         = 1.,
+    const bool    extrapolate = false );
 
   static TGraphAsymmErrors* ScaleDivide(
     const TGraph* num,
     const TGraph* den,
-    const double  cen = 1. );
+    const double  cen         = 1.,
+    const bool    extrapolate = false );
 
   static TGraphAsymmErrors* PullDivide(
     const TGraph* num,
@@ -126,8 +128,7 @@ public:
     const FontSet&        = default_font
     );
 
-  virtual
-  ~Ratio1DCanvas();
+  virtual ~Ratio1DCanvas();
 
   /** @brief returning reference to top pad object */
   inline Top1DPad&
@@ -179,7 +180,7 @@ public:
 
 #define DIVIDE_FUNCTION( FUNC_NAME, RET_TYPE, NUM_TYPE, DEN_TYPE )           \
   RET_TYPE& FUNC_NAME(                                                       \
-    const NUM_TYPE&, const DEN_TYPE&, const std::vector<RooCmdArg> & );      \
+    const NUM_TYPE&, const DEN_TYPE&, const std::vector<RooCmdArg>& );      \
   inline NUM_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE & den ){  \
     return FUNC_NAME( num, den, {} ); }                                      \
   template<typename ... Args>                                                \
@@ -193,14 +194,14 @@ public:
   inline RET_TYPE&                                                           \
   FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE & den,                      \
     const RooCmdArg & arg1, Args ... args )                                  \
-  { return FUNC_NAME( *num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); }\
+  { return FUNC_NAME( *num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
   inline RET_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den ){   \
     return FUNC_NAME( num, *den, {} ); }                                     \
   template<typename ... Args>                                                \
   inline RET_TYPE&                                                           \
   FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den,                      \
     const RooCmdArg & arg1, Args ... args )                                  \
-  { return FUNC_NAME( num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); }\
+  { return FUNC_NAME( num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
   inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE* den ){    \
     return FUNC_NAME( *num, *den, {} ); }                                    \
   template<typename ... Args>                                                \

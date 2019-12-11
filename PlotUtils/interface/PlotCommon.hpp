@@ -138,7 +138,8 @@ public:
   TrackY( int x = aut );
   virtual
   ~TrackY(){}
-  inline operator int() const { return getInt( 0 ); }
+  inline operator int() const { return getInt( 0 );
+  }
 };
 
 /**
@@ -151,7 +152,8 @@ public:
   EntryText( const RooCmdArg* x ) : RooCmdArg( *x ){}
   EntryText( const std::string& );
   virtual ~EntryText(){}
-  inline operator std::string() const { return getString( 0 ); }
+  inline operator std::string() const { return getString( 0 );
+  }
   inline const char*
   c_str() const { return getString( 0 );}
 };
@@ -315,7 +317,8 @@ public:
   PlotType( const std::string& );
   virtual
   ~PlotType(){}
-  inline operator int() const { return getInt( 0 ); }
+  inline operator int() const { return getInt( 0 );
+  }
   inline std::string
   str() const { return getString( 0 ); }
   inline const char*
@@ -329,11 +332,12 @@ public:
 class ScaleY : public RooCmdArg
 {
 public:
-  static const std::string CmdName ;
-  ScaleY ( const RooCmdArg* x ) : RooCmdArg( *x ) {}
+  static const std::string CmdName;
+  ScaleY ( const RooCmdArg* x ) : RooCmdArg( *x ){}
   ScaleY( const double s );
-  virtual ~ScaleY() {}
-  inline operator double() const { return getDouble(0); }
+  virtual ~ScaleY(){}
+  inline operator double() const { return getDouble( 0 );
+  }
 };
 
 /**
@@ -385,17 +389,32 @@ public:
   VisualizeError( const TFitResultPtr&,
                   const double z = 1 );
   VisualizeError( const RooFitResult&,
-                  const double z = 1,
+                  const double z            = 1,
                   const bool   linearmethod = true  );
   VisualizeError( const RooFitResult&,
                   const RooArgSet& param,
-                  const double     z = 1,
+                  const double     z            = 1,
                   const bool       linearmethod = true  );
   const RooFitResult& GetRooFitResult() const;
   const TFitResult&   GetTFitResult() const;
   const RooArgSet&    set() const;
   bool                has_set() const;
   virtual ~VisualizeError(){}
+};
+
+/**
+ * @brief Whether or not to extrapolate data points in a ratio plot if the number
+ * of data points in a denominator is smaller than the number of number of data
+ * points in the denominator (Specifically for TGraph family plotting).
+ */
+class ExtrapolateInRatio : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  ExtrapolateInRatio( const RooCmdArg* x ) : RooCmdArg( *x ){}
+  ExtrapolateInRatio( const int flat = kTRUE );
+  inline
+  operator bool() const {return getInt( 0 ); }
 };
 
 /** @} */
