@@ -22,7 +22,7 @@
 #include <string>
 
 
-static bool run_ghostscript( const std::vector<std::string>& );
+static bool run_ghostscript( const std::vector<std::string>& args );
 
 namespace usr  {
 
