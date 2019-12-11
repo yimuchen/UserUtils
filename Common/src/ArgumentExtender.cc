@@ -5,16 +5,17 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #else
 #include "UserUtils/Common/ArgumentExtender.hpp"
+#include "UserUtils/Common/Format.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/exception/diagnostic_information.hpp>
 #include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/program_options/errors.hpp>
 
 #include <algorithm>
@@ -336,7 +337,10 @@ ArgumentExtender::MakeFile(
   }
 
   for( const auto& x : _namescheme ){
-    filename += "_" + genPathString( x );
+    const std::string str = genPathString( x );
+    if( str != "" ){
+      filename += "_" + genPathString( x );
+    }
   }
 
   filename += "." + ext;
@@ -371,34 +375,139 @@ ArgumentExtender::MakeTEXFile( const std::string& x ) const
 /**
  * @brief Generating the string for a single option input.
  *
- * For the given scheme of { option, prefixstring }, the function will return
- * the string. prefixstring + option_input_as_string. Some substitutions will be
- * name to make the output more friendly to command lines:
+ * For the given scheme of { option, prefixstring }, the function will return the
+ * string: prefixstring + option_input_as_string. Some substitutions will be name
+ * to make the output more friendly to command lines:
  *
  * 1. Decimal points will be replaced with 'p'
  * 2. Spaces (for list multitoken arguments) will be replaced with '-'
  * 3. If the option doesn't have a input (a.k.a. The option is just a boolean
- *    flag), the the option_input_as_string is simply "".
+ *    flag), the the option_input_as_string is would be "On/Off" depending on the
+ *    flag. If prefixstring if empty, then the return string would be "option" or
+ *    ""  depending on the options.
  */
 std::string
 ArgumentExtender::genPathString( const ArgPathScheme& x ) const
 {
-  if( !CheckArg( x.option ) ){ return ""; }
+  std::string inputstring = "";
 
-  const std::string optstring = x.pathstring;
-  std::string inputstring;
-
-  // If casting false, the string will simply be empty
-  // EX. If the option is just a boolean flag
-  try {
-    inputstring = Arg<std::string>( x.option );
-  } catch( ... ){
+  if( IsBooleanFlag( x.option ) ){
+    inputstring = genPathString_Boolean( x );
+  } else if( IsMultiToken( x.option ) ){
+    inputstring = genPathString_List( x );
+  } else {
+    inputstring = genPathString_Single( x );
   }
 
   boost::replace_all( inputstring, ".", "p" );
   boost::replace_all( inputstring, " ", "-" );
 
-  return usr::fstr( "%s%s", optstring, inputstring );
+  return inputstring;
 }
+
+std::string
+ArgumentExtender::genPathString_Boolean( const ArgPathScheme& x ) const
+{
+  const bool flag = CheckArg( x.option );
+
+  if( x.pathstring == "" ){
+    return flag ? x.option : "";
+  } else {
+    return x.pathstring + std::string( flag ? "On" : "Off" );
+  }
+}
+
+std::string
+ArgumentExtender::genPathString_List( const ArgPathScheme& x ) const
+{
+  if( !CheckArg( x.option ) ){ return ""; }
+
+  std::string ans = "";
+
+  if( Args()[x.option].value().type() == typeid( std::vector<std::string> ) ){
+    for( const auto in : ArgList<std::string>( x.option ) ){
+      ans += in + '-';
+    }
+
+    ans.erase( ans.end() - 1 );
+  } else if( Args()[x.option].value().type() == typeid( std::vector<int> ) ){
+    for( const auto in : ArgList<int>( x.option ) ){
+      ans += std::to_string( in ) + '-';
+    }
+
+    ans.erase( ans.end() - 1 );
+  } else if( Args()[x.option].value().type() == typeid( std::vector<double> ) ){
+    for( const auto in : ArgList<double>( x.option ) ){
+      ans += usr::fmt::base::decimal( in ).str() + '-';
+    }
+
+    ans.erase( ans.end() - 1 );
+  }
+
+  return x.pathstring + ans;
+}
+
+std::string
+ArgumentExtender::genPathString_Single( const ArgPathScheme& x ) const
+{
+  if( !CheckArg( x.option ) ){ return ""; }
+
+  std::string ans = "";
+
+  if( Args()[x.option].value().type() == typeid( std::string ) ){
+    ans = Arg<std::string>( x.option );
+  } else if( Args()[x.option].value().type() == typeid( int ) ){
+    ans = std::to_string( Arg<int>(x.option) );
+  } else if( Args()[x.option].value().type() == typeid( double ) ){
+    ans = usr::fmt::base::decimal( Arg<double>(x.option) ).str();
+  }
+
+  return x.pathstring + ans;
+}
+
+
+/**
+ * @brief Checking if a certain options is a bool flag option (i.e. declared with
+ *        no semantic information)
+ *
+ * Options declare with no semantic information (i.e. no
+ * boost::program_options::value<std::string>()] and the like), are typically
+ * used as boolean flags. The function will return if a certain options is
+ * declared as such, using the semantic->mix_token and max_token method (both are
+ * zero if it is)
+ *
+ * In the case that the option doesn't exist in the class instance, false is
+ * always returned.
+ */
+bool
+ArgumentExtender::IsBooleanFlag( const std::string& x ) const
+{
+  const auto description = Description().find_nothrow( x, true );
+
+  if( !description ){ return false; }// Not found
+
+  return description->semantic()->min_tokens() == 0 &&
+         description->semantic()->max_tokens() == 0;
+}
+
+/**
+ * @brief Checking if a certain options takes in multiple inputs.
+ *
+ * Options declare with the multi-token semantic information with have a non-1
+ * max_token method in the sematic information
+ *
+ * In the case that the option doesn't exist in the class instance, false is
+ * always returned.
+ */
+bool
+ArgumentExtender::IsMultiToken( const std::string& x ) const
+{
+  const auto description = Description().find_nothrow( x, true );
+
+  if( !description ){ return false; }// Not found
+
+  return description->semantic()->max_tokens() > 1;
+}
+
 
 }/* usr */

@@ -161,6 +161,7 @@ protected:
   inline po::variables_map&
   Args(){ return _argmap; }
 
+
 private:
   pt::ptree _exttree;
   po::options_description _optdesc;
@@ -172,6 +173,14 @@ private:
 
   void        _init( const std::vector<std::string>& filelist );
   std::string genPathString( const ArgPathScheme& ) const;
+
+  // Helper functions for path generation.
+  bool IsBooleanFlag( const std::string& options ) const;
+  bool IsMultiToken( const std::string& options ) const ;
+
+  std::string genPathString_Boolean( const ArgPathScheme& ) const ;
+  std::string genPathString_List( const ArgPathScheme& ) const ;
+  std::string genPathString_Single( const ArgPathScheme& ) const ;
 };
 
 
