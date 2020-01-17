@@ -24,6 +24,8 @@ GetYmax( const TH1D* hist )
     // Special case for TProfile... (not sure why yet)
     const double binerr  = hist->InheritsFrom( TProfile::Class()) ? 0 :
                            hist->GetBinError( i );
+    // Skipping over Zero bins
+    if( bincont == 0 ) continue;
     ans = std::max( ans, bincont + binerr );
   }
 
@@ -42,6 +44,8 @@ GetYmin( const TH1D* hist )
   for( int i = 1; i <= hist->GetNbinsX(); ++i ){
     const double bincont = hist->GetBinContent( i );
     const double binerr  = hist->GetBinError( i );
+    // Skipping over Zero bins
+    if( bincont == 0 ) continue;
     ans = std::min( ans, bincont - binerr );
   }
 
