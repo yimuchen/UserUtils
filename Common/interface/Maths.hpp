@@ -48,6 +48,7 @@ extern unsigned RoundUpToP2( unsigned x );
  *  Hash value calculation
    --------------------------------------------------------------------------*/
 extern uint64_t HashValue( double x );
+extern uint32_t HashValue32( double x );
 
 // Basic statisitic tools for vectors
 extern double Mean( const std::vector<double>& );
