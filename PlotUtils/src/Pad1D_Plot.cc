@@ -85,7 +85,8 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   // Getting the flags
   const RooArgContainer args( arglist, {
         PlotType( hist ),
-        TrackY( TrackY::max )
+        TrackY( TrackY::max ),
+        FillColor( 0, 0 )
       } );
 
   if( !GetAxisObject() ){
@@ -128,11 +129,11 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     break;
   case plottype::scatter:
     obj.GetXaxis()->IsVariableBinSize() ?
-    PlotObj( obj, "P L E SAME" ) :
+    PlotObj( obj,  "P L E SAME" ) :
     PlotObj( obj, "P E X0 SAME" );
     break;
   case plottype::histerr:
-    PlotObj( obj, "E2 SAME" );
+    PlotObj( obj,     "E2 SAME" );
     break;
   case plottype::histstack:
     if( _workingstack  == 0 ){
@@ -241,7 +242,8 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist,
       {
         PlotType( simplefunc ),
-        !GetAxisObject() ? TrackY( TrackY::both ) : TrackY( TrackY::none )
+        !GetAxisObject() ? TrackY( TrackY::both ) : TrackY( TrackY::none ),
+        FillColor( 0, 0 )
       } );
 
   // If no axis are available. Generating a TH1 object for axis:
@@ -270,7 +272,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     PadBase::PlotObj( obj, "LX" );
     break;
   case fittedfunc:
-    PadBase::PlotObj( obj, "3" );// Draw Error with fill region and then
+    PadBase::PlotObj( obj,  "3" );// Draw Error with fill region and then
     PadBase::PlotObj( obj, "LX" );// Draw the central line. All errors disabled.
     break;
   case scatter:
