@@ -69,8 +69,8 @@ public:
 #undef PASSTHROUGH_PLOTFUNC
 
 #define PASSTHROUGH_VOIDFUNC( FUNC_NAME ) \
-  template<typename ... Args>            \
-  inline void FUNC_NAME( Args ... args ) \
+  template<typename ... Args>             \
+  inline void FUNC_NAME( Args ... args )  \
   { this->Pad().FUNC_NAME( args ... ); }
 
   /**
@@ -79,6 +79,7 @@ public:
    */
   PASSTHROUGH_VOIDFUNC( DrawCMSLabel );
   PASSTHROUGH_VOIDFUNC( DrawLuminosity );
+  PASSTHROUGH_VOIDFUNC( WriteLine );
   PASSTHROUGH_VOIDFUNC( DrawHLine );
   PASSTHROUGH_VOIDFUNC( DrawVLine );
   PASSTHROUGH_VOIDFUNC( SetLogy );

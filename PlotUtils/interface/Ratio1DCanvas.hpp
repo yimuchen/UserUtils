@@ -20,9 +20,6 @@
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
-#include <memory>
-#include <vector>
-
 namespace usr  {
 
 namespace plt  {
@@ -178,36 +175,36 @@ public:
   /** @} */
 #undef PASSTHOUGH_TOPVOIDFUNC
 
-#define DIVIDE_FUNCTION( FUNC_NAME, RET_TYPE, NUM_TYPE, DEN_TYPE )           \
-  RET_TYPE& FUNC_NAME(                                                       \
-    const NUM_TYPE&, const DEN_TYPE&, const std::vector<RooCmdArg>& );      \
-  inline NUM_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE & den ){  \
-    return FUNC_NAME( num, den, {} ); }                                      \
-  template<typename ... Args>                                                \
-  inline RET_TYPE&                                                           \
-  FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE & den,                     \
-    const RooCmdArg & arg1, Args ... args )                                  \
-  { return FUNC_NAME( num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
-  inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE & den ){   \
-    return FUNC_NAME( *num, den, {} ); }                                     \
-  template<typename ... Args>                                                \
-  inline RET_TYPE&                                                           \
-  FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE & den,                      \
-    const RooCmdArg & arg1, Args ... args )                                  \
+#define DIVIDE_FUNCTION( FUNC_NAME, RET_TYPE, NUM_TYPE, DEN_TYPE )            \
+  RET_TYPE& FUNC_NAME(                                                        \
+    const NUM_TYPE&, const DEN_TYPE&, const std::vector<RooCmdArg>& );        \
+  inline NUM_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE & den ){   \
+    return FUNC_NAME( num, den, {} ); }                                       \
+  template<typename ... Args>                                                 \
+  inline RET_TYPE&                                                            \
+  FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE & den,                      \
+    const RooCmdArg & arg1, Args ... args )                                   \
+  { return FUNC_NAME( num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); }  \
+  inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE & den ){    \
+    return FUNC_NAME( *num, den, {} ); }                                      \
+  template<typename ... Args>                                                 \
+  inline RET_TYPE&                                                            \
+  FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE & den,                       \
+    const RooCmdArg & arg1, Args ... args )                                   \
   { return FUNC_NAME( *num, den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
-  inline RET_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den ){   \
-    return FUNC_NAME( num, *den, {} ); }                                     \
-  template<typename ... Args>                                                \
-  inline RET_TYPE&                                                           \
-  FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den,                      \
-    const RooCmdArg & arg1, Args ... args )                                  \
+  inline RET_TYPE& FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den ){    \
+    return FUNC_NAME( num, *den, {} ); }                                      \
+  template<typename ... Args>                                                 \
+  inline RET_TYPE&                                                            \
+  FUNC_NAME( const NUM_TYPE & num, const DEN_TYPE* den,                       \
+    const RooCmdArg & arg1, Args ... args )                                   \
   { return FUNC_NAME( num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); } \
-  inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE* den ){    \
-    return FUNC_NAME( *num, *den, {} ); }                                    \
-  template<typename ... Args>                                                \
-  inline RET_TYPE&                                                           \
-  FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE* den,                       \
-    const RooCmdArg & arg1, Args ... args )                                  \
+  inline RET_TYPE& FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE* den ){     \
+    return FUNC_NAME( *num, *den, {} ); }                                     \
+  template<typename ... Args>                                                 \
+  inline RET_TYPE&                                                            \
+  FUNC_NAME( const NUM_TYPE* num, const DEN_TYPE* den,                        \
+    const RooCmdArg & arg1, Args ... args )                                   \
   { return FUNC_NAME( *num, *den, MakeVector<RooCmdArg>( arg1, args ... ) ); }
 
   /**

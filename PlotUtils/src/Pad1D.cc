@@ -34,6 +34,7 @@ Pad1D::Pad1D( const PadSize& size, const RangeByVar& range ) :
   _legendposition( align::top_right )
 {
   // Common setup for pads
+  TPad::SetFillColorAlpha( usr::plt::col::white, 0 );
   TPad::SetTicks( 1, 1 );
   _init_legend();
 }

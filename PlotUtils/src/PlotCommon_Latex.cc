@@ -140,7 +140,7 @@ EstimateLatexWidth( const std::string& text )
 
   // Replacing all symbols with just EM space
   while( std::regex_match( un_text, match, sym_regex ) ){
-    std::regex_replace( un_text, sym_regex, "M" );
+    un_text = std::regex_replace( un_text, sym_regex, "M" );
   }
 
   // Should have no more symbols
