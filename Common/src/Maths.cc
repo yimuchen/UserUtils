@@ -221,6 +221,31 @@ Hash32Join( const uint32_t x, const uint32_t y )
   return ( hash >> 32 ) ^ hash;
 }
 
+uint64_t
+OrderedHash64( const std::vector<double>& vec )
+{
+  uint64_t ans = HashValue64( vec.size() );
+
+  for( const double val : vec ){
+    ans = Hash64Join( ans, usr::HashValue64( val ) );
+  }
+
+  return ans;
+}
+
+uint32_t
+OrderedHash32( const std::vector<double>& vec )
+{
+  uint32_t ans = HashValue32( (double)vec.size() );
+
+  for( const double val : vec ){
+    ans = Hash32Join( ans, usr::HashValue32( val ) );
+  }
+
+  return ans;
+}
+
+
 /**
  * @brief Calculating the mean of a double vector
  *

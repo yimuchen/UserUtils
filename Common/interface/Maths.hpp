@@ -51,6 +51,8 @@ extern uint64_t HashValue64( double x );
 extern uint32_t HashValue32( double x );
 extern uint64_t Hash64Join( uint64_t, uint64_t );
 extern uint32_t Hash32Join( uint32_t, uint32_t );
+extern uint64_t OrderedHash64( const std::vector<double>& );
+extern uint32_t OrderedHash32( const std::vector<double>& );
 
 /*-----------------------------------------------------------------------------
  *  Statistics with vector<double>s
