@@ -8,7 +8,10 @@
 #ifndef USERUTILS_EDMUTILS_PLUGINALIAS_HPP
 #define USERUTILS_EDMUTILS_PLUGINALIAS_HPP
 
-#include "FWCore/Framework/interface/EDConsumerBase.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDFilter.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "TObject.h"
@@ -27,7 +30,8 @@ namespace usr {
  *          Writing an alias to the function, therefore, requires all future
  *          plugins to inherit from this alias class.
  */
-class PluginAlias : public virtual edm::EDConsumerBase
+template<typename EDMPLUGIN>
+class PluginAlias : public EDMPLUGIN
 {
 public:
 
@@ -52,7 +56,8 @@ protected:
   inline edm::EDGetToken
   GetToken( const std::string& configtag )
   {
-    return consumes<TYPE>( _config.getParameter<edm::InputTag>( configtag ) );
+    return edm::EDConsumerBase::consumes<TYPE>(
+      _config.getParameter<edm::InputTag>( configtag ) );
   }
 
   /**
@@ -63,7 +68,7 @@ protected:
   inline edm::EDGetToken
   GetRunToken( const std::string& configtag )
   {
-    return consumes<TYPE, edm::InRun>(
+    return edm::EDConsumerBase::consumes<TYPE, edm::InRun>(
       _config.getParameter<edm::InputTag>( configtag ) );
   }
 
@@ -83,19 +88,46 @@ protected:
   GetFilePath( const std::string& filetag )
   { return GetFilePath( _config, filetag ); }
 
+  /**
+   * @brief returing the string to a path in the parameterset if an
+   *        EDM::FileInPath was used.
+   */
   static std::string GetFilePath(
-    const edm::ParameterSet&,
-    const std::string& );
+    const edm::ParameterSet& config,
+    const std::string&       filetag )
+  {
+    return config.getParameter<edm::FileInPath>( filetag ).fullPath();
+  }
 
+  /**
+   * @brief Given a file path in the form of an EDM::FileInPath, and a object key
+   *        as a parameter set string.
+   *
+   * This function return a clone to the object stored in a file for analysis
+   * use.
+   */
   static TObject* GetFileObj(
     const edm::ParameterSet& config,
-    const std::string&       file,
-    const std::string&       objname );
+    const std::string&       filetag,
+    const std::string&       objtag )
+  {
+    const std::string filename = GetFilePath( config, filetag );
+    const std::string objname  = config.getParameter<std::string>( objtag );
+    TFile* file                = TFile::Open( filename.c_str() );
+    TObject* ans               = file->Get( objname.c_str() )->Clone();
+    file->Close();
+    return ans;
+  }
 
 private:
   const edm::ParameterSet& _config;
-
 };
+
+typedef PluginAlias<edm::one::EDAnalyzer<edm::one::SharedResources> >
+  EDAnalyzer;
+typedef PluginAlias<edm::one::EDFilter<edm::one::SharedResources> >
+  EDFilter;
+
 
 }/* usr */
 
