@@ -15,6 +15,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "TObject.h"
+#include "TFile.h"
 
 #include <string>
 

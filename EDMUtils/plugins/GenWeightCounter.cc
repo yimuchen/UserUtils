@@ -18,8 +18,8 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 
-#include "UserUtils/Common/interface/STLUtils.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
+#include "UserUtils/Common/interface/STLUtils.hpp"
 #include "UserUtils/EDMUtils/interface/Counter.hpp"
 #include "UserUtils/EDMUtils/interface/PluginAlias.hpp"
 
@@ -60,12 +60,11 @@
  * constructor.
  */
 class GenWeightCounter :
-  public edm::one::EDProducer<edm::one::WatchRuns, edm::EndRunProducer>,
-  public virtual usr::PluginAlias
+  public usr::PluginAlias<edm::one::EDProducer<edm::one::WatchRuns,
+                                               edm::EndRunProducer> >
 {
 public:
-  explicit
-  GenWeightCounter( const edm::ParameterSet& );
+  explicit GenWeightCounter( const edm::ParameterSet& );
   ~GenWeightCounter();
 
 private:
@@ -77,7 +76,7 @@ private:
   const edm::EDGetToken _lhesrc;
   std::vector<int> _idlist;
 
-  double _evtsum ;
+  double _evtsum;
   std::map<int, double> _sumlist;
 };
 
@@ -127,6 +126,7 @@ GenWeightCounter::beginRun( const edm::Run&, const edm::EventSetup& )
   for( auto& sum  : _sumlist ){
     sum.second = 0;
   }
+
   _evtsum = 0;
 }
 
@@ -141,9 +141,9 @@ GenWeightCounter::produce( edm::Event& iEvent, const edm::EventSetup& iSetup )
 
   iEvent.getByToken( _lhesrc, _lhehandle );
 
-  if( !_lhehandle.isValid() ){ // Data, or LHE information is unavailable
+  if( !_lhehandle.isValid() ){// Data, or LHE information is unavailable
     _sumlist.at( 0 ) += 1;
-    _evtsum += 1;
+    _evtsum          += 1;
     return;
   } else {
     // Getting the required raw weights.
