@@ -15,17 +15,35 @@
 
 #include <iostream>
 #include <queue>
+#include <fstream>
+#include <sstream>
+#include <regex>
 
 namespace usr {
 
 /**
  * @brief populating a property tree from a json file.
+ *
+ * We are going to add the ability to have comments via a line that begins with a
+ * '#' character (ignoring leading whitespaces)
  */
 pt::ptree
 FromJsonFile( const std::string& filename )
 {
+  static const std::regex leading_whitespace("^\\s+");
+
   pt::ptree ans;
-  pt::read_json( filename, ans );
+  std::ifstream file_content(filename, std::ios::in );
+  std::stringstream json_content ;
+  std::string line ;
+
+  while( std::getline(file_content, line ) ){
+    line = std::regex_replace( line, leading_whitespace, "" );
+    if( line.length() > 0 && line.at(0) == '#' ){ continue; }
+    json_content << line;
+  }
+
+  pt::read_json( json_content, ans );
   return ans;
 }
 
@@ -137,7 +155,7 @@ bool
 CheckQuery( const pt::ptree& tree, const std::string& query )
 {
   try {
-    tree.get_child(query);
+    tree.get_child( query );
     return true;
   } catch( boost::exception& e ){
     return false;

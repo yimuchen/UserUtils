@@ -58,6 +58,11 @@ template<typename T>
 extern T GetSingle( const pt::ptree& tree, const std::string& query );
 
 template<typename T>
+extern T GetSingleOptional( const pt::ptree&   tree,
+                            const std::string& query,
+                            const T&           def );
+
+template<typename T>
 extern std::vector<T> GetList( const pt::ptree&, const std::string& );
 
 extern pt::ptree GetSubTree( const pt::ptree&, const std::string& );
@@ -97,6 +102,15 @@ extern T
 GetSingle( const pt::ptree& tree, const std::string& query )
 {
   return tree.get<T>( query );
+}
+
+template<typename T>
+extern T
+GetSingleOptional( const pt::ptree&   tree,
+                   const std::string& query,
+                   const T&           def )
+{
+  return CheckQuery( tree, query ) ? tree.get<T>( query ) : def;
 }
 
 /**
