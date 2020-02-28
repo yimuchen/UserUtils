@@ -4,12 +4,12 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/MathUtils/interface/Measurement.hpp"
 #include "UserUtils/MathUtils/interface/GSLUtil.hpp"
+#include "UserUtils/MathUtils/interface/Measurement.hpp"
 #include "UserUtils/MathUtils/interface/StatisticsUtil.hpp"
 #else
-#include "UserUtils/MathUtils/Measurement.hpp"
 #include "UserUtils/MathUtils/GSLUtil.hpp"
+#include "UserUtils/MathUtils/Measurement.hpp"
 #include "UserUtils/MathUtils/StatisticsUtil.hpp"
 #endif
 
@@ -72,7 +72,9 @@ MakeMinos(
     lowerguess
     );
 
-  return Measurement( central, upperbound-central, central - lowerbound );
+  return Measurement( central
+                    , fabs( upperbound-central )
+                    , fabs( central - lowerbound ) );
 }
 
 
@@ -189,7 +191,7 @@ Measurement
 SumUncorrelated(
   const vector<Measurement>& paramlist,
   const double confidencelevel,
-  double ( *nll )( double, const Measurement& )
+  double ( * nll )( double, const Measurement& )
   )
 {
   const unsigned dim = paramlist.size();
@@ -225,7 +227,7 @@ SumUncorrelated(
   sqrt_sumsq_up = sqrt( sqrt_sumsq_up );
 
   for( size_t i = 0; i < paramlist.size(); ++i ){
-    const Measurement& p = paramlist.at( i );
+    const Measurement& p  = paramlist.at( i );
     const double shift_up = sqrt_sumsq_up / p.AbsUpperError();
     const double shift_lo = sqrt_sumsq_lo / p.AbsLowerError();
     gsl_vector_set( upperguess, i,
@@ -264,7 +266,7 @@ Measurement
 ProdUncorrelated(
   const std::vector<Measurement>& paramlist,
   const double confidencelevel,
-  double ( *nll )( double, const Measurement& )
+  double ( * nll )( double, const Measurement& )
   )
 {
   const unsigned dim = paramlist.size();
@@ -295,11 +297,11 @@ ProdUncorrelated(
   gsl_vector* lowerguess = gsl_vector_alloc( dim );
 
   for( size_t i = 0; i < normlist.size(); ++i ){
-   const Measurement& p = normlist.at( i );
-   gsl_vector_set( initguess,  i, p.CentralValue() );
-   // Don't attempt to scale the guess, works better for products
-   gsl_vector_set( upperguess, i, p.CentralValue()+p.AbsUpperError() );
-   gsl_vector_set( lowerguess, i, p.CentralValue()-p.AbsLowerError() );
+    const Measurement& p = normlist.at( i );
+    gsl_vector_set( initguess,  i, p.CentralValue() );
+    // Don't attempt to scale the guess, works better for products
+    gsl_vector_set( upperguess, i, p.CentralValue()+p.AbsUpperError() );
+    gsl_vector_set( lowerguess, i, p.CentralValue()-p.AbsLowerError() );
   }
 
   // Calling MinosError function for actual computation

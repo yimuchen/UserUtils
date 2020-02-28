@@ -136,7 +136,7 @@ Measurement::operator*( const Measurement& x ) const
   if( x.AbsUpperError() == 0 && x.AbsLowerError() == 0 ){
     return ( *this ) * x.CentralValue();
   } else if( this->AbsUpperError() == 0 && this->AbsLowerError() == 0 ){
-    return x + this->CentralValue();
+    return x * this->CentralValue();
   } else {
     return Prod( *this, x );
   }
