@@ -174,16 +174,16 @@ public:
   // Changing plot sequence.
   bool MoveTargetToBefore( const TObject& target, const TObject& before );
 
-#define TPAD_RETURN_PASSTHROUGH( RETURN_TYPE, FUNCTION_NAME )\
-  template<typename ... Args>                                \
-  inline RETURN_TYPE FUNCTION_NAME( Args ... args ) {        \
-    return TPad::FUNCTION_NAME( args... );                   \
+#define TPAD_RETURN_PASSTHROUGH( RETURN_TYPE, FUNCTION_NAME ) \
+  template<typename ... Args>                                 \
+  inline RETURN_TYPE FUNCTION_NAME( Args ... args ){          \
+    return TPad::FUNCTION_NAME( args ... );                   \
   }
 
-#define TPAD_VOID_PASSTHROUGH( FUNCTION_NAME )\
-  template<typename ... Args>                 \
-  inline void FUNCTION_NAME( Args ... args ){ \
-    TPad::FUNCTION_NAME( args... );           \
+#define TPAD_VOID_PASSTHROUGH( FUNCTION_NAME ) \
+  template<typename ... Args>                  \
+  inline void FUNCTION_NAME( Args ... args ){  \
+    TPad::FUNCTION_NAME( args ... );           \
   }
 
   TPAD_VOID_PASSTHROUGH( SetFillColorAlpha );
@@ -192,6 +192,9 @@ public:
 #undef TPAD_RETURN_PASSTHROUGH
 #undef TPAD_VOID_PASSTHROUGH
 
+  // Access to Parent
+  const Canvas& ParentCanvas() const;
+  Canvas&       ParentCanvas();
 
 protected:
 
@@ -205,7 +208,6 @@ protected:
   float _latex_cursory;
 
   PadBase( const PadSize& );
-  const Canvas&  ParentCanvas() const;
   const FontSet& Font() const;
   virtual void   InitDraw();
   virtual void   Finalize();

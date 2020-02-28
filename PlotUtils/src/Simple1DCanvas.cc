@@ -22,7 +22,7 @@ namespace plt  {
  */
 length_t Simple1DCanvas::default_width  = 0.8 * len::a4textwidth_default();
 length_t Simple1DCanvas::default_height = 0.8 * len::a4textwidth_default();
-FontSet  Simple1DCanvas::default_font = FontSet();
+FontSet  Simple1DCanvas::default_font = FontSet(8);
 /** @} */
 
 /**

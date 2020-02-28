@@ -241,11 +241,11 @@ public:
   void SetRightMargin( const float x );
   void SetBottomMargin( const float x );
 
+  void MakeBottomAxis();
+
 protected:
   float _splitNDC( const float ratio ) const;
   void  _init_margin( const float gap );
-
-  void MakeBottomAxis();
 };
 
 }/* plt  */

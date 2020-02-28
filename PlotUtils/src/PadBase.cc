@@ -65,6 +65,18 @@ PadBase::ParentCanvas() const
 }
 
 /**
+ * @brief Returning referece to parent canvas.
+ *
+ * @details Using C style type casting on the TPad method, as dynamic cast
+ * requires public inheritance.
+ */
+Canvas&
+PadBase::ParentCanvas()
+{
+  return *( (Canvas*)( TPad::GetMother() ) );
+}
+
+/**
  * @brief Returning reference to the font settings stored in the parent canvas.
  */
 const FontSet&
