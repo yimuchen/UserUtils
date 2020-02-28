@@ -13,6 +13,7 @@
 *.root
 *.log
 log*
+*.pdf
 *.cmake
 Makefile
 CMakeFiles/
