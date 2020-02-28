@@ -51,9 +51,9 @@ Pad1D::_init_legend()
  */
 void
 Pad1D::AddLegendEntry(
-  TH1D&              hist,
-  const std::string& title,
-  const RooCmdArg&   plotopt )
+  TH1D&            hist,
+  const EntryText& entryopt,
+  const PlotType&  plotopt )
 {
   const std::string legopt =
     plotopt.getInt( 0 ) == plottype::hist ? "LF" :
@@ -69,14 +69,18 @@ Pad1D::AddLegendEntry(
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
-    _legend.AddEntry( &hist, title.c_str(), legopt.c_str() );
+    _legend.AddEntry( &hist, entryopt.c_str(), legopt.c_str() );
 
   } else {
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &hist, title.c_str(), legopt.c_str() );
-    _legend.GetListOfPrimitives()->AddFirst( entry );
+    auto entry = new TLegendEntry( &hist, entryopt.c_str(), legopt.c_str() );
+    if( entryopt.PlaceLast() ){
+      _legend.GetListOfPrimitives()->AddLast( entry );
+    } else {
+      _legend.GetListOfPrimitives()->AddFirst( entry );
+    }
   }
 }
 
@@ -101,9 +105,9 @@ Pad1D::AddLegendEntry(
  */
 void
 Pad1D::AddLegendEntry(
-  TGraph&            graph,
-  const std::string& title,
-  const RooCmdArg&   plotopt )
+  TGraph&          graph,
+  const EntryText& entryopt,
+  const PlotType&  plotopt )
 {
   const int plottype = plotopt.getInt( 0 );
   double x_width     = 0;
@@ -134,13 +138,17 @@ Pad1D::AddLegendEntry(
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
-    _legend.AddEntry( &graph, title.c_str(), legopt.c_str() );
+    _legend.AddEntry( &graph, entryopt.c_str(), legopt.c_str() );
   } else {
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &graph, title.c_str(), legopt.c_str() );
-    _legend.GetListOfPrimitives()->AddFirst( entry );
+    auto entry = new TLegendEntry( &graph, entryopt.c_str(), legopt.c_str() );
+    if( entryopt.PlaceLast() ){
+      _legend.GetListOfPrimitives()->AddLast( entry );
+    } else {
+      _legend.GetListOfPrimitives()->AddFirst( entry );
+    }
   }
 }
 

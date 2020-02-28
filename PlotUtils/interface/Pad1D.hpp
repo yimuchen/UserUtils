@@ -261,8 +261,8 @@ protected:
   void FixVLines();
 
   void _init_legend();
-  void AddLegendEntry( TH1D&, const std::string&, const RooCmdArg& );
-  void AddLegendEntry( TGraph&, const std::string&, const RooCmdArg& );
+  void AddLegendEntry( TH1D&, const EntryText&, const PlotType& );
+  void AddLegendEntry( TGraph&, const EntryText&, const PlotType& );
 
   // Helper function for Plot<> Functions
   void    TrackObjectY( const TObject& obj, const int tracky );

@@ -150,10 +150,11 @@ class EntryText : public RooCmdArg
 public:
   static const std::string CmdName;
   EntryText( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  EntryText( const std::string& );
+  EntryText( const std::string&, const int place_last = 0 );
   virtual ~EntryText(){}
   inline operator std::string() const { return getString( 0 );
   }
+  inline bool PlaceLast() const { return getInt(0); }
   inline const char*
   c_str() const { return getString( 0 );}
 };

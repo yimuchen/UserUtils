@@ -69,8 +69,8 @@ USRUTILS_COMMON_REGISTERCMD( EntryText );
 /**
  * @brief define entry text string.
  */
-EntryText::EntryText( const std::string& str ) :
-  RooCmdArg( CmdName.c_str(), 0, 0, 0, 0, str.c_str() ){}
+EntryText::EntryText( const std::string& str, const int pl ) :
+  RooCmdArg( CmdName.c_str(), pl, 0, 0, 0, str.c_str() ){}
 
 // ---------------------------------------------------------------------------//
 
