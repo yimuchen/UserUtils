@@ -392,6 +392,7 @@ void
 Pad1D::SetHistAxisTitles(
   const std::string& title,
   const std::string& unit,
+  const std::string& ytitle,
   const double       forcebinwidth )
 {
   if( !GetAxisObject() ){
@@ -401,9 +402,7 @@ Pad1D::SetHistAxisTitles(
   // X axis is straight forwards
   SetAxisTitle( Xaxis(), title, unit );
 
-  // y axis part is more complicated.
-  const std::string varwidthfmt = "Events";
-
+  // Yaxis part is a bit more complicated
   const std::string binwidthstr
     = forcebinwidth != autobinwidth ? forcebinwidth :
       usr::fmt::base::decimal( Xaxis().GetBinWidth( 0 ), -2 );
@@ -413,13 +412,13 @@ Pad1D::SetHistAxisTitles(
     = binwidthstr == "1" && unit == "" ? "" :
       usr::fstr( "[ %s %s ]", binwidthstr, unit );
 
-  const std::string ytitle
-    = Xaxis().IsVariableBinSize()       ? varwidthfmt :
-      forcebinwidth == forcevarbinwidth ? varwidthfmt :
-      den == ""                         ? varwidthfmt :
-      usr::fstr( "Events/ %s", den );
+  const std::string ytitle_string
+    = Xaxis().IsVariableBinSize()       ? ytitle :
+      forcebinwidth == forcevarbinwidth ? ytitle :
+      den == ""                         ? ytitle :
+      usr::fstr( "%s / %s", ytitle, den );
 
-  SetAxisTitle( Yaxis(), ytitle );
+  SetAxisTitle( Yaxis(), ytitle_string );
 }
 
 /**

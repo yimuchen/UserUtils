@@ -181,6 +181,7 @@ public:
   void SetHistAxisTitles(
     const std::string& title,
     const std::string& unit          = "",
+    const std::string& ytitle        = "Events",
     const double       forcebinwidth = autobinwidth
     );
 
