@@ -136,7 +136,7 @@ GetYmax( const THStack* x )
 
   TH1* first = (TH1*)x->GetHists()->At( 0 );
 
-  for( int i = 1; i < first->GetNcells(); ++i ){
+  for( int i = 1; i <= first->GetNbinsX(); ++i ){
     double sum = 0;
 
     for( int j = 0; j < x->GetNhists(); ++j ){
@@ -163,7 +163,7 @@ GetYmin( const THStack* x )
 
   TH1* first = (TH1*)x->GetHists()->At( 0 );
 
-  for( int i = 1; i < first->GetNcells(); ++i ){
+  for( int i = 1; i <= first->GetNbinsX(); ++i ){
     double sum = 0;
 
     for( int j = 0; j < x->GetNhists(); ++j ){
