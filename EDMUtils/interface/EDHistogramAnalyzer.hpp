@@ -30,16 +30,5 @@ protected:
   }
 };
 
-EDHistogramAnalyzer::EDHistogramAnalyzer( const edm::ParameterSet& config  ) :
-  PluginAlias( config )
-{
-  usesResource( "TFileService" );
-}
-
-EDHistogramAnalyzer::~EDHistogramAnalyzer()
-{
-}
-
-
 
 }// namespace usr

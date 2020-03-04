@@ -116,6 +116,7 @@ protected:
     const std::string objname  = config.getParameter<std::string>( objtag );
     TFile* file                = TFile::Open( filename.c_str() );
     TObject* ans               = file->Get( objname.c_str() )->Clone();
+    //ans->SetDirectory(0); // Detach object from parent directory.
     file->Close();
     return ans;
   }
