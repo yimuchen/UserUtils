@@ -133,6 +133,8 @@ Process::Process( const usr::pt::ptree& tree ) :
                  GetSingle<usr::Measurement>( tree, "Cross Section" ) :
                  usr::Measurement( 1, 0, 0 ) ),
   file( GetSingle<std::string>( tree, "File" ) ),
+  color( GetSingleOptional<std::string>( tree, "color", "#0000FF" ) ),
+  key_prefix( GetSingleOptional<std::string>( tree, "key prefix", "" ) ),
   scale( GetSingleOptional( tree, "Scale", 1.0 ) ),
   effective_luminosity( GetSingleOptional<double>( tree, "Luminosity", 0 ) ),
   run_range_min( CheckQuery( tree, "Run range" ) ?
@@ -164,16 +166,28 @@ Process::Process( const usr::pt::ptree& tree ) :
   }
 }
 
+std::string Process::MakeKey( const std::string& key ) const
+{
+  return key_prefix + key ;
+}
+
 bool Process::CheckKey( const std::string& key ) const
 {
-  return _file->FindKey( key.c_str() );
+  return _file->FindKey( MakeKey(key).c_str() );
 }
 
 TH1D* Process::GetClone( const std::string& key ) const
 {
   _file->cd( 0 );
-  TH1D* ans = (TH1D*)( _file->Get( key.c_str() )->Clone() );
+  TH1D* ans = (TH1D*)( _file->Get( MakeKey(key).c_str() )->Clone() );
   ans->SetDirectory( 0 );
+  return ans;
+}
+
+TH1D* Process::GetNormalizedClone( const std::string& key ) const
+{
+  TH1D* ans = GetClone( key ) ;
+  ans->Scale( ans->Integral() );
   return ans;
 }
 
@@ -186,6 +200,8 @@ TH1D* Process::GetScaledClone( const std::string& key, const double total ) cons
   return ans;
 }
 
+
+//** End of namespaces
 }
 
 }

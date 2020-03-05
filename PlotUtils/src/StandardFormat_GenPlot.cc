@@ -64,6 +64,27 @@ void BatchRequest::GeneratePlots()
   }
 }
 
+void BatchRequest::GenerateSampleComparePlot()
+{
+  for( const auto& histrequest : histlist ){
+    Simple1DCanvas c;
+
+    for( const auto& process : signallist ){
+      c.PlotHist( process.GetNormalizedClone( histrequest.filekey ),
+        usr::plt::PlotType( usr::plt::hist ),
+        usr::plt::LineColor( TColor::GetColor( process.color.c_str() ) ),
+        usr::plt::EntryText( process.name ) );
+    }
+
+    c.Pad().SetHistAxisTitles( histrequest.xaxis
+                             , histrequest.units
+                             , histrequest.yaxis );
+
+    c.DrawCMSLabel( "Simulation", "CMS" );
+    c.SaveAsPDF( histrequest.name + ".pdf" );
+  }
+}
+
 void BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
 {
   // Plotting the background
@@ -101,18 +122,11 @@ void BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
     usr::plt::EntryText( "Bkg. unc (stat.)", true ) );
 
   for( const auto& signal : signallist ){
-    TObject* obj = signal._file->Get( histrequest.filekey.c_str() )->Clone();
-    if( obj->InheritsFrom( TGraph::Class() ) ){
-      pad.PlotGraph( (TGraph*)obj,
-        usr::plt::PlotType( usr::plt::simplefunc ),
-        usr::plt::TrackY( usr::plt::TrackY::max ),
-        usr::plt::EntryText( signal.name ) );
-    } else if( obj->InheritsFrom( TH1D::Class() ) ){
-      pad.PlotHist( (TH1D*)obj,
-        usr::plt::PlotType( usr::plt::hist ),
-        usr::plt::LineColor( kRed ),
-        usr::plt::EntryText( signal.name ) );
-    }
+    pad.PlotHist( signal.GetScaledClone( histrequest.filekey
+                                       , _total_luminosity ),
+      usr::plt::PlotType( usr::plt::hist ),
+      usr::plt::LineColor( TColor::GetColor( signal.color.c_str() ) ),
+      usr::plt::EntryText( signal.name ) );
   }
 
   pad.PlotHist( _data_hist.get(),

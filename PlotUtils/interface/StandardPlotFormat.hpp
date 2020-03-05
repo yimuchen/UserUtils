@@ -40,6 +40,7 @@ public:
   usr::Measurement cross_section;
   std::string file;
   std::string color;
+  std::string key_prefix ;
   double scale;
   double effective_luminosity;
   unsigned run_range_min;
@@ -51,6 +52,8 @@ private:
   TFile* _file;
 
   bool  CheckKey( const std::string& ) const;
+  std::string MakeKey( const std::string&) const ;
+  TH1D* GetNormalizedClone( const std::string& ) const ;
   TH1D* GetScaledClone( const std::string&, const double ) const;
   TH1D* GetClone( const std::string& ) const;
 };
@@ -113,6 +116,8 @@ public:
   BatchRequest( const usr::pt::ptree& tree );
 
   void GeneratePlots();
+
+  void GenerateSampleComparePlot() ;
 
   void GenerateSimulationTable( std::ostream& stream )  const;
   void GenerateSimulationSummary( std::ostream& stream ) const;
