@@ -13,7 +13,7 @@ function(make_mathutils_test testfile)
   add_executable( ${testbin} ${testfile} )
   set_target_properties( ${testbin} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/testbin/MathUtils )
-  target_link_libraries( ${testbin} MathUtils )
+  target_link_libraries( ${testbin} MathUtils ${ROOT_LIBRARIES})
 endfunction()
 
 ## Listing all unit test functions to perform
