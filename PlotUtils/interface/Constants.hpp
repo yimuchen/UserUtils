@@ -137,6 +137,7 @@ namespace sty  {
 inline float
 mkrpixels( const int x ){ return x / 8; }
 
+extern const short marker( const std::string& x );
 extern const short mkrcircle;
 extern const short mkrsquare;
 extern const short mkrtriangleup;
@@ -152,22 +153,27 @@ extern const short mkropendiamond;
 extern const short mkropencross;
 extern const short mkropenstar;
 
-
+extern const short fill( const std::string& );
 extern const short fillnone;
 extern const short fillsolid;
 extern const short filldotdense;
 extern const short filldot;
 extern const short filldotsparse;
+extern const short fillhashsparse;
+extern const short fillhashdense;
+extern const short fillhashforward;
+extern const short fillhashbackward;
 
-const short fillhash( unsigned short distance,
-                      unsigned short angle1,
-                      unsigned short angle2 );
+extern const short fillhash( unsigned short distance,
+                             unsigned short angle1,
+                             unsigned short angle2 );
 extern const short distmm( const float );
 extern const short anglenone;
 extern const short angle1( const float );
 extern const short angle2( const float );
 
 // Line style
+extern const short line( const std::string& );
 extern const short linsolid;
 extern const short lindotted;
 extern const short lindensedot;
@@ -183,6 +189,11 @@ extern const short linshortdash;
  */
 namespace col
 {
+
+/**
+ * @brief Returning color code based on string
+ */
+extern int color( const std::string& );
 
 /**
  * @addtogroup PlotUtilsConstants

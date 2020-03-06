@@ -1,4 +1,14 @@
+#ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#endif
+
 #include "TColor.h"
+
+#include <boost/algorithm/string.hpp>
+#include <regex>
+#include <string>
 
 namespace usr {
 
@@ -162,6 +172,225 @@ extern const int white                = TColor::GetColor( "#FFFFFF" );
 // Standard colors for Brazillean flag plot
 extern const int bzgreen  = kGreen + 1;
 extern const int bzyellow = kOrange;
+
+// String color code conversion functions
+static int default_return = gray;
+static int color_from_hex( const std::string& x );
+static int color_from_name( const std::string& x );
+
+/**
+ * @details The input string can either be a name of the color (ex. "red") or a
+ * hex code for a color with a leading '#' (ex. "#FF00AA", or "#587").
+ *
+ * In the case that the input string is a color name and a corresponding variable
+ * is defined as global variable name in the Constants.hpp file, It would return
+ * the same value as the global variable. For example:
+ *
+ * assert( usr::plt::col::silver == usr::plt::col::color("silver") )
+ *
+ * would always pass. Note that the input string would be converted to all
+ * lower-case and stripped of white spaces before attempting to retrieve the
+ * string value, so "darkgray", "DarkGray", "dark gray", "DARKgray" would all
+ * return the same value.
+ *
+ * In the case that the input string is a hex color code, this function behaves
+ * similar to TColor::GetColor(). One key difference is it accepts abbreviated
+ * hex-code (a.k.a. three-digit long codes), and expands to it's equivalent
+ * six-digit color code ("#ABC" is expanded to "#AABBCC"... etc).
+ *
+ * In both cases, if the conversion fails, such as the corresponding color name
+ * isn't defined, or an illegal color code is given, the default return color is
+ * `usr::plt::col::gray` without any error message returns.
+ */
+int color( const std::string& x )
+{
+  if( x.find( "#" ) == 0  ){
+    // Starts with #, assuming hex code
+    return color_from_hex( x );
+  } else {
+    return color_from_name( x );
+  }
+}
+
+int color_from_hex( const std::string& x )
+{
+  static const std::regex hex_regex( "#[0-9A-F]{6}" );
+
+  if( x.length() == 4 ){
+    std::string op_string = { x[0], x[1], x[1], x[2], x[2], x[3], x[3] };
+    return color_from_hex( op_string );
+  } else if( x.length() == 7 ){
+    std::string op_string = boost::algorithm::to_upper_copy( x );
+    if( !std::regex_match( op_string, hex_regex ) ){
+      return default_return;
+    } else {
+      return TColor::GetColor( op_string.c_str() );
+    }
+  } else {
+    return default_return;
+  }
+}
+
+
+int color_from_name( const std::string& x )
+{
+  // Reformatting name
+  const std::string op_string = StripToNaming( x );
+
+#define STRINGIFY( COLOR_STRING )              \
+  op_string == #COLOR_STRING ? COLOR_STRING :
+
+  return STRINGIFY( white               )
+         STRINGIFY( maroon              )
+         STRINGIFY( darkred             )
+         STRINGIFY( brown               )
+         STRINGIFY( firebrick           )
+         STRINGIFY( crimson             )
+         STRINGIFY( red                 )
+         STRINGIFY( tomato              )
+         STRINGIFY( coral               )
+         STRINGIFY( indianred           )
+         STRINGIFY( lightcoral          )
+         STRINGIFY( darksalmon          )
+         STRINGIFY( salmon              )
+         STRINGIFY( lightsalmon         )
+         STRINGIFY( orangered           )
+         STRINGIFY( darkorange          )
+         STRINGIFY( orange              )
+         STRINGIFY( gold                )
+         STRINGIFY( darkgoldenrod       )
+         STRINGIFY( goldenrod           )
+         STRINGIFY( palegoldenrod       )
+         STRINGIFY( darkkhaki           )
+         STRINGIFY( khaki               )
+         STRINGIFY( olive               )
+         STRINGIFY( yellow              )
+         STRINGIFY( yellowgreen         )
+         STRINGIFY( darkolivegreen      )
+         STRINGIFY( olivedrab           )
+         STRINGIFY( lawngreen           )
+         STRINGIFY( chartreuse          )
+         STRINGIFY( greenyellow         )
+         STRINGIFY( darkgreen           )
+         STRINGIFY( green               )
+         STRINGIFY( forestgreen         )
+         STRINGIFY( lime                )
+         STRINGIFY( limegreen           )
+         STRINGIFY( lightgreen          )
+         STRINGIFY( palegreen           )
+         STRINGIFY( darkseagreen        )
+         STRINGIFY( mediumspringgreen   )
+         STRINGIFY( springgreen         )
+         STRINGIFY( seagreen            )
+         STRINGIFY( mediumaquamarine    )
+         STRINGIFY( mediumseagreen      )
+         STRINGIFY( lightseagreen       )
+         STRINGIFY( darkslategray       )
+         STRINGIFY( teal                )
+         STRINGIFY( darkcyan            )
+         STRINGIFY( aqua                )
+         STRINGIFY( cyan                )
+         STRINGIFY( lightcyan           )
+         STRINGIFY( darkturquoise       )
+         STRINGIFY( turquoise           )
+         STRINGIFY( mediumturquoise     )
+         STRINGIFY( paleturquoise       )
+         STRINGIFY( aquamarine          )
+         STRINGIFY( powderblue          )
+         STRINGIFY( cadetblue           )
+         STRINGIFY( steelblue           )
+         STRINGIFY( cornflowerblue      )
+         STRINGIFY( deepskyblue         )
+         STRINGIFY( dodgerblue          )
+         STRINGIFY( lightblue           )
+         STRINGIFY( skyblue             )
+         STRINGIFY( lightskyblue        )
+         STRINGIFY( midnightblue        )
+         STRINGIFY( navy                )
+         STRINGIFY( darkblue            )
+         STRINGIFY( mediumblue          )
+         STRINGIFY( blue                )
+         STRINGIFY( royalblue           )
+         STRINGIFY( blueviolet          )
+         STRINGIFY( indigo              )
+         STRINGIFY( darkslateblue       )
+         STRINGIFY( slateblue           )
+         STRINGIFY( mediumslateblue     )
+         STRINGIFY( mediumpurple        )
+         STRINGIFY( darkmagenta         )
+         STRINGIFY( darkviolet          )
+         STRINGIFY( darkorchid          )
+         STRINGIFY( mediumorchid        )
+         STRINGIFY( purple              )
+         STRINGIFY( thistle             )
+         STRINGIFY( plum                )
+         STRINGIFY( violet              )
+         STRINGIFY( magenta             )
+         STRINGIFY( fuchsia             )
+         STRINGIFY( orchid              )
+         STRINGIFY( mediumvioletred     )
+         STRINGIFY( palevioletred       )
+         STRINGIFY( deeppink            )
+         STRINGIFY( hotpink             )
+         STRINGIFY( lightpink           )
+         STRINGIFY( pink                )
+         STRINGIFY( antiquewhite        )
+         STRINGIFY( beige               )
+         STRINGIFY( bisque              )
+         STRINGIFY( blanchedalmond      )
+         STRINGIFY( wheat               )
+         STRINGIFY( cornsilk            )
+         STRINGIFY( lemonchiffon        )
+         STRINGIFY( lightgoldenrodyellow )
+         STRINGIFY( lightyellow         )
+         STRINGIFY( saddlebrown         )
+         STRINGIFY( sienna              )
+         STRINGIFY( chocolate           )
+         STRINGIFY( peru                )
+         STRINGIFY( sandybrown          )
+         STRINGIFY( burlywood           )
+         STRINGIFY( tan                 )
+         STRINGIFY( rosybrown           )
+         STRINGIFY( moccasin            )
+         STRINGIFY( navajowhite         )
+         STRINGIFY( peachpuff           )
+         STRINGIFY( mistyrose           )
+         STRINGIFY( lavenderblush       )
+         STRINGIFY( linen               )
+         STRINGIFY( oldlace             )
+         STRINGIFY( papayawhip          )
+         STRINGIFY( seashell            )
+         STRINGIFY( mintcream           )
+         STRINGIFY( slategray           )
+         STRINGIFY( lightslategray      )
+         STRINGIFY( lightsteelblue      )
+         STRINGIFY( lavender            )
+         STRINGIFY( floralwhite         )
+         STRINGIFY( aliceblue           )
+         STRINGIFY( ghostwhite          )
+         STRINGIFY( honeydew            )
+         STRINGIFY( ivory               )
+         STRINGIFY( azure               )
+         STRINGIFY( snow                )
+         STRINGIFY( black               )
+         STRINGIFY( dimgrey             )
+         STRINGIFY( grey                )
+         STRINGIFY( darkgrey            )
+         STRINGIFY( silver              )
+         STRINGIFY( lightgrey           )
+         STRINGIFY( gainsboro           )
+         STRINGIFY( whitesmoke          )
+         STRINGIFY( white               )
+         STRINGIFY( fuchsia             )
+         STRINGIFY( dimgray             )
+         STRINGIFY( darkgray            )
+         STRINGIFY( lightgray           )
+         STRINGIFY( gray                )
+         STRINGIFY( bzgreen             )
+         STRINGIFY( bzyellow            )
+         default_return;
+#undef STRINGIFY
+}
 
 }
 

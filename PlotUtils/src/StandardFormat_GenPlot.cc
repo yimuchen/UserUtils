@@ -25,7 +25,6 @@ namespace fmt {
 
 void BatchRequest::GeneratePlots()
 {
-
   for( const auto histrequest :  histlist ){
     GenerateBackgroundObjects( histrequest );
     GenerateData( histrequest );

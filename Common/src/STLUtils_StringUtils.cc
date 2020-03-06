@@ -12,6 +12,10 @@
 #endif
 
 #include <algorithm>
+
+#include <boost/algorithm/string.hpp>
+#include <boost/range/algorithm_ext/erase.hpp>
+
 #include <cstdlib>
 #include <regex>
 #include <string>
@@ -89,26 +93,52 @@ RandomString( const unsigned n )
 /**
  * @brief Converting entire string to uppercase
  */
-void
-ToUpper( std::string& x )
+std::string
+ToUpper( const std::string& x )
 {
-  std::for_each( x.begin(), x.end(), []( char& c ){
-      c = std::toupper( c );
-    } );
+  return boost::algorithm::to_upper_copy( x );
+}
+
+/**
+ * @brief Converting entire string to lower case
+ */
+std::string
+ToLower( std::string& x )
+{
+  return boost::algorithm::to_lower_copy( x );
 }
 
 /**
  * @brief removing all instances of a certain substring in a given string.
  */
-void
-StripSubstring( std::string& x, const std::string& sub )
+std::string
+StripSubstring( const std::string& x, const std::string& sub )
 {
-  size_t found;
-
-  while( ( found = x.find( sub ) ) != std::string::npos ){
-    x.erase( x.begin() +found, x.begin()+found + sub.size() );
-  }
+  std::string ans( x );
+  boost::algorithm::erase_all( ans, sub );
+  return ans;
 }
+
+/**
+ * @brief Remove all characters that is in string list.
+ */
+std::string
+StripCharacters( const std::string& x, const std::string& sub )
+{
+  std::string ans( x );
+  boost::range::remove_erase_if( ans, boost::is_any_of( sub ) );
+  return ans;
+}
+
+std::string
+StripToNaming( const std::string& x )
+{
+  std::string ans( x );
+  ans = ToLower( ans );
+  ans = StripCharacters( ans, " \n\t" );
+  return ans;
+}
+
 
 /**
  * @brief Returing the position of a matching brace in a string.

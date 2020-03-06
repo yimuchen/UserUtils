@@ -5,12 +5,15 @@
  */
 
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
 #else
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/Constants.hpp"
 #endif
 
-#include <vector>
+#include <boost/algorithm/string.hpp>
+#include <string>
 
 namespace usr  {
 
@@ -223,12 +226,36 @@ namespace sty {
  * @{
  * @brief Predefined fill styles for @ROOT{TAttrFill}.
  * */
-const short fillnone      = 0;
-const short fillsolid     = 1001;
-const short filldotdense  = 3001;
-const short filldot       = 3002;
-const short filldotsparse = 3003;
+const short fillnone         = 0;
+const short fillsolid        = 1001;
+const short filldotdense     = 3001;
+const short filldot          = 3002;
+const short filldotsparse    = 3003;
+const short fillhashdense    = fillhash( 1, angle1( 45 ), angle2( 45 ) );
+const short fillhashsparse   = fillhash( 5, angle1( 45 ), angle2( 45 ) );
+const short fillhashforward  = fillhash( 2, angle1( 60 ), angle2( -1 ) );
+const short fillhashbackward = fillhash( 2, angle1( -1 ), angle2( 120 ) );
 /** @} */
+
+const short fill( const std::string& x )
+{
+  const std::string op_string = StripToNaming( x );
+
+#define STRINGIFY( x ) \
+  op_string == #x ? fill ## x :
+
+  return STRINGIFY( none )
+         STRINGIFY( solid )
+         STRINGIFY( dotdense )
+         STRINGIFY( dot )
+         STRINGIFY( dotsparse )
+         STRINGIFY( hashdense )
+         STRINGIFY( hashsparse )
+         STRINGIFY( hashforward )
+         STRINGIFY( hashbackward )
+         fillnone;
+#undef STRINGIFY
+}
 
 /**
  * @brief  A human readable interface to hash-fill styles in @ROOT{TAttFill}.
@@ -267,14 +294,14 @@ fillhash( unsigned short distance,
 const short
 distmm( const float x )
 {
-  return x < usr::plt::len::mm(0.84375) ? 1 :
-         x < usr::plt::len::mm(1.53125) ? 2 :
-         x < usr::plt::len::mm(2.21875) ? 3 :
-         x < usr::plt::len::mm(2.90625) ? 4 :
-         x < usr::plt::len::mm(3.59375) ? 5 :
-         x < usr::plt::len::mm(4.28125) ? 6 :
-         x < usr::plt::len::mm(4.96875) ? 7 :
-         x < usr::plt::len::mm(5.65625) ? 8 :
+  return x < usr::plt::len::mm( 0.84375 ) ? 1 :
+         x < usr::plt::len::mm( 1.53125 ) ? 2 :
+         x < usr::plt::len::mm( 2.21875 ) ? 3 :
+         x < usr::plt::len::mm( 2.90625 ) ? 4 :
+         x < usr::plt::len::mm( 3.59375 ) ? 5 :
+         x < usr::plt::len::mm( 4.28125 ) ? 6 :
+         x < usr::plt::len::mm( 4.96875 ) ? 7 :
+         x < usr::plt::len::mm( 5.65625 ) ? 8 :
          9;
 }
 
@@ -336,6 +363,22 @@ const short lindashed    = 9;
 const short linshortdash = 7;
 /** @} */
 
+const short line( const std::string& x )
+{
+  const std::string op = StripToNaming( x );
+#define STRINGIFY( x ) \
+  op == #x ? lin ## x :
+
+  return STRINGIFY( solid     )
+         STRINGIFY( dotted    )
+         STRINGIFY( densedot  )
+         STRINGIFY( dashed    )
+         STRINGIFY( shortdash )
+         linsolid;
+
+#undef STRINGIFY
+}
+
 /**
  * @{
  * @brief common settings used by @ROOT{TAttMarker}.
@@ -355,6 +398,30 @@ extern const short mkropendiamond      = 27;
 extern const short mkropencross        = 28;
 extern const short mkropenstar         = 30;
 /** @} */
+
+const short marker( const std::string x )
+{
+  const std::string op = StripToNaming( x );
+#define STRINGIFY( x ) \
+  op == #x ? mkr ## x :
+
+  return STRINGIFY( circle           )
+         STRINGIFY( square           )
+         STRINGIFY( triangleup       )
+         STRINGIFY( triangledown     )
+         STRINGIFY( diamond          )
+         STRINGIFY( cross            )
+         STRINGIFY( star             )
+         STRINGIFY( opencircle       )
+         STRINGIFY( opensquare       )
+         STRINGIFY( opentriangleup   )
+         STRINGIFY( opentriangledown )
+         STRINGIFY( opendiamond      )
+         STRINGIFY( opencross        )
+         STRINGIFY( openstar         )
+         mkrcircle;
+#undef STRINGIFY
+}
 
 }/* sty */
 

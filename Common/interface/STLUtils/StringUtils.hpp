@@ -42,8 +42,11 @@ extern std::string RandomString( const unsigned length );
 /*-----------------------------------------------------------------------------
  *  String operation functions
    --------------------------------------------------------------------------*/
-extern void ToUpper( std::string& );
-extern void StripSubstring( std::string&, const std::string& x );
+extern std::string ToUpper( const std::string& );
+extern std::string ToLower( const std::string& );
+extern std::string StripSubstring( const std::string&, const std::string& );
+extern std::string StripCharacters( const std::string&, const std::string& );
+extern std::string StripToNaming( const std::string& );
 
 extern size_t MatchBrace( const std::string&, const unsigned open_brace );
 extern size_t NextOpenBrace( const std::string&, const unsigned start );
