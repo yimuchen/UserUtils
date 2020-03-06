@@ -759,32 +759,26 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
 {
   // Perfroming the axis range setting
   if( tracky == TrackY::min || tracky == TrackY::both ){
-    if( obj.InheritsFrom( TH1D::Class() ) ){
-      _datamin = std::min( _datamin,
-        GetYmin( &dynamic_cast<const TH1D&>( obj ) ) );
-    }
-    if( obj.InheritsFrom( TGraph::Class() ) ){
-      _datamin = std::min( _datamin,
-        GetYmin( &dynamic_cast<const TGraph&>( obj ) ) );
-    }
-    if( obj.InheritsFrom( THStack::Class() ) ){
-      _datamin = std::min( _datamin,
-        GetYmin( &dynamic_cast<const THStack&>( obj ) ) );
-    }
+    const double obj_min =
+      obj.InheritsFrom( TH1D::Class() ) ?
+      GetYmin( &dynamic_cast<const TH1D&>( obj ) ) :
+      obj.InheritsFrom( TGraph::Class() ) ?
+      GetYmin( &dynamic_cast<const TGraph&>( obj ) ) :
+      obj.InheritsFrom( THStack::Class() ) ?
+      GetYmin( &dynamic_cast<const THStack&>( obj ) ) :
+      0;
+    _datamin = obj_min == 0 ? _datamin : std::min( _datamin, obj_min );
   }
   if( tracky == TrackY::max || tracky == TrackY::both ){
-    if( obj.InheritsFrom( TH1D::Class() ) ){
-      _datamax = std::max( _datamax,
-        GetYmax( &dynamic_cast<const TH1D&>( obj ) ) );
-    }
-    if( obj.InheritsFrom( TGraph::Class() ) ){
-      _datamax = std::max( _datamax,
-        GetYmax( &dynamic_cast<const TGraph&>( obj ) ) );
-    }
-    if( obj.InheritsFrom( THStack::Class() ) ){
-      _datamax = std::max( _datamax,
-        GetYmax( &dynamic_cast<const THStack&>( obj ) ) );
-    }
+    const double obj_max =
+      obj.InheritsFrom( TH1D::Class() ) ?
+      GetYmax( &dynamic_cast<const TH1D&>( obj ) ) :
+      obj.InheritsFrom( TGraph::Class() ) ?
+      GetYmax( &dynamic_cast<const TGraph&>( obj ) ) :
+      obj.InheritsFrom( THStack::Class() ) ?
+      GetYmax( &dynamic_cast<const THStack&>( obj ) ) :
+      0;
+    _datamax = std::max( _datamax, obj_max );
   }
   AutoSetYRange();
 }
