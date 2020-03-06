@@ -24,6 +24,8 @@ namespace fmt {
 
 struct Process;
 struct ProcessGroup;
+struct Uncertainty;
+struct IOSetting;
 struct HistRequest;
 struct BatchRequest;
 

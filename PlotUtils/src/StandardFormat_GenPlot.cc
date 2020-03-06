@@ -69,9 +69,24 @@ void BatchRequest::GenerateSampleComparePlot()
   for( const auto& histrequest : histlist ){
     Simple1DCanvas c;
 
-    for( const auto& process : signallist ){
+    for( unsigned i = signallist.size()-1; i < signallist.size(); --i ){
+      const auto& process = signallist.at( i );
+
+      if( !process.CheckKey( histrequest.filekey ) ){
+        usr::fout(
+          "Warning! Objects for plot [%s] in process [%s] is not found!\n"
+          "\t File: %s\n"
+          "\t Key:  %s\n"
+          "The plot would not be plotted\n",
+          histrequest.name, process.name,
+          process.file,
+          process.MakeKey( histrequest.filekey )
+          );
+          continue;
+      }
       c.PlotHist( process.GetNormalizedClone( histrequest.filekey ),
         usr::plt::PlotType( usr::plt::hist ),
+        usr::plt::TrackY( usr::plt::TrackY::both ),
         usr::plt::LineColor( TColor::GetColor( process.color.c_str() ) ),
         usr::plt::EntryText( process.name ) );
     }
@@ -79,6 +94,8 @@ void BatchRequest::GenerateSampleComparePlot()
     c.Pad().SetHistAxisTitles( histrequest.xaxis
                              , histrequest.units
                              , histrequest.yaxis );
+
+    c.Pad().SetLogy( histrequest.logy );
 
     c.DrawCMSLabel( "Simulation", "CMS" );
     c.SaveAsPDF( histrequest.name + ".pdf" );

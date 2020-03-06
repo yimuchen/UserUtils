@@ -2,7 +2,7 @@
 
 ```json
 {
-  "Plot List" : [
+  "plots" : [
     {
       "name": "JetPt",
       "xaxis" : "Jet p_{T}",
@@ -11,60 +11,58 @@
       "filekey": "JetPtSmeared",
     }
   ],
-  "Shape Uncertainties" : [
+  "uncertainties" : [
     "ELEC", "MUON", "PILEUP",
   ],
-  "Signal Processes" : [
+  "signals" : [
         {
-          "Display": "t*#bar{t}* ",
-          "Latex": "\\PW+Jets, \\HT$\\in$ [400,600)\\GeVc",
-          "Cross Section": [ 48.91 , 0.072, 0.072 ],
-          "Scaling": 1.0,
-          "Generator": "\\POWHEG",
-          "Cross Section Source": "NNLO",
-          "File": "ttbar_*.root"
+          "display": "t*#bar{t}* ",
+          "latex": "\\PW+Jets, \\HT$\\in$ [400,600)\\GeVc",
+          "cross section": [ 48.91 , 0.072, 0.072 ],
+          "scaling": 1.0,
+          "generator": "\\POWHEG",
+          "cross section source": "NNLO",
+          "file": "ttbar_*.root"
         },
   ],
-  "Background Processes" : [
+  "Background" : [
     {
-      "Display": "W+Jets",
-      "Latex": "\\PW+Jets",
-      "Color": "cyan",
+      "display": "W+Jets",
+      "latex": "\\PW+Jets",
+      "color": "cyan",
       "processes" : [
         {
-          "Display": "W+jets ( 200 #leq H_{T} #leq 400)",
-          "Latex": "\\PW+Jets, \\HT$\\in$ [200,400)\\GeVc",
-          "Cross Section": [ 0.2043,0.0020,0.0020 ],
-          "Scaling": 1.0,
-          "K Factor":   1.21,
-          "Generator": "\\MADGRAPH",
-          "Cross Section Source": "LO",
-          "File": "WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_*.root"
+          "display": "W+jets ( 200 #leq H_{T} #leq 400)",
+          "latex": "\\PW+Jets, \\HT$\\in$ [200,400)\\GeVc",
+          "cross section": [ 0.2043,0.0020,0.0020 ],
+          "scaling": 1.0,
+          "generator": "\\MADGRAPH",
+          "cross section source": "LO",
+          "file": "WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_*.root"
         },
         {
-          "Display": "W+jets (400 #leq H_{T} #leq 600)",
-          "Latex": "\\PW+Jets, \\HT$\\in$ [400,600)\\GeVc",
-          "Cross Section": [ 48.91 , 0.072, 0.072 ],
-          "Scaling": 1.0,
-          "K Factor":   1.21,
-          "Generator": "\\MADGRAPH",
-          "Cross Section Source": "LO",
-          "File": "WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_*.root"
+          "display": "W+jets (400 #leq H_{T} #leq 600)",
+          "latex": "\\PW+Jets, \\HT$\\in$ [400,600)\\GeVc",
+          "cross section": [ 48.91 , 0.072, 0.072 ],
+          "scaling": 1.0,
+          "generator": "\\MADGRAPH",
+          "cross section source": "LO",
+          "file": "WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_*.root"
         }
      ]
     },{
-      "Display": "t#bar{t}+Jets",
-      "Latex": "\\ttbar+Jets",
-      "Color": "cyan",
+      "display": "t#bar{t}+Jets",
+      "latex": "\\ttbar+Jets",
+      "color": "cyan",
       "processes" : [
         {
-          "Display": "t#bar{t}+jets",
-          "Latex": "\\PW+Jets, \\HT$\\in$ [400,600)\\GeVc",
-          "Cross Section": [ 48.91 , 0.072, 0.072 ],
-          "Scaling": 1.0,
-          "Generator": "\\POWHEG",
-          "Cross Section Source": "NNLO",
-          "File": "ttbar_*.root"
+          "display": "t#bar{t}+jets",
+          "latex": "\\PW+Jets, \\HT$\\in$ [400,600)\\GeVc",
+          "cross section": [ 48.91 , 0.072, 0.072 ],
+          "scaling": 1.0,
+          "generator": "\\POWHEG",
+          "cross section source": "NNLO",
+          "file": "ttbar_*.root"
         }
       ]
     }
