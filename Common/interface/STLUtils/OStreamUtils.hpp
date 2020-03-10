@@ -35,7 +35,7 @@ class clearline
 public:
   clearline(){}
   virtual ~clearline(){}
-  friend std ::ostream& operator<<( std::ostream&, const clearline& );
+  friend std::ostream& operator<<( std::ostream&, const clearline& );
 };
 
 /**
@@ -49,9 +49,8 @@ private:
 
 public:
   separator( const char x = '*', const size_t m = 50 );
-  virtual
-  ~separator();
-  friend std ::ostream& operator<<( std::ostream&, const separator& );
+  virtual ~separator();
+  friend std::ostream& operator<<( std::ostream&, const separator& );
 };
 
 /**
@@ -59,14 +58,39 @@ public:
  *
  * Details are implemented in the usr::fstr  function
  */
-template<typename... ARGS>
+template<typename ... ARGS>
 inline
-std::ostream& fout( ARGS... args ){
-  return std::cout << usr::fstr( std::forward<ARGS>(args)... ) << std::flush;
+std::ostream& fout( ARGS... args )
+{
+  return std::cout << usr::fstr( std::forward<ARGS>( args )... ) << std::flush;
 }
 
 /** @} */
 
 }/* usr */
+
+namespace std{
+
+/**
+ * @brief Default interface for ostreaming a vector.
+ *
+ * Is required to be in namespace std for boost::program options to use this.
+ */
+template<typename T>
+inline
+std::ostream& operator<<( std::ostream& os, const std::vector<T>& vec )
+{
+  os << "[";
+
+  for( const auto& item : vec ){
+    os << item << " ";
+  }
+
+  os << "]" << std::flush;
+
+  return os;
+}
+
+}
 
 #endif/* end of include guard: USERUTILS_COMMON_STLUTILS_OSTREAMUTILS_HPP */

@@ -12,10 +12,12 @@
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #else
 #include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/interface/OStreamUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #endif
@@ -161,7 +163,6 @@ protected:
   inline po::variables_map&
   Args(){ return _argmap; }
 
-
 private:
   pt::ptree _exttree;
   po::options_description _optdesc;
@@ -176,11 +177,11 @@ private:
 
   // Helper functions for path generation.
   bool IsBooleanFlag( const std::string& options ) const;
-  bool IsMultiToken( const std::string& options ) const ;
+  bool IsMultiToken( const std::string& options ) const;
 
-  std::string genPathString_Boolean( const ArgPathScheme& ) const ;
-  std::string genPathString_List( const ArgPathScheme& ) const ;
-  std::string genPathString_Single( const ArgPathScheme& ) const ;
+  std::string genPathString_Boolean( const ArgPathScheme& ) const;
+  std::string genPathString_List( const ArgPathScheme& ) const;
+  std::string genPathString_Single( const ArgPathScheme& ) const;
 };
 
 
@@ -253,6 +254,21 @@ value_semantic*
 multivalue()
 {
   return boost::program_options::value<std::vector<T> >()->multitoken();
+}
+
+/**
+ * @brief Template shorthand for assigning a option to take multiple tokes with
+ * default values.
+ *
+ * Note that the string presentation is required to be presented to
+ * boost::program options to display help messages (default to empty string).
+ */
+template<typename T>
+value_semantic*
+defmultivalue( const std::vector<T> def )
+{
+  return boost::program_options::value<std::vector<T> >()
+         ->multitoken()->default_value( def );
 }
 
 }/* program_options */
