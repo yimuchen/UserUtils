@@ -26,11 +26,13 @@ int main( int argc, char* argv[] )
     "event number in the format of \"LumiID:EventID\" or \"EventID\""
     "(the Run is always 1)" )
     ( "eventidx", usr::po::value<int>(),
-    "The event to display as indexed in the file" )
+    "The event to display as indexed in the file." )
     ( "status", usr::po::defmultivalue<int>( {} ),
-    "Limit the output to particles of certain status codes" )
+    "Limit the output to particles of certain status codes. "
+    "Leave empty to omit status selection." )
     ( "pdgid", usr::po::defmultivalue<int>( {} ),
-    "Limit the output to particles of certain particle ids (signed)" )
+    "Limit the output to particles of certain particle ids (signed). "
+    "Leave emtpy to omit PDGID selection." )
   ;
 
   usr::ArgumentExtender args;
@@ -119,5 +121,35 @@ int main( int argc, char* argv[] )
 
 edm::EventID ParseEvent( const usr::ArgumentExtender& args  )
 {
-  return edm::EventID(0,0,0);
+  static const edm::EventID defret( 0, 0, 0 );
+  static const std::regex lumi_format( "^([0-9]+):([0-9]+)$" );
+  static const std::regex evt_format( "^([0-9]+)$" );
+
+  if( !args.CheckArg( "event" ) ){
+    return defret;
+  }
+
+  const std::string input = args.Arg( "event" );
+  std::smatch match;
+
+  if( std::regex_match( input, match, lumi_format ) ){
+    if( match.size() == 3 ){
+      const std::string lumi_str = match[1];
+      const std::string evt_str  = match[2];
+      return edm::EventID( 1
+                         , std::stoi( lumi_str )
+                         , std::stoi( evt_str ) );
+    } else {
+      return defret;
+    }
+  } else if( std::regex_match( input, match, evt_format ) ){
+    if( match.size() == 2 ){
+      const std::string evt_str = match[1];
+      return edm::EventID( 1, 0, std::stoi( evt_str ) );
+    } else {
+      return defret;
+    }
+  } else {
+    return defret;
+  }
 }
