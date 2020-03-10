@@ -78,7 +78,7 @@ int main( int argc, char* argv[] )
                     return it - ptrList.begin();
                   };
 
-  usr::fout( "%5s | %10s %5s | %8s  %8s %6s | [%4s]%10s\t[%4s]%10s\n"
+  usr::fout( "%5s | %10s %5s | %10s %10s %6s | [%4s]%10s [%4s]%10s\n"
            , "IDX"
            , "PDGID", "STAT"
            , "PT", "ETA", "PHI"
@@ -102,7 +102,7 @@ int main( int argc, char* argv[] )
     const auto daughter1
       = gen.numberOfDaughters() > 1 ? gen.daughter( 1 ) : nullptr;
 
-    usr::fout( "%5u | %10d %5d | %8.2lf  %8.2lf %6.2lf | [%4d]%10d\t[%4d]%10d\n"
+    usr::fout( "%5u | %10d %5d | %10.2lf %10.2lf %6.2lf | [%4d]%10d [%4d]%10d\n"
              , gen_index
              , gen.pdgId(), gen.status()
              , gen.pt(), gen.eta(), gen.phi()
@@ -111,8 +111,6 @@ int main( int argc, char* argv[] )
              , daughter1 ? GetIndex( daughter1 ) : -1
              , daughter1 ? daughter1->pdgId() : 0
       );
-    gen_index++;
-
   }
 
   return 0;
