@@ -2,7 +2,6 @@
 <use name="UserUtils/Common"/>
 <use name="DataFormats/FWLite"/>
 <use name="SimDataFormats/GeneratorProducts"/>
-<use name="DataFormats/FWLite"/>
 <use name="DataFormats/HepMCCandidate"/>
 
 <bin name="DumpGenParticles"   file="DumpGenParticles.cc"/>

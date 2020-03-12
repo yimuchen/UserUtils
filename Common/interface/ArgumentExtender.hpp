@@ -17,7 +17,7 @@
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #else
 #include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
-#include "UserUtils/Common/interface/OStreamUtils.hpp"
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #endif
