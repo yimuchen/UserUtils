@@ -42,22 +42,26 @@ public:
   usr::Measurement cross_section;
   std::string file;
   std::string color;
-  std::string key_prefix ;
+  std::string key_prefix;
   double scale;
   double effective_luminosity;
   unsigned run_range_min;
   unsigned run_range_max;
 
 private:
-  Process( const usr::pt::ptree& tree );
+  Process( const usr::pt::ptree& tree, const BatchRequest* parent );
 
   TFile* _file;
+  const BatchRequest* parent;
 
-  bool  CheckKey( const std::string& ) const;
-  std::string MakeKey( const std::string&) const ;
-  TH1D* GetNormalizedClone( const std::string& ) const ;
-  TH1D* GetScaledClone( const std::string&, const double ) const;
-  TH1D* GetClone( const std::string& ) const;
+  void                       OpenFile();
+  inline const BatchRequest& Parent() const {return *parent;}
+
+  bool        CheckKey( const std::string& ) const;
+  std::string MakeKey( const std::string& ) const;
+  TH1D*       GetNormalizedClone( const std::string& ) const;
+  TH1D*       GetScaledClone( const std::string&, const double ) const;
+  TH1D*       GetClone( const std::string& ) const;
 };
 
 
@@ -73,7 +77,7 @@ public:
 
 private:
   ProcessGroup();
-  ProcessGroup( const usr::pt::ptree& tree );
+  ProcessGroup( const usr::pt::ptree& tree, const BatchRequest* parent );
 };
 
 class HistRequest
@@ -105,6 +109,20 @@ private:
   Uncertainty( const usr::pt::ptree& tree );
 };
 
+class IOSetting
+{
+public:
+  friend BatchRequest;
+  std::string input_prefix;
+  std::string key_prefix;
+  std::string output_prefix;
+  std::string output_postfix;
+
+private:
+  IOSetting( const usr::pt::ptree& );
+  IOSetting();
+};
+
 class BatchRequest
 {
 public:
@@ -118,15 +136,23 @@ public:
   BatchRequest( const usr::pt::ptree& tree );
 
   void GeneratePlots();
-
-  void GenerateSampleComparePlot() ;
-
+  void GenerateSampleComparePlot();
   void GenerateSimulationTable( std::ostream& stream )  const;
   void GenerateSimulationSummary( std::ostream& stream ) const;
   void GenerateDataTable( std::ostream& ) const;
 
+  void UpdateInputPrefix( const std::string& );
+  void UpdateKeyPrefix( const std::string& );
+  void UpdateOutputPrefix( const std::string& );
+  void UpdateoutputPostfix( const std::string& );
+
 private:
+  friend Process;
   void initialize( const usr::pt::ptree& tree );
+
+  // Setting IO options to be private since changing IO options will
+  // Require the process objects to be shifted.
+  IOSetting iosetting;
 
   // Temporary variables for generating plots:
   std::vector<std::unique_ptr<TH1D> > _background_stack;

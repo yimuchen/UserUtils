@@ -29,6 +29,11 @@ BatchRequest::BatchRequest( const usr::pt::ptree& tree )
 
 void BatchRequest::initialize( const usr::pt::ptree& tree )
 {
+
+  if( CheckQuery( tree, "io settings" ) ){
+    iosetting = IOSetting( tree.get_child( "io settings" ) );
+  }
+
   if( CheckQuery( tree, "plots" ) ){
     for( const auto& subtree : tree.get_child( "plots" ) ){
       histlist.push_back( HistRequest( subtree.second ) );
@@ -37,22 +42,25 @@ void BatchRequest::initialize( const usr::pt::ptree& tree )
 
   if( CheckQuery( tree, "signals" ) ){
     for( const auto& subtree : tree.get_child( "signals" ) ){
-      signallist.push_back( Process( subtree.second ) );
+      signallist.push_back( Process( subtree.second, this ) );
     }
   }
 
   if( CheckQuery( tree, "background" ) ){
     for( const auto& subtree : tree.get_child( "background" ) ){
-      background.push_back( ProcessGroup( subtree.second ) );
+      background.push_back( ProcessGroup( subtree.second, this ) );
     }
   }
 
   if( CheckQuery( tree, "data sets" ) ){
-    data = ProcessGroup( tree.get_child( "Data sets" ) );
+    data = ProcessGroup( tree.get_child( "Data sets" ), this );
 
     for( const auto d : data ){
       _total_luminosity += d.effective_luminosity;
     }
+  } else {
+    // Monte Carlo only system setting total luminosity to 1 to avoid crashing
+    _total_luminosity = 1 ;
   }
 
   if( CheckQuery( tree, "uncertainties" ) ){
@@ -62,6 +70,18 @@ void BatchRequest::initialize( const usr::pt::ptree& tree )
   }
 
 }
+
+// ------------------------------------------------------------------------------
+
+IOSetting::IOSetting(){}
+
+IOSetting::IOSetting( const usr::pt::ptree& tree ) :
+  input_prefix( GetSingleOptional<std::string>( tree, "input prefix", "" ) ),
+  key_prefix( GetSingleOptional<std::string>( tree, "key prefix", "" ) ),
+  output_prefix( GetSingleOptional<std::string>( tree, "output prefix", "" ) ),
+  output_postfix( GetSingleOptional<std::string>( tree, "output postfix", "" ) )
+{}
+
 
 // ------------------------------------------------------------------------------
 
@@ -111,19 +131,20 @@ HistRequest::HistRequest( const usr::pt::ptree& tree ) :
 
 ProcessGroup::ProcessGroup(){}
 
-ProcessGroup::ProcessGroup( const usr::pt::ptree& tree ) :
+ProcessGroup::ProcessGroup( const usr::pt::ptree& tree,
+                            const BatchRequest*   ptr ) :
   name( GetSingle<std::string>( tree, "display" ) ),
   latex_name( GetSingleOptional<std::string>( tree, "latex", name ) ),
   color( GetSingleOptional<std::string>( tree, "color", "#000000" ) )
 {
   for( const auto& subtree : tree.get_child( "processes" ) ){
-    push_back( Process( subtree.second ) );
+    push_back( Process( subtree.second, ptr ) );
   }
 }
 
 // ------------------------------------------------------------------------------
 
-Process::Process( const usr::pt::ptree& tree ) :
+Process::Process( const usr::pt::ptree& tree, const BatchRequest* ptr  ) :
   name( GetSingle<std::string>( tree, "display" ) ),
   latex_name( GetSingleOptional<std::string>( tree, "latex", "" ) ),
   generator( GetSingleOptional<std::string>( tree, "generator", "" ) ),
@@ -136,39 +157,20 @@ Process::Process( const usr::pt::ptree& tree ) :
   color( GetSingleOptional<std::string>( tree, "color", "#0000FF" ) ),
   key_prefix( GetSingleOptional<std::string>( tree, "key prefix", "" ) ),
   scale( GetSingleOptional( tree, "scale", 1.0 ) ),
-  effective_luminosity( GetSingleOptional<double>( tree, "luminosity", 0 ) ),
+  effective_luminosity( GetSingleOptional<double>( tree, "luminosity", 1.0 ) ),
   run_range_min( CheckQuery( tree, "run range" ) ?
                  GetList<unsigned>( tree, "run range" ).at( 0 ) : 0 ),
   run_range_max( run_range_min != 0 ?
-                 GetList<unsigned>( tree, "run range" ).at( 1 )  : 0 )
+                 GetList<unsigned>( tree, "run range" ).at( 1 )  : 0 ),
+  _file( nullptr ),
+  parent( ptr )
 {
-  _file = TFile::Open( file.c_str(), "READ" );
-
-  if( effective_luminosity == 0 ){
-    if( _file == nullptr ){ return; }
-    TTree* lumi_tree = (TTree*)_file->Get( "Count" );
-    if( lumi_tree == nullptr ){ return; }
-    double original_events;
-    lumi_tree->SetBranchAddress( "OriginalEvents", &original_events );
-    lumi_tree->GetEntry( 0 );
-    effective_luminosity = original_events / cross_section.CentralValue();
-
-    if( run_range_max != 0 || run_range_min != 0 ){
-      usr::fout( "Warning! Run range should only be specified for data events! "
-        "Make sure you know what you are doing\n" );
-    }
-  } else {
-    if( cross_section.CentralValue() != 1 || !cross_section_source.empty()
-        || scale != 1 ){
-      usr::fout( "Warning! Cross section and scaling options should only be used"
-        "for simulated events, make sure you know what you are doing\n" );
-    }
-  }
+  OpenFile();
 }
 
 std::string Process::MakeKey( const std::string& key ) const
 {
-  return key_prefix + key;
+  return Parent().iosetting.key_prefix + key_prefix + key;
 }
 
 bool Process::CheckKey( const std::string& key ) const
@@ -200,6 +202,74 @@ TH1D* Process::GetScaledClone( const std::string& key, const double total ) cons
   return ans;
 }
 
+void Process::OpenFile()
+{
+  if( _file ){ _file->Close();  }
+
+  const int root_error_level = gErrorIgnoreLevel;
+
+  // Suppressing function printing error for missing file.
+  gErrorIgnoreLevel = kError;
+  _file
+    = TFile::Open( ( Parent().iosetting.input_prefix+file ).c_str()
+                 , "READ" );
+  gErrorIgnoreLevel = root_error_level;
+
+  if( effective_luminosity == 0 ){
+    if( _file == nullptr ){ return; }
+    TTree* lumi_tree = (TTree*)_file->Get( "Count" );
+    if( lumi_tree == nullptr ){ return; }
+    double original_events;
+    lumi_tree->SetBranchAddress( "OriginalEvents", &original_events );
+    lumi_tree->GetEntry( 0 );
+    effective_luminosity = original_events / cross_section.CentralValue();
+
+    if( run_range_max != 0 || run_range_min != 0 ){
+      usr::fout( "Warning! Run range should only be specified for data events! "
+        "Make sure you know what you are doing\n" );
+    }
+  } else {
+    if( cross_section.CentralValue() != 1 || !cross_section_source.empty()
+        || scale != 1 ){
+      usr::fout( "Warning! Cross section and scaling options should only be used"
+        "for simulated events, make sure you know what you are doing\n" );
+    }
+  }
+}
+
+void BatchRequest::UpdateInputPrefix( const std::string& x )
+{
+  iosetting.input_prefix = x;
+
+  for( auto& signal : signallist ){
+    signal.OpenFile();
+  }
+
+  for( auto& group : background ){
+    for( auto& process : group ){
+      process.OpenFile();
+    }
+  }
+
+  for( auto& process : data  ){
+    process.OpenFile();
+  }
+}
+
+void BatchRequest::UpdateKeyPrefix( const std::string& x )
+{
+  iosetting.key_prefix = x;
+}
+
+void BatchRequest::UpdateOutputPrefix( const std::string& x )
+{
+  iosetting.output_prefix = x;
+}
+
+void BatchRequest::UpdateoutputPostfix( const std::string& x )
+{
+  iosetting.output_postfix = x;
+}
 
 // ** End of namespaces
 }

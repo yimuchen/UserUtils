@@ -83,13 +83,12 @@ void BatchRequest::GenerateSampleComparePlot()
           );
           continue;
       }
-      c.PlotHist( process.GetNormalizedClone( histrequest.filekey ),
+      c.PlotHist( process.GetScaledClone( histrequest.filekey, 1.0 ),
         usr::plt::PlotType( usr::plt::hist ),
         usr::plt::TrackY( usr::plt::TrackY::both ),
         usr::plt::LineColor( TColor::GetColor( process.color.c_str() ) ),
         usr::plt::EntryText( process.name ) );
     }
-
     c.Pad().SetHistAxisTitles( histrequest.xaxis
                              , histrequest.units
                              , histrequest.yaxis );
