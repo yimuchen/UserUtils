@@ -329,23 +329,11 @@ ArgumentExtender::MakeFile(
   const std::string& nameprefix,
   const std::string& ext ) const
 {
-  fs::path dirname  = _prefix;
-  fs::path filename = nameprefix;
+  fs::path ans   = GetPathPrefix();
+  ans /= (nameprefix + GetPathPostfix());
+  ans  += "." + ext;
 
-  for( const auto& x : _dirscheme ){
-    dirname /= genPathString( x );
-  }
-
-  for( const auto& x : _namescheme ){
-    const std::string str = genPathString( x );
-    if( str != "" ){
-      filename += "_" + genPathString( x );
-    }
-  }
-
-  filename += "." + ext;
-
-  return fs::path( dirname / filename );
+  return ans;
 }
 
 fs::path
@@ -370,6 +358,32 @@ fs::path
 ArgumentExtender::MakeTEXFile( const std::string& x ) const
 {
   return MakeFile( x, "tex" );
+}
+
+std::string
+ArgumentExtender::GetPathPrefix() const
+{
+  fs::path dirname  = _prefix;
+
+  for( const auto& x : _dirscheme ){
+    dirname /= genPathString( x );
+  }
+
+  return dirname.string();
+}
+
+std::string
+ArgumentExtender::GetPathPostfix() const
+{
+  std::string ans = "";
+  for( const auto& x : _namescheme ){
+    const std::string str = genPathString( x );
+    if( str != "" ){
+      ans += "_" + genPathString( x );
+    }
+  }
+
+  return ans;
 }
 
 /**

@@ -137,7 +137,7 @@ public:
   void AddNameScheme( const PathScheme& );
 
   /**
-   * @brief
+   * @brief Making final paths to objects.
    * @{
    */
   fs::path MakeFile( const std::string&, const std::string& ) const;
@@ -146,6 +146,9 @@ public:
   fs::path MakeTXTFile( const std::string& ) const;
   fs::path MakeTEXFile( const std::string& ) const;
   /** @} */
+
+  std::string GetPathPrefix() const ;
+  std::string GetPathPostfix() const ;
 
   void PrintHelpAndExit() const;
 
