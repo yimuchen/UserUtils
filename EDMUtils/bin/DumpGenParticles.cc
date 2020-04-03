@@ -78,10 +78,17 @@ int main( int argc, char* argv[] )
                     return it - ptrList.begin();
                   };
 
-  usr::fout( "%5s | %10s %5s | %10s %10s %6s | [%4s]%10s [%4s]%10s\n"
+  usr::fout(
+    "%5s | "
+    "%10s %5s | "
+    "%10s %10s %10s %6s | "
+    "[%4s]%10s | "
+    "| %5s | [%4s]%10s [%4s]%10s\n"
            , "IDX"
            , "PDGID", "STAT"
-           , "PT", "ETA", "PHI"
+           , "MASS", "PT", "ETA", "PHI"
+           , "IDX", "Mother"
+           , "NDau"
            , "IDX", "Daughter0"
            , "IDX", "Daughter1" );
 
@@ -101,11 +108,21 @@ int main( int argc, char* argv[] )
       = gen.numberOfDaughters() > 0 ? gen.daughter( 0 ) : nullptr;
     const auto daughter1
       = gen.numberOfDaughters() > 1 ? gen.daughter( 1 ) : nullptr;
+    const auto mother
+      = gen.numberOfMothers() > 0 ? gen.mother() : nullptr;
 
-    usr::fout( "%5u | %10d %5d | %10.2lf %10.2lf %6.2lf | [%4d]%10d [%4d]%10d\n"
+    usr::fout(
+      "%5u | "
+      "%10d %5d | "
+      "%10.2lf %10.2lf %10.2lf %6.2lf | "
+      "[%4d]%10d | "
+      "| %5d | [%4d]%10d [%4d]%10d\n"
              , gen_index
              , gen.pdgId(), gen.status()
-             , gen.pt(), gen.eta(), gen.phi()
+             , gen.mass(), gen.pt(), gen.eta(), gen.phi()
+             , mother ? GetIndex( mother ) : -1
+             , mother ? mother->pdgId() : 0
+             , gen.numberOfDaughters()
              , daughter0 ? GetIndex( daughter0 ) : -1
              , daughter0 ? daughter0->pdgId() : 0
              , daughter1 ? GetIndex( daughter1 ) : -1
