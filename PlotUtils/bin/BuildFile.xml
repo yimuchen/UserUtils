@@ -1,3 +1,6 @@
+<use name="UserUtils/Common"/>
 <use name="UserUtils/PlotUtils"/>
+
+<flags CXXFLAGS="-g -O3"/>
 
 <bin name="usr_PlotStandard" file="PlotStandard.cc"/>

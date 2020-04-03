@@ -157,20 +157,14 @@ PadBase::WriteAtData(
   const RooArgContainer args( arglist,
       {
         TextColor( usr::plt::col::black ),
-        TextSize( FontSize() )
-      }
-                              );
+        TextSize( FontSize() ),
+        TextAngle( 0.0 )
+      });
 
   auto& newlatex = MakeObj<TLatex>( _latex );
   newlatex.SetNDC( false );
   newlatex.SetText( x, y, line.c_str() );
-  newlatex.SetTextColorAlpha(
-    args.Get( TextColor::CmdName ).getInt( 0 ),
-    args.Get( TextColor::CmdName ).getDouble( 0 )
-    );
-  newlatex.SetTextSize(
-    args.Get( TextSize::CmdName ).getDouble( 0 )
-    );
+  SetTextAttr( newlatex, args );
   PlotObj( newlatex, "" );
   return *this;
 }
@@ -190,9 +184,9 @@ PadBase::WriteLine( const std::string&            line,
   const RooArgContainer args( arglist,
       {// Defining default arguments
         TextColor( usr::plt::col::black ),// Black text
-        TextSize( FontSize() )// Canvas font settings
-      }
-                              );
+        TextSize( FontSize() ),// Canvas font settings,
+        TextAngle( 0.0 )
+      });
 
   auto& newlatex = MakeObj<TLatex>( _latex );
   newlatex.SetNDC( true );

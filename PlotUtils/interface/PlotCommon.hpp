@@ -154,7 +154,7 @@ public:
   virtual ~EntryText(){}
   inline operator std::string() const { return getString( 0 );
   }
-  inline bool PlaceLast() const { return getInt(0); }
+  inline bool PlaceLast() const { return getInt( 0 ); }
   inline const char*
   c_str() const { return getString( 0 );}
 };
@@ -182,6 +182,28 @@ public:
   TextSize( const double size );
   virtual ~TextSize(){}
   inline operator double() const { return getDouble( 0 );
+  }
+};
+
+class TextAngle : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  TextAngle( const RooCmdArg* x ) : RooCmdArg( *x ){}
+  TextAngle( const float a );
+  virtual ~TextAngle(){}
+  inline operator float() const { return getDouble( 0 );
+  }
+};
+
+class TextAlign : public RooCmdArg
+{
+public:
+  static const std::string CmdName;
+  TextAlign( const RooCmdArg* x ) : RooCmdArg( *x ){}
+  TextAlign( const int a );
+  virtual ~TextAlign(){}
+  inline operator int() const { return getInt( 0 );
   }
 };
 

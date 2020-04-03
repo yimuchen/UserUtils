@@ -202,7 +202,7 @@ Pad1D::FinalizeLegend( const align newposition )
   width += 1.3*LineHeight() / AbsWidth();// Space for legend icon.
 
   // Computing alignment coordinates
-  const short halign = _legendposition / 10;
+  const short halign = 10 * (_legendposition / 10);
   const short valign = _legendposition % 10;
 
   const float xmin = halign == align::left     ? InnerTextLeft() :

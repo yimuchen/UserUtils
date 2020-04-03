@@ -20,6 +20,14 @@ SetTextAttr( TAttText&                   obj,
   if( args.Has<usr::plt::TextSize>() ){
     obj.SetTextSize( args.Get<usr::plt::TextSize>() );
   }
+
+  if( args.Has<usr::plt::TextAngle>() ){
+    obj.SetTextAngle( args.Get<usr::plt::TextAngle>() );
+  }
+
+  if( args.Has<usr::plt::TextAlign>() ){
+    obj.SetTextAlign( args.Get<usr::plt::TextAlign>() );
+  }
 }
 
 extern void

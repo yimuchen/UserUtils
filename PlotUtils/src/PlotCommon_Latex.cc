@@ -15,7 +15,7 @@
 #include <map>
 #include <regex>
 
-static const std::regex dec_regex( ".*?(#[a-zA-Z]+\\b\\s*\\{).*?" );
+static const std::regex dec_regex( ".*(#[a-zA-Z]+\\{).*" );
 static const std::regex sym_regex( "#[a-zA-Z]+\\b" );
 static const double subratio       = 2./3.;
 static const double fraclineheight = 1./5.;
@@ -104,6 +104,7 @@ EstimateLatexWidth( const std::string& text )
 
     const std::string suptext( un_text.begin() + openbrace+1,
                                un_text.begin() + closebrace );
+
     ans += 0.5 * EstimateLatexWidth( suptext );
     un_text.erase( un_text.begin() + find, un_text.begin() + closebrace + 1 );
   }
@@ -115,17 +116,18 @@ EstimateLatexWidth( const std::string& text )
 
     const std::string subtext( un_text.begin() + openbrace+1,
                                un_text.begin() + closebrace );
+
     ans += 0.5 * EstimateLatexWidth( subtext );
     un_text.erase( un_text.begin() + find, un_text.begin() + closebrace + 1 );
   }
 
   // Removing left right decorators
-  while( ( find = un_text.find( "#left" ) ) != std::string::npos ){
-    un_text.erase( un_text.begin() + find, un_text.begin() + find + 5 );
+  while( ( find = un_text.find( "#left " ) ) != std::string::npos ){
+    un_text.erase( un_text.begin() + find, un_text.begin() + find + 6 );
   }
 
-  while( ( find = un_text.find( "#right" ) ) != std::string::npos ){
-    un_text.erase( un_text.begin() + find, un_text.begin() + find + 6 );
+  while( ( find = un_text.find( "#right " ) ) != std::string::npos ){
+    un_text.erase( un_text.begin() + find, un_text.begin() + find + 7 );
   }
 
   // Regex for finding generic decorators
@@ -135,7 +137,7 @@ EstimateLatexWidth( const std::string& text )
     const size_t open  = NextOpenBrace( un_text, find );
     const size_t close = MatchBrace( un_text, open );
     un_text.erase( un_text.begin() + close );
-    un_text.erase( un_text.begin() + find, un_text.begin() + s.length() );
+    un_text.erase( un_text.begin() + find, un_text.begin() + find + s.length() );
   }
 
   // Replacing all symbols with just EM space

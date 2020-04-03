@@ -117,6 +117,16 @@ TextColor::TextColor( const int color, const float alpha ) :
 
 // ---------------------------------------------------------------------------//
 
+USRUTILS_COMMON_REGISTERCMD( TextAngle );
+/**
+ * @brief Construct a new usrutils common registercmd object
+ *
+ */
+TextAngle::TextAngle( const float  angle ):
+  RooCmdArg( CmdName.c_str(), 0, 0, angle ) {}
+
+// ---------------------------------------------------------------------------//
+
 USRUTILS_COMMON_REGISTERCMD( TextSize );
 
 /**
@@ -129,7 +139,18 @@ TextSize::TextSize( const double size ) :
 
 // ---------------------------------------------------------------------------//
 
-USRUTILS_COMMON_REGISTERCMD( LineColor )
+USRUTILS_COMMON_REGISTERCMD( TextAlign );
+/**
+ * @brief Construct a new usrutils common registercmd object
+ *
+ */
+TextAlign::TextAlign( const int a ):
+  RooCmdArg( CmdName.c_str(), a ) {}
+
+
+// ---------------------------------------------------------------------------//
+
+USRUTILS_COMMON_REGISTERCMD( LineColor );
 /**
  * @class LineColor
  * @brief Defining Line color via the color index + alpha value convention.
