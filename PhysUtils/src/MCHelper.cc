@@ -5,7 +5,10 @@
  */
 #include "DataFormats/Candidate/interface/Candidate.h"
 
+#include "UserUtils/PhysUtils/interface/MCHelper.hpp"
+
 #include <queue>
+#include <stack>
 
 namespace usr {
 
@@ -62,9 +65,80 @@ GetDirectMother( const reco::Candidate* x, int target_ID )
   return nullptr;
 }
 
+bool IsIntermediate( const reco::Candidate* x )
+{
+  for( unsigned i = 0; i < x->numberOfDaughters(); ++i ){
+    if( x->daughter( i )->pdgId() == x->pdgId() ){
+      return true;
+    }
+  }
+
+  return false;
+}
+
+const reco::Candidate* GetLastInChain( const reco::Candidate* x )
+{
+  for( unsigned i = 0; i < x->numberOfDaughters(); ++i ){
+    if( x->daughter( i )->pdgId() == x->pdgId() ){
+      return GetLastInChain( x->daughter( i ) );
+    }
+  }
+
+  return x;
+}
+
+const reco::Candidate* GetFirstInChain( const reco::Candidate* x )
+{
+  for( unsigned i = 0; i < x->numberOfMothers(); ++i ){
+    if( x->mother( i )->pdgId() == x->pdgId() ){
+      return GetFirstInChain( x->mother( i ) );
+    }
+  }
+
+  return x;
+}
+
+std::vector<const reco::Candidate*> GetDecendants(
+  const reco::Candidate* x,
+  bool ( *               func )( const reco::Candidate* ),
+  const int              flag  )
+{
+  std::vector<const reco::Candidate*> ans;
+  std::queue<const reco::Candidate*> bfs_queue;
+  bfs_queue.push( GetLastInChain( x ) );
+
+  auto PushQueue = [&bfs_queue]( const reco::Candidate* m ){
+                     for( unsigned i = 0; i < m->numberOfDaughters(); ++i ){
+                       bfs_queue.push( GetLastInChain( m->daughter( i ) ) );
+                     }
+                   };
+
+  while( !bfs_queue.empty() ){
+    const reco::Candidate* temp = bfs_queue.front();
+    bfs_queue.pop();
+
+    if( func( temp ) && temp != x ){
+      ans.push_back( temp );
+      if( flag != GET_IMMEDIATE ){
+        PushQueue( temp );
+      }
+    } else {
+      PushQueue( temp );
+    }
+
+  }
+
+  return ans;
+}
+
+bool IsSMHadron( const reco::Candidate* x )
+{
+  return abs( x->pdgId() ) >  100 && abs( x->pdgId() ) < 100000;
+}
+
 /**
  * @brief Essentially the same as the GetMother functions, except this time the
- *        traversal directions is towars the children side.
+ *        traversal directions is towards the children side.
  *
  * It will follow the same flavour decaying chain until there is a flavour
  * change. A major caveat of this functions would be if the decay topology

@@ -31,12 +31,12 @@ enum PID
   BOTTOM_QUARK_ID  = 5,
   TOP_QUARK_ID     = 6,
 
-  ELEC_ID    = 11,
-  ELECNU_ID  = 12,
-  MUON_ID    = 13,
-  MUONNU_ID  = 14,
-  TAU_ID     = 15,
-  TAUNU_ID   = 16,
+  ELEC_ID   = 11,
+  ELECNU_ID = 12,
+  MUON_ID   = 13,
+  MUONNU_ID = 14,
+  TAU_ID    = 15,
+  TAUNU_ID  = 16,
 
   GLUON_ID       = 21,
   GAMMA_ID       = 22,
@@ -45,11 +45,36 @@ enum PID
   HIGGS_BOSON_ID = 25
 };
 
+enum GET_FLAG
+{
+  GET_ALL       = 0,
+  GET_IMMEDIATE = 1
+};
+
 /*------------------------------------------------------------------------------
  *  MC truth topology crawling function.
    ---------------------------------------------------------------------------*/
 const reco::Candidate* GetDirectMother( const reco::Candidate*, int );
+
+bool        IsIntermediate( const reco::Candidate* );
+inline bool IsIntermediate( const reco::Candidate& x  )
+{
+  return IsIntermediate( &x );
+}
+
+const reco::Candidate* GetLastInChain( const reco::Candidate* );
+const reco::Candidate* GetFirstInChain( const reco::Candidate* );
+
 const reco::Candidate* GetDaughter( const reco::Candidate*, int );
+
+
+bool IsSMHadron( const reco::Candidate* );
+
+std::vector<const reco::Candidate*> GetDecendants(
+  const reco::Candidate*,
+  bool ( * )( const reco::Candidate* ),
+  int flat = GET_ALL );
+std::vector<const reco::Candidate*> GetSMHadrons( const reco::Candidate* );
 
 /** @} */
 
