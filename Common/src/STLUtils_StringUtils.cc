@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <regex>
 #include <string>
+#include <iostream>
 
 namespace usr  {
 
@@ -103,7 +104,7 @@ ToUpper( const std::string& x )
  * @brief Converting entire string to lower case
  */
 std::string
-ToLower( std::string& x )
+ToLower( const std::string& x )
 {
   return boost::algorithm::to_lower_copy( x );
 }
@@ -178,8 +179,8 @@ MatchBrace( const std::string& x, const unsigned open_brace )
                         addcount == '[' ? ']' :
                         ')';
 
-  while( counter > 0 && ans < x.length() ){
-    const char c = x.at( ++ans );
+  while( counter > 0 && ++ans < x.length() ){
+    const char c = x.at( ans );
     if( c == addcount ){
       ++counter;
     } else if( c == mincount ){
