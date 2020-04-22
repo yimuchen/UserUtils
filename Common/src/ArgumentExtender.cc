@@ -164,8 +164,13 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
 void
 ArgumentExtender::ParseOptions( int argc, char** argv )
 {
+  /*static const auto parse_style = opt::command_line_style::unix_style
+                                  ^ opt::command_line_style::allow_short;*/
+
   try {
-    opt::store( opt::parse_command_line( argc, argv, Description() ), Args() );
+    opt::store( opt::parse_command_line( argc, argv, Description()
+      /*, parse_style*/ )
+              , Args() );
     opt::notify( Args() );
   } catch( boost::exception& e ){
     std::cerr << "Error parsing command!" << std::endl
@@ -329,9 +334,9 @@ ArgumentExtender::MakeFile(
   const std::string& nameprefix,
   const std::string& ext ) const
 {
-  fs::path ans   = GetPathPrefix();
-  ans /= (nameprefix + GetPathPostfix());
-  ans  += "." + ext;
+  fs::path ans = GetPathPrefix();
+  ans /= ( nameprefix + GetPathPostfix() );
+  ans += "." + ext;
 
   return ans;
 }
@@ -363,7 +368,7 @@ ArgumentExtender::MakeTEXFile( const std::string& x ) const
 std::string
 ArgumentExtender::GetPathPrefix() const
 {
-  fs::path dirname  = _prefix;
+  fs::path dirname = _prefix;
 
   for( const auto& x : _dirscheme ){
     dirname /= genPathString( x );
@@ -376,6 +381,7 @@ std::string
 ArgumentExtender::GetPathPostfix() const
 {
   std::string ans = "";
+
   for( const auto& x : _namescheme ){
     const std::string str = genPathString( x );
     if( str != "" ){
@@ -471,9 +477,9 @@ ArgumentExtender::genPathString_Single( const ArgPathScheme& x ) const
   if( Args()[x.option].value().type() == typeid( std::string ) ){
     ans = Arg<std::string>( x.option );
   } else if( Args()[x.option].value().type() == typeid( int ) ){
-    ans = std::to_string( Arg<int>(x.option) );
+    ans = std::to_string( Arg<int>( x.option ) );
   } else if( Args()[x.option].value().type() == typeid( double ) ){
-    ans = usr::fmt::base::decimal( Arg<double>(x.option) ).str();
+    ans = usr::fmt::base::decimal( Arg<double>( x.option ) ).str();
   }
 
   return x.pathstring + ans;
