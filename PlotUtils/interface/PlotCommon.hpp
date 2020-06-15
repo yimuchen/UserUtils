@@ -109,6 +109,7 @@ private:
 
 
 /**
+ * @class PlotUnder
  * @brief Specifying the plot object to be placed under another.
  */
 class PlotUnder : public RooCmdArg
@@ -124,6 +125,7 @@ public:
 };
 
 /**
+ * @class TrackY
  * @brief Plot argument to specify which edges of data to keep track of.
  */
 class TrackY : public RooCmdArg
@@ -143,6 +145,7 @@ public:
 };
 
 /**
+ * @class EntryText
  * @brief Argument for defining text to place in legend.
  */
 class EntryText : public RooCmdArg
@@ -161,6 +164,10 @@ public:
 
 // ------------------------------------------------------------------------------
 
+/**
+ *  @class TextColor
+ *  @brief Defining the text color for a certain plot process
+ */
 class TextColor : public RooCmdArg
 {
 public:
@@ -174,6 +181,10 @@ public:
   Alpha() const { return getDouble( 0 ); }
 };
 
+/**
+ *  @class TextSize
+ *  @brief Defining the text size for a certain plot process
+ */
 class TextSize : public RooCmdArg
 {
 public:
@@ -185,6 +196,10 @@ public:
   }
 };
 
+/**
+ *  @class TextAngle
+ *  @brief Defining the text angle for a certain plot process
+ */
 class TextAngle : public RooCmdArg
 {
 public:
@@ -196,6 +211,10 @@ public:
   }
 };
 
+/**
+ *  @class TextAlign
+ *  @brief Defining the text alignment for a certain plot process
+ */
 class TextAlign : public RooCmdArg
 {
 public:
@@ -209,6 +228,10 @@ public:
 
 // ------------------------------------------------------------------------------
 
+/**
+ *  @class LineColor
+ *  @brief Defining the LineColor (with transparency) for a certain plot process
+ */
 class LineColor : public RooCmdArg
 {
 public:
@@ -222,6 +245,10 @@ public:
   Alpha() const { return getDouble( 0 ); }
 };
 
+/**
+ *  @class LineStyle
+ *  @brief Defining the LineStyle for a certain plot process
+ */
 class LineStyle : public RooCmdArg
 {
 public:
@@ -233,6 +260,10 @@ public:
   }
 };
 
+/**
+ *  @class LineWidth
+ *  @brief Defining the LineWidth for a certain plot process
+ */
 class LineWidth : public RooCmdArg
 {
 public:
@@ -246,6 +277,10 @@ public:
 
 // ------------------------------------------------------------------------------
 
+/**
+ *  @class FillColor
+ *  @brief Defining the FillColor (with transparency) for a certain plot process
+ */
 class FillColor : public RooCmdArg
 {
 public:
@@ -259,6 +294,10 @@ public:
   Alpha() const { return getDouble( 0 ); }
 };
 
+/**
+ *  @class FillStyle
+ *  @brief Defining the FillStyle for a certain plot process
+ */
 class FillStyle : public RooCmdArg
 {
 public:
@@ -272,6 +311,11 @@ public:
 
 // ------------------------------------------------------------------------------
 
+/**
+ *  @class MarkerColor
+ *  @brief Defining the MarkerColor (with transparency) for a certain plot
+ *  process
+ */
 class MarkerColor : public RooCmdArg
 {
 public:
@@ -285,6 +329,10 @@ public:
   Alpha() const { return getDouble( 0 ); }
 };
 
+/**
+ *  @class MarkerStyle
+ *  @brief Defining the MarkerStyle for a certain plot process
+ */
 class MarkerStyle : public RooCmdArg
 {
 public:
@@ -296,6 +344,10 @@ public:
   }
 };
 
+/**
+ *  @class MarkerSize
+ *  @brief Defining the MarkerSize for a certain plot process
+ */
 class MarkerSize : public RooCmdArg
 {
 public:
@@ -326,7 +378,8 @@ enum plottype
 };
 
 /**
- * @brief Plot argument to specify how data should be presented.
+ * @class PlotType
+ * @brief Plot argument to specify how data should be presented in a 1D graph.
  */
 class PlotType : public RooCmdArg
 {
@@ -350,6 +403,7 @@ public:
 
 
 /**
+ * @class ScaleY
  * @brief Plot argument to scale a data by a specific amount.
  */
 class ScaleY : public RooCmdArg
@@ -373,11 +427,14 @@ enum plot2df
   heat,// < Plot objects has head maps
   heattext,// < Plot objects as heat maps with text in bin box
   heatcont,// < Plot object as heat maps with contours lines
-  cont// < Plotting only contour lines
+  cont,// < Plotting only contour lines
+  box,   // < Plotting the box diagram (box size indicating fill value)
+  density, // < Plotting scatter type historgrams
 };
 
 /**
- * @brief Plot argument to specify how data should be presented.
+ * @class Plot2DF
+ * @brief Plot argument to specify how data should be presented in a 2D plot.
  */
 class Plot2DF : public RooCmdArg
 {
@@ -400,6 +457,7 @@ public:
 };
 
 /**
+ * @class VisualizedError
  * @brief Plot argument to plot a fitted TF1 with fit uncertainties.
  * Intentionally using the same interface as the VisualizeError for
  * @ROOT{RooAbsPdf}.
@@ -426,6 +484,7 @@ public:
 };
 
 /**
+ * @class ExtrapolateInRatio
  * @brief Whether or not to extrapolate data points in a ratio plot if the number
  * of data points in a denominator is smaller than the number of number of data
  * points in the denominator (Specifically for TGraph family plotting).
