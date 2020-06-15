@@ -56,11 +56,16 @@ enum GET_FLAG
    ---------------------------------------------------------------------------*/
 const reco::Candidate* GetDirectMother( const reco::Candidate*, int );
 
-bool        IsIntermediate( const reco::Candidate* );
-inline bool IsIntermediate( const reco::Candidate& x  )
+bool IsIntermediate( const reco::Candidate* );
+inline bool
+IsIntermediate( const reco::Candidate& x  )
 {
   return IsIntermediate( &x );
 }
+
+const reco::Candidate* GetLeastCommonAncestor(
+  const reco::Candidate*                    root,
+  const std::vector<const reco::Candidate*> list );
 
 const reco::Candidate* GetLastInChain( const reco::Candidate* );
 const reco::Candidate* GetFirstInChain( const reco::Candidate* );
@@ -73,7 +78,8 @@ bool IsSMHadron( const reco::Candidate* );
 std::vector<const reco::Candidate*> GetDecendants(
   const reco::Candidate*,
   bool ( * )( const reco::Candidate* ),
-  int flat = GET_ALL );
+  int flag = GET_ALL );
+
 std::vector<const reco::Candidate*> GetSMHadrons( const reco::Candidate* );
 
 /** @} */
