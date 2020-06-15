@@ -10,7 +10,13 @@
 
 #include "TLorentzVector.h"
 
+/**
+ * @addtogroup extendedvar
+ * @{
+ */
 extern TLorentzVector TransientVertexP4( const TransientVertex&  );
 
+
+/** @} */
 
 #endif

@@ -3,7 +3,7 @@
 /**
  * @brief Returning the vertex 4 momentum by summing over all associated tracks,
  *
- * Assumes the resulting particles are massless!
+ * Assumes the resulting particles are massless.
  */
 TLorentzVector TransientVertexP4( const TransientVertex& vertex )
 {
