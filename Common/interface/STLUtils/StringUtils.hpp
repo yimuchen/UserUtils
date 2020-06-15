@@ -51,6 +51,9 @@ extern std::string StripToNaming( const std::string& );
 extern size_t MatchBrace( const std::string&, const unsigned open_brace );
 extern size_t NextOpenBrace( const std::string&, const unsigned start );
 
+extern bool starts_with( const std::string&, const std::string& );
+extern bool ends_with( const std::string&, const std::string& );
+
 
 /**
  * @{

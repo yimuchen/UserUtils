@@ -11,15 +11,14 @@
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
-#include <algorithm>
-
 #include <boost/algorithm/string.hpp>
 #include <boost/range/algorithm_ext/erase.hpp>
 
+#include <algorithm>
 #include <cstdlib>
+#include <iostream>
 #include <regex>
 #include <string>
-#include <iostream>
 
 namespace usr  {
 
@@ -200,6 +199,30 @@ size_t
 NextOpenBrace( const std::string& x, const unsigned start )
 {
   return x.find_first_of( "([{", start );
+}
+
+/**
+ * @brief Checking if master string starts with some target string.
+ *
+ * Using the std::equal algorithm with the forwards iterator to complete.
+ */
+bool
+starts_with( const std::string& master, const std::string& target )
+{
+  if( target.size() > master.size() ){ return false; }
+  return std::equal( target.begin(), target.end(), master.begin() );
+}
+
+/**
+ * @brief Checking if a masters string ends with some target string.
+ *
+ * Using std::equal with the reverse iterator to complete.
+ */
+bool
+ends_with( const std::string& master, const std::string& target )
+{
+  if( target.size() > master.size() ){ return false; }
+  return std::equal( target.rbegin(), target.rend(), master.rbegin() );
 }
 
 
