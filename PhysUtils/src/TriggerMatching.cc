@@ -8,8 +8,8 @@
 #include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 
-#include "UserUtils/PhysUtils/interface/TriggerMatching.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#include "UserUtils/PhysUtils/interface/TriggerMatching.hpp"
 
 #include <regex>
 
@@ -124,7 +124,7 @@ MatchTrgObj(
   )
 {
   for( auto objiter = trgobjlist.begin(); objiter != trgobjlist.end(); ++objiter ){
-    auto obj = *objiter;  // making duplicate
+    auto obj = *objiter;// making duplicate
     obj.unpackPathNames( trgnames );
 
     if( TrigObjMatchPathFilter( obj, reqtrigger, reqfilter )
@@ -179,4 +179,4 @@ TrigObjMatchPathFilter(
   return hasmatchpath && hasmatchfilter;
 }
 
-} /* usr */
+}/* usr */
