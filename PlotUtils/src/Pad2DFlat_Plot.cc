@@ -42,6 +42,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
   const std::string legopt = opt == plot2df::heat ? "" :
                              opt == plot2df::heatcont ? "L" :
                              opt == plot2df::cont ? "L" :
+                             opt == plot2df::density ? "PF"  :
                              "PFLE";
 
   for( const auto&& func : *( hist.GetListOfFunctions() ) ){
@@ -70,6 +71,12 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
   case  plot2df::cont:
     PlotObj( hist, "CONT3 SAME" );
     SetAxisFont();
+    break;
+  case plot2df::box:
+    PlotObj( hist, "BOX SAME" );
+    break;
+  case plot2df::density:
+    PlotObj( hist, "SCAT=0.5 SAME" );
     break;
   case plot2df_dummy:
     PlotObj( hist, ( args.Get<Plot2DF>().str() + " SAME" ).c_str() );
@@ -119,6 +126,7 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
   const std::string legopt = opt == plot2df::heat ? "" :
                              opt == plot2df::heatcont ? "L" :
                              opt == plot2df::cont ? "L" :
+                             opt == plot2df::box ? "F" :
                              "PFLE";
 
   if( !GetAxisObject() ){
@@ -150,7 +158,6 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
   case plot2df_dummy:
     PlotObj( graph, args.Get<Plot2DF>().c_str() );
     break;
-
   default:
     std::cerr << "Skipping over invalid value" << std::endl;
     break;
@@ -217,9 +224,9 @@ TGraph&
 Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
 {
   const RooArgContainer args( arglist,
-    {PlotType(plottype::scatter) } );
+                              {PlotType( plottype::scatter ) } );
 
-  const int opt =args.Get<PlotType>();
+  const int opt = args.Get<PlotType>();
 
   std::string legopt = "PLE";
 
@@ -281,9 +288,9 @@ Pad2DFlat::MakeLegend()
   width *= 1.1;// Relieving spacing a little
   width += 1.0 * LineHeight();// Reserving space for legend icon boxes.
 
-  const float xmin = 0.5 * float( LineHeight() ) / AbsWidth();
+  const float xmin = 0.5 * float(LineHeight() ) / AbsWidth();
   const float ymax = 1   - GetTopMargin();
-  const float xmax = GetLeftMargin() - 5*float( LineHeight() ) / AbsWidth();
+  const float xmax = GetLeftMargin() - 5*float(LineHeight() ) / AbsWidth();
   const float ymin = ymax - height/ AbsHeight();
   _legend.SetX1NDC( xmin );
   _legend.SetX2NDC( xmax );
