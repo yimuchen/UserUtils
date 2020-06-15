@@ -6,7 +6,7 @@
 #../testbin/PlotUtils/usrutil_flat2dcanvas
 
 # Generating CSS file
-sass style.scss:style.css --style compact
+sass style.scss:style.css --style compressed
 
 # Running doxygen!
 doxygen doxygen.cfg
