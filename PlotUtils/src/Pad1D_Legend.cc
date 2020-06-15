@@ -45,9 +45,9 @@ Pad1D::_init_legend()
  *   would be used is also determined by the variable bin-width of the histgram.
  * - other/undetermined: all attributes would be used.
  *
- * @param hist    The histogram that the legend should link to.
- * @param title   The texted to be placed in the legend.
- * @param plotopt Options used for plotting histogram.
+ * @param hist     The histogram that the legend should link to.
+ * @param entryopt The texted to be placed in the legend.
+ * @param plotopt  Options used for plotting histogram.
  */
 void
 Pad1D::AddLegendEntry(
@@ -99,9 +99,9 @@ Pad1D::AddLegendEntry(
  *   would not be added to the legend either.
  * - other/undetermined: all attributes would be used.
  *
- * @param graph   graph to be added to legend.
- * @param title   text for entry in legend.
- * @param plotopt plotting options used for graph object.
+ * @param graph    graph to be added to legend.
+ * @param entryopt text for entry in legend.
+ * @param plotopt  plotting options used for graph object.
  */
 void
 Pad1D::AddLegendEntry(
