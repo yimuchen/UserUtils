@@ -16,6 +16,8 @@ std::string ParseJsonFile( const std::string&,
 
 void RunComparison( usr::plt::fmt::BatchRequest& batch,
                     const usr::ArgumentExtender& args );
+void RunComparison2D( usr::plt::fmt::BatchRequest& batch,
+                      const usr::ArgumentExtender& args );
 void RunStandard( usr::plt::fmt::BatchRequest& batch,
                   const usr::ArgumentExtender& args  );
 void RunTable( usr::plt::fmt::BatchRequest& batch,
@@ -28,12 +30,14 @@ std::map<std::string, RunBatch> MakeCommandMap();
 const std::map<std::string, RunBatch> CommandMap = MakeCommandMap();
 
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   usr::po::options_description desc_common(
     usr::fstr(
       "Running a standard plotting sequence interactively, Basic usage require "
-      "first two arguments being the plotting command [compare/standard/table] "
+      "first two arguments being the plotting command "
+      "[compare/compare2d/standard/table] "
       "and the plot settings json file. So something like:\n"
       ">> %s  standard my_plots.json\n", argv[0] )
     );
@@ -82,8 +86,9 @@ int main( int argc, char* argv[] )
   return 0;
 }
 
-std::string ParsePlotCommand( const std::string&           str,
-                              const usr::ArgumentExtender& args )
+std::string
+ParsePlotCommand( const std::string&           str,
+                  const usr::ArgumentExtender& args )
 {
   const std::string ans = usr::ToLower( str );
   if( CommandMap.count( ans ) ){
@@ -94,38 +99,50 @@ std::string ParsePlotCommand( const std::string&           str,
   }
 }
 
-std::string ParseJsonFile( const std::string& str,
-                           const usr::ArgumentExtender& args )
+std::string
+ParseJsonFile( const std::string&           str,
+               const usr::ArgumentExtender& args )
 {
   return str;
 }
 
-std::map<std::string, RunBatch> MakeCommandMap()
+std::map<std::string, RunBatch>
+MakeCommandMap()
 {
   std::map<std::string, RunBatch> ans;
 
-  ans["compare"]  = RunComparison;
-  ans["standard"] = RunStandard;
-  ans["table"]    = RunTable;
+  ans["compare"]   = RunComparison;
+  ans["compare2d"] = RunComparison2D;
+  ans["standard"]  = RunStandard;
+  ans["table"]     = RunTable;
 
   return ans;
 }
 
 
-void RunComparison( usr::plt::fmt::BatchRequest& batch,
-                    const usr::ArgumentExtender& args )
+void
+RunComparison( usr::plt::fmt::BatchRequest& batch,
+               const usr::ArgumentExtender& args )
 {
   batch.GenerateSampleComparePlot();
 }
 
-void RunStandard( usr::plt::fmt::BatchRequest& batch,
-                  const usr::ArgumentExtender& args  )
+void
+RunComparison2D( usr::plt::fmt::BatchRequest& batch,
+                 const usr::ArgumentExtender& args )
+{
+  batch.Generate2DComaprePlot();
+}
+
+void
+RunStandard( usr::plt::fmt::BatchRequest& batch,
+             const usr::ArgumentExtender& args  )
 {
   batch.GeneratePlots();
 }
-void RunTable( usr::plt::fmt::BatchRequest& batch,
-               const usr::ArgumentExtender& args )
+void
+RunTable( usr::plt::fmt::BatchRequest& batch,
+          const usr::ArgumentExtender& args )
 {
-
   batch.GenerateSimulationTable( std::cout );
 }
