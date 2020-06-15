@@ -5,10 +5,12 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#include "UserUtils/Common/interface/SystemUtils/Command.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
 #else
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/Common/SystemUtils/Command.hpp"
 #include "UserUtils/PlotUtils/Canvas.hpp"
 #include "UserUtils/PlotUtils/Constants.hpp"
 #endif
@@ -115,14 +117,15 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
-    "-sstdout=/dev/null",        // Supperssing error messages
+    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
+    "-sstdout=/dev/null",                 // Supperssing error messages
     "-sDEVICE=pdfwrite",
     "-dCompatibilityLevel=1.4",
     "-dPDFSETTINGS=/screen",
     // Getting rid of the external transparent margin
     "-dUseCropBox",
     usr::fstr( "-sOutputFile=%s", tmp2path.string() ),
-    "-f",                        tmppath
+    "-f",                                 tmppath
   };
 
   if( !run_ghostscript( gs_fixrotate ) ){
@@ -140,8 +143,9 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "gs",
     "-dNODISPLAY",
     "-dQUIET",
-    usr::fstr( "-sstdout=%s",   dimpath.string() ),
-    usr::fstr( "-sFileName=%s", tmp2path.string() ),
+    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
+    usr::fstr( "-sstdout=%s",              dimpath.string() ),
+    usr::fstr( "-sFileName=%s",            tmp2path.string() ),
     "-c",
     "FileName (r) file "
     "runpdfbegin 1 1 pdfpagecount {"
@@ -178,14 +182,15 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
+    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
     "-sDEVICE=pdfwrite",
     "-dCompatibilityLevel=1.4",
-    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  newwidth ),
-    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", newheight ),
+    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",   newwidth ),
+    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d",  newheight ),
     "-dFIXEDMEDIA",
     "-dPDFFitPage",
-    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
-    "-f", tmp2path
+    usr::fstr( "-sOutputFile=%s",          filepath.string() ),
+    "-f",                                 tmp2path
   };
 
   if( !run_ghostscript( gs_fixscale ) ){
@@ -231,6 +236,7 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
+    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
     "-sstdout=/dev/null",                // suppressing all error
     "-sDEVICE=pngalpha",
     usr::fstr( "-sOutputFile=%s",         filepath.string() ),
@@ -376,7 +382,6 @@ run_ghostscript( const std::vector<std::string>& args )
 
 #else
 
-#include "UserUtils/Common/interface/SystemUtils/Command.hpp"
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
@@ -387,7 +392,7 @@ run_ghostscript( const std::vector<std::string>& args )
   std::string cmd;
 
   for( const auto arg : args ){
-    if( arg.find(' ') != std::string::npos ){
+    if( arg.find( ' ' ) != std::string::npos ){
       cmd += "\"" + arg + "\"";
     } else {
       cmd += arg;
