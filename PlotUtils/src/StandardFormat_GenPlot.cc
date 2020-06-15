@@ -1,7 +1,18 @@
+/**
+ * @file StandardFormat_GenPlot.cc
+ * @author your name (you@domain.com)
+ * @brief
+ * @version 0.1
+ * @date 2020-06-15
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
+#include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/StandardPlotFormat.hpp"
@@ -9,6 +20,7 @@
 #include "UserUtils/Common/Maths.hpp"
 #include "UserUtils/Common/STLUtils.hpp"
 #include "UserUtils/MathUtils/Measurement.hpp"
+#include "UserUtils/PlotUtils/Flat2DCanvas.hpp"
 #include "UserUtils/PlotUtils/Ratio1DCanvas.hpp"
 #include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
 #include "UserUtils/PlotUtils/StandardPlotFormat.hpp"
@@ -23,7 +35,8 @@ namespace plt {
 
 namespace fmt {
 
-void BatchRequest::GeneratePlots()
+void
+BatchRequest::GeneratePlots()
 {
   for( const auto histrequest :  histlist ){
     GenerateBackgroundObjects( histrequest );
@@ -63,7 +76,8 @@ void BatchRequest::GeneratePlots()
   }
 }
 
-void BatchRequest::GenerateSampleComparePlot()
+void
+BatchRequest::GenerateSampleComparePlot()
 {
   for( const auto& histrequest : histlist ){
     Simple1DCanvas c;
@@ -81,7 +95,7 @@ void BatchRequest::GenerateSampleComparePlot()
           process.file,
           process.MakeKey( histrequest.filekey )
           );
-          continue;
+        continue;
       }
       c.PlotHist( process.GetScaledClone( histrequest.filekey, 1.0 ),
         usr::plt::PlotType( usr::plt::hist ),
@@ -89,6 +103,7 @@ void BatchRequest::GenerateSampleComparePlot()
         usr::plt::LineColor( TColor::GetColor( process.color.c_str() ) ),
         usr::plt::EntryText( process.name ) );
     }
+
     c.Pad().SetHistAxisTitles( histrequest.xaxis
                              , histrequest.units
                              , histrequest.yaxis );
@@ -100,7 +115,45 @@ void BatchRequest::GenerateSampleComparePlot()
   }
 }
 
-void BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
+void
+BatchRequest::Generate2DComaprePlot()
+{
+  for( const auto& histrequest : histlist ){
+    Flat2DCanvas c;
+
+    for( unsigned i = signallist.size()-1; i < signallist.size(); --i ){
+      const auto& process = signallist.at( i );
+
+      if( !process.CheckKey( histrequest.filekey ) ){
+        usr::fout(
+          "Warning! Objects for plot [%s] in process [%s] is not found!\n"
+          "\t File: %s\n"
+          "\t Key:  %s\n"
+          "The plot would not be plotted\n",
+          histrequest.name, process.name,
+          process.file,
+          process.MakeKey( histrequest.filekey )
+          );
+        continue;
+      }
+      c.PlotHist( process.Get2DClone( histrequest.filekey ),
+        usr::plt::Plot2DF( usr::plt::density ),
+        usr::plt::MarkerColor(
+          usr::plt::col::color( process.color ), process.transparency ),
+        usr::plt::FillColor(
+          usr::plt::col::color( process.color), process.transparency ),
+        usr::plt::MarkerSize( 0.05 ),
+        usr::plt::EntryText( process.name ) );
+    }
+
+    c.Pad().Xaxis().SetTitle( histrequest.xaxis.c_str() );
+    c.Pad().Yaxis().SetTitle( histrequest.yaxis.c_str() );
+    c.SaveAsPDF( histrequest.name + ".pdf" );
+  }
+}
+
+void
+BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
 {
   // Plotting the background
   for( unsigned i = background.size()-1; i < background.size(); --i ){
@@ -163,7 +216,8 @@ void BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
 }
 
 
-void BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
+void
+BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
 {
   std::vector<std::unique_ptr<TH1D> > unc_histlist;
   const std::string filekey = hist.filekey;
@@ -289,7 +343,8 @@ void BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
   }
 }
 
-void BatchRequest::GenerateData( const HistRequest& hist )
+void
+BatchRequest::GenerateData( const HistRequest& hist )
 {
   _data_hist = nullptr;
 
