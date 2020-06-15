@@ -1,6 +1,7 @@
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
+#include "UserUtils/EDMUtils/interface/ParseEDM.hpp"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "DataFormats/FWLite/interface/Handle.h"
@@ -8,11 +9,8 @@
 
 #include "TFile.h"
 
-#include <regex>
-
-edm::EventID ParseEvent( const usr::ArgumentExtender& args  );
-
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   usr::po::options_description desc(
     "Dumping the the generator particle dump to generation topology debugging" );
@@ -20,8 +18,8 @@ int main( int argc, char* argv[] )
     ( "input,i", usr::po::multivalue<std::string>(),
     "Input EDM Files (useful if you are not sure which file contains the event "
     "of interest)" )
-    ( "tag", usr::po::defvalue<std::string>( "prunedGenparticle" ),
-    "InputTag of gen particles" )
+    ( "tag", usr::po::defvalue<std::string>( "prunedGenParticles" ),
+    "edm::InputTag of container of the Gen Particle list in the EDM file" )
     ( "event", usr::po::value<std::string>(),
     "event number in the format of \"LumiID:EventID\" or \"EventID\""
     "(the Run is always 1)" )
@@ -45,7 +43,8 @@ int main( int argc, char* argv[] )
   const std::vector<int> pdgid_list    = args.ArgList<int>( "pdgid" );
   const std::string tag                = args.Arg<std::string>( "tag" );
   const unsigned event_idx             = args.ArgOpt<int>( "eventidx", 0 );
-  const edm::EventID event_id          = ParseEvent( args );
+  const edm::EventID event_id          = ParseEvent(
+    args.ArgOpt<std::string>( "event", "" ) );
 
   fwlite::ChainEvent evt( input );
   fwlite::Handle<std::vector<reco::GenParticle> > genHandle;
@@ -53,7 +52,7 @@ int main( int argc, char* argv[] )
 
 
   // Moving to the event
-  if( event_id.run() == 1 ){
+  if( event_id.run() != 0 ){
     evt.to( event_id );
   } else {
     evt.to( event_idx );
@@ -82,11 +81,13 @@ int main( int argc, char* argv[] )
     "%5s | "
     "%10s %5s | "
     "%10s %10s %10s %6s | "
-    "[%4s]%10s | "
-    "| %5s | [%4s]%10s [%4s]%10s\n"
+    "%8s %8s %8s | "
+    "[%4s]%10s( N) | "
+    "%5s | [%4s]%10s [%4s]%10s\n"
            , "IDX"
            , "PDGID", "STAT"
            , "MASS", "PT", "ETA", "PHI"
+           , "VX" , "VY", "VZ"
            , "IDX", "Mother"
            , "NDau"
            , "IDX", "Daughter0"
@@ -115,13 +116,16 @@ int main( int argc, char* argv[] )
       "%5u | "
       "%10d %5d | "
       "%10.2lf %10.2lf %10.2lf %6.2lf | "
-      "[%4d]%10d | "
-      "| %5d | [%4d]%10d [%4d]%10d\n"
+      "%8.2lf %8.2lf %8.2lf |"
+      "[%4d]%10d(%2d) | "
+      "%5d | [%4d]%10d [%4d]%10d\n"
              , gen_index
              , gen.pdgId(), gen.status()
              , gen.mass(), gen.pt(), gen.eta(), gen.phi()
+             , gen.vertex().x(), gen.vertex().y(), gen.vertex().z()
              , mother ? GetIndex( mother ) : -1
              , mother ? mother->pdgId() : 0
+             , gen.numberOfMothers()
              , gen.numberOfDaughters()
              , daughter0 ? GetIndex( daughter0 ) : -1
              , daughter0 ? daughter0->pdgId() : 0
@@ -131,40 +135,4 @@ int main( int argc, char* argv[] )
   }
 
   return 0;
-}
-
-
-edm::EventID ParseEvent( const usr::ArgumentExtender& args  )
-{
-  static const edm::EventID defret( 0, 0, 0 );
-  static const std::regex lumi_format( "^([0-9]+):([0-9]+)$" );
-  static const std::regex evt_format( "^([0-9]+)$" );
-
-  if( !args.CheckArg( "event" ) ){
-    return defret;
-  }
-
-  const std::string input = args.Arg( "event" );
-  std::smatch match;
-
-  if( std::regex_match( input, match, lumi_format ) ){
-    if( match.size() == 3 ){
-      const std::string lumi_str = match[1];
-      const std::string evt_str  = match[2];
-      return edm::EventID( 1
-                         , std::stoi( lumi_str )
-                         , std::stoi( evt_str ) );
-    } else {
-      return defret;
-    }
-  } else if( std::regex_match( input, match, evt_format ) ){
-    if( match.size() == 2 ){
-      const std::string evt_str = match[1];
-      return edm::EventID( 1, 0, std::stoi( evt_str ) );
-    } else {
-      return defret;
-    }
-  } else {
-    return defret;
-  }
 }
