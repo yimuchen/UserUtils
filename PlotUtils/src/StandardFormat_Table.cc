@@ -1,3 +1,13 @@
+/**
+ * @file StandardFormat_Table.cc
+ * @author your name (you@domain.com)
+ * @brief
+ * @version 0.1
+ * @date 2020-06-15
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils.hpp"

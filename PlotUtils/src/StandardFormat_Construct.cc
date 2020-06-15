@@ -1,3 +1,14 @@
+/**
+ * @file StandardFormat_Construct.cc
+ * @author your name (you@domain.com)
+ * @brief
+ * @version 0.1
+ * @date 2020-06-15
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
+
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Format.hpp"
@@ -17,6 +28,11 @@ namespace plt {
 
 namespace fmt {
 
+/**
+ * @brief Construct a new Batch Request object from a json file string
+ *
+ * @param filename
+ */
 BatchRequest::BatchRequest( const std::string& filename )
 {
   initialize( usr::FromJsonFile( filename ) );
@@ -27,7 +43,8 @@ BatchRequest::BatchRequest( const usr::pt::ptree& tree )
   initialize( tree );
 }
 
-void BatchRequest::initialize( const usr::pt::ptree& tree )
+void
+BatchRequest::initialize( const usr::pt::ptree& tree )
 {
 
   if( CheckQuery( tree, "io settings" ) ){
@@ -60,7 +77,7 @@ void BatchRequest::initialize( const usr::pt::ptree& tree )
     }
   } else {
     // Monte Carlo only system setting total luminosity to 1 to avoid crashing
-    _total_luminosity = 1 ;
+    _total_luminosity = 1;
   }
 
   if( CheckQuery( tree, "uncertainties" ) ){
@@ -144,6 +161,9 @@ ProcessGroup::ProcessGroup( const usr::pt::ptree& tree,
 
 // ------------------------------------------------------------------------------
 
+/**
+ * @brief Constructing a process object using a parsed file.
+ */
 Process::Process( const usr::pt::ptree& tree, const BatchRequest* ptr  ) :
   name( GetSingle<std::string>( tree, "display" ) ),
   latex_name( GetSingleOptional<std::string>( tree, "latex", "" ) ),
@@ -162,23 +182,27 @@ Process::Process( const usr::pt::ptree& tree, const BatchRequest* ptr  ) :
                  GetList<unsigned>( tree, "run range" ).at( 0 ) : 0 ),
   run_range_max( run_range_min != 0 ?
                  GetList<unsigned>( tree, "run range" ).at( 1 )  : 0 ),
+  transparency( GetSingleOptional<double>( tree, "transparency", 1.0  ) ),
   _file( nullptr ),
   parent( ptr )
 {
   OpenFile();
 }
 
-std::string Process::MakeKey( const std::string& key ) const
+std::string
+Process::MakeKey( const std::string& key ) const
 {
   return Parent().iosetting.key_prefix + key_prefix + key;
 }
 
-bool Process::CheckKey( const std::string& key ) const
+bool
+Process::CheckKey( const std::string& key ) const
 {
   return _file->Get( MakeKey( key ).c_str() );
 }
 
-TH1D* Process::GetClone( const std::string& key ) const
+TH1D*
+Process::GetClone( const std::string& key ) const
 {
   _file->cd( 0 );
   TH1D* ans = (TH1D*)( _file->Get( MakeKey( key ).c_str() )->Clone() );
@@ -186,14 +210,16 @@ TH1D* Process::GetClone( const std::string& key ) const
   return ans;
 }
 
-TH1D* Process::GetNormalizedClone( const std::string& key ) const
+TH1D*
+Process::GetNormalizedClone( const std::string& key ) const
 {
   TH1D* ans = GetClone( key );
   ans->Scale( 1.0 / ans->Integral() );
   return ans;
 }
 
-TH1D* Process::GetScaledClone( const std::string& key, const double total ) const
+TH1D*
+Process::GetScaledClone( const std::string& key, const double total ) const
 {
   TH1D* ans = GetClone( key );
   ans->Scale( total / effective_luminosity );
@@ -202,7 +228,17 @@ TH1D* Process::GetScaledClone( const std::string& key, const double total ) cons
   return ans;
 }
 
-void Process::OpenFile()
+TH2D*
+Process::Get2DClone( const std::string& key ) const
+{
+  _file->cd( 0 );
+  TH2D* ans = (TH2D*)( _file->Get( MakeKey( key ).c_str() )->Clone() );
+  ans->SetDirectory( 0 );
+  return ans;
+}
+
+void
+Process::OpenFile()
 {
   if( _file ){ _file->Close();  }
 
@@ -237,7 +273,8 @@ void Process::OpenFile()
   }
 }
 
-void BatchRequest::UpdateInputPrefix( const std::string& x )
+void
+BatchRequest::UpdateInputPrefix( const std::string& x )
 {
   iosetting.input_prefix = x;
 
@@ -256,17 +293,20 @@ void BatchRequest::UpdateInputPrefix( const std::string& x )
   }
 }
 
-void BatchRequest::UpdateKeyPrefix( const std::string& x )
+void
+BatchRequest::UpdateKeyPrefix( const std::string& x )
 {
   iosetting.key_prefix = x;
 }
 
-void BatchRequest::UpdateOutputPrefix( const std::string& x )
+void
+BatchRequest::UpdateOutputPrefix( const std::string& x )
 {
   iosetting.output_prefix = x;
 }
 
-void BatchRequest::UpdateoutputPostfix( const std::string& x )
+void
+BatchRequest::UpdateoutputPostfix( const std::string& x )
 {
   iosetting.output_postfix = x;
 }
