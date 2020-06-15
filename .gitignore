@@ -34,6 +34,7 @@ docs/style.css.map
 .sass-cache
 testbin/**
 docs/image/**
+build/**
 
 # Specific file inclusion
 # ![relative/path/to/file]
