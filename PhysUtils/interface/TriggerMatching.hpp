@@ -53,14 +53,6 @@ extern TLorentzVector TriggerMatchP4(
   );
 
 
-/*-----------------------------------------------------------------------------
- *  MatchTrgObj
- *   Return a vector::const_iterator to the first tracker object matched with
- *   reco::Candidate object within a radius of midelta_r. returns the end()
- *   iterator if match is not found.
- *   It is not recommended to use this function directly, but to use by the
- *   functions above.
-   --------------------------------------------------------------------------*/
 extern pat::TriggerObjectStandAloneCollection::const_iterator MatchTrgObj(
   const reco::Candidate&                        recoobj,
   const pat::TriggerObjectStandAloneCollection& trgobjlist,
@@ -70,11 +62,6 @@ extern pat::TriggerObjectStandAloneCollection::const_iterator MatchTrgObj(
   const double                                  mindelta_r = 0.1
   );
 
-/*-----------------------------------------------------------------------------
- *  TrigObjMatchPathFilter
- *   Check if single trigger object maches desired path and filter label.
- *   Input could be glob notation and will return first glob match results
-   --------------------------------------------------------------------------*/
 extern bool TrigObjMatchPathFilter(
   const pat::TriggerObjectStandAlone& obj,
   const std::string&                  path,

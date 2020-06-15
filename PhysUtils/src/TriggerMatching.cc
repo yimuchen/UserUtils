@@ -19,21 +19,23 @@
  * @defgroup triggermatching Trigger Matching
  * @details
  * @details
- * Main reference could be found in the documentation of
- * [general trigger objects use](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2016#Trigger).
+ * Main reference could be found in the documentation of [general trigger objects
+ * use](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2016#Trigger).
  *
  * In general, you will need provide :
- * - physical object you want to perform the matching (ex, a pat::Jet,
- *   or pat::Muon).
+ * - physical object you want to perform the matching (ex, a pat::Jet, or
+ *   pat::Muon).
  * - The list of trigger objects stored in the EDM file (should be under the
  *   input tag of "selectedPatTrigger" or something similar).
  * - The trigger bits in the EDM file (should be under the input tag
  *   "TriggerResults::HLT" or similar).
  * - Trigger paths and filter label. For paths, please consult your physics
- *   analysis group for recommendations. For the filter label of objects within
- *   a trigger, please consult the [trigger database](https://cmsweb.cern.ch/confdb/)
- *   (warning! This website is notoriously slow!), or get the trigger
- *   configuration via the [`hltGetConfiguration` command](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT).
+ *   analysis group for recommendations. For the filter label of objects within a
+ *   trigger, please consult the [trigger
+ *   database](https://cmsweb.cern.ch/confdb/) (warning! This website is
+ *   notoriously slow!), or get the trigger configuration via the
+ *   [`hltGetConfiguration`
+ *   command](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT).
  */
 
 namespace usr {
@@ -91,7 +93,10 @@ TriggerMatchP4(
     trgnames,
     mindelta_r );
   if( match != trgobjlist.end() ){
-    return TLorentzVector( match->px(), match->py(), match->pz(), match->energy() );
+    return TLorentzVector( match->px()
+                         , match->py()
+                         , match->pz()
+                         , match->energy() );
   } else {
     return TLorentzVector( 0, 0, 0, 0 );
   }
