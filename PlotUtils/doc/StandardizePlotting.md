@@ -1,4 +1,22 @@
-# Standardized Plotting binary file
+@defgroup StandardizedPlot Standardized Plotting routine
+@ingroup PlotUtils
+@brief Standardized plotting routine for analysis presentation
+
+In high energy physics, we will have some form of standardized plotting used
+throughout the analysis. A set of common variable histograms are created for each
+simulated and data samples, weighted according to cross sections and various
+correction factors, the background will typically be a stacked histogram with
+uncertainties, the data is plotted as scatter plots.
+
+This part of the library aims to allow the user the list the processes as in a
+JSON file, and allow the generation of the standardized plots with each MC sample
+properly weighted according to their cross section and have their common
+uncertainties properly tallied. This allows for consistencies between the various
+plots that are displayed in the analysis, as well as attempting to segregate the
+code needed for calculating analysis specific processes, and the common aesthetic
+and simple error propagation routines.
+
+## The construction of standardized plot request
 
 ```json
 {
@@ -16,13 +34,13 @@
   ],
   "signals" : [
         {
-          "display": "t*#bar{t}* ",
-          "latex": "\\PW+Jets, \\HT$\\in$ [400,600)\\GeVc",
+          "display": "t*#bar{t}*",
+          "latex": "\\t^{*}\\bar{t}^{*} TESTING",
           "cross section": [ 48.91 , 0.072, 0.072 ],
           "scaling": 1.0,
           "generator": "\\POWHEG",
           "cross section source": "NNLO",
-          "file": "ttbar_*.root"
+          "file": "tstar_*.root"
         },
   ],
   "Background" : [
