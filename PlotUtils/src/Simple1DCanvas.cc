@@ -17,12 +17,12 @@ namespace plt  {
  * @{
  * @brief default construction dimensions
  *
- * A square of 0.8 times the text box width in standard CMS documents. and the
+ * A square of 0.9 times the text box width in standard CMS documents. and the
  * font size of 11pt (the same as the main text size used in CMS documents).
  */
-length_t Simple1DCanvas::default_width  = 0.45 * len::a4textwidth_default();
-length_t Simple1DCanvas::default_height = 0.45 * len::a4textwidth_default();
-FontSet  Simple1DCanvas::default_font = FontSet(8);
+length_t Simple1DCanvas::default_width  = 0.9 * len::a4textwidth_default();
+length_t Simple1DCanvas::default_height = 0.9 * len::a4textwidth_default();
+FontSet  Simple1DCanvas::default_font = FontSet(11);
 /** @} */
 
 /**
