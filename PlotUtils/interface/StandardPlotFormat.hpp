@@ -1,3 +1,8 @@
+/**
+ * @file StandardPlotFormat.hpp
+ * @author Yi-Mu "Enoch Chen"
+ * @brief Definition of all standardized plotting related classes.
+ */
 #ifndef USERUTILS_PLOTUTILS_SDPFORMAT_HPP
 #define USERUTILS_PLOTUTILS_SDPFORMAT_HPP
 
@@ -13,6 +18,7 @@
 
 #include "TFile.h"
 #include "TH1D.h"
+#include "TH2D.h"
 
 #include <memory>
 
@@ -22,13 +28,23 @@ namespace plt {
 
 namespace fmt {
 
-struct Process;
-struct ProcessGroup;
-struct Uncertainty;
-struct IOSetting;
-struct HistRequest;
-struct BatchRequest;
+/**
+ * @addtogroup StandardizedPlot
+ * @{
+ */
 
+
+class Process;
+class ProcessGroup;
+class Uncertainty;
+class IOSetting;
+class HistRequest;
+class BatchRequest;
+
+/**
+ * @class Process
+ * @brief Constainer of a single process information.
+ */
 class Process
 {
 public:
@@ -47,6 +63,7 @@ public:
   double effective_luminosity;
   unsigned run_range_min;
   unsigned run_range_max;
+  float transparency;
 
 private:
   Process( const usr::pt::ptree& tree, const BatchRequest* parent );
@@ -54,17 +71,24 @@ private:
   TFile* _file;
   const BatchRequest* parent;
 
-  void                       OpenFile();
-  inline const BatchRequest& Parent() const {return *parent;}
+  void OpenFile();
+  inline const BatchRequest&
+  Parent() const {return *parent;}
 
   bool        CheckKey( const std::string& ) const;
   std::string MakeKey( const std::string& ) const;
   TH1D*       GetNormalizedClone( const std::string& ) const;
   TH1D*       GetScaledClone( const std::string&, const double ) const;
   TH1D*       GetClone( const std::string& ) const;
+  TH2D*       Get2DClone( const std::string& ) const;
 };
 
 
+/**
+ * @class ProcessGroup
+ * @brief Container for a group of processes that will share a common display
+ * information
+ */
 class ProcessGroup : public std::vector<Process>
 {
 public:
@@ -80,6 +104,10 @@ private:
   ProcessGroup( const usr::pt::ptree& tree, const BatchRequest* parent );
 };
 
+/**
+ * @class HistRequest
+ * @brief Container for a histogram request
+ */
 class HistRequest
 {
 public:
@@ -96,6 +124,10 @@ private:
   HistRequest( const usr::pt::ptree& tree );
 };
 
+/**
+ * @class Uncertainty
+ * @brief Container for an uncertainty
+ */
 class Uncertainty
 {
 public:
@@ -109,6 +141,10 @@ private:
   Uncertainty( const usr::pt::ptree& tree );
 };
 
+/**
+ * @class IOSetting
+ * @brief Definition of a custom io settings
+ */
 class IOSetting
 {
 public:
@@ -123,6 +159,10 @@ private:
   IOSetting();
 };
 
+/**
+ * @class BatchRequest
+ * @brief Class defining a request to run some standardized plotting routine.
+ */
 class BatchRequest
 {
 public:
@@ -140,6 +180,7 @@ public:
   void GenerateSimulationTable( std::ostream& stream )  const;
   void GenerateSimulationSummary( std::ostream& stream ) const;
   void GenerateDataTable( std::ostream& ) const;
+  void Generate2DComaprePlot();
 
   void UpdateInputPrefix( const std::string& );
   void UpdateKeyPrefix( const std::string& );
@@ -150,8 +191,6 @@ private:
   friend Process;
   void initialize( const usr::pt::ptree& tree );
 
-  // Setting IO options to be private since changing IO options will
-  // Require the process objects to be shifted.
   IOSetting iosetting;
 
   // Temporary variables for generating plots:
@@ -162,20 +201,20 @@ private:
 
   double _total_luminosity;
 
-  // Generating background objects
   void GenerateBackgroundObjects( const HistRequest& );
-
-  // Generate Data Results
   void GenerateData( const HistRequest& );
-
-  // Running on Pad1D objects
   void PlotOnPad( const HistRequest& histrequest, Pad1D& pad );
 };
+
+/** @} */
+
 
 }// fmt
 
 }// plt
 
 }// usr
+
+
 
 #endif
