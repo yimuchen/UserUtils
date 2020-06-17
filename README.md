@@ -11,6 +11,9 @@ In CMSSW, clone the repository to the `src` directory and compile!
 ```bash
 cd CMSSW_X_Y_Z/src
 git clone https://github.com/yimuchen/UserUtils.git
+cd UserUtils
+git submodule update --init
+cd ../
 scram b
 ```
 
@@ -35,6 +38,7 @@ As a standalone package, make sure the following is available one your system:
 - [boost](https://www.boost.org/) (>1.41)
 - [gsl](https://www.gnu.org/software/gsl/)
 - [ghostscript](https://www.ghostscript.com/download.html) interpreter interface
+- [rapidjson](http://rapidjson.org/)
 - c++ compiler supporting the [c++17 standard](https://en.wikipedia.org/wiki/C%2B%2B17)
   - g++ > 6.0
   - clang > 4
