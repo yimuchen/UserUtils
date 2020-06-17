@@ -1,9 +1,17 @@
 #!/bin/bash
 
 # Getting the images
-#../testbin/PlotUtils/usrutil_simple1dcanvas
-#../testbin/PlotUtils/usrutil_ratio1dcanvas
-#../testbin/PlotUtils/usrutil_flat2dcanvas
+if [[ "$1" = "replot" ]] ; then
+  ../testbin/PlotUtils/usrutil_simple1dcanvas
+  ../testbin/PlotUtils/usrutil_ratio1dcanvas
+  ../testbin/PlotUtils/usrutil_flat2dcanvas
+
+  ../testbin/PlotUtils/usrutil_make_fake_standardformat_data
+  ../bin/usr_PlotStandard standard ../PlotUtils/test/standardplot_format.json
+  mv Mass.pdf image/std_plot.pdf
+  convert  -density 144 -trim image/std_plot.pdf -quality 100 -flatten -sharpen 0x1.0 image/std_plot.png
+  convert  -density 500 -trim image/std_plot.pdf -quality 100 -flatten -sharpen 0x1.0 image/std_plot_highres.png
+fi
 
 # Generating CSS file
 sass style.scss:style.css --style compressed

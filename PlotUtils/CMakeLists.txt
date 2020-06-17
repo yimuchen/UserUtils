@@ -22,3 +22,17 @@ foreach(plot_test_file ${plot_test_files})
   make_plotutils_test( ${plot_test_file} )
 endforeach()
 
+function(make_plot_bin bin_src)
+  get_filename_component( bin_name ${bin_src} NAME_WE )
+  set( output_bin "usr_${bin_name}" )
+  add_executable( ${output_bin} ${bin_src} )
+  set_target_properties( ${output_bin} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin/ )
+  target_link_libraries( ${output_bin} PlotUtils MathUtils )
+endfunction()
+
+## Listing all function to include
+file(GLOB plot_bin_files "bin/*.cc")
+foreach( plot_bin_file ${plot_bin_files})
+    make_plot_bin( ${plot_bin_file} )
+endforeach()

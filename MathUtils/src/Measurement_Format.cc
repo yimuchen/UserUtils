@@ -218,8 +218,8 @@ scientific::scientific( const RooRealVar* input, const int p ) :
  * The function attempts to use the simplest form to represent the uncertainty,
  * using as little latex symbols as possible.
  */
-  std::string
-  scientific::str() const
+std::string
+scientific::str() const
 {
   const std::string cen  = base::decimal( _central ).dupsetting( *this ).str();
   const std::string up   = base::decimal( _upper ).dupsetting( *this ).str();
@@ -312,7 +312,7 @@ scientific::SetPrecision()
 
 
 /**
- * @brief template specialization for a boost property tree helper function.
+ * @brief template specialization for a json file parsing.
  *
  * reading a list of doubles with 1-3 parameters as a measurement class.
  * * If only an empty list exists at the address, then the unit measurement
@@ -326,21 +326,44 @@ scientific::SetPrecision()
  *   (x[0] +x[1] -x[2] )
  */
 template<>
-Measurement
-GetSingle<Measurement>(
-  const pt::ptree&   tree,
-  const std::string& query )
+void
+ExceptJSONEntry<Measurement>( const JSONMap&     map,
+                              const std::string& index )
 {
-  const std::vector<double> input = GetList<double>( tree, query );
-  if( input.size() == 0 ){
-    return Measurement( 1, 0, 0 );// Returning unit for empty input
-  } else if( input.size() == 1 ){
-    return Measurement( input.at( 0 ), 0, 0 );
-  } else if( input.size() == 2 ){
-    return Measurement( input.at( 0 ), input.at( 1 ), input.at( 1 ) );
+  ExceptJSONList( map, index );
+}
+
+template<>
+Measurement
+JSONEntry<Measurement>( const JSONMap&     map,
+                        const std::string& index )
+{
+  const auto array = JSONList<double>( map, index );
+  if( array.size() == 0 ){
+    throw std::invalid_argument( "Array for usr::Measurement cannot be empty" );
+  } else if( array.size() == 1 ){
+    return usr::Measurement( array.at( 0 ), 0, 0 );
+  } else if( array.size() == 2 ){
+    return usr::Measurement( array.at( 0 ), array.at( 1 ), array.at( 1 ) );
   } else {
-    return Measurement( input[0], input[1], input[2] );
+    return usr::Measurement( array.at( 0 ), array.at( 1 ), array.at( 2 ) );
+  }
+
+
+}
+
+template<>
+Measurement
+JSONEntry<Measurement>( const JSONMap&     map,
+                        const std::string& index,
+                        const Measurement& def  )
+{
+  if( map.HasMember( index.c_str() ) ){
+    return JSONEntry<Measurement>( map, index );
+  } else {
+    return def;
   }
 }
+
 
 }/* usr */

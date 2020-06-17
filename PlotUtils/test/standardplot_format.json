@@ -1,5 +1,5 @@
 {
-  "Plot List": [
+  "plots": [
     {
       "name": "JetPt",
       "xaxis": "Jet p_{T}",
@@ -10,13 +10,13 @@
       "logy" : false
     },
     {
-      "name": "Next",
+      "name": "Mass",
       "xaxis" : "M_{jjjj}",
       "units" : "TeV",
       "filekey" : "JetPt"
     }
   ],
-  "Uncertainties": [
+  "uncertainties": [
     {
       "name": "Cross Section"
     },
@@ -34,78 +34,64 @@
   ],
 
 
-  "Data sets" : {
-    "Display": "Data",
+  "data sets" : {
+    "display": "Data",
     "processes":[
       {
-        "Display": "Run2077M",
-        "Latex": "/SingleHiggs/Run2077D/03Feb2017-v1",
-        "Luminosity": 12.34,
-        "Run range" : [100000,120000],
-        "File": "data1.root"
+        "display": "Run2077M",
+        "latex": "/SingleHiggs/Run2077D/03Feb2017-v1",
+        "luminosity": 12.34,
+        "run range" : [100000,120000],
+        "file": "data1.root"
       },
       {
-        "Display": "Run2077N",
-        "Latex": "/SingleHiggs/Run2077N/03Feb2017-v1",
-        "Luminosity": 25.00,
-        "Run range" : [137000,150000],
-        "File": "data2.root"
+        "display": "Run2077N",
+        "latex": "/SingleHiggs/Run2077N/03Feb2017-v1",
+        "luminosity": 25.00,
+        "run range" : [137000,150000],
+        "file": "data2.root"
       }
     ]
   },
-  "Signal Processes": [
+  "background": [
     {
-      "Display": "L Axion",
-      "Latex": "L Axion + Jets",
-      "Cross Section": [ 10, 0.072, 0.072 ],
-      "Scaling": 1.0,
-      "Generator": "\\POWHEG",
-      "Cross Section Source": "NNLO",
-      "File": "sig.root",
-      "Color": "#006666"
-    }
-  ],
-  "Background Processes": [
-    {
-      "Display": "Y+Jets",
-      "Latex": "Y+Jets",
-      "Color": "#FF0000",
+      "display": "Y+Jets",
+      "latex": "Y+Jets",
+      "color": "orange",
       "processes": [
         {
-          "Display": "Y+Jets (H_{T} < 10TeV)",
-          "Latex": "Y+Jets, \\HT$\\in$ [0,10)\\TeV",
-          "Cross Section": [ 200,   2.2, 2.3],
-          "Scaling": 1.0,
-          "K Factor": 1.21,
-          "Generator": "\\MADGRAPH",
-          "Cross Section Source": "LO",
-          "File": "YJets_10HT.root"
+          "display": "Y+Jets (H_{T} < 10TeV)",
+          "latex": "Y+Jets, \\HT$\\in$ [0,10)\\TeV",
+          "cross section": [ 200, 2.2, 2.3],
+          "scale": 1.1,
+          "generator": "FAKE \\MADGRAPH",
+          "cross section source": "LO",
+          "file": "YJets_10HT.root"
         },
         {
-          "Display": "Y+jets (10 #leq H_{T} #leq 20 TeV)",
-          "Latex": "\\Y+Jets, \\HT$\\in$ [10,20)\\TeV",
-          "Cross Section": [ 120, 5.5, 6.0],
-          "Scaling": 1.0,
-          "K Factor": 1.21,
-          "Generator": "\\MADGRAPH",
-          "Cross Section Source": "LO",
-          "File": "YJets_20HT.root"
+          "display": "Y+jets (10 #leq H_{T} #leq 20 TeV)",
+          "latex": "\\Y+Jets, \\HT$\\in$ [10,20)\\TeV",
+          "cross section": [ 120, 5.5, 6.0],
+          "scale": 1.1,
+          "generator": "FAKE \\MADGRAPH",
+          "cross section source": "LO",
+          "file": "YJets_20HT.root"
         }
       ]
     },
     {
-      "Display": "r#bar{r}+Jets",
-      "Latex": "$r\\bar{r}$+Jets",
-      "Color": "#00FF00",
+      "display": "r#bar{r}+Jets",
+      "latex": "$r\\bar{r}$+Jets",
+      "color": "green",
       "processes": [
         {
-          "Display": "r#bar{r}+Jets",
-          "Latex": "$r\\bar{r}$+Jets",
-          "Cross Section": [  500,  0.2, 0.2     ],
-          "Scaling": 1.0,
-          "Generator": "\\POWHEG",
-          "Cross Section Source": "NNLO",
-          "File": "rrbar.root"
+          "display": "r#bar{r}+Jets",
+          "latex": "$r\\bar{r}$+Jets",
+          "cross section": [  500,  0.2, 0.2     ],
+          "scale": 1.0,
+          "generator": "FAKE \\POWHEG",
+          "cross section source": "NNLO",
+          "file": "rrbar.root"
         }
       ]
     }

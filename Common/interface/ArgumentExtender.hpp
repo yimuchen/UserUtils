@@ -11,12 +11,12 @@
 #include <vector>
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/interface/RapidJson.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #else
-#include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/RapidJson.hpp"
 #include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
@@ -96,8 +96,8 @@ public:
   TYPE ArgExt( const std::string& opt, const std::string& exttag ) const;
 
   /** @brief Constant access to internal property tree instance. */
-  inline const pt::ptree&
-  Tree() const { return _exttree; }
+  inline const JSONMap&
+  NameMap() const { return _jsonmap; }
 
   /**
    * @brief Constant access to internal options description instance.
@@ -147,16 +147,16 @@ public:
   fs::path MakeTEXFile( const std::string& ) const;
   /** @} */
 
-  std::string GetPathPrefix() const ;
-  std::string GetPathPostfix() const ;
+  std::string GetPathPrefix() const;
+  std::string GetPathPostfix() const;
 
   void PrintHelpAndExit() const;
 
 protected:
 
   /** @brief Mutable access to internal property tree instance. */
-  inline pt::ptree&
-  Tree(){ return _exttree; }
+  inline JSONMap&
+  NameMap(){ return _jsonmap; }
 
   /** @brief Mutable access to internal options description instance. */
   inline po::options_description&
@@ -167,7 +167,7 @@ protected:
   Args(){ return _argmap; }
 
 private:
-  pt::ptree _exttree;
+  JSONDocument _jsonmap;
   po::options_description _optdesc;
   po::variables_map _argmap;
 
@@ -225,12 +225,6 @@ ArgumentExtender::ArgList( const std::string& opt ) const
   return _argmap[opt].as<std::vector<T> >();
 }
 
-template<typename T>
-T
-ArgumentExtender::ArgExt( const std::string& opt, const std::string& exttag ) const
-{
-  return usr::GetSingle<T>( Tree(), opt, Arg<std::string>( opt ), exttag );
-}
 
 }/* usr */
 

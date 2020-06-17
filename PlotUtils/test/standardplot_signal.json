@@ -1,0 +1,14 @@
+{
+  "signals": [
+    {
+      "display": "L Axion",
+      "latex": "L Axion + Jets",
+      "cross section": [ 10, 0.072, 0.072 ],
+      "scale": 5.0,
+      "generator": "FAKE \\POWHEG",
+      "cross Section Source": "NNLO",
+      "file": "sig.root",
+      "color": "navy"
+    }
+  ]
+}

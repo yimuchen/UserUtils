@@ -26,9 +26,6 @@
 #include "UserUtils/PlotUtils/StandardPlotFormat.hpp"
 #endif
 
-#include "TColor.h"
-
-
 namespace usr {
 
 namespace plt {
@@ -100,7 +97,7 @@ BatchRequest::GenerateSampleComparePlot()
       c.PlotHist( process.GetScaledClone( histrequest.filekey, 1.0 ),
         usr::plt::PlotType( usr::plt::hist ),
         usr::plt::TrackY( usr::plt::TrackY::both ),
-        usr::plt::LineColor( TColor::GetColor( process.color.c_str() ) ),
+        usr::plt::LineColor( usr::plt::col::color( process.color ) ),
         usr::plt::EntryText( process.name ) );
     }
 
@@ -141,7 +138,7 @@ BatchRequest::Generate2DComaprePlot()
         usr::plt::MarkerColor(
           usr::plt::col::color( process.color ), process.transparency ),
         usr::plt::FillColor(
-          usr::plt::col::color( process.color), process.transparency ),
+          usr::plt::col::color( process.color ), process.transparency ),
         usr::plt::MarkerSize( 0.05 ),
         usr::plt::EntryText( process.name ) );
     }
@@ -163,9 +160,9 @@ BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
 
     pad.PlotHist( stack_hist,
       usr::plt::PlotType( usr::plt::histstack ),
-      usr::plt::FillColor( TColor::GetColor( group.color.c_str() ) ),
+      usr::plt::FillColor( usr::plt::col::color( group.color ) ),
       usr::plt::FillStyle( usr::plt::sty::fillsolid ),
-      usr::plt::LineColor( TColor::GetColor( group.color.c_str() ) ),
+      usr::plt::LineColor( usr::plt::col::color( group.color ) ),
       usr::plt::EntryText( group.name ) );
   }
 
@@ -191,9 +188,9 @@ BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
 
   for( const auto& signal : signallist ){
     pad.PlotHist( signal.GetScaledClone( histrequest.filekey
-                                       , _total_luminosity ),
+                                       , _total_luminosity * signal.scale ),
       usr::plt::PlotType( usr::plt::hist ),
-      usr::plt::LineColor( TColor::GetColor( signal.color.c_str() ) ),
+      usr::plt::LineColor( usr::plt::col::color( signal.color ) ),
       usr::plt::EntryText( signal.name ) );
   }
 
@@ -244,7 +241,8 @@ BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
           hist.name, hist.filekey, process.name );
         continue;
       }
-      TH1D* central = process.GetScaledClone( filekey, _total_luminosity );
+      TH1D* central = process.GetScaledClone( filekey
+                                            , _total_luminosity *process.scale );
       if( _background_stack.back() == nullptr ){
         _background_stack.back().reset( central );
       } else {
@@ -283,9 +281,11 @@ BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
             = process.CheckKey( filekey + unc.key + "Down" )  ?
               filekey + unc.key + "Down" : filekey;
           std::unique_ptr<TH1D> unc_up_hist(
-            process.GetScaledClone( unc_up_key, _total_luminosity ) );
+            process.GetScaledClone( unc_up_key
+                                  , _total_luminosity * process.scale  ) );
           std::unique_ptr<TH1D> unc_lo_hist(
-            process.GetScaledClone( unc_lo_key, _total_luminosity ) );
+            process.GetScaledClone( unc_lo_key
+                                  , _total_luminosity * process.scale ) );
           unc_histlist[2*i]->Add( unc_up_hist.get() );
           unc_histlist[2*i+1]->Add( unc_lo_hist.get() );
         }

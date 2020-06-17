@@ -23,7 +23,6 @@
 #include <exception>
 #include <iostream>
 
-namespace pt  = boost::property_tree;
 namespace opt = boost::program_options;
 namespace fs  = std::experimental::filesystem;
 
@@ -46,71 +45,75 @@ namespace usr {
 void
 ArgumentExtender::_init( const std::vector<std::string>& filelist )
 {
-  _exttree = FromJsonFiles( filelist );
+  _jsonmap = FromJSONFiles( filelist );
 
-  // Parsing the format of each options listed in ext trees
-  BOOST_FOREACH( const pt::ptree::value_type& child, Tree() ){
-    const std::string optname = child.first.data();
-    if( child.second.size() == 0 ){
+  for( const auto& member : _jsonmap.GetObject() ){
+    const std::string optname = member.name.GetString();
+    if( !member.value.IsObject() ){
       std::cerr << "Bad format for option ["<< optname << "]" << std::endl;
       throw std::invalid_argument( optname );
     }
 
     std::vector<std::string> exttaglist;
 
-    BOOST_FOREACH( const pt::ptree::value_type& subchild, child.second ){
-      const std::string optval = subchild.first.data();
-      if( subchild.second.size() == 0 ){
+    for( const auto& submember : member.value.GetObject() ){
+      const std::string optval = submember.name.GetString();
+      if( !submember.value.IsObject() ){
         std::cerr << "Bad format for option ["<< optname << "] "
                   << "with value [" << optval << "]" << std::endl;
         throw std::invalid_argument( optval );
       }
 
       std::vector<std::string> this_exttaglist;
-      BOOST_FOREACH( const pt::ptree::value_type& leafp, subchild.second ){
-        this_exttaglist.push_back( leafp.first.data() );
+
+      for( const auto& leaf : submember.value.GetObject() ){
+        this_exttaglist.push_back( leaf.name.GetString() );
       }
+
       std::sort( this_exttaglist.begin(), this_exttaglist.end() );
+
       if( this_exttaglist.size() == 0 ){
         std::cerr << "No extended values for option ["<< optname << "] "
                   << "with value [" << optval << "]" << std::endl;
         throw std::invalid_argument( optval );
       }
 
-      if( exttaglist.size() == 0  ){// Do not compare if this is empty
+      if( exttaglist.size() == 0 ){
         exttaglist = this_exttaglist;
-      } else {
+        continue;
+      }
 
-        if( exttaglist.size() > this_exttaglist.size() ){
-          for( const auto& tag : exttaglist ){
-            if( !FindValue( this_exttaglist, tag ) ){
-              std::cerr << "Missing extended value [" << tag <<"] "
-                        << "for option ["<< optname << "] "
-                        << "with value [" << optval << "]" << std::endl;
-              throw std::invalid_argument( tag );
-            }
+
+      if( exttaglist.size() > this_exttaglist.size() ){
+        for( const auto& tag : exttaglist ){
+          if( !FindValue( this_exttaglist, tag ) ){
+            std::cerr << "Missing extended value [" << tag <<"] "
+                      << "for option ["<< optname << "] "
+                      << "with value [" << optval << "]" << std::endl;
+            throw std::invalid_argument( tag );
           }
-        } else if( exttaglist.size() < this_exttaglist.size() ){
-          for( const auto& tag : this_exttaglist ){
-            if( !FindValue( this_exttaglist, tag ) ){
-              std::cerr << "Missing extended value [" << tag <<"] "
-                        << "for option ["<< optname << "] "
-                        << "with value [" << optval << "]" << std::endl;
-              throw std::invalid_argument( tag );
-            }
+        }
+      } else if( exttaglist.size() < this_exttaglist.size() ){
+        for( const auto& tag : this_exttaglist ){
+          if( !FindValue( this_exttaglist, tag ) ){
+            std::cerr << "Missing extended value [" << tag <<"] "
+                      << "for option ["<< optname << "] "
+                      << "with value [" << optval << "]" << std::endl;
+            throw std::invalid_argument( tag );
           }
-        } else {
-          for( size_t i = 0; i < exttaglist.size(); ++i ){
-            if( exttaglist.at( i ) != this_exttaglist.at( i ) ){
-              const std::string misval = exttaglist.at( i );
-              std::cerr << "Undefined extended value [" << misval <<"] "
-                        << "for option ["<< optname << "] "
-                        << "with value [" << optval << "]" << std::endl;
-              throw std::invalid_argument( misval );
-            }
+        }
+      } else {
+        for( size_t i = 0; i < exttaglist.size(); ++i ){
+          if( exttaglist.at( i ) != this_exttaglist.at( i ) ){
+            const std::string misval = exttaglist.at( i );
+            std::cerr << "Undefined extended value [" << misval <<"] "
+                      << "for option ["<< optname << "] "
+                      << "with value [" << optval << "]" << std::endl;
+            throw std::invalid_argument( misval );
           }
         }
       }
+
     }
   }
 
@@ -182,8 +185,8 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
 
   // Checking that each of the options listed in the json files
   // are present. Will need to
-  BOOST_FOREACH( const pt::ptree::value_type& child, Tree() ){
-    const std::string optname = child.first.data();
+  for( const auto& member : _jsonmap.GetObject() ){
+    const std::string optname = member.name.GetString();
 
     try {
       Description().find( optname, true );
@@ -201,16 +204,19 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
     }
 
     std::vector<std::string> validoptionlist;
-    if( !CheckQuery( Tree(), optname, Arg<std::string>( optname ) ) ){
-      std::cerr << "Extended values for options for [" << optname << "] "
-                << " with value [" << Arg<std::string>( optname ) << "] "
-                << " is not defined!"
-                << std::endl
-                << "Available values: " << std::flush;
-      BOOST_FOREACH( const pt::ptree::value_type& subchild, child.second ){
-        const std::string optvalue = subchild.first.data();
+    if( !member.value.GetObject().HasMember( Arg<std::string>( optname ).c_str() ) ){
+      std::cerr
+        << usr::fstr(
+        "Extended values for options for [%s] with value [%s] is not defined!\n"
+                    , optname, Arg<std::string>( optname ) )
+        << std::endl
+        << "Available values: " << std::flush;
+
+      for( const auto& submember : member.value.GetObject() ){
+        const std::string optvalue = submember.name.GetString();
         std::cerr << "[" << optvalue << "] " << std::flush;
       }
+
       std::cerr << std::endl;
 
       throw std::invalid_argument( Arg<std::string>( optname ) );

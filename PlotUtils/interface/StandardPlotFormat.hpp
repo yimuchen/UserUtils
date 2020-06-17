@@ -7,11 +7,11 @@
 #define USERUTILS_PLOTUTILS_SDPFORMAT_HPP
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/interface/RapidJson.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #else
-#include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
+#include "UserUtils/Common/RapidJson.hpp"
 #include "UserUtils/MathUtils/Measurement/Measurement.hpp"
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
@@ -66,7 +66,7 @@ public:
   float transparency;
 
 private:
-  Process( const usr::pt::ptree& tree, const BatchRequest* parent );
+  Process( const usr::JSONMap& map, const BatchRequest* parent );
 
   TFile* _file;
   const BatchRequest* parent;
@@ -101,7 +101,7 @@ public:
 
 private:
   ProcessGroup();
-  ProcessGroup( const usr::pt::ptree& tree, const BatchRequest* parent );
+  ProcessGroup( const usr::JSONMap& map, const BatchRequest* parent );
 };
 
 /**
@@ -121,7 +121,7 @@ public:
   bool logy;
 
 private:
-  HistRequest( const usr::pt::ptree& tree );
+  HistRequest( const usr::JSONMap& map );
 };
 
 /**
@@ -138,7 +138,7 @@ public:
   usr::Measurement norm_uncertainty;
 
 private:
-  Uncertainty( const usr::pt::ptree& tree );
+  Uncertainty( const usr::JSONMap& map );
 };
 
 /**
@@ -155,7 +155,7 @@ public:
   std::string output_postfix;
 
 private:
-  IOSetting( const usr::pt::ptree& );
+  IOSetting( const usr::JSONMap& map );
   IOSetting();
 };
 
@@ -173,7 +173,8 @@ public:
   std::vector<Uncertainty> uncertainties;
 
   BatchRequest( const std::string& jsonfile );
-  BatchRequest( const usr::pt::ptree& tree );
+  BatchRequest( const std::vector<std::string>& jsonfiles );
+  BatchRequest( const usr::JSONMap& map );
 
   void GeneratePlots();
   void GenerateSampleComparePlot();
@@ -189,7 +190,7 @@ public:
 
 private:
   friend Process;
-  void initialize( const usr::pt::ptree& tree );
+  void initialize( const usr::JSONMap& map );
 
   IOSetting iosetting;
 

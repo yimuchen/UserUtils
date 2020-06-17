@@ -7,12 +7,12 @@
 #define USERUTILS_MATHUTILS_MEASUREMENT_FORMAT_HPP
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
 #include "UserUtils/Common/interface/Format.hpp"
+#include "UserUtils/Common/interface/RapidJson.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #else
-#include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
 #include "UserUtils/Common/Format.hpp"
+#include "UserUtils/Common/RapidJson.hpp"
 #include "UserUtils/MathUtils/Measurement/Measurement.hpp"
 #endif
 
@@ -98,15 +98,17 @@ private:
 
 }/* fmt */
 
-
-/*-----------------------------------------------------------------------------
- *  Additional IO formatting options
-   --------------------------------------------------------------------------*/
 template<>
-Measurement GetSingle<Measurement>(
-  const pt::ptree&,
-  const std::string&
-  );
+void ExceptJSONEntry<Measurement>( const JSONMap&     map,
+                                   const std::string& index );
+
+template<>
+Measurement JSONEntry<Measurement>( const JSONMap&     map,
+                                    const std::string& index );
+template<>
+Measurement JSONEntry<Measurement>( const JSONMap&     map,
+                                    const std::string& index,
+                                    const Measurement& def  );
 
 }/* usr */
 

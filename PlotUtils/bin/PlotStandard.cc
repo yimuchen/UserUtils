@@ -1,9 +1,11 @@
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#include "UserUtils/Common/interface/BoostUtils/PTreeUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/StandardPlotFormat.hpp"
 #else
 #include "UserUtils/Common/ArgumentExtender.hpp"
+#include "UserUtils/Common/BoostUtils/PTreeUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/StandardPlotFormat.hpp"
 #endif
@@ -38,14 +40,12 @@ main( int argc, char* argv[] )
       "Running a standard plotting sequence interactively, Basic usage require "
       "first two arguments being the plotting command "
       "[compare/compare2d/standard/table] "
-      "and the plot settings json file. So something like:\n"
-      ">> %s  standard my_plots.json\n", argv[0] )
-    );
+      "and the plot settings json files. So something like:\n"
+      ">> %s  standard my_plots.json my_samples.json\n", argv[0] ) );
 
   usr::po::options_description desc_io(
     "Input output options. This will override the io settings sections in the "
-    "input json file."
-    );
+    "input json file." );
 
   desc_io.add_options()
     ( "fileprefix", usr::po::value<std::string>(),
@@ -69,16 +69,28 @@ main( int argc, char* argv[] )
   }
 
   // Getting the command
-  const std::string command    = ParsePlotCommand( argv[1], args );
-  const std::string input_json = ParseJsonFile( argv[2], args );
+  const std::string command = ParsePlotCommand( argv[1], args );
 
-  // Adding additional options for optsion for different sub-routines.
+  // Getting the json file list
+  std::vector<std::string> json_files;
+  int first_option;
+
+  for( first_option = 2; first_option < argc; ++first_option ){
+    if( argv[first_option][0] == '-' ){
+      break;
+    } else {
+      json_files.push_back( argv[first_option] );
+    }
+  }
+
 
   // Parsing command latter options if exists
   // Keeping the last command since argc cannot be 0
-  args.ParseOptions( argc-2, argv+2 );
+  args.ParseOptions( std::max( argc-first_option, 1 ), argv+first_option );
 
-  usr::plt::fmt::BatchRequest batch( input_json );
+  const auto json_tree = usr::FromJSONFiles( json_files );
+
+  usr::plt::fmt::BatchRequest batch( json_tree );
 
   // Running the command
   CommandMap.at( command )( batch, args );

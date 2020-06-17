@@ -14,6 +14,10 @@ a {
   }
 }
 
+code {
+  font-family: $codefont;
+}
+
 .contents a:visited {
   color: lighten($maincolor, 10 );
 }
