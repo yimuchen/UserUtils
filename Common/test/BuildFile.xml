@@ -3,7 +3,6 @@
 <flags CXXFLAGS="-g"/>
 
 <bin name="usrutil_math"             file="math.cc"            />
-<bin name="usrutil_ptree"            file="ptree.cc"           />
 <bin name="usrutil_pathutils"        file="pathutils.cc"       />
 <bin name="usrutil_format"           file="format.cc"          />
 <bin name="usrutil_rapidjson"        file="rapidjson.cc"       />
