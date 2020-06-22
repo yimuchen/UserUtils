@@ -182,8 +182,6 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
 
 void BatchRequest::GenerateDataTable( std::ostream& stream ) const
 {
-
-
   static const std::string h_line = "\\hline";
 
   auto MakeLine

@@ -302,5 +302,5 @@ example plot generated using the standard binary:
 
 ## DISCLAIMER
 
-This package is currently very much in flux, and is required to
-
+This package is currently very much in flux. If you are using this function and
+something changes that you don't like, please let me know.

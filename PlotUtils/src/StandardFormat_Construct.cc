@@ -52,28 +52,36 @@ void
 BatchRequest::initialize( const usr::JSONMap& map )
 {
   if( map.HasMember( "io settings" ) ){
+    usr::ExceptJSONObj( map, "io settings" );
     iosetting = IOSetting( map["io settings"] );
   }
 
   if( map.HasMember( "plots" ) ){
+    usr::ExceptJSONList( map, "plots" );
+
     for( const auto& histmap : map["plots"].GetArray() ){
       histlist.push_back( HistRequest( histmap ) );
     }
   }
 
   if( map.HasMember( "signals" ) ){
+    usr::ExceptJSONList( map, "signals" );
+
     for( const auto& sig_map : map["signals"].GetArray() ){
       signallist.push_back( Process( sig_map, this ) );
     }
   }
 
   if( map.HasMember( "background" ) ){
+    usr::ExceptJSONList( map, "background" );
+
     for( const auto& bkg_map : map["background"].GetArray() ){
       background.push_back( ProcessGroup( bkg_map, this ) );
     }
   }
 
   if( map.HasMember( "data sets" ) ){
+    usr::ExceptJSONObj( map, "data sets" );
     data = ProcessGroup( map["data sets"], this );
 
     for( const auto d : data ){
@@ -85,6 +93,8 @@ BatchRequest::initialize( const usr::JSONMap& map )
   }
 
   if( map.HasMember( "uncertainties" ) ){
+    usr::ExceptJSONList( map, "uncertainties" );
+
     for( const auto& unc_map : map[ "uncertainties" ].GetArray() ){
       uncertainties.push_back( Uncertainty( unc_map ) );
     }
@@ -92,21 +102,64 @@ BatchRequest::initialize( const usr::JSONMap& map )
 
 }
 
-// ------------------------------------------------------------------------------
-
+/**
+ * @class usr::plt::fmt::IOSetting
+ * @detail
+ *
+ * For the declaring common io settings, the following options are possible. None
+ * of the entires are mandatory, all entries will default to an empty string if
+ * not specified.
+ *
+ * - input prefix: The input prefix to add to all files. Think the working path
+ *   to where the files are stored.
+ * - key prefix: A common prefix to add to all histogram keys. Think the
+ *   TDirectory used for storing histogram files (like those generated in
+ *   TFileServices in CMSSW.)
+ * - output prefix: Output prefix to save generated plot files. Think specifying
+ *   a path to where the outputs should be passed.
+ * - output postfix: Output postfix for the plot files before the file extension.
+ */
 IOSetting::IOSetting(){}
 
 IOSetting::IOSetting( const usr::JSONMap& map )
 {
-  input_prefix   = JSONEntry<std::string>( map, "input prefix", "" );
-  key_prefix     = JSONEntry<std::string>( map, "key prefix", "" );
-  output_prefix  = JSONEntry<std::string>( map, "output prefix", "" );
+  input_prefix   = JSONEntry<std::string>( map, "input prefix",   "" );
+  key_prefix     = JSONEntry<std::string>( map, "key prefix",     "" );
+  output_prefix  = JSONEntry<std::string>( map, "output prefix",  "" );
   output_postfix = JSONEntry<std::string>( map, "output postfix", "" );
 }
 
-
-// ------------------------------------------------------------------------------
-
+/**
+ * @class usr::plt:fmt::Uncertainty
+ * @detail
+ *
+ * For declaring of uncertainty sources, the following options are available.
+ * Upright entires would be mandatory.
+ *
+ * - name: The name of the uncertainty source, required as a unique tagger.
+ * - *norm uncertainty*: For normalization only uncertainty, we can specify a how
+ *   the obtain the scale  up and  scale down histograms using a usr::Measurement
+ *   declaration (an array like [1,0.025,0.026]), the relative uncertain will be
+ *   used for scaling the central histogram up and down.
+ * - *key name*: By default the uncertainty is assumed to be a shape like
+ *   uncertainty, with uncertainty "up" and "down" shapes stored as shifted
+ *   histograms. The effects of shape distortion is performed bin-by-bn using the
+ *   histograms is done bin by bin. The key name is then used to specify which
+ *   histograms in the same file should be used as the shifted templates. For
+ *   each histogram request, the `histogram name + key name + "Up"` and
+ *   `histogram name + key name + "Down"` will be taken as the shifted templates.
+ *   In case the templates are not found, the central template will be used
+ *   (which is equivalent to saying this process is not affected by the specified
+ *   uncertainty). In the case that the key name is not specified, and the norm
+ *   uncertainty is not specifed, the key name default to the "name" entry in the
+ *   decalration.
+ *
+ * A special uncertainty source should be noted here, and that is the "cross
+ * section" uncertainty, since uncertainties on the process cross sections are
+ * more normalization uncertainties that are process specific. To activate the
+ * treatment of the cross section uncertainties, simply add a uncertainty source
+ * with the name "cross section" and nothing else.
+ */
 Uncertainty::Uncertainty( const usr::JSONMap& map )
 {
   name             = JSONEntry<std::string>( map, "name" );
@@ -122,9 +175,28 @@ Uncertainty::Uncertainty( const usr::JSONMap& map )
   }
 }
 
-
-// ------------------------------------------------------------------------------
-
+/**
+ * @class usr::plt::fmt::HistRequest
+ * @details
+ *
+ * For a histogram request entry, the following options are available. Upright
+ * entires are mandatory.
+ *
+ * - name: The name of the generated histogram plot results.
+ * - *xaxis*: The title of the x axis. Leaving blank if not specified.
+ * - *yaxis*: The title of the y axis. Defaults to "Events" is not specified.
+ * - *units*: The units of the x axis. Leaving blank if not specified. Notice
+ *   that this entry will also affect the y axis display title (see the
+ *   Pad1D::SetHistAxisTitle for more details).
+ * - *filekey*: The histogram "key" to get the histogram for each processes.
+ * - *type*: What to display in the secondary pad: Allowed values:
+ *   - "simple": No secondary pad.
+ *   - "ratio" (default): The ratio between the data and the background is
+ *     displayed.
+ *   - "pull" : The pull of the data vs the background uncertainty is displayed.
+ * - *logy*: Whether or not to display the y axis in the main pad in log scale.
+ *   Default to false.
+ */
 HistRequest::HistRequest( const usr::JSONMap& map )
 {
   name    = JSONEntry<std::string>( map, "name" );
@@ -134,13 +206,34 @@ HistRequest::HistRequest( const usr::JSONMap& map )
   filekey = JSONEntry<std::string>( map, "filekey", name );
   type    = JSONEntry<std::string>( map, "type", "ratio" );
   logy    = JSONEntry<bool>( map, "logy", false );
-
 }
 
-// ------------------------------------------------------------------------------
+/**
+ * @class usr::plt::fmt::ProcessGroup
+ * @details
+ *
+ * For defining a group of processes, the following options are available.
+ * Upright entries are mandatory.
+ *
+ * - display: The string to display for the process group in the plots,
+ *   accepts ROOT flavored Latex string.
+ * - *latex*: The string to display for generation of latex tables, notice that
+ *   backslashes will need to be doubled up for "literal backslashes". If not
+ *   specificed, it will assume the same value of "display".
+ * - *color*: The color to display plots for this particular group. The string
+ *   can either be a standard hex code ("#012ABC"), or any color name listed in
+ *   the `usr::plt::col` namespace ("black", "midnight"...etc). Defaults to
+ *   "black" is not otherwise specified.
+ * - processes: An array of processes declaration. See
+ *   usr::plt::fmt::Process for a complete statement of their options.
+ */
+
 
 ProcessGroup::ProcessGroup(){}
 
+/**
+ * @brief Construction only possible through parent BatchProcess instance.
+ */
 ProcessGroup::ProcessGroup( const usr::JSONMap& map,
                             const BatchRequest* ptr )
 {
@@ -148,22 +241,69 @@ ProcessGroup::ProcessGroup( const usr::JSONMap& map,
   latex_name = JSONEntry<std::string>( map, "latex",  name );
   color      = JSONEntry<std::string>( map, "color", "black" );
 
+  usr::ExceptJSONList( map, "processes" );
+
   for( const auto& submap : map[ "processes" ].GetArray() ){
     push_back( Process( submap, ptr ) );
   }
 }
 
-// ------------------------------------------------------------------------------
-
 /**
- * @brief Constructing a process object using a parsed file.
+ * @class usr::plt::fmt::Process
+ * @details
+ *
+ * For defining a process, the following options ar available. Upright entires
+ * are mandatory.
+ *
+ * - display: The string to display for the process in the plots. Access ROOT
+ *   flavored latex string.
+ * - file: The file containing the relevent histogram files. Notice that the path
+ *   that will be open a process histogram file would have the prefix added in
+ *   the "io settings" of the parent BatchProcess instance.
+ * - "key prefix": Prefix string needed to add to histogram keys to get a
+ *   relevent histogram. Helpful if a histogram file contains histograms for
+ *   multiple processes.
+ * - *latex*: The string to display for latex tables Notice that backslashed will
+ *   need to be doubled up for "literal backslashed". If not specified, it will
+ *   assume the same value of "display".
+ * - *cross section*: The cross section with uncertainty of the processes in
+ *   units of \f$\text{pb}\f$s. The declaration is done in the form of a array
+ *   with at least one number and at most three numbers. The first is the central
+ *   value, with the latter two being the shift up and shift down uncertainties.
+ *   Defaults to \f$1\pm0\text{pb}\f$.
+ * - *generator*: The generator used for creating the process files. Default to
+ *   an empty string.
+ * - *cross section source*: How the cross section was calculated. Defaults to an
+ *   empty string.
+ * - *scale*: Additional factor to scale the process for presentation aesthetics.
+ *   Default to 1.0.
+ * - *luminosity*: The luminosity of the process (for data), or the effective
+ *   luminosity of the unfiltered process (for simulated events), in units of
+ *   \f$\text{pb}^{-1}\f$. For data processes, this must be present to allow for
+ *   the calculation of the total luminosity. For simulated processes, if this
+ *   entry is omitted, then the program will look for a TTree named "Count" and a
+ *   leaf named "OriginalCount" to get the total number of events in the
+ *   unfiltered process, the effective luminosity is then calculated from the
+ *   original count and the given cross section. If the TTree entry doesn't
+ *   exists, then the effective luminosity defaults to 1.0, which is helpful if
+ *   we are only distribution comparison.
+ * - *run range*: The begin and end of the run range of the data collected. This
+ *   is only used for table generation. Defaults to [0,0].
+ * - *color*: Color to display for the process. The string can either be a color
+ *   hes string ("#012ABC"), or any of the color found in the usr::plt::col name
+ *   space  ("black", "midnight"...etc), defaults to "blue" if not specified.
+ * - *transparency*, to color transparency of the process.
+ */
+/**
+ * @brief Construnction only possible through parent BatchProcess instance.
  */
 Process::Process( const usr::JSONMap& map, const BatchRequest* ptr  )
 {
   name                 = map["display"].GetString();
   latex_name           = JSONEntry<std::string>( map, "latex", name );
   generator            = JSONEntry<std::string>( map, "generator", "" );
-  cross_section_source = JSONEntry<std::string>( map, "cross section source", "" );
+  cross_section_source = JSONEntry<std::string>( map, "cross section source"
+                                               , "" );
 
   file                 = JSONEntry<std::string>( map, "file" );
   color                = JSONEntry<std::string>( map, "color", "blue" );
@@ -185,23 +325,43 @@ Process::Process( const usr::JSONMap& map, const BatchRequest* ptr  )
   OpenFile();
 }
 
+/**
+ * @brief Generating the key from a histogram request string
+ *
+ * The final key will be the "io settings" key prefix + the process key prefix +
+ * the requested key.
+ */
 std::string
 Process::MakeKey( const std::string& key ) const
 {
   return Parent().iosetting.key_prefix + key_prefix + key;
 }
 
+/**
+ * @brief Checking if the key corresponding to a histogram request exists.
+ *
+ * We will not be checking for object types here.
+ */
 bool
 Process::CheckKey( const std::string& key ) const
 {
   return _file->Get( MakeKey( key ).c_str() );
 }
 
+/**
+ * @brief Getting a cloned copy of the histogram object of the histogram request
+ * string.
+ *
+ * It would be here that we attempt to check the type of the object, using the
+ * results of the dynamic_cast function for pointers. A failed dynamic cast will
+ * result in a `nullptr`.
+ */
 TH1D*
 Process::GetClone( const std::string& key ) const
 {
   _file->cd( 0 );
-  TH1D* ans = (TH1D*)( _file->Get( MakeKey( key ).c_str() )->Clone() );
+  TH1D* ans = dynamic_cast<TH1D*>(
+    _file->Get( MakeKey( key ).c_str() )->Clone() );
   ans->SetDirectory( 0 );
   return ans;
 }
@@ -228,7 +388,8 @@ TH2D*
 Process::Get2DClone( const std::string& key ) const
 {
   _file->cd( 0 );
-  TH2D* ans = (TH2D*)( _file->Get( MakeKey( key ).c_str() )->Clone() );
+  TH2D* ans = dynamic_cast<TH2D*>(
+    _file->Get( MakeKey( key ).c_str() )->Clone() );
   ans->SetDirectory( 0 );
   return ans;
 }
