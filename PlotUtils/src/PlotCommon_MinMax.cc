@@ -1,3 +1,7 @@
+/**
+ * @file PlotCommon_MinMax.cc
+ * @author Yi-Mu "Enoch" Chen
+ */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
