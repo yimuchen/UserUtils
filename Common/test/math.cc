@@ -15,7 +15,7 @@ int main()
   uint32_t c = usr::HashValue32( 0.12300000000000001 );
   uint32_t d = usr::HashValue32( 100.00 );
 
-  std::cout << a << " " << b << " " << c << std::endl;
+  std::cout << a << " " << b << " " << c << " " << d <<  std::endl;
   std::cout << usr::Hash32Join( a, b ) << " "
             << usr::Hash32Join( b, a ) << std::endl;
 
