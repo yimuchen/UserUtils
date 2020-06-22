@@ -12,6 +12,77 @@
 
 namespace usr {
 
+/**
+ * @addtogroup rapidjson
+ * @details
+ *
+ * [RapidJSON](https://rapidjson.org/) is a fast and robust json parsing library.
+ * With a smaller footprint, faster parsing, and more concrete JSON specific
+ * features than the JSON parser available in the boost library (see boost's
+ * [`property
+ * tree`](https://www.boost.org/doc/libs/1_73_0/doc/html/property_tree.html)),
+ * and since RapidJSON is a header only library, this is decided as the external
+ * dependency used for JSON file parsing.
+ *
+ * Note that RapidJSON essentially treats the results of JSON parsing as a map.
+ * So for a JSON file like:
+ *
+ * ```json
+ * {
+ *  "title": "JSON TEST",
+ *  "list" : [ 1,2,3 ],
+ *  "object" : {
+ *      "name" : "OJBECT TEST",
+ *      "list" : [4,5,6]
+ *   },
+ *   "object_list" : [
+ *      { "name": "name_1" },
+ *      {"name": "name_2"}
+ *   ]
+ * }
+ * ```
+ *
+ * The resulting parsed map will be have the following properties:
+ *
+ * ```cpp
+ * usr::JSONDocument json = FromJSONFile( "json.json" );
+ * json["title"].GetString(); //  "JSON TEST"
+ * json["list"][0].GetDouble() ; // 1.0
+ * json["list"][2].GetDouble() ; // 2.0
+ * json["object"]["name"].GetString() ; // "OBJECT TEST"
+ * json["object list"][1]["name"].GetString() ; "name_2"
+ * ```
+ *
+ * A major focus of this library is to reduce verbosity in reading concrete
+ * types. For example, we can simply have:
+ *
+ * ```cpp
+ * std::string title = usr::JSONEntry<std::string>(json, "title");
+ * std::vector<double> list1 = usr::JSONList<double>(json, "list");
+ * std::vector<double> list2 = usr::JSONList<double>(json["object"], "list");
+ * ```
+ *
+ * which will automatically detect the entry if it exists, and raise suitable
+ * exception messages otherwise. This library only implements the function
+ * required for concrete JSON types: `std::string`, `double`, `bool`, and their
+ * array counter parts. For parsing JSON object into custom C++ classes,
+ * something that looks like
+ *
+ * ```cpp
+ * MyClass instance = usr::JSONEntry<MyClass>("json", "object");
+ * ```
+ * in the above example, you will need to specialize the corresponding template
+ * function.
+ */
+
+
+/**
+ * @brief Getting a json document from a single input files
+ *
+ * This function is basically a wrap for using the standard
+ * `rapidjson::Document::Parse` function, for using a C++ string to identify the
+ * file to open.
+ */
 JSONDocument
 FromJSONFile( const std::string& filename )
 {
@@ -31,6 +102,14 @@ FromJSONFile( const std::string& filename )
   return ans;
 };
 
+/**
+ * @brief Getting the joint JSON document from multiple inputs.
+ *
+ * For each JSON in the entry, the JSON file is joint using the `usr::MergeJSON`
+ * method to the previous files. To ensure memory ownership, the final merge
+ * results is passed to a string output processes and the return object is a
+ * standalone JSON map instance that parses the generated string.
+ */
 JSONDocument
 FromJSONFiles( const std::vector<std::string>& files )
 {
@@ -66,14 +145,16 @@ FromJSONFiles( const std::vector<std::string>& files )
 }
 
 /**
- * @brief
+ * @brief Merging of two json maps
  *
- * Reference: https://stackoverflow.com/questions/40013355/how-to-merge-two-json-file-using-rapidjson
- * @param dstObject
- * @param srcObject
- * @param allocator
- * @return true
- * @return false
+ * This follows the the answer given on StackOverflow (see reference below).
+ * Essentially: for the latter JSON map: any leaf entry that matches a path with
+ * the original JSON map will superced the original. If a leaf entry doesn't have
+ * a corresponding entry in the original map, it is created. If two arrays have
+ * the same path, the arrays will be concatinated together.
+ *
+ * Reference:
+ * https://stackoverflow.com/questions/40013355/how-to-merge-two-json-file-using-rapidjson
  */
 bool
 MergeJSON( JSONMap&                     dstObject,
@@ -124,6 +205,12 @@ MergeJSON( JSONMap&                     dstObject,
 }
 
 
+/**
+ * @brief Check that an immediate entry of a JSON map exists and is a List.
+ *
+ * In case that the either of the criteria is not met, the function raises an
+ * exception.
+ */
 void
 ExceptJSONList( const JSONMap& map, const std::string& index )
 {
@@ -138,6 +225,12 @@ ExceptJSONList( const JSONMap& map, const std::string& index )
   }
 }
 
+/**
+ * @brief Check that an immediate entry of a JSON map exists and is an object.
+ *
+ * In case that either of the criteria is not met, the function raises and
+ * exception.
+ */
 void
 ExceptJSONObj( const JSONMap& map, const std::string& index )
 {

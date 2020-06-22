@@ -15,4 +15,7 @@ additional classes that are of more general purpose with only STL interactions.
 
 Aside from STL and boost function enhancements, this library also provides some
 ROOT container manipulator classes and functions that are handy for the latter
-classes in the more specialized libraries.
+classes in the more specialized libraries, as well as specialization for certain
+header only libraries. For now, additional libraries will have to be header only
+since CMSSW will likely not play nice with external libraries, and compatibility
+with standard CMSSW environments is one of the top development priorities.

@@ -6,9 +6,9 @@
 
 #ifndef USERUTILS_COMMON_STLUTILS_VECTORUTILS_HPP
 #define USERUTILS_COMMON_STLUTILS_VECTORUTILS_HPP
-#include <vector>
-#include <set>
 #include <algorithm>
+#include <set>
+#include <vector>
 
 namespace usr {
 
@@ -91,14 +91,15 @@ template<typename OBJTYPE, typename ARGTYPE>
 std::vector<OBJTYPE>
 MakeVector( const ARGTYPE& first )
 {
-  return std::vector<OBJTYPE>( 1, OBJTYPE(first) );
+  return std::vector<OBJTYPE>( 1, OBJTYPE( first ) );
 }
 
 /**
  * @brief removing element in a vector is element is equivalent to x
  */
 template<typename OBJTYPE>
-void ClearValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
+void
+ClearValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
 {
   vec.erase( std::remove( vec.begin(), vec.end(), x ), vec.end() );
 }
@@ -122,6 +123,27 @@ FindValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
 {
   return std::find( vec.begin(), vec.end(), x ) != vec.end();
 }
+
+/**
+ * @brief Get the Maximum element value in a vector
+ */
+template<typename OBJTYPE>
+OBJTYPE
+GetMaximum( std::vector<OBJTYPE>& vec )
+{
+  return *std::max_element( vec.begin(), vec.end() );
+}
+
+/**
+ * @brief Get the minimum element value in a vector
+ */
+template<typename OBJTYPE>
+OBJTYPE
+GetMinimum( std::vector<OBJTYPE>& vec )
+{
+  return *std::min_element( vec.begin(), vec.end() );
+}
+
 
 }/* usr */
 
