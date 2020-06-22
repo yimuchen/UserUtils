@@ -27,28 +27,25 @@ main( int argc, char* argv[] )
 
   usr::plt::Flat2DCanvas c;
 
-  auto& gh = c.PlotHist( hist,
+  c.PlotHist( hist,
     usr::plt::Plot2DF( usr::plt::heat ) );
-  auto& gf1 = c.PlotFunc( xyg,
+  c.PlotFunc( xyg,
     usr::plt::Plot2DF( usr::plt::cont ),
-    usr::plt::EntryText( "Model 1" )
-    );
-  auto& gf2 = c.PlotFunc( xyg2,
+    usr::plt::EntryText( "Model 1" ),
+    usr::plt::LineColor( usr::plt::col::red ) );
+  c.PlotFunc( xyg2,
     usr::plt::Plot2DF( usr::plt::cont ),
-    usr::plt::EntryText( "Model 2" )
-    );
+    usr::plt::EntryText( "Model 2" ),
+    usr::plt::LineColor( usr::plt::col::blue ) );
 
-  c.DrawCMSLabel("2D plotting", "CWS" );
+  c.DrawCMSLabel( "2D plotting", "CWS" );
   c.DrawLuminosity( 133.7 );
 
   c.Xaxis().SetTitle( "My X value" );
   c.Yaxis().SetTitle( "My y value" );
   c.Zaxis().SetTitle( "Readout" );
 
-  gf1.SetLineColor( kRed );
-  gf2.SetLineColor( kBlue );
-
-  c.SaveAsPNG( "image/flat2dcanvas.png" , 72 );
-  c.SaveAsPNG( "image/flat2dcanvas_highres.png" , 300 );
+  c.SaveAsPNG( "image/flat2dcanvas.png",         72 );
+  c.SaveAsPNG( "image/flat2dcanvas_highres.png", 300 );
   c.SaveAsPDF( "image/flat2dcanvas.pdf" );
 }
