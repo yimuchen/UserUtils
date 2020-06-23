@@ -1,15 +1,15 @@
 @class usr::ArgumentExtender
 @ingroup Common
-@details
-Often in analysis programs, we need a short string for process indentification,
-but a longer string for the publication/presentation outputs or change a
-parameter in calculations calculations. An example of this case would be when
-an analysis is split into muon/electron channels, where the calculations are
-nearly entirely the same, but require the plotting to put in unique labels
-for the two channel, while also potentially using slightly different numbers
-in calculation (scale factors, integrated luminosity... etc).
-Such behaviour could be listed in a json file as something like:
-something like:
+@brief A helper class for helping with command line parsing.
+
+@details Often in analysis programs, we need a short string for process
+identification, but a longer string for the publication/presentation outputs or
+change a parameter in calculations. An example of this case would be when an
+analysis is split into muon/electron channels, where the calculations are nearly
+entirely the same, but require the plotting to put in unique labels for the two
+channel, while also potentially using slightly different numbers in calculation
+(scale factors, integrated luminosity... etc). Such behavior could be listed in
+a JSON file as something like: something like:
 
 ```json
 {
@@ -30,7 +30,7 @@ something like:
 
 Our class would need to first read the input arguments, and be able to get the
 extended processes in a simple method. In the example above, we would be able
-to call the program with the options "Options1":
+to call the program with the options “Options1”:
 
 ```sh
 ./my_analysis_program --channel mu
@@ -46,30 +46,30 @@ arg     = args.Arg<string>("channel"); // "mu"
 
 ---
 
-The ArgumentExtender class is a wrapper for:
+The `ArgumentExtender` class is a wrapper for:
 
-- `boost::property_tree` to store the json file structure described above
+- `rapidjson::Document` to store the JSON file structure described above
   file.
 - `boost::program_options::options_description` instance for defining the
-  the the options to be parsed.
+  options to be parsed.
 - `boost::program_options::variables_map` instance for storing the results
   of the program input options.
 
 Functions are added to simplify the argument parsing process, as well as
 getting the extended argument values. Additional parsing rules will be added to
-help ensure that the json file formats between options are in sync.
+help ensure that the JSON file formats between options are in sync.
 
 In general, the typical usage of the class should be something like this:
 
-1. Defining the class instance with json file(s). During this step, the parser
-   also checks to see that the json file structure is consistent for each of the
+1. Defining the class instance with JSON file(s). During this step, the parser
+   also checks to see that the JSON file structure is consistent for each of the
    potential options (i.e. they have the same extended variables defined in the
    file.)
-2. Defining the options_description for defining the options.
+2. Defining the `options_description` for defining the options.
 3. Take in the program inputs. During this step, the class will also check to
-   see if the option is consistent with the json file (i.e. if the user input
-   has its entry corresponding entry in the json file). The options defined
-   in the json file will be assumed to be madatory argument.
+   see if the option is consistent with the JSON file (i.e. if the user input
+   has its entry corresponding entry in the JSON file). The options defined
+   in the JSON file will be assumed to be mandatory argument.
 4. Throughout the program, call the class to get the program inputs and
    extended variables.
 
@@ -94,14 +94,14 @@ For the use-case above. It would look something like:
 
 In the typical case that a user running a command with various options:
 
-```
+```sh
 my_analysis  --method Random --inputtype electron --fittype unbinned --minrange 0.02
 ```
 
-Typically an analysis will want to generate files based on a myriad of input
+Typically, an analysis will want to generate files based on a myriad of input
 type. So the target filename might look something like:
 
-```
+```sh
 results/electron/MyPlot_MethodRandom_unbinned_min0p02.pdf
 ```
 
@@ -111,12 +111,12 @@ to specify:
 
 1. The prefix path of the generated file name
 2. A list of options that will be used in the director of the file path
-3. A list of options that will be used in the basename of the file path
-4. The prefix of the basename.
-5. The extension of the file
+3. A list of options that will be used in the base name of the file path
+4. The prefix of the base name.
+5. The extension of the file.
 
-Using the above command as an example, the options description will be something
-like:
+Using the above command as an example, the `options_description` will be
+something like:
 
 ```cpp
 desc.add_options()
@@ -149,20 +149,20 @@ auto f = arg.MakeFileName("MyOtherPlot", "pdf"); // Can now be used multiple tim
 ```
 
 The scheme is effectively a list of two strings, the first being which option to
-use, the second the string to be used in the final path name (can be blank).
-This will generate the file name based on the input arguments and the defined
-strings. Note that the raw, string-like input will be used, so if you input a
-integer argument as as 1e6, and another time like 100000, this will generate
-different file names, even if the setup is entirely the same. (Strictly
-speaking, it will not actually be a list of two string, but for most use cases,
-this will what it will look like.)
+use, the second the string to be used in the final path name (can be blank). This
+will generate the file name based on the input arguments and the defined strings.
+Note that the raw, string-like input will be used, so if you input a integer
+argument as 1e6, and another time like 100000, this will generate different file
+names, even if the setup is entirely the same. (Strictly speaking, it will not
+actually be a list of two string, but for most use cases, this will what it will
+look like.)
 
 The directory scheme is to use different inputs to generated nested directory
 names, while the name scheme will generate the resulting base name of the file.
-A few things points to clean up is that decimal points will be replaced with the
+A few points to clear up is that decimal points will be replaced with the
 character 'p', and list arguments will be separated by the '-' character. The
 character separating the option inputs values will simply be '_'. If the
-argument doesn't exists, the the string is simply not generated.
+argument doesn't exist, then the string is simply not generated.
 
 A bunch of functions is also available for generating file paths with commonly
 used file extensions.

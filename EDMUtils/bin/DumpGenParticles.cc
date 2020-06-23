@@ -1,3 +1,40 @@
+/**
+ * @file DumpGenParticles.cc
+ * @ingroup EDMUtils
+ * @author Yi-Mu Chen
+ * @brief Dumping the generator level particle topology to the screen
+ *
+ * @details
+ * User the function as:
+ *
+ * ```sh
+ * DumpGenparticles -i MyEDMFiles.root
+ * ```
+ *
+ * For a single EDM events, the list of particles information is dumped onto the
+ * screen in the following columns.
+ *
+ * - The index at which the particle resides in the list.
+ * - The particle ID
+ * - The particle status
+ * - The particle four momentum
+ * - The particle vertex position.
+ * - The first parent particle of this particle including its index and its
+ *   particle ID
+ * - The number of parent particles
+ * - The number of daughter particles.
+ * - The first two daughter particles of this particle including their index and
+ *   their particle ID.
+ *
+ * Only a single event is diplayed for a single command call. You can specify the
+ * event to be displayed either using the `--event` input options via a standard
+ * EDM event id format (`--event="1:0:1234"`) or by using the `--eventidx` option
+ * to specify which event in the file to use. In case the that particle is saved
+ * at a different EDM tag (this program assumes the MINIAOD data tier), you can
+ * specify the EDM tag using the `--tag` input option.
+ *
+ * For the current existing options, call the program with the `--help` options.
+ */
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
@@ -87,7 +124,7 @@ main( int argc, char* argv[] )
            , "IDX"
            , "PDGID", "STAT"
            , "MASS", "PT", "ETA", "PHI"
-           , "VX" , "VY", "VZ"
+           , "VX", "VY", "VZ"
            , "IDX", "Mother"
            , "NDau"
            , "IDX", "Daughter0"

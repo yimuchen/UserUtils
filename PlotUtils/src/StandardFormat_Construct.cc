@@ -104,7 +104,7 @@ BatchRequest::initialize( const usr::JSONMap& map )
 
 /**
  * @class usr::plt::fmt::IOSetting
- * @detail
+ * @details
  *
  * For the declaring common io settings, the following options are possible. None
  * of the entires are mandatory, all entries will default to an empty string if
@@ -131,7 +131,7 @@ IOSetting::IOSetting( const usr::JSONMap& map )
 
 /**
  * @class usr::plt:fmt::Uncertainty
- * @detail
+ * @details
  *
  * For declaring of uncertainty sources, the following options are available.
  * Upright entires would be mandatory.
@@ -366,6 +366,14 @@ Process::GetClone( const std::string& key ) const
   return ans;
 }
 
+/**
+ * @brief Getting a normalized copy of the histogram object of the histogram
+ * request string.
+ *
+ * Basically the a scaled version of the GetClone function, where the returned
+ * histogram is normalized to an integral of 1. This function is mainly used for
+ * distribution comparison.
+ */
 TH1D*
 Process::GetNormalizedClone( const std::string& key ) const
 {
@@ -374,6 +382,14 @@ Process::GetNormalizedClone( const std::string& key ) const
   return ans;
 }
 
+/**
+ * @brief Getting a correctly scaled copy of the histogram object of the
+ * histogram request string.
+ *
+ * The second parameter indicates the total luminosity the process should be
+ * scaled to. Additional scale factors from the process definition will be
+ * applied.
+ */
 TH1D*
 Process::GetScaledClone( const std::string& key, const double total ) const
 {
@@ -384,6 +400,13 @@ Process::GetScaledClone( const std::string& key, const double total ) const
   return ans;
 }
 
+/**
+ * @brief Getting a clone of a 2D histogram of the histogram object of a
+ * histogram request string.
+ *
+ * Essentially the same as the GetClone function, except this time casting to a
+ * TH2D pointer instead.
+ */
 TH2D*
 Process::Get2DClone( const std::string& key ) const
 {
@@ -394,6 +417,12 @@ Process::Get2DClone( const std::string& key ) const
   return ans;
 }
 
+/**
+ * @brief Opening the histogram file of a process.
+ *
+ * This also handles the updating of the effective luminosity, by looking into
+ * the file contents to see if corresponding TTree leaves exists.
+ */
 void
 Process::OpenFile()
 {
@@ -409,7 +438,7 @@ Process::OpenFile()
   gErrorIgnoreLevel = root_error_level;
 
 
-  if( effective_luminosity == 0 ){
+  if( effective_luminosity == 0.0 || effective_luminosity == 1.0 ){
     auto DefaultLumi = [this](){
                          usr::fout( "Warning! Effective luminosity is found for "
                            "this process, defaulting the 1.0pb, If the "
@@ -443,6 +472,11 @@ Process::OpenFile()
   }
 }
 
+/**
+ * @brief Updating the stored io settings instance.
+ *
+ * We will also need to re-initialize files of each process in the BatchRequest.
+ */
 void
 BatchRequest::UpdateInputPrefix( const std::string& x )
 {
@@ -463,18 +497,30 @@ BatchRequest::UpdateInputPrefix( const std::string& x )
   }
 }
 
+/**
+ * @brief Updating the stored io settings instance.
+ *
+ */
 void
 BatchRequest::UpdateKeyPrefix( const std::string& x )
 {
   iosetting.key_prefix = x;
 }
 
+/**
+ * @brief Updating the stored io settings instance.
+ *
+ */
 void
 BatchRequest::UpdateOutputPrefix( const std::string& x )
 {
   iosetting.output_prefix = x;
 }
 
+/**
+ * @brief Updating the stored io settings instance.
+ *
+ */
 void
 BatchRequest::UpdateoutputPostfix( const std::string& x )
 {

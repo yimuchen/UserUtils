@@ -14,17 +14,17 @@
 #include "FWCore/Framework/interface/one/EDFilter.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include "TObject.h"
 #include "TFile.h"
+#include "TObject.h"
 
 #include <string>
 
 namespace usr {
 
 /**
- * @brief class for reducing the verbosity of the various edm plugin calls.
+ * @class PluginAlias
  * @ingroup EDMUtils
- *
+ * @brief class for reducing the verbosity of the various edm plugin calls.
  * @details One I find immensely annoying to code is the `consume` calls to
  *          create an EDMToken object. What makes it worse is that the consumes
  *          call is an protected member function of the edm plugin's base class.
@@ -93,7 +93,8 @@ protected:
    * @brief returing the string to a path in the parameterset if an
    *        EDM::FileInPath was used.
    */
-  static std::string GetFilePath(
+  static std::string
+  GetFilePath(
     const edm::ParameterSet& config,
     const std::string&       filetag )
   {
@@ -107,7 +108,8 @@ protected:
    * This function return a clone to the object stored in a file for analysis
    * use.
    */
-  static TObject* GetFileObj(
+  static TObject*
+  GetFileObj(
     const edm::ParameterSet& config,
     const std::string&       filetag,
     const std::string&       objtag )
@@ -116,7 +118,7 @@ protected:
     const std::string objname  = config.getParameter<std::string>( objtag );
     TFile* file                = TFile::Open( filename.c_str() );
     TObject* ans               = file->Get( objname.c_str() )->Clone();
-    //ans->SetDirectory(0); // Detach object from parent directory.
+    // ans->SetDirectory(0); // Detach object from parent directory.
     file->Close();
     return ans;
   }

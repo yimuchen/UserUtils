@@ -10,6 +10,8 @@ function and classes in EDM analysis general. These include:
       information on screen for user inspection.
   - [DumpLumiCount.py](@ref DumpLumiCount.py) Dumping the event, lumisection
       and run count of a list of edm files.
+  - [DumpGenParticles.cc](@ref DumpGenParticles.cc) Dumping the generator
+    topology of a certain event.
 
 - classes aimed to enhance the usability of edm plugins, including
   - usr::Counter: A new type to be understood by the framework to allow for run

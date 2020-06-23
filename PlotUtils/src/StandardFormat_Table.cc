@@ -1,12 +1,6 @@
 /**
  * @file StandardFormat_Table.cc
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2020-06-15
- *
- * @copyright Copyright (c) 2020
- *
+ * @author Yi-Mu "Enoch" Chen
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
@@ -20,14 +14,29 @@
 #include "UserUtils/PlotUtils/StandardPlotFormat.hpp"
 #endif
 
-// ------------------------------------------------------------------------------
-
 namespace usr {
 
 namespace plt {
 
 namespace fmt {
 
+/**
+ * @brief Generating a Latex table of all the simulated processes listed in the
+ * for the batch processes.
+ *
+ * The generated table will have 5 columns:
+ * - The name of the process (the latex string in the construction of each
+ *   process instance).
+ * - The cross section in standard CMS uncertainty formats.
+ * - The source of the cross section
+ * - The generator used for simulating the processes
+ * - The effective luminosity of the process.
+ *
+ * The first processes printed would be all the signal samples, Next the
+ * background processes are printing in the sequence that they appear in the JSON
+ * file. A horizontal line will be placed between each of the background
+ * processes and the signal samples.
+ */
 void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
 {
   static const std::string pre_column_format
@@ -88,6 +97,22 @@ void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
   stream <<  h_line << std::endl;
 }
 
+/**
+ * @brief Generating a simplied summary table of the simulated processes.
+ *
+ * In the simplified version of the table, all background processes will only be
+ * printed per group. The generated table will have 4 columns:
+ *
+ * - The name of the group/signal process.
+ * - The total cross section for the group/signal process.
+ * - The cross section source.
+ * - The generator.
+ *
+ * In case that there are multiple cross section sources or generators, the
+ * process with the maximum cross section will be used, followed by latex
+ * `ldots`. Since simplified process listing is mainly for presentation purposes,
+ * this should be fine.
+ */
 void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
 {
   static const std::string pre_column_format
@@ -180,6 +205,16 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
   stream <<  h_line << std::endl;
 }
 
+/**
+ * @brief Generating the data table.
+ *
+ * The table will have 3 columns,
+ * - The name of the run era (using the latex string in process declaration)
+ * - The run range from begining to end.
+ * - The total luminosity of each data process.
+ *
+ * This is a very basic table used for tallying up the simulation processes.
+ */
 void BatchRequest::GenerateDataTable( std::ostream& stream ) const
 {
   static const std::string h_line = "\\hline";

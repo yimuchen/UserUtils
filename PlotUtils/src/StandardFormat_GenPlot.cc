@@ -32,6 +32,16 @@ namespace plt {
 
 namespace fmt {
 
+/**
+ * @brief The highest level process for generating standard background stack
+ * histogram plots.
+ *
+ * The generation of the Background objects (stack, and uncertainty histograms)
+ * are handled in the BatchRequest::GenerateBackgroundObjects method. Handling of
+ * the plotting sequences are defined in the BatchReqest::PlotOnPad method. This
+ * method handles the additional sequences such as the distinction between the
+ * data/background comparison functions, and the histogram request loop.
+ */
 void
 BatchRequest::GeneratePlots()
 {
@@ -73,6 +83,11 @@ BatchRequest::GeneratePlots()
   }
 }
 
+/**
+ * @brief Generating all comparisons of signal histograms.
+ *
+ * Each histogram is generated to match a total luminosity of 1.0pb.
+ */
 void
 BatchRequest::GenerateSampleComparePlot()
 {
@@ -112,6 +127,13 @@ BatchRequest::GenerateSampleComparePlot()
   }
 }
 
+/**
+ * @brief Plotting all comparison of 2D histogram distributions.
+ *
+ * Each signal samples will have their 2D histogram plotted as a scatter plot.
+ * Again, the samples are plotted in reverse order to ensure that the item listed
+ * first will also appear on top and first in the histogram.
+ */
 void
 BatchRequest::Generate2DComaprePlot()
 {
@@ -149,6 +171,14 @@ BatchRequest::Generate2DComaprePlot()
   }
 }
 
+/**
+ * @brief Plotting the standard 1D histogram on a Pad.
+ *
+ * The background is plotted first, followed by the background uncertainties,
+ * then the signal samples, then the data. Plotting of the standard luminosity
+ * labels and the CMS label in the upper left corner of the pad is also performed
+ * at this stage, as well as the naming of the axis titles.
+ */
 void
 BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
 {
@@ -212,7 +242,30 @@ BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
   pad.SetLogy( histrequest.logy );
 }
 
-
+/**
+ * @brief Generating objects required for the 1D background plotting.
+ *
+ * This functions generates the following objects:
+ * - The THStack for different color display
+ * - A histogram for displaying the statistical uncertainty.
+ * - A histogram for displaying the total systematic uncertainties (listed in the
+ *   "uncertainties" of the BatchReqest).
+ *
+ * The THStack and the statistical uncertainty histograms are simple: simply
+ * sum/stack up the central template for each of the background processes (taking
+ * care to use the appropriate bin-error options for the statistical
+ * uncertainty).
+ *
+ * For the histogram displaying the systematic, 2 templates are generated from
+ * the uncertainty source templates summed over all process, which essentially
+ * assumes that the uncertainties between each processes for the same uncertainty
+ * source is 100% correlated. For each uncertainty source, the contribution to
+ * the uncertainty per bin is then calculated as if each uncertainty is
+ * uncorrelated (using the methods defined for the `usr::Measurement` class).
+ *
+ * All three histogram objects are owned by the BatchReqest class and will be
+ * destroyed between different plots.
+ */
 void
 BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
 {
@@ -343,6 +396,13 @@ BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
   }
 }
 
+/**
+ * @brief Making the data histogram
+ *
+ * All data histograms should be unweighted, so we are getting a simple histogram
+ * sum. The only adjustment we need is to set the histogram uncertainties to the
+ * committee recommend asymmetric uncertainty type (TH1:kPoisson)
+ */
 void
 BatchRequest::GenerateData( const HistRequest& hist )
 {

@@ -25,42 +25,43 @@ uncertainty:
     \mathrm{NLL}(\hat{x}\pm\sigma_{\pm})-\mathrm{NLL}(x) = \frac{1}{2}C^2
  \f]
 
-where \f$C\f$ is the "sigma interval" that the uncertainty is trying to
+where \f$C\f$ is the “sigma interval” that the uncertainty is trying to
 represent. In the case that there are multiple parameters are taken into
-consideration in a common NLL function \f$\mathrm{NLL}(x_i)\f$, the effective
-NLL to be used for a single parameter \f$\mathrm{NLL}_\mathrm{eff}(x_0)\f$ to be
-used is would be the "profile NLL" function, where all other parameters are
-allowed to change value such that to minimize the total NLL function
-\f$\mathrm{NLL}\f$ for a given value of \f$x_0\f$. This scheme also extends to
-to extended measurements of \f$u=f(x_i)\f$, where we might be interested in the
-sum, product, or more complicated parameter which could be calculated based on
-the parameters directly obtained in an experiment. In this case, for a given
-value of \f$u\f$, we would be find the effective NLL function for our extended
-parameter \f$u\f$, notated as \f$ \mathrm{NLL}_\mathrm{eff}(u) \f$, by
-maximizing the original NLL function under the constraint of \f$u = f(x_i)\f$.
-In this library, we would be carrying out such calculation using the Lagrange
-multipler method.
+consideration in a common NLL function \f$\mathrm{NLL}(x_i)\f$, the effective NLL
+to be used for a single parameter \f$\mathrm{NLL}_\mathrm{eff}(x_0)\f$ to be used
+is would be the "profile NLL" function, where all other parameters are allowed to
+change value such that to minimize the total NLL function \f$\mathrm{NLL}\f$ for
+a given value of \f$x_0\f$. This scheme also extends to extended measurements of
+\f$u=f(x_i)\f$, where we might be interested in the sum, product, or more
+complicated parameter which could be calculated based on the parameters directly
+obtained in an experiment. In this case, for a given value of \f$u\f$, we would
+be find the effective NLL function for our extended parameter \f$u\f$, notated as
+\f$ \mathrm{NLL}_\mathrm{eff}(u) \f$, by maximizing the original NLL function
+under the constraint of \f$u = f(x_i)\f$. In this library, we would be carrying
+out such calculation using the Lagrange multiplier method.
 
 # Container
 
-A container for a measurement results containing a central value, upper and
-lower uncertainties is implemented with the Measurement class. Aside for acting
-as an simple number container, it also allow for the performance of numerical
+A container for a measurement results containing a central value, upper and lower
+uncertainties is implemented with the Measurement class. Aside for acting as a
+simple number container, it also allows for the performance of numerical
 operations of measurement results with a quick-and-dirty version of combined
-minos uncertainty evaluation with an [estimated likelihood function](@ref
-LinearVarianceNLL()).
+MINOS uncertainty evaluation with an estimated likelihood function (see the @ref
+LinearVarianceNLL() method).
 
 # Output
 
-This library also provides classes that precedes the usr::base::format classes
+This library also provides classes that precedes the `usr::base::format` classes
 to allow for latex printing of the measurement container classes in the form of:
+
 \f[
   \hat{x}^{+\sigma_+}_{-\sigma_-} \;;\quad
   \hat{x}^{+\sigma_+}_{-\sigma_-}\times 10^{E \neq 0 } \;;\quad
 \f]
-In the event that the string representation of \f$\sigma_+\f$ and
-\f$\sigma_-\f$ are identical with the requested precision (**NOT** necessarily
-when the doubles that of identical identical value!), the symmetric notation of
+
+In the event that the string representation of \f$\sigma_+\f$ and \f$\sigma_-\f$
+are identical with the requested precision (**NOT** necessarily when the doubles
+that of identical value!), the symmetric notation of
 
 \f[
   \hat{x}\pm\sigma \;;\quad
@@ -71,13 +72,13 @@ would be used.
 The precision used for the class construction represents the number of digits to
 display for behind the decimal point for the central value. The precision used
 for generating the strings representing the uncertainties would be of equal
-value. For more details, see the implemented classes usr::fmt::decimal and
-usr::fmt::scientific
+value. For more details, see the implemented classes `usr::fmt::decimal` and
+`usr::fmt::scientific`
 
 @class usr::fmt::decimal
 @details
 
-decimal representation of a measurement with uncertainties. If the precision is
+Decimal representation of a measurement with uncertainties. If the precision is
 set to negative, the precision is automatically [determined](@ref
 usr::fmt::decimal::SetPrecision())
 

@@ -1,5 +1,6 @@
 @defgroup Common Common
-@brief A collection of functions for simpler experience using STL and boost functions.
+@brief A collection of functions for simpler experience using STL, boost and
+other basic C++ libraries.
 
 @details The [STL](http://en.cppreference.com/w/) and
 [boost](https://www.boost.org/) template libraries are widely-available,

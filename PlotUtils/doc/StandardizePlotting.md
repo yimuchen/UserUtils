@@ -18,20 +18,21 @@ and simple error propagation routines.
 
 ## The construction of standardized plot request
 
-The idea of the standardized plotting procedure is as such: for each physics
-“process” used in the analysis, their background, signal or data, will generate a
-bunch of histograms based on some common analysis algorithm, saved in similar
-formats with in different files. The plotting routine then simply looks into a
-configuration file, retrieves the required histograms required a certain plot,
-run some basic calculations such as rescaling, and plot the background, signal
-and data together in a plot. A “process” to this routine is then just a file
-containing the relevant histogram objects, and a bunch of variables adjusting how
-the histogram should be scaled and how to present the data (in the legend). The
-user will also need to define which histograms should be used in which
-processes.
+The idea of the standardized plotting procedure is as such: for each
+hard-scattering “process” used in the analysis, whether background, signal or
+data, will generate a bunch of histograms based on some common analysis
+algorithm, saved in similar formats with in different files. A plotting routine
+then simply looks into a configuration file, retrieves the required histograms
+required a certain plot, run some basic calculations such as rescaling, and plot
+the background, signal and data together in a plot. A “process” to this routine
+is then just a file containing the relevant histogram objects, and a bunch of
+variables adjusting how the histogram should be scaled and how to present the
+data (in the legend). The user will also need to define which histograms should
+be used in which processes.
 
-Having this picture in mind, the construction of a standardized plots in the form
-of a `usr::plt::fmt::BatchRequest` class includes the following ingredients:
+Having this picture in mind, the construction of a standardized plot request in
+the form of a `usr::plt::fmt::BatchRequest` class includes the following
+ingredients:
 
 - A list of histogram requests
 - A set of processes as backgrounds sorted into groups
@@ -39,7 +40,7 @@ of a `usr::plt::fmt::BatchRequest` class includes the following ingredients:
 - A list of processes as signal to be displayed (can be omitted)
 - A list of uncertainties to use for plotting uncertainties.
 - A set of IO options, such as where the read the files, where to place the output
-  file) ( can be omitted )
+  file (can be omitted).
 
 This is defined using an input JSON file, using the following format:
 
@@ -85,7 +86,7 @@ And example of the constructing a simulated process in a JSON format is as follo
 }
 ```
 
-The `display` string is the ROOT flavored Latex string that is used to display in
+The `display` string is the ROOT-flavored Latex string that is used to display in
 the legend, of the plot, while the `latex` string is simply latex commands that
 want in a standard latex table generation. The cross section are in units of
 picobarns, the usual standard in CMS analysis. It is worth noting that the
@@ -95,9 +96,9 @@ produce these histograms (i.e. the luminosity needed to reach to total
 explicitly specifying the effective luminosity here, the program also looks for a
 @ROOT{TTree} of the name `Count` in the same file, and looks for a leaf entry
 called `OriginalEvents` to calculate the effective luminosity. To use this
-functionality, omit the `luminosity` entry in the json file. For more detail
+functionality, omit the `luminosity` entry in the JSON file. For more detail
 which entries can be omitted from the declaration, see the constructor for the
-class usr::plt::fmt::Process.
+class `usr::plt::fmt::Process`.
 
 Another example of defining a process is that for a data process, which will look
 something like:
@@ -277,14 +278,14 @@ uncertainties displayed are calculated bin-by-bin. Uncertainties of the same
 source across different processes are assumed to have 100% correlation.
 Uncertainties from different sources are assumed to have no correlation, and for
 asymmetric uncertainty numbers are calculated using the function provided in the
-MathUtils package.
+`MathUtils` package.
 
 ## Standard binary
 
 If you are not going to customize the plotting procedure yourself, a standard
 binary is provided in the form of `usr_PlotStandard` by the package. Additional
-plotting routines are also possible and see the documenation of the binary file
-and the BatchRequest class for more documentation. An example of dummy files
+plotting routines are also possible and see the documentation of the binary file
+and the `BatchRequest` class for more documentation. An example of dummy files
 generate for plotting tests can be found in the testing binaries. And below is an
 example plot generated using the standard binary:
 
