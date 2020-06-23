@@ -1,9 +1,4 @@
 var searchData=
 [
-  ['_7eargumentextender_938',['~ArgumentExtender',['../classusr_1_1ArgumentExtender.html#a592e5003b4a3bd5b9c4d3ba372505c20',1,'usr::ArgumentExtender']]],
-  ['_7ecanvas_939',['~Canvas',['../classusr_1_1plt_1_1Canvas.html#a828f62b52eac36f33d6bc69b21e0130f',1,'usr::plt::Canvas']]],
-  ['_7emeasurement_940',['~Measurement',['../classusr_1_1Measurement.html#a40230c5a1ea27f72715c4c7768527d36',1,'usr::Measurement']]],
-  ['_7epad1d_941',['~Pad1D',['../classusr_1_1plt_1_1Pad1D.html#af811a25821542984632686b77719e3d4',1,'usr::plt::Pad1D']]],
-  ['_7epadbase_942',['~PadBase',['../classusr_1_1plt_1_1PadBase.html#a7f55b5c7425cf36549fa5dc2258cc7e8',1,'usr::plt::PadBase']]],
-  ['_7erooargcontainer_943',['~RooArgContainer',['../classusr_1_1RooArgContainer.html#aa69f9d309d59837aa25b40cb6edb099e',1,'usr::RooArgContainer']]]
+  ['yaxis_1066',['Yaxis',['../classusr_1_1plt_1_1Flat2DCanvas.html#a2df941a2e957c1deae8cf3908ad532a3',1,'usr::plt::Flat2DCanvas::Yaxis()'],['../classusr_1_1plt_1_1Pad1D.html#a97f28364fff0ed0f0778b1229cd7c3ee',1,'usr::plt::Pad1D::Yaxis()'],['../classusr_1_1plt_1_1Pad1D.html#a284d59905ad4a5cf9034b8bab217a099',1,'usr::plt::Pad1D::Yaxis() const'],['../classusr_1_1plt_1_1Pad2DFlat.html#a7cba5ce15441dfc364fe1dcab4519ee5',1,'usr::plt::Pad2DFlat::Yaxis()'],['../classusr_1_1plt_1_1Pad2DFlat.html#a9fe291fa23ab4dda1ff6a36002a702c6',1,'usr::plt::Pad2DFlat::Yaxis() const'],['../classusr_1_1plt_1_1Simple1DCanvas.html#a7d0878f93ee6e08c8bc2d5669cd233b2',1,'usr::plt::Simple1DCanvas::Yaxis()']]]
 ];

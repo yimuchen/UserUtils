@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['yaxis_936',['Yaxis',['../classusr_1_1plt_1_1Flat2DCanvas.html#a2df941a2e957c1deae8cf3908ad532a3',1,'usr::plt::Flat2DCanvas::Yaxis()'],['../classusr_1_1plt_1_1Pad1D.html#a97f28364fff0ed0f0778b1229cd7c3ee',1,'usr::plt::Pad1D::Yaxis()'],['../classusr_1_1plt_1_1Pad1D.html#a284d59905ad4a5cf9034b8bab217a099',1,'usr::plt::Pad1D::Yaxis() const'],['../classusr_1_1plt_1_1Pad2DFlat.html#a7cba5ce15441dfc364fe1dcab4519ee5',1,'usr::plt::Pad2DFlat::Yaxis()'],['../classusr_1_1plt_1_1Pad2DFlat.html#a9fe291fa23ab4dda1ff6a36002a702c6',1,'usr::plt::Pad2DFlat::Yaxis() const'],['../classusr_1_1plt_1_1Simple1DCanvas.html#a7d0878f93ee6e08c8bc2d5669cd233b2',1,'usr::plt::Simple1DCanvas::Yaxis()']]]
+  ['waitprocess_1060',['WaitProcess',['../group__SystemCommands.html#ga09ebd682c6dc4101d59db3123c63faa5',1,'usr']]],
+  ['weightprodsum_1061',['WeightProdSum',['../classWeightProdSum.html#ab250ca066905a475e627f94f16ca1e87',1,'WeightProdSum']]],
+  ['width_1062',['Width',['../classusr_1_1plt_1_1Canvas.html#aa2496c7034206ad9eb6a6d09077e7ec7',1,'usr::plt::Canvas']]],
+  ['writeatdata_1063',['WriteAtData',['../classusr_1_1plt_1_1PadBase.html#a0d956c026f65089b07e9b2f57d406bfd',1,'usr::plt::PadBase']]],
+  ['writeline_1064',['WriteLine',['../classusr_1_1plt_1_1PadBase.html#a18f530ac7f6aeee4b2bdf6465548f9ec',1,'usr::plt::PadBase::WriteLine()'],['../classusr_1_1plt_1_1Simple1DCanvas.html#a48e5fd268b899148a76b24deb1c62c09',1,'usr::plt::Simple1DCanvas::WriteLine()']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fontset_1004',['FontSet',['../Canvas_8hpp.html#a7ccd04bcda1b6813673cd894f23dfe22',1,'usr::plt']]]
+  ['fontset_1139',['FontSet',['../classusr_1_1plt.html#ae22b321ed2ac10245bb71031aa268431',1,'usr::plt']]]
 ];

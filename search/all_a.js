@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['ksdistance_220',['KSDistance',['../group__KSRooFit.html#ga813a4725aa29a3b9d3c7c4afcf41b5b7',1,'usr::KSDistance(RooDataSet &amp;dataset, RooAbsPdf &amp;pdf, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)'],['../group__KSRooFit.html#ga9c016e9ad8e82c76d32a93a92d10b7cf',1,'usr::KSDistance(RooDataSet &amp;set1, RooDataSet &amp;set2, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)']]],
-  ['ksprob_221',['KSProb',['../group__KSRooFit.html#ga05ac37c469276aab68853f4f8f35e166',1,'usr::KSProb(RooDataSet &amp;dataset, RooAbsPdf &amp;pdf, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)'],['../group__KSRooFit.html#ga70a32044633a819474ba5aa8b9c0b0f6',1,'usr::KSProb(RooDataSet &amp;set1, RooDataSet &amp;set2, RooRealVar &amp;var, const RooCmdArg &amp;cut1, const RooCmdArg &amp;cut2)']]],
-  ['ksprobalt_222',['KSProbAlt',['../group__KSRooFit.html#ga1c68d6543eaf51886df15dc6753d724d',1,'usr']]],
-  ['ksroofit_223',['KSRooFit',['../group__KSRooFit.html',1,'']]]
+  ['jsonentry_258',['JSONEntry',['../group__rapidjson.html#ga6290f8ba34809929124781937cf09c81',1,'usr::JSONEntry(const JSONMap &amp;map, const std::string &amp;index)'],['../group__rapidjson.html#gac19b711ddd3434a6b478da674fe9503e',1,'usr::JSONEntry(const JSONMap &amp;map, const std::string &amp;index, const TYPE &amp;default_return)']]],
+  ['jsonlist_259',['JSONList',['../group__rapidjson.html#gabf6d659763d3071267a1ab9e04c0699a',1,'usr::JSONList(const JSONMap &amp;map, const std::string &amp;index)'],['../group__rapidjson.html#ga219080b2f6c47fd1917a25b39b04f4d4',1,'usr::JSONList(const JSONMap &amp;map, const std::string &amp;index, const std::vector&lt; TYPE &gt; &amp;default_return)']]]
 ];

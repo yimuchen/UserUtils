@@ -1,4 +1,10 @@
 var searchData=
 [
-  ['xaxis_505',['Xaxis',['../classusr_1_1plt_1_1Flat2DCanvas.html#a90a30439c307be41273d2f51e15f55e1',1,'usr::plt::Flat2DCanvas::Xaxis()'],['../classusr_1_1plt_1_1Pad1D.html#a6224af08976efa4c106729a661989176',1,'usr::plt::Pad1D::Xaxis()'],['../classusr_1_1plt_1_1Pad1D.html#a955bb184e8d4f44a9af6cdcfdb250995',1,'usr::plt::Pad1D::Xaxis() const'],['../classusr_1_1plt_1_1Pad2DFlat.html#aa9230ca8f9b3a3fd4be9375142edd48e',1,'usr::plt::Pad2DFlat::Xaxis()'],['../classusr_1_1plt_1_1Pad2DFlat.html#a91a9bc7da7f0e87fccf239ea1fa2d341',1,'usr::plt::Pad2DFlat::Xaxis() const'],['../classusr_1_1plt_1_1Simple1DCanvas.html#a189bc42a0037d9c22347bf103762f80b',1,'usr::plt::Simple1DCanvas::Xaxis()']]]
+  ['what_20is_20userutils_3f_564',['What is UserUtils?',['../index.html',1,'']]],
+  ['waitprocess_565',['WaitProcess',['../group__SystemCommands.html#ga09ebd682c6dc4101d59db3123c63faa5',1,'usr']]],
+  ['weightprodsum_566',['WeightProdSum',['../classWeightProdSum.html',1,'WeightProdSum'],['../classWeightProdSum.html#ab250ca066905a475e627f94f16ca1e87',1,'WeightProdSum::WeightProdSum()']]],
+  ['weightprodsum_2ecc_567',['WeightProdSum.cc',['../WeightProdSum_8cc.html',1,'']]],
+  ['width_568',['Width',['../classusr_1_1plt_1_1Canvas.html#aa2496c7034206ad9eb6a6d09077e7ec7',1,'usr::plt::Canvas']]],
+  ['writeatdata_569',['WriteAtData',['../classusr_1_1plt_1_1PadBase.html#a0d956c026f65089b07e9b2f57d406bfd',1,'usr::plt::PadBase']]],
+  ['writeline_570',['WriteLine',['../classusr_1_1plt_1_1PadBase.html#a18f530ac7f6aeee4b2bdf6465548f9ec',1,'usr::plt::PadBase::WriteLine()'],['../classusr_1_1plt_1_1Simple1DCanvas.html#a48e5fd268b899148a76b24deb1c62c09',1,'usr::plt::Simple1DCanvas::WriteLine()']]]
 ];
