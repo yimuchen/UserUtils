@@ -281,7 +281,7 @@ Pad1D::AutoSetYRangeHist()
     SetYaxisMax( _datamin + diff * 1.25 );
     SetYaxisMin( _datamin );
   } else {
-    const double opmin = _datamin < 0 ? 1e-6 : _datamin;
+    const double opmin = _datamin <= 0 ? 1e-6 : _datamin;
     const double diff  = std::log10( _datamax / opmin );
     SetYaxisMax( opmin * std::pow( 10, diff * 1.25 ) );
     SetYaxisMin( opmin );
@@ -304,7 +304,7 @@ Pad1D::AutoSetYRangeGraph()
     SetYaxisMax( _datamin + diff * 1.2 );
     SetYaxisMin( _datamax - diff * 1.1 );
   } else {
-    const double opmin = _datamin < 0 ? 1e-6 : _datamin;
+    const double opmin = _datamin <= 0 ? 1e-6 : _datamin;
     const double diff  = std::log10( _datamax / opmin );
     SetYaxisMax( opmin * std::pow( 10, diff * 1.2 ) );
     SetYaxisMin( _datamax / std::pow( 10, diff*1.1 ) );

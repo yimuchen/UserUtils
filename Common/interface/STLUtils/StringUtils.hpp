@@ -54,7 +54,8 @@ extern size_t NextOpenBrace( const std::string&, const unsigned start );
 extern bool starts_with( const std::string&, const std::string& );
 extern bool ends_with( const std::string&, const std::string& );
 
-
+extern std::vector<std::string> ListFromFile( const std::string& file,
+                                              const std::string& delim = "\n" );
 /**
  * @{
  * @brief Variadic interface for generating formmatted strings.
@@ -72,11 +73,11 @@ inline std::string
 fstr( boost::format& fmt )
 {  return boost::str( fmt ); }
 
-template<typename TYPE,typename ... ARGS>
+template<typename TYPE, typename ... ARGS>
 inline std::string
 fstr( boost::format& fmt, TYPE&& T,  ARGS&& ... args )
 {
-  return fstr( fmt % std::forward<TYPE>(T), std::forward<ARGS>( args )... );
+  return fstr( fmt % std::forward<TYPE>( T ), std::forward<ARGS>( args )... );
 }
 
 template<typename ... ARGS>
@@ -84,7 +85,7 @@ inline std::string
 fstr( const std::string& fmt, ARGS&& ... args )
 {
   boost::format f( fmt );
-  return fstr( f, std::forward<ARGS>(args)... );
+  return fstr( f, std::forward<ARGS>( args )... );
 }
 /** @} */
 

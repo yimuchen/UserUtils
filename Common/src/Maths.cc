@@ -313,4 +313,37 @@ RoundDown( const double x, const double target )
   return target * std::floor( x/target );
 }
 
+/**
+ * @brief Returns a vector containing numbers spaced linearly from the given
+ * start and end.
+ *
+ * The vector returned will always have size num. The first element of the vector
+ * would be identical to start, the end will be identical to end (if num > 1),
+ * the remaining elements will be numbers spanning the interval of [start,end] in
+ * a linear spacing (equally spaced).
+ */
+std::vector<double>
+LinSpace( const double start, const double end, const size_t num )
+{
+  std::vector<double> ans;
+
+  // Special case for num == 0
+  if( num == 0 ){ return ans; }
+  // Special case for num == 1
+  if( num == 1 ){ ans.push_back( start ); return ans; }
+
+  ans.resize( num );
+  const double diff = ( end - start ) / ( num-1 );
+
+  for( size_t i = 0; i < num; ++i ){
+    ans[i] = start + i * diff;
+  }
+
+  ans[num-1] = end;// ensuring the last element matches the given end.
+
+  return ans;
+}
+
+
+
 }/* usr */

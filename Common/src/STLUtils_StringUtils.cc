@@ -16,8 +16,10 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <regex>
+#include <sstream>
 #include <string>
 
 namespace usr  {
@@ -225,5 +227,29 @@ ends_with( const std::string& master, const std::string& target )
   return std::equal( target.rbegin(), target.rend(), master.rbegin() );
 }
 
+/**
+ * @brief Getting a list of strings from a file.
+ *
+ * Given a file path, the function return the contents of file broken by
+ * delimiters (be default the delimiter character is '\n').
+ */
+std::vector<std::string>
+ListFromFile( const std::string& file, const std::string& delimiter )
+{
+  std::ifstream f( file );
+  std::stringstream buffer;
+  std::string content ;
+  std::vector<std::string> ans;
+
+  // Getting the full contents of the file
+  buffer << f.rdbuf();
+  content = buffer.str();
+
+  boost::split( ans, content, boost::is_any_of( delimiter ) );
+
+  return ans;
+}
+
 
 }/* usr  */
+

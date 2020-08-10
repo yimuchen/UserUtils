@@ -55,14 +55,14 @@ extern double LinearVarianceNLL( double, const Measurement& );
    --------------------------------------------------------------------------*/
 extern Measurement SumUncorrelated(
   const std::vector<Measurement>& paramlist,
-  const double confidencelevel = usr::stat::onesigma_level,
-  double ( *nll )( double, const Measurement& ) = & LinearVarianceNLL
+  const double confidencelevel                   = usr::stat::onesigma_level,
+  double ( * nll )( double, const Measurement& ) = & LinearVarianceNLL
   );
 
 extern Measurement ProdUncorrelated(
   const std::vector<Measurement>& paramlist,
-  const double confidencelevel = usr::stat::onesigma_level,
-  double ( *nll )( double, const Measurement& ) = & LinearVarianceNLL
+  const double confidencelevel                   = usr::stat::onesigma_level,
+  double ( * nll )( double, const Measurement& ) = & LinearVarianceNLL
   );
 
 /**
@@ -94,6 +94,17 @@ Prod( const Measurement& x, Ts ... args )
 {
   return ProdUncorrelated( MakeVector<Measurement>( x, args ... ) );
 }
+
+/**
+ * @brief Give a function of parameters, calculate the error propagation given a
+ * various a list of symmetric error functions. Assuming all parameters are
+ * uncorrelated
+ */
+extern Measurement LazyMeasurementFunction(
+  const std::vector<Measurement>& paramlist,
+  double (*                       function )( const std::vector<double>& )
+  );
+
 
 /** @} */
 

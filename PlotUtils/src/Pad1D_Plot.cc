@@ -24,6 +24,7 @@
 #include "TFitResult.h"
 #include "TGraphErrors.h"
 #include "TList.h"
+#include "TStyle.h"
 
 // static variables for new object generation
 static const std::string genaxisname = "axishist";
@@ -33,6 +34,7 @@ namespace usr  {
 namespace plt {
 
 /**
+ * @details
  * Plotting 1D histograms accepts these options:
  * - PlotType: Defining how the binned data should be represented on the pad,
  *   following types are supported
@@ -86,7 +88,9 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist, {
         PlotType( hist ),
         TrackY( TrackY::max ),
-        FillColor( 0, 0 )
+        FillColor( 0, 0 ),
+        MarkerStyle( sty::mkrcircle ),
+        MarkerSize( 0.05 )
       } );
 
   if( !GetAxisObject() ){
@@ -199,6 +203,108 @@ Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
 }
 
 /**
+ * @brief Plotting a TEfficiency object
+ *
+ * Supported options are:
+ * - PlotType: Definining how the data should be presented
+ *   - plottype::scatter (default) - Plotting points with error bars,
+ *     unfortunately, because the TEfficiency object has plotting functions
+ *     similar to TGraphs and not TH1Ds, we cannot force the uniform bin display
+ *     to have no x-error bars.
+ *   - plottype::hist - Plotting as histograms. Because graphical options are
+ *     using TGraphs and not TH1Ds, we are using the bar options ("B"). So we
+ *     cannot have an unfilled color.
+ *   - plottype::histerr - Drawing uncertainty as a shaded box region.
+ *   - Raw string: The user can use the ROOT style string options to define how
+ *     the Histogram options should be plotted. The strings `"SAME"` and `"HIST"`
+ *     would be handed by the functions and will be stripped.
+ *
+ * - EntryText: String to add in the legend entry. If this options is not
+ *   present, then this object will NOT appear in the generated legend. Notice
+ *   that the attributes to display in the legend would be generated from the
+ *   PlotType used.
+ *
+ * - TrackY: Whether or not the y-axis range should be adjusted according to the
+ *   newly added graph. By default, both the maximum and minimum will be tracked
+ *   if this graph is the first thing to be plotted on the pad (excluding the
+ *   histogram used for handling the axis), otherwise, nothing will be tracked.
+ *
+ * - PlotUnder: Specifying the that plot object be plotted underneath a specific
+ *   object. Not that if the object specified in PlotUnder is not found in the
+ *   pad, this option will have no effect and will raise no excpetions.
+ *
+ */
+TEfficiency&
+Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
+{
+  // Getting the flags
+  const RooArgContainer args( arglist, {
+        PlotType( scatter ),
+        TrackY( TrackY::both ),
+        FillColor( usr::plt::col::cyan )
+      } );
+
+  if( obj.GetDimension() != 1 ){
+    std::cerr << "Can only plot 1 Dimensional TEfficiency objects" << std::endl;
+    return obj;
+  }
+
+  if( !GetAxisObject() ){
+    // MUST ust a clone, otherwise messes with THStack
+    TH1D& axisobj = MakeObj<TH1D>( *((TH1D*)obj.GetTotalHistogram()) );
+    axisobj.Reset();
+    axisobj.SetStats( 0 );
+    axisobj.SetTitle( "" );
+    axisobj.SetName( ( genaxisname+RandomString( 6 ) ).c_str() );
+    PlotObj( axisobj, "AXIS" );
+    this->SetAxisFont();
+  }
+
+  // Forcing no statistics. and wiping title
+  obj.SetTitle( "" );
+
+  // Running the draw commands.
+  const int pt = args.Get<PlotType>();
+
+  // Plot case for different plot types
+  switch( pt ){
+  case plottype::hist:
+    PlotObj( obj, "B SAME" );
+    gStyle->SetBarWidth( 1.05 );// For getting rid of the thin empty
+    break;
+  case plottype::scatter:
+    PlotObj( obj, "PZ SAME" );
+      break;
+  case plottype::histerr:
+    PlotObj( obj, "E2 SAME" );
+    break;
+  case plottype::plottype_dummy:
+    PlotObj( obj, ( args.Get<PlotType>().str()+" SAME" ).c_str() );
+    break;
+  default:
+    std::cerr << "Skipping over invalid value ("<< pt <<")" << std::endl;
+  }
+
+  TrackObjectY( obj, args.Get<TrackY>() );
+
+  // Adding legend
+  if( args.Has<EntryText>() ){
+    AddLegendEntry( obj, args.Get<EntryText>(), args.Get<PlotType>() );
+  }
+
+  // Moving to under something
+  if( args.Has<PlotUnder>() ){
+    PadBase::MoveTargetToBefore( obj, args.Get<PlotUnder>() );
+  }
+
+  SetLineAttr( obj, args );
+  SetFillAttr( obj, args );
+  SetMarkAttr( obj, args );
+
+  return obj;
+}
+
+/**
  * Plotting of the TGraph object has the following supporting options:
  *
  * - `PlotType`: Defining how the data should be represented on the Pad. The
@@ -243,7 +349,9 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
       {
         PlotType( simplefunc ),
         !GetAxisObject() ? TrackY( TrackY::both ) : TrackY( TrackY::none ),
-        FillColor( 0, 0 )
+        FillColor( 0, 0 ),
+        MarkerStyle( sty::mkrcircle ),
+        MarkerSize( 0.05 )
       } );
 
   // If no axis are available. Generating a TH1 object for axis:
@@ -769,6 +877,8 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
       GetYmin( &dynamic_cast<const TGraph&>( obj ) ) :
       obj.InheritsFrom( THStack::Class() ) ?
       GetYmin( &dynamic_cast<const THStack&>( obj ) ) :
+      obj.InheritsFrom( TEfficiency::Class() )?
+      GetYmin( &dynamic_cast<const TEfficiency&>( obj ) ) :
       0;
     _datamin = obj_min == 0 ? _datamin : std::min( _datamin, obj_min );
   }
@@ -780,6 +890,8 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
       GetYmax( &dynamic_cast<const TGraph&>( obj ) ) :
       obj.InheritsFrom( THStack::Class() ) ?
       GetYmax( &dynamic_cast<const THStack&>( obj ) ) :
+      obj.InheritsFrom( TEfficiency::Class() )?
+      GetYmax( &dynamic_cast<const TEfficiency&>( obj ) ) :
       0;
     _datamax = std::max( _datamax, obj_max );
   }

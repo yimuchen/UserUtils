@@ -11,6 +11,7 @@
 #include "RooPlot.h"
 #include "RooRealVar.h"
 
+#include "TEfficiency.h"
 #include "TGraph.h"
 #include "TH1D.h"
 #include "THStack.h"
@@ -157,7 +158,8 @@ public:
   virtual ~EntryText(){}
   inline operator std::string() const { return getString( 0 );
   }
-  inline bool PlaceLast() const { return getInt( 0 ); }
+  inline bool
+  PlaceLast() const { return getInt( 0 ); }
   inline const char*
   c_str() const { return getString( 0 );}
 };
@@ -428,8 +430,8 @@ enum plot2df
   heattext,// < Plot objects as heat maps with text in bin box
   heatcont,// < Plot object as heat maps with contours lines
   cont,// < Plotting only contour lines
-  box,   // < Plotting the box diagram (box size indicating fill value)
-  density, // < Plotting scatter type historgrams
+  box,// < Plotting the box diagram (box size indicating fill value)
+  density,// < Plotting scatter type historgrams
 };
 
 /**
@@ -511,38 +513,45 @@ public:
  * @{
  * @brief Getting the min-max value for a histogram object
  */
-extern double GetYmax( const TH1D* );
-extern double GetYmin( const TH1D* );
-inline double
-GetYmax( const TH1D& x ){ return GetYmax( &x ); }
-inline double
-GetYmin( const TH1D& x ){ return GetYmin( &x ); }
+extern double GetYmax( const TH1D& );
+extern double GetYmin( const TH1D& );
+inline double GetYmax( const TH1D* x ){ return GetYmax( *x ); }
+inline double GetYmin( const TH1D* x ){ return GetYmin( *x ); }
 /** @} */
 
 /**
  * @{
  * @brief getting the min-max x/y value for a TGraph object
  */
-extern double GetYmax( const TGraph* );
-extern double GetYmin( const TGraph* );
-extern double GetXmax( const TGraph* );
-extern double GetXmin( const TGraph* );
-inline double
-GetYmax( const TGraph& x ){ return GetYmax( &x ); }
-inline double
-GetYmin( const TGraph& x ){ return GetYmin( &x ); }
-inline double
-GetXmax( const TGraph& x ){ return GetXmax( &x ); }
-inline double
-GetXmin( const TGraph& x  ){ return GetXmin( &x ); }
+extern double GetYmax( const TGraph& );
+extern double GetYmin( const TGraph& );
+extern double GetXmax( const TGraph& );
+extern double GetXmin( const TGraph& );
+inline double GetYmax( const TGraph* x ){ return GetYmax( *x ); }
+inline double GetYmin( const TGraph* x ){ return GetYmin( *x ); }
+inline double GetXmax( const TGraph* x ){ return GetXmax( *x ); }
+inline double GetXmin( const TGraph* x ){ return GetXmin( *x ); }
 /** @} */
+
+/**
+ * @{
+ * @brief Get the min-max value for a TEfficiency object
+ */
+extern double GetYmax( const TEfficiency& );
+extern double GetYmin( const TEfficiency& );
+inline double GetYmax( const TEfficiency* x ){ return GetYmax( *x ); }
+inline double GetYmin( const TEfficiency* x ){ return GetYmin( *x ); }
+/** @} */
+
 
 /**
  * @{
  * @brief Gettin the min-max value for a THStack object.
  **/
-extern double GetYmin( const THStack* );
-extern double GetYmax( const THStack* );
+extern double GetYmin( const THStack& );
+extern double GetYmax( const THStack& );
+inline double GetYmin( const THStack* x ){ return GetYmin( *x ); }
+inline double GetYmax( const THStack* x ){ return GetYmax( *x ); }
 /** @} */
 
 /**

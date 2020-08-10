@@ -40,8 +40,8 @@ Minos(
   binomial.function = &usr::stat::BinomialNLL;
   binomial.params   = params;
 
-  const double est    = passed/total;
-  const double min    = usr::gsl::mch_epsilon ;
+  const double est = passed/total;
+  const double min = usr::gsl::mch_epsilon;
 
   return MakeMinos(
     &binomial,
@@ -89,6 +89,33 @@ Bayesian(
   return Measurement( central, err_up, err_down );
 }
 
+Measurement
+ClopperPearson(
+  const double passed,
+  const double total,
+  const double confidencelevel )
+{
+  const double central = passed / total;
+  const double err_up  = TEfficiency::ClopperPearson( total
+                                                    , passed
+                                                    , confidencelevel
+                                                    , true ) - central;
+  const double err_down = central - TEfficiency::ClopperPearson( passed
+                                                               , total
+                                                               , confidencelevel
+                                                               , false );
+  return Measurement( central, err_up, err_down );
+}
+
+Measurement
+Lazy( const double passed,
+      const double total )
+{
+  const double central = passed / total;
+  const double error   = std::sqrt( central * ( 1-central ) / total  );
+  return Measurement( central, error, error );
+}
+
 }/* Efficiency */
 
 /*----------------------------------------------------------------------------*/
@@ -107,8 +134,8 @@ Minos( const double obs, const double confidencelevel )
   poisson.function = &usr::stat::PoissonNLL;
   poisson.params   = const_cast<double*>( &obs );
 
-  const double min = usr::gsl::mch_epsilon ;
-  const double max = obs + obs*obs +1 ;
+  const double min = usr::gsl::mch_epsilon;
+  const double max = obs + obs*obs +1;
 
   return MakeMinos(
     &poisson,
@@ -118,6 +145,6 @@ Minos( const double obs, const double confidencelevel )
     confidencelevel );
 }
 
-} /* Poisson */
+}/* Poisson */
 
 }/* usr */

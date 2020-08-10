@@ -35,7 +35,11 @@ template<typename OBJTYPE>
 void ClearValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x );
 
 template<typename OBJTYPE>
+void ClearIf( std::vector<OBJTYPE>& vec, bool (*func)(const OBJTYPE& ) );
+
+template<typename OBJTYPE>
 bool FindValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x );
+
 /** @} */
 
 /*-----------------------------------------------------------------------------
@@ -95,13 +99,23 @@ MakeVector( const ARGTYPE& first )
 }
 
 /**
- * @brief removing element in a vector is element is equivalent to x
+ * @brief removing element in a vector if element is equivalent to x
  */
 template<typename OBJTYPE>
 void
 ClearValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
 {
   vec.erase( std::remove( vec.begin(), vec.end(), x ), vec.end() );
+}
+
+/**
+ * @brief removing element in a vector if element matches some function
+ */
+template<typename OBJTYPE>
+void
+ClearIf( std::vector<OBJTYPE>& vec, bool (*func)(const OBJTYPE&) )
+{
+  vec.erase( std::remove_if( vec.begin(), vec.end(), func ), vec.end() );
 }
 
 /**
@@ -143,7 +157,6 @@ GetMinimum( std::vector<OBJTYPE>& vec )
 {
   return *std::min_element( vec.begin(), vec.end() );
 }
-
 
 }/* usr */
 

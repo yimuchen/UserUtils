@@ -20,7 +20,7 @@
 #endif
 
 #include "TTree.h"
-
+#include <algorithm>
 
 namespace usr {
 
@@ -65,7 +65,7 @@ BatchRequest::initialize( const usr::JSONMap& map )
   }
 
   if( map.HasMember( "signals" ) ){
-    usr::ExceptJSONList( map, "signals" );
+//    usr::ExceptJSONList( map, "signals" );
 
     for( const auto& sig_map : map["signals"].GetArray() ){
       signallist.push_back( Process( sig_map, this ) );

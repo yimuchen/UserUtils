@@ -60,11 +60,12 @@ public:
    * @brief passing through for Pad1D plotting function so that user can 'plot'
    * on this canvas type.
    */
-  PASSTHROUGH_PLOTFUNC( PlotHist,  TH1D,       TH1D );
-  PASSTHROUGH_PLOTFUNC( PlotFunc,  TF1,        TGraph );
-  PASSTHROUGH_PLOTFUNC( PlotGraph, TGraph,     TGraph );
-  PASSTHROUGH_PLOTFUNC( PlotData,  RooAbsData, TGraphAsymmErrors );
-  PASSTHROUGH_PLOTFUNC( PlotPdf,   RooAbsPdf,  TGraph );
+  PASSTHROUGH_PLOTFUNC( PlotHist,  TH1D,        TH1D              );
+  PASSTHROUGH_PLOTFUNC( PlotFunc,  TF1,         TGraph            );
+  PASSTHROUGH_PLOTFUNC( PlotGraph, TGraph,      TGraph            );
+  PASSTHROUGH_PLOTFUNC( PlotEff,   TEfficiency, TEfficiency       );
+  PASSTHROUGH_PLOTFUNC( PlotData,  RooAbsData,  TGraphAsymmErrors );
+  PASSTHROUGH_PLOTFUNC( PlotPdf,   RooAbsPdf,   TGraph            );
   /** @} */
 #undef PASSTHROUGH_PLOTFUNC
 

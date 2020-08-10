@@ -34,11 +34,19 @@ extern const bool central_interval;
 extern Measurement Bayesian(
   double passed,
   double total,
-  double confidencelevel =usr::stat::onesigma_level,
+  double confidencelevel  = usr::stat::onesigma_level,
   bool   confidencemethod = shortest_interval,
-  double alpha = 0.5,
-  double beta  = 0.5
+  double alpha            = 0.5,
+  double beta             = 0.5
   );
+
+extern Measurement ClopperPearson(
+  const double passed,
+  const double total,
+  const double confidencelevel = usr::stat::onesigma_level
+  );
+
+extern Measurement Lazy( double passed, double total );
 
 };// Efficiency
 
@@ -49,9 +57,9 @@ extern Measurement Bayesian(
 namespace Poisson
 {
 extern Measurement Minos(
-  const double obs ,
+  const double obs,
   const double confidencelevel = usr::stat::onesigma_level
-);
+  );
 
 // TODO: Add more methods
 

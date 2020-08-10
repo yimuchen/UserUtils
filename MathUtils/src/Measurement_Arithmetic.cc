@@ -191,7 +191,7 @@ Measurement
 SumUncorrelated(
   const vector<Measurement>& paramlist,
   const double confidencelevel,
-  double ( * nll )( double, const Measurement& )
+  double (* nll )( double, const Measurement& )
   )
 {
   const unsigned dim = paramlist.size();
@@ -266,7 +266,7 @@ Measurement
 ProdUncorrelated(
   const std::vector<Measurement>& paramlist,
   const double confidencelevel,
-  double ( * nll )( double, const Measurement& )
+  double (* nll )( double, const Measurement& )
   )
 {
   const unsigned dim = paramlist.size();
@@ -320,6 +320,71 @@ ProdUncorrelated(
   gsl_vector_free( lowerguess );
 
   return ans * prod;
+}
+
+
+Measurement
+LazyMeasurementFunction(
+  const std::vector<Measurement>& paramlist,
+  double (*                       function )( const std::vector<double>& ) )
+{
+  static double (* static_pointer)( const std::vector<double>& );
+
+  // Restructing to GSL compilent data teyp
+  static_pointer = function;
+
+  auto gsl_wrap = []( const gsl_vector* x, void* )->double {
+                    std::vector<double> input;
+
+                    for( unsigned i = 0; i  < x->size; ++i ){
+                      input.push_back( gsl_vector_get( x, i ) );
+                    }
+
+                    return static_pointer( input );
+                  };
+
+  usr::gsl::gsl_multifunc gsl_min;
+  gsl_min.n      = paramlist.size();
+  gsl_min.params = nullptr;
+  gsl_min.f      = gsl_wrap;
+
+
+  // Resetting up the calculation center
+  gsl_vector* input_center = gsl_vector_alloc( paramlist.size() );
+
+  for( unsigned i = 0; i < paramlist.size(); ++i ){
+    gsl_vector_set( input_center, i, paramlist.at( i ).CentralValue() );
+  }
+
+
+  // Summing over the  relavent uncertainties
+  const double central = gsl_wrap( input_center, nullptr );
+  double err_up        = 0;
+  double err_down      = 0;
+
+  for( unsigned i = 0; i < paramlist.size(); ++i ){
+    const double diff = usr::gsl::partial_deriv( &gsl_min, input_center, i );
+    if( diff > 0 ){
+      err_up += diff * paramlist.at( i ).AbsUpperError()
+                * diff *  paramlist.at( i ).AbsUpperError();
+      err_down += diff * paramlist.at( i ).AbsLowerError()
+                  * diff *  paramlist.at( i ).AbsLowerError();
+    } else {
+      err_up += diff * paramlist.at( i ).AbsLowerError()
+                * diff *  paramlist.at( i ).AbsLowerError();
+      err_down += diff * paramlist.at( i ).AbsUpperError()
+                  * diff *  paramlist.at( i ).AbsUpperError();
+    }
+  }
+
+  err_up   = std::sqrt( err_up );
+  err_down = std::sqrt( err_down );
+
+  // Tidying up
+  gsl_vector_free( input_center );
+
+  return Measurement( central, err_up, err_down );
+
 }
 
 }/* usr */

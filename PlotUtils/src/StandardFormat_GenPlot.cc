@@ -167,7 +167,11 @@ BatchRequest::Generate2DComaprePlot()
 
     c.Pad().Xaxis().SetTitle( histrequest.xaxis.c_str() );
     c.Pad().Yaxis().SetTitle( histrequest.yaxis.c_str() );
-    c.SaveAsPDF( histrequest.name + ".pdf" );
+
+    const std::string name = iosetting.output_prefix + histrequest.name +
+                             iosetting.output_postfix + ".pdf";
+
+    c.SaveAsPDF( name );
   }
 }
 

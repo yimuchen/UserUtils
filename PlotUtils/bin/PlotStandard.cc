@@ -134,6 +134,19 @@ void
 RunComparison( usr::plt::fmt::BatchRequest& batch,
                const usr::ArgumentExtender& args )
 {
+  if( args.CheckArg( "fileprefix" ) ){
+    batch.UpdateInputPrefix( args.Arg<std::string>( "fileprefix" ) );
+  }
+  if( args.CheckArg( "keyprefix" ) ){
+    batch.UpdateKeyPrefix( args.Arg<std::string>( "keyprefix" ) );
+  }
+  if( args.CheckArg( "outputprefix" ) ){
+    batch.UpdateOutputPrefix( args.Arg<std::string>( "outputprefix" ) );
+  }
+  if( args.CheckArg( "outputpostfix" ) ){
+    batch.UpdateoutputPostfix( args.Arg<std::string>( "outputpostfix" ) );
+  }
+
   batch.GenerateSampleComparePlot();
 }
 
@@ -141,6 +154,18 @@ void
 RunComparison2D( usr::plt::fmt::BatchRequest& batch,
                  const usr::ArgumentExtender& args )
 {
+  if( args.CheckArg( "fileprefix" ) ){
+    batch.UpdateInputPrefix( args.Arg<std::string>( "fileprefix" ) );
+  }
+  if( args.CheckArg( "keyprefix" ) ){
+    batch.UpdateKeyPrefix( args.Arg<std::string>( "keyprefix" ) );
+  }
+  if( args.CheckArg( "outputprefix" ) ){
+    batch.UpdateOutputPrefix( args.Arg<std::string>( "outputprefix" ) );
+  }
+  if( args.CheckArg( "outputpostfix" ) ){
+    batch.UpdateoutputPostfix( args.Arg<std::string>( "outputpostfix" ) );
+  }
   batch.Generate2DComaprePlot();
 }
 
@@ -148,11 +173,35 @@ void
 RunStandard( usr::plt::fmt::BatchRequest& batch,
              const usr::ArgumentExtender& args  )
 {
+  if( args.CheckArg( "fileprefix" ) ){
+    batch.UpdateInputPrefix( args.Arg<std::string>( "fileprefix" ) );
+  }
+  if( args.CheckArg( "keyprefix" ) ){
+    batch.UpdateKeyPrefix( args.Arg<std::string>( "keyprefix" ) );
+  }
+  if( args.CheckArg( "outputprefix" ) ){
+    batch.UpdateOutputPrefix( args.Arg<std::string>( "outputprefix" ) );
+  }
+  if( args.CheckArg( "outputpostfix" ) ){
+    batch.UpdateoutputPostfix( args.Arg<std::string>( "outputpostfix" ) );
+  }
   batch.GeneratePlots();
 }
 void
 RunTable( usr::plt::fmt::BatchRequest& batch,
           const usr::ArgumentExtender& args )
 {
+  if( args.CheckArg( "fileprefix" ) ){
+    batch.UpdateInputPrefix( args.Arg<std::string>( "fileprefix" ) );
+  }
+  if( args.CheckArg( "keyprefix" ) ){
+    batch.UpdateKeyPrefix( args.Arg<std::string>( "keyprefix" ) );
+  }
+  if( args.CheckArg( "outputprefix" ) ){
+    batch.UpdateOutputPrefix( args.Arg<std::string>( "outputprefix" ) );
+  }
+  if( args.CheckArg( "outputpostfix" ) ){
+    batch.UpdateoutputPostfix( args.Arg<std::string>( "outputpostfix" ) );
+  }
   batch.GenerateSimulationTable( std::cout );
 }

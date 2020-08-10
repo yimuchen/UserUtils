@@ -7,14 +7,14 @@
 #define USERUTILS_PLOTUTILS_PAD1D_HPP
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/Common/interface/RootUtils/RooArgContainer.hpp"
+#include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
-#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #include "UserUtils/Common/RootUtils/RooArgContainer.hpp"
+#include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PlotUtils/Canvas.hpp"
 #include "UserUtils/PlotUtils/Constants.hpp"
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
@@ -27,6 +27,7 @@
 #include "RooPlot.h"
 #include "RooRealVar.h"
 
+#include "TEfficiency.h"
 #include "TF1.h"
 #include "TGraph.h"
 #include "TGraphAsymmErrors.h"
@@ -64,8 +65,8 @@ public:
   Pad1D( const Pad1D& ) = delete;
 
 #define DECLARE_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )                    \
-  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg> & );                 \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> &list ){    \
+  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg>& );                 \
+  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> & list ){    \
     return FUNC_NAME( *x, list );                                              \
   }                                                                            \
   inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }           \
@@ -95,9 +96,16 @@ public:
 
   /**
    * @{
+   * @brief Plotting TEfficiency objects
+   */
+  /** @} */
+  DECLARE_PLOT_FUNCTIONS( PlotEff,   TEfficiency, TEfficiency& );
+
+  /**
+   * @{
    * @brief Plotting x-y scatter graph objects
    */
-  DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph, TGraph& );
+  DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph,      TGraph& );
   /** @} */
 
   /**
@@ -263,6 +271,7 @@ protected:
   void _init_legend();
   void AddLegendEntry( TH1D&, const EntryText&, const PlotType& );
   void AddLegendEntry( TGraph&, const EntryText&, const PlotType& );
+  void AddLegendEntry( TEfficiency&, const EntryText&, const PlotType& );
 
   // Helper function for Plot<> Functions
   void    TrackObjectY( const TObject& obj, const int tracky );

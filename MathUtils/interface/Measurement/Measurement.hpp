@@ -47,17 +47,25 @@ public:
 
   // Error arithmetics :: See src/Measurement_Arithmetics.cc
   Measurement&       operator+=( const Measurement& );
+  Measurement&       operator-=( const Measurement& );
   Measurement&       operator*=( const Measurement& );
+  Measurement&       operator/=( const Measurement& );
+
   Measurement&       operator+=( const double );
   Measurement&       operator-=( const double );
   Measurement&       operator*=( const double );
   Measurement&       operator/=( const double );
+
   Measurement        operator+( const Measurement& ) const;
+  Measurement        operator-( const Measurement& ) const;
   Measurement        operator*( const Measurement& ) const;
+  Measurement        operator/( const Measurement& ) const;
+
   Measurement        operator+( const double )     const;
   Measurement        operator-( const double )     const;
   Measurement        operator*( const double )     const;
   Measurement        operator/( const double )     const;
+
   friend Measurement operator+( const double, const Measurement& );
   friend Measurement operator-( const double, const Measurement& );
   friend Measurement operator*( const double, const Measurement& );

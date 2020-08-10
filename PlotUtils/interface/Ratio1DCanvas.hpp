@@ -151,11 +151,12 @@ public:
    * @{
    * @brief 'plotting data on canvas' is actually plotting to Top pad on canvas.
    */
-  PASSTHROUGH_TOPPLOTFUNC( PlotHist,  TH1D,       TH1D );
-  PASSTHROUGH_TOPPLOTFUNC( PlotGraph, TGraph,     TGraph );
-  PASSTHROUGH_TOPPLOTFUNC( PlotFunc,  TF1,        TGraph );
-  PASSTHROUGH_TOPPLOTFUNC( PlotData,  RooAbsData, TGraphAsymmErrors );
-  PASSTHROUGH_TOPPLOTFUNC( PlotPdf,   RooAbsPdf,  TGraph );
+  PASSTHROUGH_TOPPLOTFUNC( PlotHist,  TH1D,        TH1D              );
+  PASSTHROUGH_TOPPLOTFUNC( PlotGraph, TGraph,      TGraph            );
+  PASSTHROUGH_TOPPLOTFUNC( PlotEff,   TEfficiency, TEfficiency       );
+  PASSTHROUGH_TOPPLOTFUNC( PlotFunc,  TF1,         TGraph            );
+  PASSTHROUGH_TOPPLOTFUNC( PlotData,  RooAbsData,  TGraphAsymmErrors );
+  PASSTHROUGH_TOPPLOTFUNC( PlotPdf,   RooAbsPdf,   TGraph            );
   /** @} */
 #undef PASSTHROUGH_TOPPLOTFUNC
 

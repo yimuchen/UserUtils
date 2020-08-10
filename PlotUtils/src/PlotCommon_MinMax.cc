@@ -19,15 +19,15 @@ namespace plt {
  * taken into consideration.
  */
 double
-GetYmax( const TH1D* hist )
+GetYmax( const TH1D& hist )
 {
   double ans = 0;
 
-  for( int i = 1; i <= hist->GetNbinsX(); ++i ){
-    const double bincont = hist->GetBinContent( i );
+  for( int i = 1; i <= hist.GetNbinsX(); ++i ){
+    const double bincont = hist.GetBinContent( i );
     // Special case for TProfile... (not sure why yet)
-    const double binerr = hist->InheritsFrom( TProfile::Class() ) ? 0 :
-                          hist->GetBinError( i );
+    const double binerr = hist.InheritsFrom( TProfile::Class() ) ? 0 :
+                          hist.GetBinError( i );
     // Skipping over zero bins
     if( bincont == 0 ){continue; }
     ans = std::max( ans, bincont + binerr );
@@ -41,13 +41,13 @@ GetYmax( const TH1D* hist )
  * taken into account.
  */
 double
-GetYmin( const TH1D* hist )
+GetYmin( const TH1D& hist )
 {
   double ans = 0.3;
 
-  for( int i = 1; i <= hist->GetNbinsX(); ++i ){
-    const double bincont = hist->GetBinContent( i );
-    const double binerr  = hist->GetBinError( i );
+  for( int i = 1; i <= hist.GetNbinsX(); ++i ){
+    const double bincont = hist.GetBinContent( i );
+    const double binerr  = hist.GetBinError( i );
     // Skipping over Zero bins
     if( bincont == 0 ){ continue; }
 
@@ -68,12 +68,12 @@ GetYmin( const TH1D* hist )
  * asymmetric errors would be handled properly.)
  */
 double
-GetYmax( const TGraph* x )
+GetYmax( const TGraph& x )
 {
   double ans = -std::numeric_limits<double>::max();
 
-  for( int i = 0; i < x->GetN(); ++i ){
-    const double bin = x->GetY()[i] + std::max( x->GetErrorYhigh( i ), 0.0 );
+  for( int i = 0; i < x.GetN(); ++i ){
+    const double bin = x.GetY()[i] + std::max( x.GetErrorYhigh( i ), 0.0 );
     ans = std::max( ans, bin );
   }
 
@@ -86,12 +86,15 @@ GetYmax( const TGraph* x )
  * virtual.)
  */
 double
-GetYmin( const TGraph* x )
+GetYmin( const TGraph& x )
 {
   double ans = std::numeric_limits<double>::max();
 
-  for( int i = 0; i < x->GetN(); ++i ){
-    const double bin = x->GetY()[i] - std::max( x->GetErrorYlow( i ), 0.0 );
+  for( int i = 0; i < x.GetN(); ++i ){
+    const double bin = x.GetY()[i] - std::max( x.GetErrorYlow( i ), 0.0 );
+    // In the case that the value is exactly zero, we are going to ignore this
+    // value!
+    if( bin == 0 ){ continue; }
     ans = std::min( ans, bin );
   }
 
@@ -103,12 +106,13 @@ GetYmin( const TGraph* x )
  * taken into account.
  */
 double
-GetXmin( const TGraph* x )
+GetXmin( const TGraph& x )
 {
   double ans = std::numeric_limits<double>::max();
 
-  for( int i = 0; i < x->GetN(); ++i ){
-    const double bin = x->GetX()[i] - std::max( x->GetErrorXlow( i ), 0.0 );
+  for( int i = 0; i < x.GetN(); ++i ){
+    const double bin = x.GetX()[i] - std::max( x.GetErrorXlow( i ), 0.0 );
+    if( bin == 0 ){ continue; }
     ans = std::min( ans, bin );
   }
 
@@ -120,12 +124,46 @@ GetXmin( const TGraph* x )
  * taken into account.
  */
 double
-GetXmax( const TGraph* x )
+GetXmax( const TGraph& x )
 {
   double ans = -std::numeric_limits<double>::max();
 
-  for( int i = 0; i < x->GetN(); ++i ){
-    const double bin = x->GetX()[i] + std::max( x->GetErrorXhigh( i ), 0.0 );
+  for( int i = 0; i < x.GetN(); ++i ){
+    const double bin = x.GetX()[i] + std::max( x.GetErrorXhigh( i ), 0.0 );
+    ans = std::max( ans, bin );
+  }
+
+  return ans;
+}
+
+double
+GetYmin( const TEfficiency& x )
+{
+  double ans = 1;
+
+  const unsigned nbins = x.GetPassedHistogram()->GetNcells();
+
+  for( unsigned i = 1; i <= nbins; ++i ){
+    // Skipping over empty bins
+    if( x.GetPassedHistogram()->GetBinContent( i ) == 0 ){ continue; }
+    const double bin = x.GetEfficiency( i ) - x.GetEfficiencyErrorLow( i );
+    ans = std::min( ans, bin );
+  }
+
+  return ans;
+}
+
+double
+GetYmax( const TEfficiency& x )
+{
+  double ans = 0;
+
+  const unsigned nbins = x.GetPassedHistogram()->GetNcells();
+
+  for( unsigned i = 1; i <= nbins; ++i ){
+    // Skipping over empty bins
+    if( x.GetPassedHistogram()->GetBinContent( i ) == 0 ){ continue; }
+    const double bin = x.GetEfficiency( i ) + x.GetEfficiencyErrorUp( i );
     ans = std::max( ans, bin );
   }
 
@@ -139,18 +177,18 @@ GetXmax( const TGraph* x )
  * case. Use at your own risk.
  */
 double
-GetYmax( const THStack* x )
+GetYmax( const THStack& x )
 {
   double ans = 0.3;
-  if( x->GetNhists() == 0 ){ return ans; }
+  if( x.GetNhists() == 0 ){ return ans; }
 
-  TH1* first = (TH1*)x->GetHists()->At( 0 );
+  TH1* first = (TH1*)x.GetHists()->At( 0 );
 
   for( int i = 1; i <= first->GetNbinsX(); ++i ){
     double sum = 0;
 
-    for( int j = 0; j < x->GetNhists(); ++j ){
-      sum += ( (TH1*)x->GetHists()->At( j ) )->GetBinContent( i );
+    for( int j = 0; j < x.GetNhists(); ++j ){
+      sum += ( (TH1*)x.GetHists()->At( j ) )->GetBinContent( i );
     }
 
     ans = std::max( ans, sum );
@@ -166,18 +204,18 @@ GetYmax( const THStack* x )
  * the case. Use at your own risk.
  */
 double
-GetYmin( const THStack* x )
+GetYmin( const THStack& x )
 {
   double ans = 0.3;
-  if( x->GetNhists() == 0 ){ return ans; }
+  if( x.GetNhists() == 0 ){ return ans; }
 
-  TH1* first = (TH1*)x->GetHists()->At( 0 );
+  TH1* first = (TH1*)x.GetHists()->At( 0 );
 
   for( int i = 1; i <= first->GetNbinsX(); ++i ){
     double sum = 0;
 
-    for( int j = 0; j < x->GetNhists(); ++j ){
-      sum += ( (TH1*)x->GetHists()->At( j ) )->GetBinContent( i );
+    for( int j = 0; j < x.GetNhists(); ++j ){
+      sum += ( (TH1*)x.GetHists()->At( j ) )->GetBinContent( i );
     }
 
     ans = std::min( ans, sum );

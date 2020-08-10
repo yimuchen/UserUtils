@@ -101,7 +101,14 @@ Measurement::NormParam() const
 Measurement&
 Measurement::operator+=( const Measurement& x )
 {
-  *this = (*this) + x ;
+  *this = ( *this ) + x;
+  return *this;
+}
+
+Measurement&
+Measurement::operator-=( const Measurement& x )
+{
+  *this = ( *this ) - x;
   return *this;
 }
 
@@ -110,7 +117,14 @@ Measurement::operator+=( const Measurement& x )
 Measurement&
 Measurement::operator*=( const Measurement& x )
 {
-  *this = (*this) * x ;
+  *this = ( *this ) * x;
+  return *this;
+}
+
+Measurement&
+Measurement::operator/=( const Measurement& x )
+{
+  *this = ( *this ) / x;
   return *this;
 }
 
@@ -128,6 +142,24 @@ Measurement::operator+( const Measurement& x ) const
   }
 }
 
+
+/******************************************************************************/
+
+Measurement
+Measurement::operator-( const Measurement& x ) const
+{
+  if( x.AbsUpperError() == 0 && x.AbsLowerError() == 0 ){
+    return ( *this ) - x.CentralValue();
+  } else if( this->AbsUpperError() == 0 && this->AbsLowerError() == 0 ){
+    return x - this->CentralValue();
+  } else {
+    Measurement tmp( -x.CentralValue(),
+                    x.AbsLowerError(),
+                    x.AbsUpperError() );
+    return Sum( *this, tmp );
+  }
+}
+
 /******************************************************************************/
 
 Measurement
@@ -139,6 +171,23 @@ Measurement::operator*( const Measurement& x ) const
     return x * this->CentralValue();
   } else {
     return Prod( *this, x );
+  }
+}
+
+/******************************************************************************/
+
+Measurement
+Measurement::operator/( const Measurement& x ) const
+{
+  if( x.AbsUpperError() == 0 && x.AbsLowerError() == 0 ){
+    return ( *this ) * x.CentralValue();
+  } else if( this->AbsUpperError() == 0 && this->AbsLowerError() == 0 ){
+    return x * this->CentralValue();
+  } else {
+    Measurement tmp( 1.0/x.CentralValue(),
+                     1.0/x.CentralValue() * x.RelUpperError(),
+                     1.0/x.CentralValue() * x.AbsLowerError() );
+    return Prod( *this, tmp );
   }
 }
 

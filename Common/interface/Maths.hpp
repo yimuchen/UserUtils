@@ -101,6 +101,12 @@ extern double RoundTo( const double x, const double target );
 extern double RoundUp( const double x, const double target );
 extern double RoundDown( const double x, const double target );
 
+/*-----------------------------------------------------------------------------
+ *  Calculation vectors
+   --------------------------------------------------------------------------*/
+std::vector<double> LinSpace( double start, double end, size_t num );
+
+
 /** @} */
 
 }/* usr */

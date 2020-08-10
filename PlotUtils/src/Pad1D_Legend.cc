@@ -55,16 +55,17 @@ Pad1D::AddLegendEntry(
   const EntryText& entryopt,
   const PlotType&  plotopt )
 {
+  const int popt    = plotopt.getInt( 0 );
+  const bool varbin = hist.GetXaxis()->IsVariableBinSize();
+
   const std::string legopt =
-    plotopt.getInt( 0 ) == plottype::hist ? "LF" :
-    plotopt.getInt( 0 ) == plottype::histerr ? "F" :
-    plotopt.getInt( 0 ) == plottype::histstack ? "F" :
-    plotopt.getInt( 0 ) == plottype::histnewstack ? "F" :
-    ( plotopt.getInt( 0 ) == plottype::scatter
-      && hist.GetXaxis()->IsVariableBinSize() ) ? "PLE" :
-    ( plotopt.getInt( 0 ) == plottype::scatter
-      && !hist.GetXaxis()->IsVariableBinSize() ) ? "PE" :
-    ( plotopt.getString( 0 ) ) ? "PLFE" :
+    ( popt == plottype::hist               ) ? "LF"   :
+    ( popt == plottype::histerr            ) ? "F"    :
+    ( popt == plottype::histstack          ) ? "F"    :
+    ( popt == plottype::histnewstack       ) ? "F"    :
+    ( popt == plottype::scatter && varbin  ) ? "PLE"  :
+    ( popt == plottype::scatter && !varbin ) ? "PE"   :
+    ( plotopt.getString( 0 )               ) ? "PLFE" :
     "";
 
   if( !_legend.GetListOfPrimitives() ){
@@ -153,6 +154,53 @@ Pad1D::AddLegendEntry(
 }
 
 /**
+ * @brief adding legend entry for TEfficiency object.
+ *
+ * Adding the a legend entry to the internal legend if the EntryText was used
+ * for plotting a histogram. The PlotType argument used for plotting the
+ * TEfficiency would be used to determine what attributes should be used
+ * in the legend:
+ * - plotype::scatter: Point and line
+ * - plotype::hist: Fill only
+ * - plottype::histerr: Fill only
+ * - other/undetermined: all attributes would be used.
+ *
+ * @param graph    graph to be added to legend.
+ * @param entryopt text for entry in legend.
+ * @param plotopt  plotting options used for graph object.
+ */
+void
+Pad1D::AddLegendEntry(
+  TEfficiency&     eff,
+  const EntryText& entryopt,
+  const PlotType&  plotopt )
+{
+  const int plottype = plotopt.getInt( 0 );
+
+  const std::string legopt =
+    plottype == plottype::scatter ? "PL"   :
+    plottype == plottype::hist    ? "F"    :
+    plottype == plottype::histerr ? "F"    :
+    plotopt.getString( 0 )        ? "PLFE" :
+    "";
+
+  if( !_legend.GetListOfPrimitives() ){
+    // If legend is empty, Add directly to the legend object.
+    _legend.AddEntry( &eff, entryopt.c_str(), legopt.c_str() );
+  } else {
+    // If Legend is not empty manually adding entry to the front of the list.
+    // Note that legend automatically claims ownership of generated TLegend
+    // entries, so there is no need to use the MakeObject call.
+    auto entry = new TLegendEntry( &eff, entryopt.c_str(), legopt.c_str() );
+    if( entryopt.PlaceLast() ){
+      _legend.GetListOfPrimitives()->AddLast( entry );
+    } else {
+      _legend.GetListOfPrimitives()->AddFirst( entry );
+    }
+  }
+}
+
+/**
  * @brief Explicitly adding a TObject into the legend stack. Used for the
  * creation of additional objects (such as guiding lines via V/HLine). Takes
  * standard ROOT Flavour options to specify points.
@@ -202,7 +250,7 @@ Pad1D::FinalizeLegend( const align newposition )
   width += 1.3*LineHeight() / AbsWidth();// Space for legend icon.
 
   // Computing alignment coordinates
-  const short halign = 10 * (_legendposition / 10);
+  const short halign = 10 * ( _legendposition / 10 );
   const short valign = _legendposition % 10;
 
   const float xmin = halign == align::left     ? InnerTextLeft() :
