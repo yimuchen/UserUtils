@@ -29,30 +29,33 @@ namespace usr {
  *  Container interface for  with MinosError functions
    --------------------------------------------------------------------------*/
 extern Measurement MakeMinos(
-  gsl_function* nll,
-  const double  initguess,
-  const double  min,
-  const double  max,
-  const double  confidencelevel = usr::stat::onesigma_level
-  );
+  const ROOT::Math::IGenFunction& nll,
+  const double                    min,
+  const double                    max,
+  const double                    confidencelevel = usr::stat::onesigma_level );
 
 extern Measurement MakeMinos(
-  usr::gsl::gsl_multifunc* nll,
-  usr::gsl::gsl_multifunc* varfunction,
-  gsl_vector*              initguess,
-  const double             confidencelevel = usr::stat::onesigma_level,
-  gsl_vector*              upperguess      = nullptr,
-  gsl_vector*              lowerguess      = nullptr
-  );
+  const ROOT::Math::IMultiGenFunction& nllfunction,
+  const ROOT::Math::IMultiGenFunction& varfunction,
+  const double*                        initguess,
+  const double                         confidencelevel = usr::stat::onesigma_level,
+  const double*                        upperguess      = nullptr,
+  const double*                        lowerguess      = nullptr  );
 
 /*-----------------------------------------------------------------------------
- *  Default approximation for NLL function for a given measurement.
+ *  NLL Functions for measurement uncertainty propagation.
    --------------------------------------------------------------------------*/
-extern double LinearVarianceNLL( double, const Measurement& );
+double LinearVarianceNLL( double x, const Measurement& m );
 
 /*-----------------------------------------------------------------------------
- *  Simple calculation of un-correlated function.
+ *  Simple calculation of un-correlated measurements.
    --------------------------------------------------------------------------*/
+extern Measurement EvaluateUncorrelated(
+  const std::vector<Measurement>& m_list,
+  const ROOT::Math::IMultiGenFunction& var_function,
+  const double confidencelevel                 = usr::stat::onesigma_level,
+  double (* nll)( double, const Measurement& ) = & LinearVarianceNLL );
+
 extern Measurement SumUncorrelated(
   const std::vector<Measurement>& paramlist,
   const double confidencelevel                   = usr::stat::onesigma_level,

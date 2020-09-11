@@ -21,10 +21,9 @@ namespace usr
  * commands such as RooFit::Verbose( kTRUE ).
  */
 extern RooFitResult*
-FitPDFToData(
-  RooAbsPdf&                    pdf,
-  RooAbsData&                   data,
-  const std::vector<RooCmdArg>& cmdargs )
+FitPDFToData( RooAbsPdf&                    pdf,
+              RooAbsData&                   data,
+              const std::vector<RooCmdArg>& cmdargs )
 {
   const usr::RooArgContainer args(
     cmdargs, {// Explicitly adding options to reduce verbosity
@@ -49,10 +48,9 @@ MaxFitIteration::MaxFitIteration( unsigned x ) :
  * perform (defaults to 10).
  */
 extern RooFitResult*
-ConvergeFitPDFToData(
-  RooAbsPdf& pdf, RooAbsData& data,
-  const std::vector<RooCmdArg>& cmdargs
-  )
+ConvergeFitPDFToData( RooAbsPdf&                    pdf,
+                      RooAbsData&                   data,
+                      const std::vector<RooCmdArg>& cmdargs )
 {
   RooFitResult* status = nullptr;
   const usr::RooArgContainer args(

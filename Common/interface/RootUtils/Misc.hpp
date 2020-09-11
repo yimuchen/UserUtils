@@ -18,9 +18,11 @@ namespace usr {
 extern TChain* MakeTChain( const std::string&              title,
                            const std::vector<std::string>& inputfiles );
 
-extern TH1D MakeHist( const std::string& name,
-                      const std::string& title,
+extern TH1D MakeHist( const std::string&         name,
+                      const std::string&         title,
                       const std::vector<double>& bins );
+
+extern double GetBinEffectiveEntry( const TH1&, const int bin );
 
 }
 

@@ -4,6 +4,7 @@
  * @brief Implementing the functions required for MC topology crawling.
  */
 #include "DataFormats/Candidate/interface/Candidate.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/PhysUtils/interface/MCHelper.hpp"
@@ -318,6 +319,28 @@ bool
 IsSMHadron( const reco::Candidate* x )
 {
   return abs( x->pdgId() ) >  100 && abs( x->pdgId() ) < 100000;
+}
+
+/**
+ * @brief Get the Gen-Level Vertex position from the list of gen particles
+ *
+ * Notice that the particle assuming the incoming protons are always the first in
+ * the list. In the case that these assertions fail, the point return will have
+ * all three coordinates set to -100
+ */
+math::XYZPoint
+GetGenVertex( const std::vector<reco::GenParticle>& genlist )
+{
+  static const math::XYZPoint default_ans( -100, -100, -100 );
+
+  if( fabs( genlist.front().pdgId() ) != 2212 ){ return default_ans; }
+  if( genlist.front().status() != 4 ){ return default_ans; }
+
+  const auto part = genlist.front().daughter( 0 );
+  // Getting the first daughter particle
+
+  if( !part ){ return default_ans; }
+  return part->vertex();
 }
 
 

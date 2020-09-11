@@ -301,7 +301,7 @@ scientific::SetPrecision()
   } else {
     _precision = 1;
 
-    while( op_unc < 1 ){
+    while( op_unc < 1 && op_unc > 0 ){
       _precision++;
       op_unc *= 10;
     }

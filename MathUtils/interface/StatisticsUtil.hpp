@@ -8,10 +8,12 @@
 #define USERUTILS_MATHUTILS_STATISTICUTIL_HPP
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/MathUtils/interface/GSLUtil.hpp"
+#include "UserUtils/MathUtils/interface/RootMathTools/DefaultEngines.hpp"
 #else
-#include "UserUtils/MathUtils/GSLUtil.hpp"
+#include "UserUtils/MathUtils/RootMathTools/DefaultEngines.hpp"
 #endif
+
+#include "Math/IFunction.h"
 
 namespace usr {
 
@@ -38,34 +40,68 @@ extern const double twosigma_level;
 extern double DeltaNLLFromSigma( const double sigma );
 extern double DeltaNLLFromConfidence( const double confidence );
 
-// Single value Minos error evaluation
 extern int MinosError(
-  gsl_function* nllfunction,
-  double&       guess,
-  double&       min,
-  double&       max,
-  const double  confidencelevel = onesigma_level
-  );
+  const ROOT::Math::IGenFunction& nllfunction,
+  double&                         guess,
+  double&                         min,
+  double&                         max,
+  const double                    confidencelevel = onesigma_level );
 
 extern int MinosError(
-  usr::gsl::gsl_multifunc* nllfunction,
-  usr::gsl::gsl_multifunc* varfunction,
-  gsl_vector*              initguess,
-  double&                  central,
-  double&                  min,
-  double&                  max,
-  const double             confidencelevel = onesigma_level,
-  gsl_vector*              upperguess = nullptr,
-  gsl_vector*              lowerguess = nullptr
-  );
+  const ROOT::Math::IMultiGenFunction& nllfunction,
+  const ROOT::Math::IMultiGenFunction& varfunction,
+  const double*                        initguess,
+  double&                              central,
+  double&                              min,
+  double&                              max,
+  const double                         confidencelevel = onesigma_level,
+  const double*                        upperguess      = nullptr,
+  const double*                        lowerguess      = nullptr );
 
 /*-----------------------------------------------------------------------------
- *  Common single variable NLL functions
+ *  Providing common distributions NLL fucntions in standard ROOT::Math formats
    --------------------------------------------------------------------------*/
-extern double GaussianNLL( double, void* params );
-extern double BinomialNLL( double, void* params );
-extern double PoissonNLL( double, void* params );
+
+class GaussianNLL : public ROOT::Math::IGenFunction
+{
+  double mean, sigma;
+  double DoEval( const double x ) const ;
+  DECLARE_IGENFUNCTION_DEFAULTS( GaussianNLL );
+
+public:
+  GaussianNLL( double mean_, double sigma_ ) :
+    mean( mean_ ),
+    sigma( sigma_ ){}
+};
+
+class PoissonNLL : public ROOT::Math::IGenFunction
+{
+  double obs;
+  double DoEval( const double x ) const ;
+  DECLARE_IGENFUNCTION_DEFAULTS( PoissonNLL );
+
+public:
+  PoissonNLL( double obs_ ) : obs( obs_ ){}
+};
+
+class BinomialNLL : public ROOT::Math::IGenFunction
+{
+  double passed, total;
+  double DoEval( const double x ) const ;
+  DECLARE_IGENFUNCTION_DEFAULTS( BinomialNLL );
+
+public:
+  BinomialNLL( double passed_, double total_ ) :
+    passed( passed_ ),
+    total( total_ ){
+  }
+};
+
+
 /** @} */
+
+
+
 
 }/* stat */
 

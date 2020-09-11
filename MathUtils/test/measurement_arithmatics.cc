@@ -34,11 +34,11 @@ AddTest( const vector<Measurement>& list )
 
   const Measurement sum = SumUncorrelated( list );
 
-  usr::fout( "%40s & %15s & %15s & %15s",
+  usr::fout( "%40s & %15s & %15s & %15s\n",
     ss.str(),
-    fmt::decimal( sum.CentralValue(),  8 ),
-    fmt::decimal( sum.AbsUpperError(), 8 ),
-    fmt::decimal( sum.AbsLowerError(), 8 ) );
+    fmt::decimal( sum.CentralValue(),  6 ),
+    fmt::decimal( sum.AbsUpperError(), 6 ),
+    fmt::decimal( sum.AbsLowerError(), 6 ) );
 }
 
 
@@ -63,9 +63,9 @@ ProdTest( const vector<double> chain )
 
   cout << fstr( "%30s & %15s & %15s & %15s",
     ss.str(),
-    fmt::decimal( product.CentralValue(),  8 ),
-    fmt::decimal( product.AbsUpperError(), 8 ),
-    fmt::decimal( product.AbsLowerError(), 8 ) )
+    fmt::decimal( product.CentralValue(),  6 ),
+    fmt::decimal( product.AbsUpperError(), 6 ),
+    fmt::decimal( product.AbsLowerError(), 6 ) )
        << endl;
 }
 

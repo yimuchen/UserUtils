@@ -64,9 +64,9 @@ public:
   Pad1D()               = delete;
   Pad1D( const Pad1D& ) = delete;
 
-#define DECLARE_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )                    \
-  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg>& );                 \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> & list ){    \
+#define DECLARE_PAD1D_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )              \
+  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg>& );                  \
+  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> & list ){   \
     return FUNC_NAME( *x, list );                                              \
   }                                                                            \
   inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }           \
@@ -84,14 +84,14 @@ public:
    * @{
    * @brief Plotting 1D histogram objects
    */
-  DECLARE_PLOT_FUNCTIONS( PlotHist, TH1D, TH1D& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotHist, TH1D, TH1D& );
   /** @} */
 
   /**
    * @{
    * @brief Special case for TProfile plotting
    */
-  DECLARE_PLOT_FUNCTIONS( PlotProfile, TProfile, TH1D& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotProfile, TProfile, TH1D& );
   /** @} */
 
   /**
@@ -99,27 +99,27 @@ public:
    * @brief Plotting TEfficiency objects
    */
   /** @} */
-  DECLARE_PLOT_FUNCTIONS( PlotEff,   TEfficiency, TEfficiency& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotEff,   TEfficiency, TEfficiency& );
 
   /**
    * @{
    * @brief Plotting x-y scatter graph objects
    */
-  DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph,      TGraph& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotGraph, TGraph,      TGraph& );
   /** @} */
 
   /**
    * @{
    * @brief Plotting ROOT flavoured 1D function
    */
-  DECLARE_PLOT_FUNCTIONS( PlotFunc, TF1, TGraph& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotFunc, TF1, TGraph& );
   /** @} */
 
   /**
    * @{
    * @brief Plotting RooFit's @ROOT{RooAbsData}s
    */
-  DECLARE_PLOT_FUNCTIONS( PlotData, RooAbsData, TGraphAsymmErrors& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotData, RooAbsData, TGraphAsymmErrors& );
   /** @} */
 
   /**
@@ -127,7 +127,7 @@ public:
    * @brief
    * Plotting RooFit's @ROOT{RooAbsPdf}s
    */
-  DECLARE_PLOT_FUNCTIONS( PlotPdf, RooAbsPdf, TGraph& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotPdf, RooAbsPdf, TGraph& );
   /** @} */
 
 
@@ -135,18 +135,18 @@ public:
    * @{
    *  @brief function for drawing a horizontal line across pad
    */
-  DECLARE_PLOT_FUNCTIONS( DrawHLine, const double, TLine& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( DrawHLine, const double, TLine& );
   /** @} */
 
   /**
    * @{
    * @brief Function for drawing a vertical along in the pad
    */
-  DECLARE_PLOT_FUNCTIONS( DrawVLine, const double, TLine& );
+  DECLARE_PAD1D_PLOT_FUNCTIONS( DrawVLine, const double, TLine& );
   /** @} */
 
 
-#undef DECLARE_PLOT_FUNCTIONS
+#undef DECLARE_PAD1D_PLOT_FUNCTIONS
 
   void DrawCMSLabel( const std::string&      = cap::prelim,
                      const std::string& main = "CMS" );

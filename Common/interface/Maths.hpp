@@ -93,6 +93,7 @@ extern uint32_t OrderedHash32( const std::vector<double>& );
    --------------------------------------------------------------------------*/
 extern double Mean( const std::vector<double>& );
 extern double StdDev( const std::vector<double>& );
+extern double Median( const std::vector<double>& );
 
 /*-----------------------------------------------------------------------------
  *  More rounding functions

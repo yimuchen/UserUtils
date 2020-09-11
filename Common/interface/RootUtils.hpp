@@ -8,7 +8,7 @@
 #else
 #include "UserUtils/Common/RootUtils/RooArgContainer.hpp"
 #include "UserUtils/Common/RootUtils/TListUtils.hpp"
-#include "UserUtils/Common/interface/Misc.hpp"
+#include "UserUtils/Common/RootUtils/Misc.hpp"
 #endif
 
 #endif

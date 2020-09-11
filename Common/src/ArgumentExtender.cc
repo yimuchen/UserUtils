@@ -143,12 +143,6 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
   return *this;
 }
 
-// Parse the program input given the standard argc, argv interface.
-// Throw exception when parse error or exit the program if "help" options
-// is received.
-// All functions listed under the json files would be listed as mandetory.
-// and a parse error would be thrown if input is not detected.
-
 /**
  * @brief parsing the program input with the standard argc, argv interface.
  *
@@ -534,6 +528,7 @@ ArgumentExtender::IsMultiToken( const std::string& x ) const
 
   return description->semantic()->max_tokens() > 1;
 }
+
 
 
 }/* usr */

@@ -62,6 +62,7 @@ main( int argc, char const* argv[] )
     for( int i = 0; i < 6; ++i ){
       usr::fout( "%50s|%50s\n", fmt::decimal( x, i ), fmt::scientific( x, i ) );
     }
+
     for( int i = 0; i < 6; ++i ){
       usr::fout( "%50s|%50s\n", fmt::decimal( y, i ), fmt::scientific( y, i ) );
     }
@@ -72,14 +73,41 @@ main( int argc, char const* argv[] )
        << "Auto-precision testing" << endl;
   {
     const vector<Measurement> list = {
-      Measurement( 20.1, 1, 0.1 ),
-      Measurement( 20.1, 1, 1.2 ),
-      Measurement( 201, 1, 1.2 ),
-      Measurement( 2.055 , 1, 1.2 )
+      Measurement( 20.1,  1, 0.1 ),
+      Measurement( 20.1,  1, 1.2 ),
+      Measurement( 201,   1, 1.2 ),
+      Measurement( 2.055, 1, 1.2 )
     };
 
     for( const auto& m : list ){
-      usr::fout( "%20s|%20s\n", fmt::decimal( m,-1 ), fmt::scientific( m,-1 ) );
+      usr::fout( "%20s|%20s\n", fmt::decimal( m, -1 ), fmt::scientific( m, -1 ) );
+    }
+  }
+
+/*----------------------------------------------------------------------------*/
+  cout << separator() << endl
+       << "Common distribution testing" << endl;
+  {
+    const vector<Measurement> list = {
+      Poisson::Lazy(0),
+      Poisson::Lazy(1),
+      Poisson::Lazy(2),
+      Poisson::Lazy(3),
+      Poisson::Lazy(4),
+      Poisson::Minos(0),
+      Poisson::Minos(1),
+      Poisson::Minos(2),
+      Poisson::Minos(3),
+      Poisson::Minos(4),
+      Poisson::CMSStatCom(0),
+      Poisson::CMSStatCom(1),
+      Poisson::CMSStatCom(2),
+      Poisson::CMSStatCom(3),
+      Poisson::CMSStatCom(4),
+    };
+
+    for( const auto& m : list ){
+      usr::fout( "%20s|%20s\n", fmt::decimal( m, -1 ), fmt::scientific( m, -1 ) );
     }
   }
 

@@ -279,9 +279,9 @@ Pad1D::AutoSetYRangeHist()
   if( !GetLogy() ){// None log scale
     const double diff = _datamax - _datamin;
     SetYaxisMax( _datamin + diff * 1.25 );
-    SetYaxisMin( _datamin );
+    SetYaxisMin( _datamin * 0.9 );
   } else {
-    const double opmin = _datamin <= 0 ? 1e-6 : _datamin;
+    const double opmin = _datamin <= 0 ? 1e-6 : _datamin * 0.9;
     const double diff  = std::log10( _datamax / opmin );
     SetYaxisMax( opmin * std::pow( 10, diff * 1.25 ) );
     SetYaxisMin( opmin );

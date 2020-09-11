@@ -76,7 +76,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     PlotObj( hist, "BOX SAME" );
     break;
   case plot2df::density:
-    PlotObj( hist, "SCAT=0.5 SAME" );
+    PlotObj( hist, "SCAT SAME" );
     break;
   case plot2df_dummy:
     PlotObj( hist, ( args.Get<Plot2DF>().str() + " SAME" ).c_str() );

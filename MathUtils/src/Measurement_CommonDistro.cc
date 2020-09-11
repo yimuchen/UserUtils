@@ -6,15 +6,18 @@
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/Measurement/Arithmetic.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/CommonDistro.hpp"
+#include "UserUtils/MathUtils/interface/RootMathTools/DefaultEngines.hpp"
 #include "UserUtils/MathUtils/interface/StatisticsUtil.hpp"
 #else
 #include "UserUtils/MathUtils/Measurement/Arithmetic.hpp"
 #include "UserUtils/MathUtils/Measurement/CommonDistro.hpp"
+#include "UserUtils/MathUtils/RootMathTools/DefaultEngines.hpp"
 #include "UserUtils/MathUtils/StatisticsUtil.hpp"
 #endif
 
+#include "Math/Functor.h"
+#include "Math/QuantFuncMathCore.h"
 #include "TEfficiency.h"
-
 #include <limits>
 
 namespace usr {
@@ -35,20 +38,10 @@ Minos(
   const double total,
   const double confidencelevel )
 {
-  double params[] = {passed, total};
-  gsl_function binomial;
-  binomial.function = &usr::stat::BinomialNLL;
-  binomial.params   = params;
-
-  const double est = passed/total;
-  const double min = usr::gsl::mch_epsilon;
-
-  return MakeMinos(
-    &binomial,
-    est,
-    min, 1-min,
-    confidencelevel
-    );
+  return MakeMinos( usr::stat::BinomialNLL( passed, total )
+                  ,  usr::eff_machine_epsilon
+                  ,  1-usr::eff_machine_epsilon
+                  ,  confidencelevel  );
 }
 
 const bool shortest_interval = true;
@@ -109,11 +102,13 @@ ClopperPearson(
 
 Measurement
 Lazy( const double passed,
-      const double total )
+      const double total,
+      const double confidencelevel )
 {
-  const double central = passed / total;
-  const double error   = std::sqrt( central * ( 1-central ) / total  );
-  return Measurement( central, error, error );
+  const double sigmainterval = usr::stat::GetSigmaInterval( confidencelevel );
+  const double central       = passed / total;
+  const double error         = std::sqrt( central * ( 1-central ) / total  );
+  return Measurement( central, sigmainterval * error, sigmainterval * error );
 }
 
 }/* Efficiency */
@@ -130,19 +125,47 @@ namespace Poisson {
 Measurement
 Minos( const double obs, const double confidencelevel )
 {
-  gsl_function poisson;
-  poisson.function = &usr::stat::PoissonNLL;
-  poisson.params   = const_cast<double*>( &obs );
+  if( obs == 0 ){
+    return Measurement( 0, 0, 0 );
+  }
 
-  const double min = usr::gsl::mch_epsilon;
-  const double max = obs + obs*obs +1;
+  return MakeMinos( usr::stat::PoissonNLL( obs )
+                  , usr::eff_machine_epsilon
+                  , obs + obs*obs + 1
+                  , confidencelevel );
+}
 
-  return MakeMinos(
-    &poisson,
-    obs,
-    min,
-    max,
-    confidencelevel );
+
+/**
+ * @brief Lazy method for a Poisson measurement: just using the square root.
+ */
+Measurement
+Lazy( const double obs,
+      const double confidencelevel )
+{
+  const double sigmainterval = usr::stat::GetSigmaInterval( confidencelevel );
+  const double error         = std::sqrt( obs );
+  return Measurement( obs, sigmainterval * error, sigmainterval * error );
+}
+
+
+/**
+ * @brief Least undercoverage Interval as recommended by CMS Statistics committee
+ *
+ * The Complete algorithm can be found here:
+ * https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars
+ *
+ * We are using the recipe for the older root version.
+ */
+Measurement
+CMSStatCom( const double obs, const double confidencelevel )
+{
+  const double alpha = 1 - confidencelevel;
+  const double lower = ( obs == 0.0 ) ?  0.0 :
+                       ( ROOT::Math::gamma_quantile( alpha/2, obs, 1. ) );
+  const double upper = ROOT::Math::gamma_quantile_c( alpha/2, obs+1, 1 );
+
+  return Measurement( obs, upper -obs,  obs-lower );
 }
 
 }/* Poisson */

@@ -83,6 +83,13 @@ public:
    * @details Notice that this must be used together with a
    * boost::program_options' multitoken when defining the options description.
    * Again the user is responsible for providing the appropriate casting.
+   *
+   * A special case is when option "myarg" is defined for receiving multivalue
+   * std::string and option "myarg_list" is defined for receiving a single
+   * string. are both defined as an optional program option. In this case, this
+   * function will look for the file described by "myarg_list" and extract its
+   * contents (per-line) as the return list. This is particularly useful for
+   * listing files.
    */
   template<typename TYPE>
   std::vector<TYPE> ArgList( const std::string& opt ) const;
@@ -223,6 +230,24 @@ ArgumentExtender::ArgList( const std::string& opt ) const
         ", see --help output", opt ) );
   }
   return _argmap[opt].as<std::vector<T> >();
+}
+
+/**
+ * @brief Specialization for getting a list of string from a file.
+ */
+template<>
+std::vector<std::string>
+ArgumentExtender::ArgList( const std::string& opt ) const
+{
+  if( CheckArg( opt + "_list" ) ){
+    const std::string txtfile = Arg<std::string>( opt+"_list" );
+    return ListFromFile( txtfile );
+  } else if( !CheckArg( opt ) ){
+    throw std::invalid_argument(
+      usr::fstr( "Option [%s] was not provided as a program options, "
+        ", see --help output", opt ) );
+  }
+  return _argmap[opt].as<std::vector<std::string> >();
 }
 
 

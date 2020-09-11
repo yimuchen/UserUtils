@@ -278,6 +278,27 @@ StdDev( const std::vector<double>& vec )
 }
 
 /**
+ * @brief Calculating the median of a double vector
+ *
+ * Using a simple sorting + index extraction method.
+ */
+double
+Median( const std::vector<double>& vec )
+{
+  std::vector<double> dup( vec.begin(), vec.end() );
+  std::sort( dup.begin(), dup.end() );
+
+  if( dup.size() == 0 ){
+    return 0;
+  } else if( dup.size() % 2 == 0 ){
+    return ( dup.at( dup.size() / 2 )  + dup.at( ( dup.size() /2 ) -1 ) )/2;
+  } else {
+    return dup.at( ( dup.size() -1 )/ 2 );
+  }
+
+}
+
+/**
  * @brief Rounding to closest multiple of target number
  *
  * The return value will be a multiple of the target number that is closest to

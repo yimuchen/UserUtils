@@ -19,10 +19,10 @@
 
 #include "RooPlot.h"
 
-#include "TH2D.h"
 #include "TF2.h"
-#include "TGraph2D.h"
 #include "TGraph.h"
+#include "TGraph2D.h"
+#include "TH2D.h"
 #include "TLegend.h"
 
 namespace usr {
@@ -51,19 +51,19 @@ public:
   Pad2DFlat()                   = delete;
   Pad2DFlat( const Pad2DFlat& ) = delete;
 
-#define DECLARE_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE ) \
-  RET_TYPE  FUNC_NAME( TYPE&, const std::vector<RooCmdArg> & );                \
-  inline RET_TYPE  FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> &list ){   \
+#define DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )          \
+  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg>& );                \
+  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> & list ){   \
     return FUNC_NAME( *x, list );                                              \
   }                                                                            \
-  inline RET_TYPE  FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }          \
-  inline RET_TYPE  FUNC_NAME( TYPE* x ){ return FUNC_NAME( x, {} ); }          \
+  inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }          \
+  inline RET_TYPE FUNC_NAME( TYPE* x ){ return FUNC_NAME( x, {} ); }          \
   template<typename ... Args>                                                  \
-  inline RET_TYPE  FUNC_NAME( TYPE& x, const RooCmdArg & arg1, Args ... args ){\
+  inline RET_TYPE FUNC_NAME( TYPE& x, const RooCmdArg & arg1, Args ... args ){ \
     return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
   }                                                                            \
   template<typename ... Args>                                                  \
-  inline RET_TYPE  FUNC_NAME( TYPE* x, const RooCmdArg & arg1, Args ... args ){\
+  inline RET_TYPE FUNC_NAME( TYPE* x, const RooCmdArg & arg1, Args ... args ){ \
     return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
   }
 
@@ -71,33 +71,33 @@ public:
    * @{
    * @brief Plotting 2D histogram object
    */
-  DECLARE_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
+  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
   /** @} */
 
   /**
    * @{
    * @brief Plotting 2D function object
    */
-  DECLARE_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
+  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
   /** @} */
 
   /**
    * @{
    * @brief Plotting 2D graph object
    */
-  DECLARE_PLOT_FUNCTIONS( PlotGraph, TGraph2D, TGraph2D& );
+  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotGraph, TGraph2D, TGraph2D& );
   /** @} */
 
   /**
    * @{
    * @brief Plotting 1D graph object
    */
-  DECLARE_PLOT_FUNCTIONS( Plot1DGraph, TGraph, TGraph& );
+  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( Plot1DGraph, TGraph, TGraph& );
   /** @} */
 
-#undef DECLARE_PLOTFUNCTIONS
+#undef DECLARE_PAD2DFLAT_PLOT_FUNCTIONS
 
-  TObject* GetAxisObject() const ;
+  TObject*     GetAxisObject() const;
   TAxis&       Xaxis();
   TAxis&       Yaxis();
   TAxis&       Zaxis();
@@ -121,9 +121,9 @@ public:
   void DrawLuminosity( const double luminosity );
   void DrawLuminosity( const std::string& string );
 
-  inline void SetLogx( int x = 1  ){ TPad::SetLogx(x) ; }
-  inline void SetLogy( int x = 1  ){ TPad::SetLogy(x) ; }
-  inline void SetLogz( int x = 1  ){ TPad::SetLogz(x) ; }
+  inline void SetLogx( int x = 1  ){ TPad::SetLogx( x ); }
+  inline void SetLogy( int x = 1  ){ TPad::SetLogy( x ); }
+  inline void SetLogz( int x = 1  ){ TPad::SetLogz( x ); }
 
 private:
 
@@ -133,12 +133,9 @@ private:
   void MakeLegend();
 };
 
+}/* plt */
 
-
-
-}
-
-}
+}/* usr */
 
 
 

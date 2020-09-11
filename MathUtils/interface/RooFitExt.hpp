@@ -8,8 +8,10 @@
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
+#include "UserUtils/MathUtils/interface/Measurement.hpp"
 #else
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
+#include "UserUtils/MathUtils/Measurement.hpp"
 #endif
 
 #include <RooAbsPdf.h>
@@ -144,6 +146,8 @@ ConvergeFitPDFToData(
   return ConvergeFitPDFToData( pdf, data,
     MakeVector<RooCmdArg>( arg1, args ... ) );
 }
+
+
 /** @} */
 
 /** @}  */

@@ -7,6 +7,9 @@
 #define USERUTILS_PHYSUTILS_MCHELPER_HPP
 
 #include "DataFormats/Candidate/interface/Candidate.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+
+#include <vector>
 
 namespace usr {
 
@@ -81,6 +84,8 @@ std::vector<const reco::Candidate*> GetDecendants(
   int flag = GET_ALL );
 
 std::vector<const reco::Candidate*> GetSMHadrons( const reco::Candidate* );
+
+math::XYZPoint GetGenVertex( const std::vector<reco::GenParticle>& );
 
 /** @} */
 

@@ -18,7 +18,7 @@ find_package( Boost REQUIRED
   COMPONENTS program_options )
 
 find_package( ROOT REQUIRED
-  COMPONENTS RooFitCore RooFit)
+  COMPONENTS RooFitCore RooFit MathMore)
 
 find_package( GSL REQUIRED )
 

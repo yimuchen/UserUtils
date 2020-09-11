@@ -10,7 +10,7 @@ import argparse
 import sys
 from DataFormats.FWLite import Events, Lumis, Runs
 
-def main( argv ):
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument( 'inputfiles', metavar='N', type=str, nargs='+',
                     help='List of input files to use')
@@ -21,8 +21,8 @@ def main( argv ):
     numofruns  = 0
 
     # Using wc style output format
-    print "{:8s} {:6s} {:4s} {}".format("Events","Lumis", "Runs", "File Name")
-    fmtstr = "{:8d} {:6d} {:4d} {}"
+    print "{:>8s} {:>8s} {:>8s}   {}".format("Events","Lumis", "Runs", "Files")
+    fmtstr = "{:>8d} {:>8d} {:>8d}   {}"
 
     for inputfile in args.inputfiles:
         ev = Events( inputfile )
