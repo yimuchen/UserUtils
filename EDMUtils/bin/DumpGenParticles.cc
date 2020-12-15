@@ -39,6 +39,7 @@
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/VectorUtils.hpp"
 #include "UserUtils/EDMUtils/interface/ParseEDM.hpp"
+#include "UserUtils/PhysUtils/interface/MCHelper.hpp"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "DataFormats/FWLite/interface/Handle.h"
@@ -68,6 +69,9 @@ main( int argc, char* argv[] )
     ( "pdgid", usr::po::defmultivalue<int>( {} ),
     "Limit the output to particles of certain particle ids (signed). "
     "Leave emtpy to omit PDGID selection." )
+    ( "ancestorid", usr::po::defmultivalue<int>( {} ),
+    "Limit the output to particles who's ancestors match a certain PDGID value. "
+    "Leave emtpy to omit PDGID selection." )
   ;
 
   usr::ArgumentExtender args;
@@ -78,6 +82,7 @@ main( int argc, char* argv[] )
   const std::vector<std::string> input = args.ArgList<std::string>( "input" );
   const std::vector<int> status_list   = args.ArgList<int>( "status" );
   const std::vector<int> pdgid_list    = args.ArgList<int>( "pdgid" );
+  const std::vector<int> anc_list      = args.ArgList<int>( "ancestorid" );
   const std::string tag                = args.Arg<std::string>( "tag" );
   const unsigned event_idx             = args.ArgOpt<int>( "eventidx", 0 );
   const edm::EventID event_id          = ParseEvent(
@@ -114,12 +119,23 @@ main( int argc, char* argv[] )
                     return it - ptrList.begin();
                   };
 
+  auto MatchAncestors = [] ( const std::vector<int> anc_list,
+                            const reco::Candidate* x ) -> bool {
+                         for( const auto id : anc_list ){
+                           if( usr::FindAncestor( x, id ) ){
+                             return true;
+                           }
+                         }
+
+                         return false;
+                       };
+
   usr::fout(
     "%5s | "
     "%10s %5s | "
     "%10s %10s %10s %6s | "
     "%8s %8s %8s | "
-    "[%4s]%10s( N) | "
+    "[%4s]%10s(N) | "
     "%5s | [%4s]%10s [%4s]%10s\n"
            , "IDX"
            , "PDGID", "STAT"
@@ -139,6 +155,10 @@ main( int argc, char* argv[] )
       continue;
     }
     if( pdgid_list.size() > 0 && !usr::FindValue( pdgid_list, gen.pdgId() ) ){
+      continue;
+    }
+
+    if( anc_list.size() > 0 && !MatchAncestors( anc_list, &gen ) ){
       continue;
     }
 

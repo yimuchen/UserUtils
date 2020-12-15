@@ -1,6 +1,7 @@
 <use name="root"/>
 <use name="UserUtils/Common"/>
 <use name="UserUtils/EDMUtils"/>
+<use name="UserUtils/PhysUtils"/>
 <use name="DataFormats/FWLite"/>
 <use name="SimDataFormats/GeneratorProducts"/>
 <use name="DataFormats/HepMCCandidate"/>
