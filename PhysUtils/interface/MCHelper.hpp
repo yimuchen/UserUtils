@@ -75,6 +75,7 @@ const reco::Candidate* GetFirstInChain( const reco::Candidate* );
 
 const reco::Candidate* GetDaughter( const reco::Candidate*, int );
 
+const reco::Candidate* FindAncestor( const reco::Candidate*, int );
 
 bool IsSMHadron( const reco::Candidate* );
 

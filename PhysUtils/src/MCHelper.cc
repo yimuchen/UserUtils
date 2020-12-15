@@ -343,5 +343,30 @@ GetGenVertex( const std::vector<reco::GenParticle>& genlist )
   return part->vertex();
 }
 
+/**
+ * @brief Get the closest ancestor that matches the given PDG id
+ *
+ * Using a BFS algorithm to find the closest ancestor
+ */
+const reco::Candidate*
+FindAncestor( const reco::Candidate* x, int pdgid )
+{
+  std::queue<const reco::Candidate*> bfs_queue;
+  bfs_queue.push( x );
+
+  while( !bfs_queue.empty() ){
+    const reco::Candidate* temp = bfs_queue.front();
+    bfs_queue.pop();
+    if( temp->pdgId() == pdgid ){
+      return temp;
+    }
+
+    for( unsigned i = 0; i < temp->numberOfMothers(); ++i ){
+      bfs_queue.push( temp->mother( i ) );
+    }
+  }
+
+  return nullptr;
+}
 
 }/* usr */
