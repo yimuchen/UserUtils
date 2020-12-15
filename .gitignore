@@ -37,6 +37,10 @@ docs/image/**
 build/**
 bin/**
 
+PyUtils/*.cc
+PyUtils/*.cpp
+PyUtils/*.pcm
+
 # Specific file inclusion
 # ![relative/path/to/file]
 !**/CMakeLists.txt
