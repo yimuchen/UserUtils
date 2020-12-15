@@ -6,9 +6,9 @@ The construction of @ROOT plotting objects, both the canvases and pads used to
 contain and index the plotting instructions and the data containers used for
 instructing the plotting process relies heavily on ROOT's internal memory
 manager to keep track of what is plotting one where and how. While this setup
-does allow for arbitrarily complicated layouts and "simple" plotting across
+does allow for arbitrarily complicated layouts and “simple” plotting across
 difference platforms with the string based object identification, these are not
-desireable features for analysis, where layouts are relatively simple, yet one
+desirable features for analysis, where layouts are relatively simple, yet one
 needs a more rigorous interface to ensure plotting clarity, especially where
 data containers might required intensive and complicated calculation routines
 before actually being plotted.
@@ -20,18 +20,24 @@ analysts using ROOT for data processing via our own wrapper classes:
 
 @ROOT defines how a pad by when the pad is spawn, and which working
 pad-or-canvas is being used at the time. While this might be important for
-use cases where pads might need to be sporadically spawn depending on user/data
+use cases where pads might need to be sporadically spawned depending on user/data
 input, this is usually not the case for analysis plots, where the layout is
 relatively fixed depending on how the author wants to present the data.
 
-The Canvas and PadBase classes defines a rigorous single-layer pad--canvas
-structure: canvases defines how the the final plots dimensions, and is
-responsible for saving and exporting the plot in general; pads are owned by
-the canvas, responsible for storing which data and image elements are used to
-produce the plot. While Canvas and PadBase are inherited from the @ROOT{TCanvas}
-and @ROOT{TPad} respectively, the inheritance is intentionally hidden so that
-the user will not accidentally spawn pad object accidentally; in face even
-the construction of the PadBase object is only accessible from the Canvas class.
+The `Canvas` and `PadBase` classes defines a rigorous single-layer pad--canvas
+structure: canvases defines how the final plots dimensions, and is responsible
+for saving and exporting the plot in general; pads are owned by the canvas,
+responsible for storing which data and image elements are used to produce the
+plot. For the sake of ease of expansion, `Canvas` and `PadBase` with be defined
+as containers of unique @ROOT{TCanvas} and @ROOT{TPad} objects respectively.
+Though this implementation hides the raw ROOT object methods, the idea is that
+users are not allowed to access which arbitrary methods since this can
+potentially break the canvas-pad hierarchy. Also, @ROOT does not play well with
+non-public inheritances, so unique containers is the chosen
+“path-of-least-resistance” in terms of implementation. Each object will have
+methods to access the underlying `TCanvas` and `TPad` objects respectively for
+flexibility, but then users will be responsible for maintaining the object
+relations.
 
 # Plotting data on specified pads
 

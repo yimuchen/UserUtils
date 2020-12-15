@@ -187,7 +187,7 @@ The following is some examples of plots created with the Ratio1DCanvas class:
 
     c.PlotScale( histsum, histsum,
       plt::PlotType( plt::histerr ),
-      plt::TrackY( plt::TrackY::none ) );
+      plt::TrackY( plt::tracky::none ) );
     c.PlotScale( data, histsum,
       plt::PlotType( plt::scatter ) );
 
@@ -235,9 +235,9 @@ The following is some examples of plots created with the Ratio1DCanvas class:
       plt::FillColor( usr::plt::col::cyan )  );
 
     c.PlotScale( fitgraph, fitgraph,
-      plt::TrackY( plt::TrackY::none ), plt::PlotType( plt::fittedfunc ) );
+      plt::TrackY( plt::tracky::none ), plt::PlotType( plt::fittedfunc ) );
     c.PlotScale( altgraph, fitgraph,
-      plt::TrackY( plt::TrackY::none ), plt::PlotType( plt::simplefunc ) );
+      plt::TrackY( plt::tracky::none ), plt::PlotType( plt::simplefunc ) );
     c.PlotScale( datgraph, fitgraph,
       plt::PlotType( plt::scatter ) );
 
