@@ -1,5 +1,5 @@
 /**
- * @file RootTools.hpp
+ * @file RootMathTools.hpp
  * @author Yi-Mu "Enoch" Chen
  * @brief A nice set of tools for general use computation
  */

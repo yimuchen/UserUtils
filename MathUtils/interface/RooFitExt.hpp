@@ -18,6 +18,8 @@
 #include <RooCmdArg.h>
 #include <RooDataSet.h>
 
+#include "TH1D.h"
+
 namespace usr {
 
 /**
@@ -109,17 +111,8 @@ FitPDFToData(
 }
 /* @} */
 
-class MaxFitIteration : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  MaxFitIteration( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  MaxFitIteration( unsigned x );
-  virtual
-  ~MaxFitIteration(){}
-  inline
-  operator unsigned() const { return getInt( 0 ); }
-};
+
+RooCmdArg MaxFitIteration( unsigned x );
 
 /**
  * @{
@@ -146,11 +139,36 @@ ConvergeFitPDFToData(
   return ConvergeFitPDFToData( pdf, data,
     MakeVector<RooCmdArg>( arg1, args ... ) );
 }
-
-
 /** @} */
 
 /** @}  */
+
+/**
+ * @{
+ * @brief Converting RooAbsData to a TH1D (standard for plotting in this library)
+ */
+TH1D* TH1DFromRooData( RooAbsData&,
+                       const RooAbsRealLValue&,
+                       const std::vector<RooCmdArg>& );
+
+inline TH1D*
+TH1DFromRooData( RooAbsData&             data,
+                 const RooAbsRealLValue& xvar  )
+{
+  return TH1DFromRooData( data, xvar, {} );
+}
+
+template<typename ... Args>
+inline TH1D*
+TH1DFromRooData( RooAbsData&             data,
+                 const RooAbsRealLValue& xvar,
+                 const RooCmdArg&        arg1,
+                 Args...                 args )
+{
+  return TH1DFromRooData( data, xvar, MakeVector<RooCmdArg>( arg1, args ... ) );
+}
+
+/** @} */
 
 }/* usr */
 

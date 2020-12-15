@@ -68,6 +68,10 @@ extern Measurement ProdUncorrelated(
   double ( * nll )( double, const Measurement& ) = & LinearVarianceNLL
   );
 
+extern Measurement LazyEvaluateUncorrelated(
+  const std::vector<Measurement>&      paramlist,
+  const ROOT::Math::IMultiGenFunction& varfunction );
+
 /**
  * @brief variadic interface to allow for the indefinite input Sum(x,y,z,....)
  *
@@ -98,15 +102,6 @@ Prod( const Measurement& x, Ts ... args )
   return ProdUncorrelated( MakeVector<Measurement>( x, args ... ) );
 }
 
-/**
- * @brief Give a function of parameters, calculate the error propagation given a
- * various a list of symmetric error functions. Assuming all parameters are
- * uncorrelated
- */
-extern Measurement LazyMeasurementFunction(
-  const std::vector<Measurement>& paramlist,
-  double (*                       function )( const std::vector<double>& )
-  );
 
 
 /** @} */

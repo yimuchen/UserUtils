@@ -18,53 +18,63 @@ class Measurement
 {
 public:
   Measurement();
-  Measurement(
-    const double central,
-    const double error_up,
-    const double error_down );
+  Measurement( const double central,
+               const double error_up,
+               const double error_down );
+  Measurement( const double central,
+               const double error );
   Measurement( const Measurement& );
 
-  virtual
-  ~Measurement ();
+  virtual ~Measurement ();
 
   Measurement& operator=( const Measurement& );
 
-  inline operator double() const { return CentralValue(); }
+  inline
+  operator double() const { return CentralValue(); }
 
   // Basic access functions
-  inline double CentralValue()  const { return _central_value; }
-  inline double AbsUpperError() const { return _error_up; }
-  inline double AbsLowerError() const { return _error_down; }
-  inline double AbsAvgError()   const { return (AbsUpperError()+AbsLowerError() ) / 2; }
-  inline double RelUpperError() const { return AbsUpperError()/CentralValue(); }
-  inline double RelLowerError() const { return AbsLowerError()/CentralValue(); }
-  inline double RelAvgError()   const { return ( RelUpperError()+RelLowerError() ) /2.; }
-  inline double UpperValue()    const { return CentralValue() + AbsUpperError();}
-  inline double LowerValue()    const { return CentralValue() - AbsLowerError(); }
+  inline double
+  CentralValue()  const { return _central_value; }
+  inline double
+  AbsUpperError() const { return _error_up; }
+  inline double
+  AbsLowerError() const { return _error_down; }
+  inline double
+  AbsAvgError()   const { return ( AbsUpperError()+AbsLowerError() ) / 2; }
+  inline double
+  RelUpperError() const { return AbsUpperError()/CentralValue(); }
+  inline double
+  RelLowerError() const { return AbsLowerError()/CentralValue(); }
+  inline double
+  RelAvgError()   const { return ( RelUpperError()+RelLowerError() ) /2.; }
+  inline double
+  UpperValue()    const { return CentralValue() + AbsUpperError();}
+  inline double
+  LowerValue()    const { return CentralValue() - AbsLowerError(); }
 
   // Normalized version
   Measurement NormParam() const;
 
   // Error arithmetics :: See src/Measurement_Arithmetics.cc
-  Measurement&       operator+=( const Measurement& );
-  Measurement&       operator-=( const Measurement& );
-  Measurement&       operator*=( const Measurement& );
-  Measurement&       operator/=( const Measurement& );
+  Measurement& operator+=( const Measurement& );
+  Measurement& operator-=( const Measurement& );
+  Measurement& operator*=( const Measurement& );
+  Measurement& operator/=( const Measurement& );
 
-  Measurement&       operator+=( const double );
-  Measurement&       operator-=( const double );
-  Measurement&       operator*=( const double );
-  Measurement&       operator/=( const double );
+  Measurement& operator+=( const double );
+  Measurement& operator-=( const double );
+  Measurement& operator*=( const double );
+  Measurement& operator/=( const double );
 
-  Measurement        operator+( const Measurement& ) const;
-  Measurement        operator-( const Measurement& ) const;
-  Measurement        operator*( const Measurement& ) const;
-  Measurement        operator/( const Measurement& ) const;
+  Measurement operator+( const Measurement& ) const;
+  Measurement operator-( const Measurement& ) const;
+  Measurement operator*( const Measurement& ) const;
+  Measurement operator/( const Measurement& ) const;
 
-  Measurement        operator+( const double )     const;
-  Measurement        operator-( const double )     const;
-  Measurement        operator*( const double )     const;
-  Measurement        operator/( const double )     const;
+  Measurement operator+( const double )     const;
+  Measurement operator-( const double )     const;
+  Measurement operator*( const double )     const;
+  Measurement operator/( const double )     const;
 
   friend Measurement operator+( const double, const Measurement& );
   friend Measurement operator-( const double, const Measurement& );
@@ -77,7 +87,7 @@ private:
   double _error_down;
 };
 
-} /* usr */
+}/* usr */
 
 
 #endif/* end of include guard: __MEASUREMENT_HH__ */

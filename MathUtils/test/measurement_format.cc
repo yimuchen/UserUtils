@@ -28,13 +28,14 @@ main( int argc, char const* argv[] )
        << ">>> decimal reinterfacing test testing" << endl;
   {
     for( int i = -1; i < 15; ++i ){
-      cout << "Precision: " << i << " | "
-           << usr::fmt::decimal( 12345679123456, i ) << endl;
+      usr::fout( "Precision: %2d | %30s\n"
+               , i
+               , usr::fmt::decimal( 12345679123456, i ) );
     }
 
     for( int i = -1; i < 15; ++i ){
-      cout << "Precision: " << i << " | "
-           << usr::fmt::decimal( 12345679.123456, i ) << endl;
+      usr::fout( "Precision: %2d | %30s\n"
+               , i, usr::fmt::decimal( 12345679.123456, i ) );
     }
   }
 /*----------------------------------------------------------------------------*/
@@ -42,13 +43,14 @@ main( int argc, char const* argv[] )
        << ">>> scientific reinterfacing test testing" << endl;
   {
     for( int i = -1; i < 15; ++i ){
-      cout << "Precision: " << i << " | "
-           << usr::fmt::scientific( 12345679123456, i ) << endl;
+      usr::fout( "Precision: %2d | %30s\n"
+               , i
+               , usr::fmt::scientific( 12345679123456, i ) );
     }
 
     for( int i = -1; i < 15; ++i ){
-      cout << "Precision: " << i << " | "
-           << usr::fmt::scientific( 12345679.123456, i ) << endl;
+      usr::fout( "Precision: %2d | %30s\n"
+               , i, usr::fmt::scientific( 12345679.123456, i ) );
     }
   }
 
@@ -60,11 +62,11 @@ main( int argc, char const* argv[] )
     const Measurement y( 123, 10.23, 10.21 );
 
     for( int i = 0; i < 6; ++i ){
-      usr::fout( "%50s|%50s\n", fmt::decimal( x, i ), fmt::scientific( x, i ) );
+      usr::fout( "%35s|%45s\n", fmt::decimal( x, i ), fmt::scientific( x, i ) );
     }
 
     for( int i = 0; i < 6; ++i ){
-      usr::fout( "%50s|%50s\n", fmt::decimal( y, i ), fmt::scientific( y, i ) );
+      usr::fout( "%35s|%45s\n", fmt::decimal( y, i ), fmt::scientific( y, i ) );
     }
   }
 
@@ -80,35 +82,44 @@ main( int argc, char const* argv[] )
     };
 
     for( const auto& m : list ){
-      usr::fout( "%20s|%20s\n", fmt::decimal( m, -1 ), fmt::scientific( m, -1 ) );
+      usr::fout( "%20s|%40s\n"
+               , fmt::decimal( m, -1 )
+               , fmt::scientific( m, -1 ) );
     }
   }
 
 /*----------------------------------------------------------------------------*/
   cout << separator() << endl
-       << "Common distribution testing" << endl;
+       << "Common distribution testing: Poisson" << endl;
   {
-    const vector<Measurement> list = {
-      Poisson::Lazy(0),
-      Poisson::Lazy(1),
-      Poisson::Lazy(2),
-      Poisson::Lazy(3),
-      Poisson::Lazy(4),
-      Poisson::Minos(0),
-      Poisson::Minos(1),
-      Poisson::Minos(2),
-      Poisson::Minos(3),
-      Poisson::Minos(4),
-      Poisson::CMSStatCom(0),
-      Poisson::CMSStatCom(1),
-      Poisson::CMSStatCom(2),
-      Poisson::CMSStatCom(3),
-      Poisson::CMSStatCom(4),
-    };
+    usr::fout( "%20s | %20s | %20s\n"
+             , "Lazy", "Minos", "CMS StatComm"  );
 
-    for( const auto& m : list ){
-      usr::fout( "%20s|%20s\n", fmt::decimal( m, -1 ), fmt::scientific( m, -1 ) );
+    for( const auto val : {0, 1, 2, 3, 4} ){
+      usr::fout( "%20s | %20s | %20s\n"
+               , fmt::decimal( Poisson::Lazy( val ), -1 )
+               , fmt::decimal( Poisson::Minos( val ), -1 )
+               , fmt::decimal( Poisson::CMSStatCom( val ), -1 )
+        );
     }
+
+  }
+
+/*----------------------------------------------------------------------------*/
+  cout << separator() << endl
+       << "Common distribution testing: Binomial" << endl;
+  {
+    usr::fout( "%20s | %20s | %20s\n"
+             , "Lazy", "Minos", "CP method"  );
+
+    for( const auto val : {0, 1, 2, 3, 4} ){
+      usr::fout( "%20s | %20s | %20s\n"
+               , fmt::decimal( Efficiency::Lazy( 149.9, 7780 ), -1 )
+               , fmt::decimal( Efficiency::Minos( 149.9, 7780 ), -1 )
+               , fmt::decimal( Efficiency::ClopperPearson( 149.9, 7780 ), -1 )
+        );
+    }
+
   }
 
   return 0;

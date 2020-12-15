@@ -20,7 +20,7 @@
 
 namespace usr {
 
-class TemplateFit
+class TemplateFit : public ROOT::Math::IMultiGenFunction
 {
 public:
   static
@@ -34,10 +34,10 @@ public:
                const bool               normalize_target = true );
   ~TemplateFit(){}
 
-  // Function for interfacing with ROOT::Math::Minimizers
-  double operator()( const double* x ) const;
 
-  unsigned nparams() const;
+  unsigned NDim() const;
+
+  ROOT::Math::IMultiGenFunction* Clone() const ;
 
   // Helping with initializing the minimizer
   void InitMinimizer( ROOT::Math::Minimizer& ) const;
@@ -46,9 +46,10 @@ private:
   const TH1* target;
   const std::vector<TH1*> constituents;
   const bool normalize_target;
-  ROOT::Math::Functor fcn;
 
-  void RebuildFunctor();
+  // Function for interfacing with ROOT::Math::Minimizers
+  double DoEval( const double* x ) const;
+
 };
 
 }

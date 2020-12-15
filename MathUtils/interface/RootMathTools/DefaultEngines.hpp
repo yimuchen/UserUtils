@@ -20,6 +20,11 @@
 
 namespace usr {
 
+/**
+ * @brief
+ *
+ */
+
 extern const double eff_machine_epsilon;
 
 /**

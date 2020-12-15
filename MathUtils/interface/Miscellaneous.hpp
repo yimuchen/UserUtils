@@ -9,6 +9,7 @@
 
 #include "TMatrixD.h"
 #include "TMatrixDSym.h"
+#include "TH1.h"
 
 namespace usr {
 
@@ -27,6 +28,9 @@ extern bool Intersect(
   );
 
 extern TMatrixD DecompCorvariance( const TMatrixDSym& m );
+
+extern double GetEffectiveEvents( const TH1&, const int );
+extern double GetEffectiveEvents( const TH1*, const int );
 
 /** @} */
 

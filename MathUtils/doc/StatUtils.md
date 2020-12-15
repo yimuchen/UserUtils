@@ -12,8 +12,7 @@ an estimation on the value of the physical parameter, which we are going to
 notate as:\f$\hat{x_i}^{+\sigma_+}_{-\sigma_{-}}\f$. Even though ROOT uses GSL
 under the hood, we are going to use the ROOT::Math function for calculation,
 which allows user to provide functions to the calculations using classes and
-functions instead of just using function pointers (which allow the extention to
-python more easily).
+functions instead of just using function pointers.
 
 # Mathematics
 

@@ -75,30 +75,28 @@ MakeMinos(
  *        \f$x^{+\sigma_+}_{-\sigma_i}\f$
  *
  * The approximation for an @NLL function is a variation of the one recommended
- * in
- * [R. Barlow's "Asymmetric statistical errors"](https://arxiv.org/abs/physics/0406120),
- * In the form of:
+ * in [R. Barlow's "Asymmetric statistical
+ * errors"](https://arxiv.org/abs/physics/0406120), In the form of:
  *
- * \f[
- *  \mathrm{NLL}(x) = \frac{x^{2}}{ 2V(1+Ax)}
- * \f]
+ * \f[\mathrm{NLL}(x) = \frac{x^{2}}{ 2V(1+Ax)} \f]
  *
- * with \f$V\f$ being the average variance \f$\sigma_+ \sigma_-\f$, and \f$A\f$
- * being the variance asymmetry \f$ (\sigma_{+} - \sigma_{-})/V \f$.
+ * with \f$V\f$ being the average variance \f$\frac{\sigma_+ + \sigma_-}{2}\f$,
+ * and \f$A\f$ being the variance asymmetry \f$\frac{\sigma_{+} -
+ * \sigma_{-}}{V}\f$.
  *
  * A few adjustments are made to ensure the stability of the calculations.
  * - The ratio between the two uncertainties would have a hard limit of 10. The
  *   smaller uncertainty would be inflated if extreme asymmetries are present.
- * - The average variance would have an minimum value of $10^{-16}$ which
+ * - The average variance would have an minimum value of \f$10^{-16}\f$ which
  *   should cover most cases where uncertainty calculations are required. Test
- *   have shown that the calculation would not be affected by such limits if
- *   the there are some dominate uncertainties.
+ *   have shown that the calculation would not be affected by such limits if the
+ *   there are some dominate uncertainties.
  * - To avoid the singularity at \f$x=-1/A\f$, an exponential function would be
  *   used instead for the linear function for the denominator in the @NLL
  *   function when x is past half-way from the central value to the original
- *   singular point, such that the approximation would be extended to an
- *   infinite domain. The exponential function is designed such that the
- *   denominator and its derivative is continuous.
+ *   singular point, such that the approximation would be extended to an infinite
+ *   domain. The exponential function is designed such that the denominator and
+ *   its derivative is continuous.
  */
 
 double
@@ -138,7 +136,19 @@ LinearVarianceNLL( const double x, const Measurement& m )
   return ans;
 }
 
-
+/**
+ * @brief given a list of measurements with uncertainties, return the effective
+ *        sum of all measurements as if all measurements are uncorrelated.
+ *
+ * Given a list of parameters, a master @NLL function is generated assuming that
+ * all variables are uncorrelated and uses the same underlying @NLL function
+ * (specifed with the `nll` argument). The MinosErrors method for
+ * multidimensional Minos uncertainty calculations is then invoked for the
+ * calculation. This function also automatically estimates the initial guesses
+ * for the Minos error calculations using the partial differentials of the
+ * variable function. For details of this initial guess estimation see the
+ * usr::LazyEvaluateUncorrelated method.
+ */
 extern Measurement
 EvaluateUncorrelated(
   const std::vector<Measurement>& m_list,
@@ -267,71 +277,83 @@ ProdUncorrelated(
                                   , nll );
 }
 
+/**
+ * @brief Give a function of parameters, calculate the error propagation given a
+ * various a list of symmetric error functions using a lazy method. Assuming all
+ * parameters are uncorrelated
+ *
+ *
+ * For a function given as:
+ * \f[
+ *    y = f(x_1 , x_2, x_3,\ldots )
+ * \f]
+ *
+ * With a set of measurements \f$\hat{x}_i{}^{+\sigma^{+}_i}_{-\sigma^{-}_i}\f$,
+ * The resulting measurement \f$\hat{y}^{+\sigma^{+}_y}_{-\sigma^{-}_y}\f$ is
+ * evaluted as:
+ *
+ * \f[
+ *    \hat{y} = f(\hat{x}_1, \hat{x}_2, \hat{x}_3\ldots)
+ * \f]
+ *
+ * and:
+ *
+ * \f[
+ *    y\pm\sigma^{\pm}_{y} = f(\hat{x}_i + \Delta x_i)
+ * \f]
+ *
+ * with
+ *
+ * \f[
+ *    \Delta x_i = \frac{ |\partial_i f| }{\sqrt{\sum_i (\partial_i f)^2}}
+ * \sigma^{k_i}_{i}
+ * \f]
+ *
+ * where \f$k_i = +\f$ if \f$\partial_i f\f$ is positive or else  \f$k_i = - \f$
+ * otherwise.
+ *
+ **/
+Measurement
+LazyEvaluateUncorrelated(
+  const std::vector<Measurement>&      paramlist,
+  const ROOT::Math::IMultiGenFunction& varfunction )
+{
+  std::vector<double> center;
+  std::vector<double> upper;
+  std::vector<double> lower;
+  double diff_sqsum = 0;
 
-/*
-   Measurement
-   LazyMeasurementFunction(
-   const std::vector<Measurement>& paramlist,
-   double (*                       function )( const std::vector<double>& ) )
-   {
-   static double (* static_pointer)( const std::vector<double>& );
+  for( const auto& p : paramlist ){
+    center.push_back( p.CentralValue() );
+  }
 
-   // Restructing to GSL compilent data teyp
-   static_pointer = function;
+  for( unsigned i = 0; i < paramlist.size(); ++i ){
+    const double diff = ROOT::Math::Derivator::Eval( varfunction
+                                                   , center.data(), i );
+    diff_sqsum += diff *diff;
+  }
 
-   auto gsl_wrap = []( const gsl_vector* x, void* )->double {
-                    std::vector<double> input;
+  diff_sqsum = std::sqrt( diff_sqsum );
 
-                    for( unsigned i = 0; i  < x->size; ++i ){
-                      input.push_back( gsl_vector_get( x, i ) );
-                    }
-
-                    return static_pointer( input );
-                  };
-
-   usr::gsl::gsl_multifunc gsl_min;
-   gsl_min.n      = paramlist.size();
-   gsl_min.params = nullptr;
-   gsl_min.f      = gsl_wrap;
-
-
-   // Resetting up the calculation center
-   gsl_vector* input_center = gsl_vector_alloc( paramlist.size() );
-
-   for( unsigned i = 0; i < paramlist.size(); ++i ){
-    gsl_vector_set( input_center, i, paramlist.at( i ).CentralValue() );
-   }
-
-
-   // Summing over the  relavent uncertainties
-   const double central = gsl_wrap( input_center, nullptr );
-   double err_up        = 0;
-   double err_down      = 0;
-
-   for( unsigned i = 0; i < paramlist.size(); ++i ){
-    const double diff = usr::gsl::partial_deriv( &gsl_min, input_center, i );
+  for( unsigned i = 0; i < paramlist.size(); ++i ){
+    const double diff = ROOT::Math::Derivator::Eval( varfunction
+                                                   , center.data(), i );
+    const double w = fabs( diff/diff_sqsum );
+    const auto& p  = paramlist.at( i );
     if( diff > 0 ){
-      err_up += diff * diff * paramlist.at( i ).AbsUpperError()
- *  paramlist.at( i ).AbsUpperError();
-      err_down += diff * diff * paramlist.at( i ).AbsLowerError()
- *  paramlist.at( i ).AbsLowerError();
+      upper.push_back( p.CentralValue() + w*p.AbsUpperError() );
+      lower.push_back( p.CentralValue() - w*p.AbsLowerError() );
     } else {
-      err_up += diff * diff * paramlist.at( i ).AbsLowerError()
- *  paramlist.at( i ).AbsLowerError();
-      err_down += diff * diff * paramlist.at( i ).AbsUpperError()
- *  paramlist.at( i ).AbsUpperError();
+      upper.push_back( p.CentralValue() - w*p.AbsLowerError() );
+      lower.push_back( p.CentralValue() + w*p.AbsUpperError() );
     }
-   }
+  }
 
-   err_up   = std::sqrt( err_up );
-   err_down = std::sqrt( err_down );
+  const double cen = varfunction( center.data() );
+  const double up  = varfunction( upper.data() );
+  const double lo  = varfunction( lower.data() );
 
-   // Tidying up
-   gsl_vector_free( input_center );
-
-   return Measurement( central, err_up, err_down );
-
-   }
- */
+  return Measurement( cen, up-cen, cen-lo  );
+}
 
 }/* usr */

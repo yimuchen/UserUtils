@@ -56,6 +56,12 @@ Measurement::Measurement(
   }
 }
 
+Measurement::Measurement( const double c, const double err ):
+  _central_value(c),
+  _error_up(err),
+  _error_down(err)
+{}
+
 /**
  * @brief Assignment operator calls the assignment operator.
  */

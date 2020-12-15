@@ -136,7 +136,7 @@ MinosError(
  * needed, otherwise the guess is simply stepping the minimum value by a value of
  * 0.01.
  */
-int
+extern int
 MinosError(
   const ROOT::Math::IMultiGenFunction& nllfunction,
   const ROOT::Math::IMultiGenFunction& varfunction,
@@ -242,9 +242,7 @@ MinosError(
 }
 
 /**
- * @brief GSL compatible function for the @NLL of a Gaussian function.
- * @param x      the estimated parameter value.
- * @param params params[0]=mean, params[1]=sigma
+ * @brief ROOT::Math compatible interface for the @NLL of a Gaussian function.
  */
 double
 GaussianNLL::DoEval( const double x ) const
@@ -253,9 +251,7 @@ GaussianNLL::DoEval( const double x ) const
 }
 
 /**
- * @brief GSL compatible function for the @NLL of a binomial measurement.
- * @param x      the estimated parameter value (\f$\epsilon\f$)
- * @param params param[0] = passed, param[1]=total
+ * @brief ROOT::Math compatible interface for the @NLL of a binomial measurement.
  */
 double
 BinomialNLL::DoEval( const double x ) const
@@ -264,9 +260,7 @@ BinomialNLL::DoEval( const double x ) const
 }
 
 /**
- * @brief GSL compatible function for the @NLL of a poisson measurement.
- * @param x      the estimated parameter value (\f$n\f$)
- * @param params param[0] = number of observed events.
+ * @brief ROOT::Math compatible inferface for the @NLL of a poisson measurement.
  */
 double
 PoissonNLL::DoEval( const double x ) const

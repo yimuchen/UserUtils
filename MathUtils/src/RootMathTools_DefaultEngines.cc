@@ -1,5 +1,5 @@
 /**
- * @file RootMathTools_DefaultMinimizer.cc
+ * @file RootMathTools_DefaultEngines.cc
  * @author Yi-Mu "Enoch" Chen
  * @brief Implementing the Default minimizer specialization
  *

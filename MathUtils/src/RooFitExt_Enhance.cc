@@ -1,8 +1,10 @@
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/RootUtils/RooArgContainer.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
 #else
 #include "UserUtils/Common/RootUtils/RooArgContainer.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/RooFitExt.hpp"
 #endif
 
@@ -36,9 +38,10 @@ FitPDFToData( RooAbsPdf&                    pdf,
   return pdf.fitTo( data, roolist );
 }
 
-USRUTILS_COMMON_REGISTERCMD( MaxFitIteration );
-MaxFitIteration::MaxFitIteration( unsigned x ) :
-  RooCmdArg( MaxFitIteration::CmdName.c_str(), x ){}
+USERUTILS_COMMON_REGISTERCMD( MaxFitIteration );
+
+RooCmdArg MaxFitIteration( unsigned x )
+{ return RooCmdArg( "MaxFitIteration", x ); }
 
 /**
  * @details
@@ -62,23 +65,48 @@ ConvergeFitPDFToData( RooAbsPdf&                    pdf,
 
   RooLinkedList roolist = args.MakeRooList();
 
-  for( unsigned i = 0; i < args.Get<MaxFitIteration>(); ++i ){
+  for( int i = 0; i < args.Get( "MaxFitIteration" ).getInt( 0 ); ++i ){
     status = FitPDFToData( pdf, data, args );
     if( status->status() != 0 ){
       if( !og_args.Has( "Save" ) ){
-        delete status;
-        status = nullptr;
+        return nullptr;
+      } else {
+        return status;
       }
-      return status;
     }
     delete status;
   }
 
   if( !og_args.Has( "Save" ) ){
-    delete status;
-    status = nullptr;
+    return nullptr;
+  } else {
+    return status;
   }
-  return status;
+}
+
+extern TH1D*
+TH1DFromRooData( RooAbsData&                   data,
+                 const RooAbsRealLValue &      xvar,
+                 const std::vector<RooCmdArg>& cmdargs )
+{
+  const usr::RooArgContainer args( cmdargs );
+  RooLinkedList roolist = args.MakeRooList();
+
+  TH1* rawhist = data.createHistogram( usr::RandomString( 6 ).c_str()
+                                     , xvar
+                                     , roolist );
+
+  TH1D* hist = new TH1D( usr::RandomString( 6 ).c_str(), ""
+                       , rawhist->GetNbinsX()
+                       , rawhist->GetXaxis()->GetXmin()
+                       , rawhist->GetXaxis()->GetXmax() );
+
+  for( int i = 1; i <= hist->GetNcells(); ++i ){
+    hist->SetBinContent( i, rawhist->GetBinContent( i ) );
+  }
+
+  delete rawhist;
+  return hist;
 }
 
 }/* namespace usr */

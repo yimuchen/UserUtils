@@ -82,6 +82,11 @@ Bayesian(
   return Measurement( central, err_up, err_down );
 }
 
+/**
+ * @brief The default method used for efficiency display used in TEfficiency to
+ * avoid under coverage.
+ * @ingroup StatUtils
+ */
 Measurement
 ClopperPearson(
   const double passed,
@@ -93,13 +98,23 @@ ClopperPearson(
                                                     , passed
                                                     , confidencelevel
                                                     , true ) - central;
-  const double err_down = central - TEfficiency::ClopperPearson( passed
-                                                               , total
+  const double err_down = central - TEfficiency::ClopperPearson( total
+                                                               , passed
                                                                , confidencelevel
                                                                , false );
   return Measurement( central, err_up, err_down );
 }
 
+/**
+ * @brief Lazy method which just uses the method taught in high-school
+ *
+ * Essentially:
+ * \f[
+ *  \sigma = \sqrt{\frac{\epsilon(1-\epsilon)}/N}
+ * \f]
+ *
+ * Suffers from excessive under coverage in extreme values of \f$\epsilon\f$
+ */
 Measurement
 Lazy( const double passed,
       const double total,
@@ -138,6 +153,7 @@ Minos( const double obs, const double confidencelevel )
 
 /**
  * @brief Lazy method for a Poisson measurement: just using the square root.
+ * @ingroup StatUtils
  */
 Measurement
 Lazy( const double obs,
@@ -151,6 +167,7 @@ Lazy( const double obs,
 
 /**
  * @brief Least undercoverage Interval as recommended by CMS Statistics committee
+ * @ingroup StatUtils
  *
  * The Complete algorithm can be found here:
  * https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars

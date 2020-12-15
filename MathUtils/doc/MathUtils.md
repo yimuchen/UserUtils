@@ -6,5 +6,9 @@ This is a collection of functions and classes used for the mathematical routines
 commonly used in the HEP analysis that are not immediately available in existing
 libraries, the main ones being the calculation of uncertainties of measurements
 with arithmetics, and the Kolmogorov-Smirnov test weighted data sets. This
-libraries uses custom written GSL functions for the bulk of the calculation, but
-will use existing ROOT functions if they are available.
+library uses the ROOT::Math classes for running the mathematical function, which
+allows for object-like extensions for mathematical functional objects (instead of
+pure function pointer interfaces like GSL), while keeping away from the ambiguity
+of and compile-time unsafe string based math function declaration of “high-level”
+ROOT objects (like @ROOT{TF1}).
+

@@ -9,8 +9,8 @@
 #else
 #include "UserUtils/MathUtils/Miscellaneous.hpp"
 #endif
-#include "TMath.h"
 
+#include "TMath.h"
 #include <cmath>
 
 namespace usr {
@@ -78,8 +78,7 @@ DecompCorvariance( const TMatrixDSym& m )
         const unsigned offset = i * n;
 
         for( unsigned j = 0; j < n; ++j ){
-          ans_ptr[i+offset] = i != j ? 0 :
-                              TMath::Sqrt( m[i][j] );
+          ans_ptr[i+offset] = i != j ? 0 : TMath::Sqrt( m[i][j] );
         }
       }
 
@@ -111,6 +110,58 @@ DecompCorvariance( const TMatrixDSym& m )
   }
 
   return ans;
+}
+
+/**
+ * @brief Reverse engineering the effective number of entries of a bin in a
+ * histogram.
+ *
+ * The official recipe for computing the effective number of events for a list of
+ * (non-negative) weighted events is typically:
+ *
+ * \f[
+ *  N_{eff} = \frac{\left(\sum_i w_i\right)^2}{\sum_i w_i^2 }
+ * \f]
+ *
+ * In fact is this the method of obtaining the effective number of events for an
+ * entire histogram, as implemented in the TH1::GetEffectiveEntries() method.
+ * This method however is not readily available for Effective Entry in a single
+ * bin, but a per bin implementation does exists for the official calculation of
+ * the bin uncertainties using the TH1::SumW2 method, defaulted for weighted
+ * histograms:
+ *
+ * \f[
+ *    UNC = \sqrt{N_{eff}} \frac{\sum_i w_i}{N_i}
+ * \f]
+ *
+ * Effectively, ROOT treats the bin as having effectively \[N_{eff}\] events, and
+ * scale the uncertainty according to the sum of weight to have an identical
+ * relative uncertainty.
+ *
+ * So our function will effectively return
+ * \f[
+ * N_{eff} = \left(\frac{GetBinContent(i)}{GetBinError(i)}\right)^2
+ * \f]
+ * With additional parses to avoid NAN errors:
+ */
+extern double
+GetEffectiveEvents( const TH1& hist , const int bin )
+{
+  if( hist.GetBinError( bin ) == 0 ){
+    return 0;
+  } else {
+    return ( hist.GetBinContent( bin ) * hist.GetBinContent( bin ) ) /
+           ( hist.GetBinError( bin ) * hist.GetBinError( bin ) );
+  }
+}
+
+/**
+ * @brief Pointer interface of GetEffectiveEvents function.
+ */
+extern double
+GetEffectiveEvents( const TH1* hist , const int bin )
+{
+  return GetEffectiveEvents( *hist, bin );
 }
 
 }/* usr */

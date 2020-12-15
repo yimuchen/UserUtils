@@ -348,8 +348,6 @@ JSONEntry<Measurement>( const JSONMap&     map,
   } else {
     return usr::Measurement( array.at( 0 ), array.at( 1 ), array.at( 2 ) );
   }
-
-
 }
 
 template<>
