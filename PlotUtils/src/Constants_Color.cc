@@ -24,6 +24,11 @@ namespace plt {
  */
 namespace col {
 
+/**
+ * @{
+ * @brief Human readable color code taken from
+ * [source.](https://www.rapidtables.com/web/color/RGB_Color.html#color-table)
+ */
 extern const int maroon               = TColor::GetColor( "#800000" );
 extern const int darkred              = TColor::GetColor( "#8B0000" );
 extern const int brown                = TColor::GetColor( "#A52A2A" );
@@ -168,6 +173,7 @@ extern const int lightgrey            = TColor::GetColor( "#D3D3D3" );
 extern const int gainsboro            = TColor::GetColor( "#DCDCDC" );
 extern const int whitesmoke           = TColor::GetColor( "#F5F5F5" );
 extern const int white                = TColor::GetColor( "#FFFFFF" );
+/** @}*/
 
 // Standard colors for Brazillean flag plot
 extern const int bzgreen  = kGreen + 1;

@@ -69,15 +69,21 @@ Simple1DCanvas::~Simple1DCanvas(){}
 void
 Simple1DCanvas::_init_margin()
 {
+  double x,xx,y,yy;
   Pad().SetTopMargin(    1.5*Font().lineheight()/Height() );
-  Pad().SetLeftMargin(   3.5*Font().lineheight()/Width() );
+  Pad().SetLeftMargin(   3.5*Font().lineheight()/Width()  );
   Pad().SetBottomMargin( 2.5*Font().lineheight()/Height() );
   Pad().SetRightMargin( std::max(
     ( 4.0*Font().lineheight()/Height() - ( 3.5*Font().lineheight()/Width() ) ),
     ( 0.3*Font().lineheight()/Width() ) )
     );
+  Pad().TPad_().Update();
+  Pad().TPad_().GetRange(x,xx,y,yy);
+
 }
+
 
 }/* plt  */
 
 }/* usr  */
+

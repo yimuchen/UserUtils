@@ -20,7 +20,12 @@ namespace plt  {
  * @{
  */
 
-/** @brief Abstact length unit used in the plotting routines in root */
+/**
+ * @brief Abstact length unit used in the plotting routines in root
+ * @details The numbers used to define a canvas size is pixels, though when
+ * plotting for print material, ROOT uses a flat 72 dots-per-inch to translate
+ * Canvas to PDF dimensions.
+ **/
 typedef unsigned length_t;
 
 /**
@@ -191,14 +196,15 @@ namespace col
 {
 
 /**
+ * @addtogroup PlotUtilsConstants
+ * @{
+ */
+
+/**
  * @brief Returning color code based on string
  */
 extern int color( const std::string& );
 
-/**
- * @addtogroup PlotUtilsConstants
- * @{
- */
 extern const int maroon;
 extern const int darkred;
 extern const int brown;

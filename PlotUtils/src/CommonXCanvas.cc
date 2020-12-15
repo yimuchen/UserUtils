@@ -77,13 +77,13 @@ void CommonXCanvas::_init_margin()
       frame_bottom_offset + ( npads - i -1 ) * pad_height
       + sgn( i ) *  0.5 * pad_space );
 
-    Pad( i ).SetFillColorAlpha( kWhite, 0 );
+    Pad( i ).TPad_().SetFillColorAlpha( kWhite, 0 );
   }
 }
 
 void CommonXCanvas::CheckPadAxis( const TObject* obj )
 {
-  if( FirstPad().GetAxisObject() ){
+  if( FirsTPad_().GetAxisObject() ){
     return;
   }
   if( obj->InheritsFrom( TH1::Class() ) ){

@@ -8,25 +8,28 @@
 
 #include <iostream>
 
+inline int   Col( const RooCmdArg& x )  { return x.getInt( 0 ); }
+inline float Alpha( const RooCmdArg& x ){ return x.getDouble( 0 ); }
+
 extern void
 SetTextAttr( TAttText&                   obj,
              const usr::RooArgContainer& args )
 {
-  if( args.Has<usr::plt::TextColor>() ){
-    const auto cmd = args.Get<usr::plt::TextColor>();
-    obj.SetTextColorAlpha( cmd.Col(), cmd.Alpha() );
+  if( args.Has( "TextColor" ) ){
+    const auto cmd = args.Get( "TextColor" );
+    obj.SetTextColorAlpha( Col( cmd ), Alpha( cmd ) );
   }
 
-  if( args.Has<usr::plt::TextSize>() ){
-    obj.SetTextSize( args.Get<usr::plt::TextSize>() );
+  if( args.Has( "TextSize" ) ){
+    obj.SetTextSize( args.Get( "TextSize" ).getDouble( 0 ) );
   }
 
-  if( args.Has<usr::plt::TextAngle>() ){
-    obj.SetTextAngle( args.Get<usr::plt::TextAngle>() );
+  if( args.Has( "TextAngle" ) ){
+    obj.SetTextAngle( args.Get( "TextAngle" ).getDouble( 0 ) );
   }
 
-  if( args.Has<usr::plt::TextAlign>() ){
-    obj.SetTextAlign( args.Get<usr::plt::TextAlign>() );
+  if( args.Has( "TextAlign" ) ){
+    obj.SetTextAlign( args.Get( "TextAlign" ).getInt( 0 ) );
   }
 }
 
@@ -34,17 +37,17 @@ extern void
 SetLineAttr( TAttLine&                   obj,
              const usr::RooArgContainer& args  )
 {
-  if( args.Has<usr::plt::LineColor>() ){
-    const auto cmd = args.Get<usr::plt::LineColor>() ;
-    obj.SetLineColorAlpha( cmd.Col(), cmd.Alpha()  );
+  if( args.Has( "LineColor" ) ){
+    const auto cmd = args.Get( "LineColor" );
+    obj.SetLineColorAlpha( Col( cmd ), Alpha( cmd ) );
   }
 
-  if( args.Has<usr::plt::LineStyle>() ){
-    obj.SetLineStyle( args.Get<usr::plt::LineStyle>() );
+  if( args.Has( "LineStyle" ) ){
+    obj.SetLineStyle( args.Get( "LineStyle" ).getInt( 0 ) );
   }
 
-  if( args.Has<usr::plt::LineWidth>() ){
-    obj.SetLineWidth( args.Get<usr::plt::LineWidth>() );
+  if( args.Has( "LineWidth" ) ){
+    obj.SetLineWidth( args.Get( "LineWidth" ).getInt( 0 ) );
   }
 }
 
@@ -52,13 +55,13 @@ extern void
 SetFillAttr( TAttFill&                   obj,
              const usr::RooArgContainer& args  )
 {
-  if( args.Has<usr::plt::FillColor>() ){
-    const auto cmd = args.Get<usr::plt::FillColor>() ;
-    obj.SetFillColorAlpha( cmd.Col(), cmd.Alpha() );
+  if( args.Has( "FillColor" ) ){
+    const auto cmd = args.Get( "FillColor" );
+    obj.SetFillColorAlpha( Col( cmd ), Alpha( cmd ) );
   }
 
-  if( args.Has<usr::plt::FillStyle>() ){
-    obj.SetFillStyle( args.Get<usr::plt::FillStyle>() );
+  if( args.Has( "FillStyle" ) ){
+    obj.SetFillStyle( args.Get( "FillStyle" ).getInt( 0 ) );
   }
 }
 
@@ -66,16 +69,16 @@ extern void
 SetMarkAttr( TAttMarker&                 obj,
              const usr::RooArgContainer& args  )
 {
-  if( args.Has<usr::plt::MarkerColor>() ){
-    const auto cmd = args.Get<usr::plt::MarkerColor>();
-    obj.SetMarkerColorAlpha( cmd.Col(), cmd.Alpha() );
+  if( args.Has( "MarkerColor" ) ){
+    const auto cmd = args.Get( "MarkerColor" );
+    obj.SetMarkerColorAlpha( Col( cmd ), Alpha( cmd ) );
   }
 
-  if( args.Has<usr::plt::MarkerStyle>() ){
-    obj.SetMarkerStyle( args.Get<usr::plt::MarkerStyle>() );
+  if( args.Has( "MarkerStyle" ) ){
+    obj.SetMarkerStyle( args.Get( "MarkerStyle" ).getInt( 0 ) );
   }
 
-  if( args.Has( usr::plt::MarkerSize::CmdName ) ){
-    obj.SetMarkerSize( args.Get<usr::plt::MarkerSize>() );
+  if( args.Has( "MarkerSize" ) ){
+    obj.SetMarkerSize( args.Get( "MarkerSize" ).getDouble( 0 ) );
   }
 }

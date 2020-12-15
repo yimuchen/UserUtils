@@ -124,7 +124,7 @@ void
 Ratio1DCanvas::SetTopMargin( const float x )
 {
   TopPad().SetTopMargin( x * Height() / TopPad().AbsHeight() );
-  TCanvas::SetTopMargin( x );
+  TCanvas_().SetTopMargin( x );
 }
 
 void
@@ -132,7 +132,7 @@ Ratio1DCanvas::SetLeftMargin( const float x )
 {
   TopPad().SetLeftMargin( x );
   BottomPad().SetLeftMargin( x );
-  TCanvas::SetLeftMargin( x );
+  TCanvas_().SetLeftMargin( x );
 }
 
 void
@@ -140,14 +140,14 @@ Ratio1DCanvas::SetRightMargin( const float x )
 {
   TopPad().SetRightMargin( x );
   BottomPad().SetRightMargin( x );
-  TCanvas::SetRightMargin( x );
+  TCanvas_().SetRightMargin( x );
 }
 
 void
 Ratio1DCanvas::SetBottomMargin( const float x )
 {
   BottomPad().SetBottomMargin( x * Height() / BottomPad().AbsHeight() );
-  TCanvas::SetBottomMargin( x );
+  TCanvas_().SetBottomMargin( x );
 }
 /** @} */
 
@@ -226,7 +226,7 @@ Ratio1DCanvas::PlotScale(
   // Parsing arguments.
   const RooArgContainer args( arglist, {
         PlotType( plt::hist ),
-        TrackY( TrackY::both )
+        TrackY( tracky::both )
       } );
 
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
@@ -252,12 +252,13 @@ Ratio1DCanvas::PlotScale(
   // Parsing arguments.
   const RooArgContainer args( arglist, {
         PlotType( plt::hist ),
-        TrackY( TrackY::both ),
+        TrackY( tracky::both ),
         ExtrapolateInRatio( kFALSE )
       } );
 
   // Generating the scaled histogram object
-  TH1D* ans = ScaleDivide( &num, &den, 1.0, args.Get<ExtrapolateInRatio>() );
+  TH1D* ans = ScaleDivide( &num, &den
+                         , 1.0, args.GetInt( "ExtrapolateInRatio" ) );
 
   // Plotting.
   BottomPad().FrameObj().addObject( ans );
@@ -283,12 +284,13 @@ Ratio1DCanvas::PlotScale(
 {
   const RooArgContainer args( arglist, {
         PlotType( plt::simplefunc ),
-        TrackY( TrackY::both ),
+        TrackY( tracky::both ),
         ExtrapolateInRatio( kFALSE )
       } );
 
   TGraphAsymmErrors* ans
-    = ScaleDivide( &num, &den, 1.0, args.Get<ExtrapolateInRatio>() );
+    = ScaleDivide( &num, &den
+                 , 1.0, args.GetInt( "ExtrapolateInRatio" ) );
 
   BottomPad().FrameObj().addObject( ans );
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
@@ -312,7 +314,7 @@ Ratio1DCanvas::PlotPull(
 {
   const RooArgContainer args( arglist, {
         PlotType( scatter ),
-        TrackY( TrackY::both )
+        TrackY( tracky::both )
       } );
 
   TGraphAsymmErrors* ans = PullDivide( &num, &den );
@@ -353,7 +355,7 @@ Ratio1DCanvas::ScaleDivide(
     const double n = num->GetBinContent( i );
     const double e = num->GetBinError( i );
     const double d = den->GetBinContent( i );
-    if( n == 0 || d == 0 ){
+    if( d == 0 ){
       ans->SetBinContent( i, cen );
       ans->SetBinError( i, 0 );
     } else {
@@ -400,7 +402,7 @@ Ratio1DCanvas::ScaleDivide(
     const double n = num->GetBinContent( i );
     const double e = num->GetBinError( i );
     const double d = den->Eval( x );
-    if( n == 0 || d == 0 ){
+    if( d == 0 ){
       ans->SetBinContent( i, cen );
       ans->SetBinError( i, 0 );
     } else if( !extrapolate && ( x < xmin || x > xmax ) ){
@@ -472,12 +474,6 @@ Ratio1DCanvas::ScaleDivide(
       xerrhi_list.push_back( xerrhi );
       yerrlo_list.push_back( yerrlo/deny );
       yerrhi_list.push_back( yerrhi/deny );
-    }
-
-    if( y_list.back() < 0.8 ){
-      std::cout << i << " "
-                << origx << " "
-                << origy << std::endl;
     }
   }
 

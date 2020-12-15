@@ -4,11 +4,11 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
+#include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 #else
-#include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
 #include "UserUtils/MathUtils/RooFitExt.hpp"
+#include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
 #endif
 
 #include "RooDataSet.h"
@@ -33,13 +33,15 @@ main( int argc, char* argv[] )
     }
 
     plt::Simple1DCanvas c;
-    c.PlotHist( h1,
+
+    auto& h1_ret = c.PlotHist( h1,
       plt::PlotType( plt::scatter ),
       plt::EntryText( "Bkg. 1" ),
       plt::LineColor( usr::plt::col::black ),
       plt::MarkerStyle( usr::plt::sty::mkrcircle ),
       plt::MarkerColor( usr::plt::col::black ),
       plt::MarkerSize( 0.2 ) );
+    assert( &h1_ret == &h1 );
     c.PlotHist( h2,
       plt::PlotType( plt::hist ),
       plt::EntryText( "Bkg. 2" ),
@@ -53,12 +55,13 @@ main( int argc, char* argv[] )
     c.DrawLuminosity( 133.7 );
     c.SetHistAxisTitles( "P_{t}", plt::unit::GeVc );
 
+
     c.SetLogy( 1 );
     c.SaveAsPNG( "image/simple1dcanvas_log.png",         72 );
     c.SaveAsPNG( "image/simple1dcanvas_log_highres.png", 300 );
     c.SaveAsPDF( "image/simple1dcanvas_log.pdf" );
+    c.SaveAsCPP( "image/test.cc" );
   }
-
   {// Stacking test
     TRandom3 r;
     TH1D h1( "h1_new", "", 21, -10, 10 );
@@ -101,7 +104,6 @@ main( int argc, char* argv[] )
     c.SaveAsPNG( "image/simple1dcanvas_stack_log_highres.png", 300 );
     c.SaveAsPDF( "image/simple1dcanvas_stack_log.pdf" );
   }
-
   // ROOFIT testing
   {
     RooRealVar x( "x", "x", -10, 10, "GeV/#it{c}^2" );
@@ -114,7 +116,7 @@ main( int argc, char* argv[] )
     plt::Simple1DCanvas c2( x );
 
     auto& dgraph = c2.PlotData( d,
-      plt::EntryText("Data?"),
+      plt::EntryText( "Data?" ),
       plt::MarkerStyle( plt::sty::mkrcircle ),
       plt::MarkerSize( 0.5 ),
       plt::MarkerColor( plt::col::black ),

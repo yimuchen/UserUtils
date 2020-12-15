@@ -24,8 +24,8 @@ namespace plt {
  * @details This will make the Pad1D instance properly spawn the _frame that is
  * capable for generating plotting objects for RooFit data objects.
  */
-Pad1D::Pad1D( const PadSize& size, const RangeByVar& range ) :
-  PadBase( size ),
+Pad1D::Pad1D( Canvas* c, const PadSize& size, const RangeByVar& range ) :
+  PadBase( c, size ),
   _frame( range ),
   _workingstack( nullptr ),
   _datamax( 0 ),
@@ -34,16 +34,16 @@ Pad1D::Pad1D( const PadSize& size, const RangeByVar& range ) :
   _legendposition( align::top_right )
 {
   // Common setup for pads
-  TPad::SetFillColorAlpha( usr::plt::col::white, 0 );
-  TPad::SetTicks( 1, 1 );
-  _init_legend();
+  _pad->SetFillColorAlpha( usr::plt::col::white, 0.5 );
+  _pad->SetTicks( 1, 1 );
 }
 
 /**
  * @brief Construct a Pad1D with a limit x range.
  */
-Pad1D::Pad1D( const PadSize& size, const double min, const double max ) :
-  PadBase( size ),
+Pad1D::Pad1D( Canvas* c, const PadSize& size
+            , const double min, const double max ) :
+  PadBase( c, size ),
   _frame( min, max ),
   _workingstack( nullptr ),
   _datamax( 0 ),
@@ -52,8 +52,7 @@ Pad1D::Pad1D( const PadSize& size, const double min, const double max ) :
   _legendposition( align::top_right )
 {
   // Common setup for pads
-  TPad::SetTicks( 1, 1 );
-  _init_legend();
+  _pad->SetTicks( 1, 1 );
 }
 
 /**
@@ -63,8 +62,8 @@ Pad1D::Pad1D( const PadSize& size, const double min, const double max ) :
  * Note that the axis range would be determined by the object that is plotted
  * first into the Pad. So take care of plotting order if that is an issue..
  */
-Pad1D::Pad1D( const PadSize& size ) :
-  PadBase( size ),
+Pad1D::Pad1D( Canvas* c, const PadSize& size ) :
+  PadBase( c, size ),
   _workingstack( nullptr ),
   _datamax( 0 ),
   _datamin( 0.3 ),
@@ -72,8 +71,7 @@ Pad1D::Pad1D( const PadSize& size ) :
   _legendposition( align::top_right )
 {
   // Common setup for pads
-  TPad::SetTicks( 1, 1 );
-  _init_legend();
+  _pad->SetTicks( 1, 1 );
 }
 
 /**
@@ -85,6 +83,9 @@ Pad1D::Pad1D( const PadSize& size ) :
 void
 Pad1D::InitDraw()
 {
+  PadBase::InitDraw();
+
+  _init_legend();
   // Setting axis digits
   TGaxis::SetMaxDigits( 4 );
 
@@ -99,8 +100,7 @@ Pad1D::InitDraw()
   if( _frame.getPlotVar() ){
     SetHistAxisTitles(
       _frame.getPlotVar()->GetTitle(),
-      _frame.getPlotVar()->getUnit()
-      );
+      _frame.getPlotVar()->getUnit() );
   }
 }
 
@@ -115,11 +115,11 @@ Pad1D::InitDraw()
 void
 Pad1D::Finalize()
 {
-  TPad::cd();
+  _pad->cd();
   PadBase::Finalize();
   FinalizeLegend( _legendposition );
   FixVLines();
-  TPad::RedrawAxis();
+  _pad->RedrawAxis();
 }
 
 /**
@@ -136,11 +136,11 @@ Pad1D::~Pad1D()
 void
 Pad1D::SetLogy( int flag )
 {
-  TPad::SetLogy( flag );
+  _pad->SetLogy( flag );
   if( flag && !CheckLogy() ){
     std::cerr << "[PAD1D] Data-objects y-values in Pad1D is not "
       "positive definite. Plot may break!" << std::endl;
-    // TPad::SetLogy( 0 );
+    // _pad->TPad_().SetLogy( 0 );
   }
   AutoSetYRange();
 }
@@ -151,11 +151,11 @@ Pad1D::SetLogy( int flag )
 void
 Pad1D::SetLogx( int flag )
 {
-  TPad::SetLogx( flag );
+  _pad->SetLogx( flag );
   if( flag && !CheckLogx() ){
     std::cerr << "[PAD1D] Data-objects x-values in Pad1D is not "
       "positive definite. Unsetting the log option." << std::endl;
-    TPad::SetLogx( 0 );
+    _pad->SetLogx( 0 );
   }
 }
 
@@ -169,7 +169,7 @@ Pad1D::SetLogx( int flag )
 bool
 Pad1D::CheckLogy() const
 {
-  return GetDataMin() > 0 ;
+  return GetDataMin() > 0;
 }
 
 bool

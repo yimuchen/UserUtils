@@ -37,7 +37,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist,
                               { Plot2DF( plot2df::heat )  } );
 
-  const int opt = args.Get<Plot2DF>();
+  const int opt = args.GetInt( "Plot2DF" );
 
   const std::string legopt = opt == plot2df::heat ? "" :
                              opt == plot2df::heatcont ? "L" :
@@ -79,7 +79,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     PlotObj( hist, "SCAT SAME" );
     break;
   case plot2df_dummy:
-    PlotObj( hist, ( args.Get<Plot2DF>().str() + " SAME" ).c_str() );
+    PlotObj( hist, ( args.GetStr( "Plot2DF" ) + " SAME" ).c_str() );
     break;
 
   default:
@@ -87,8 +87,9 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     break;
   }
 
-  if( args.Has<EntryText>() ){
-    _legend.AddEntry( &hist, args.Get<EntryText>().c_str(), legopt.c_str() );
+  if( args.Has( "EntryText" ) ){
+    _legend.AddEntry( &hist
+                    , args.Get( "EntryText" ).getString( 0 ), legopt.c_str() );
   }
 
   SetLineAttr( hist, args );
@@ -121,7 +122,7 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist,
                               { Plot2DF( plot2df::heat )  } );
 
-  const int opt = args.Get<Plot2DF>();
+  const int opt = args.GetInt( "Plot2DF" );
 
   const std::string legopt = opt == plot2df::heat ? "" :
                              opt == plot2df::heatcont ? "L" :
@@ -156,15 +157,16 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
     PlotObj( graph, "CONT3 SAME" );
     break;
   case plot2df_dummy:
-    PlotObj( graph, args.Get<Plot2DF>().c_str() );
+    PlotObj( graph, args.GetStr( "Plot2DF" ).c_str() );
     break;
   default:
     std::cerr << "Skipping over invalid value" << std::endl;
     break;
   }
 
-  if( args.Has<EntryText>() ){
-    _legend.AddEntry( &graph, args.Get<EntryText>().c_str(), legopt.c_str() );
+  if( args.Has( "EntryText" ) ){
+    _legend.AddEntry( &graph
+                    , args.Get( "EntryText" ).getString( 0 ), legopt.c_str() );
   }
 
   SetLineAttr( graph, args );
@@ -226,7 +228,7 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist,
                               {PlotType( plottype::scatter ) } );
 
-  const int opt = args.Get<PlotType>();
+  const int opt = args.GetInt( "PlotType" );
 
   std::string legopt = "PLE";
 
@@ -238,7 +240,7 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
     legopt = "L";
   } else if( opt == plottype_dummy ){
     // Special case for raw options parsing. (Must remove axis and add string)
-    PadBase::PlotObj( graph, args.Get<PlotType>().c_str() );
+    PadBase::PlotObj( graph, args.GetStr( "PlotType" ).c_str() );
   } else {// Skipping over stuff
     std::cerr << "Skipping over invalid value" << std::endl;
   }
@@ -247,8 +249,9 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   graph.GetHistogram()->SetMaximum( usr::plt::GetYmax( graph ) );
   graph.GetHistogram()->SetMinimum( usr::plt::GetYmin( graph ) );
 
-  if( args.Has<EntryText>() ){
-    _legend.AddEntry( &graph, args.Get<EntryText>().c_str(), legopt.c_str() );
+  if( args.Has( "EntryText" ) ){
+    _legend.AddEntry( &graph
+                    , args.Get( "EntryText" ).getString( 0 ), legopt.c_str() );
   }
 
   SetLineAttr( graph, args );
@@ -271,7 +274,7 @@ Pad2DFlat::MakeLegend()
   // Early exit if Legend wasn't requested
   if( !_legend.GetListOfPrimitives() ){ return; }
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
-  TPad::cd();
+  TPad_().cd();
   float width  = 0;
   float height = 1.2*LineHeight() * _legend.GetListOfPrimitives()->GetEntries();
 
@@ -297,7 +300,7 @@ Pad2DFlat::MakeLegend()
   _legend.SetY1NDC( ymin );
   _legend.SetY2NDC( ymax );
 
-  if( !TPad::FindObject( &_legend ) ){
+  if( !TPad_().FindObject( &_legend ) ){
     PadBase::PlotObj( _legend );
   }
 }

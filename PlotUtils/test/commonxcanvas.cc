@@ -25,9 +25,9 @@ main( int argc, char* argv[] )
   TGraph g3( 10, x,  x );
 
   usr::plt::CommonXCanvas c( 3 );
-  c.PlotGraph<0>( g1, usr::plt::TrackY(usr::plt::TrackY::both) );
-  c.PlotGraph<1>( g2, usr::plt::TrackY(usr::plt::TrackY::both) );
-  c.PlotGraph<2>( g3, usr::plt::TrackY(usr::plt::TrackY::both) );
+  c.PlotGraph<0>( g1, usr::plt::TrackY(usr::plt::tracky::both) );
+  c.PlotGraph<1>( g2, usr::plt::TrackY(usr::plt::tracky::both) );
+  c.PlotGraph<2>( g3, usr::plt::TrackY(usr::plt::tracky::both) );
 
   c.SaveAsPDF("commonxcanvas.pdf");
 }

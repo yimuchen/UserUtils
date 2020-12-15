@@ -42,17 +42,27 @@ Canvas::Canvas(
   const length_t height,
   const FontSet& fontset
   ) :
-  TCanvas( RandomString( 12 ).c_str(), "", width, height ),
-  _fontset( fontset )
+  _fontset( fontset ),
+  _canvas( new TCanvas( RandomString( 12 ).c_str(), "", width, height ) )
 {}
 
 /**
- * @brief Clears all the pad instances from memory stack.
+ * @brief Delete the contained TCanvas object
  */
 Canvas::~Canvas()
 {
-  for( auto pad : _padlist ){
-    delete pad;
+  // We cannot explicitly delete the canvas directly when running this library in
+  // python, as PyROOT has ownership of the TCanvas instance, resulting in a
+  // segmentation fault when the python session exits before explicitly deleting
+  // the object python side (due to the black magic that is involved with how
+  // ROOT works in python, I cannot investigate more, but I guess it has
+  // something to do with the sequence in which python objects are released).
+
+  // Since having explicitly calling `del` in python is extremely non-pythonic
+  // for the user, we will the use the kIsOnHeap flag of the canvas to detect
+  // when the canvas can be deleted.
+  if( _canvas->IsOnHeap() ){
+    delete _canvas; // TCanvas::Delete cannot be used directly
   }
 }
 
@@ -73,8 +83,8 @@ Canvas::Finalize( const fs::path& finalpath )
     pad->Finalize();
   }
 
-  TPad::cd();
-  TCanvas::Update();
+  TCanvas_().cd();
+  TCanvas_().Update();
 }
 
 /**
@@ -236,13 +246,13 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
     "-dQUIET",
     "-dBATCH",
     usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
-    "-sstdout=/dev/null",                // suppressing all error
+    "-sstdout=/dev/null",                 // suppressing all error
     "-sDEVICE=pngalpha",
-    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
-    usr::fstr( "-r%d",                    dpi ),
-    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  Width()*scale ),
-    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", Height()*scale ),
-    "-dUseCropBox",                      // Trimming the PDF file
+    usr::fstr( "-sOutputFile=%s",          filepath.string() ),
+    usr::fstr( "-r%d",                     dpi ),
+    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",   Width()*scale ),
+    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d",  Height()*scale ),
+    "-dUseCropBox",                       // Trimming the PDF file
     "-f",
     tmppath };
 
@@ -253,7 +263,7 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
               << "function (Display maybe bad!)" << std::endl;
     fs::remove( tmppath );
     gErrorIgnoreLevel = kWarning;
-    TCanvas::SaveAs( filepath.c_str() );
+    TCanvas_().SaveAs( filepath.c_str() );
   }
 }
 
@@ -272,7 +282,7 @@ Canvas::SaveToROOT( const fs::path& filepath, const std::string& objname )
   Finalize( filepath );
   gErrorIgnoreLevel = kWarning;
   TFile* myfile = TFile::Open( filepath.c_str(), "UPDATE" );
-  TCanvas::Write( objname.c_str(), TFile::kOverwrite );
+  TCanvas_().Write( objname.c_str(), TFile::kOverwrite );
   myfile->Close();
   delete myfile;
 }
@@ -293,7 +303,7 @@ Canvas::SaveAsCPP( const fs::path& filepath )
     = usr::fstr( "/tmp/%s_%s.cxx", RandomString( 6 ), filepath.stem().string() );
 
   gErrorIgnoreLevel = kWarning;
-  TCanvas::SaveAs( tempfile.c_str() );
+  TCanvas_().SaveAs( tempfile.c_str() );
 
   fs::copy( tempfile, filepath, fs::copy_options::overwrite_existing  );
   fs::remove( tempfile );
@@ -313,7 +323,7 @@ Canvas::SaveTempPDF( const fs::path& finalpath )
     finalpath.stem().string() );
 
   gErrorIgnoreLevel = kWarning;
-  TCanvas::SaveAs( temppdf.c_str() );
+  TCanvas_().SaveAs( temppdf.c_str() );
   return temppdf;
 }
 

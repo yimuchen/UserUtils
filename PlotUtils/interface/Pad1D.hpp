@@ -50,9 +50,9 @@ namespace plt {
 class Pad1D : public PadBase
 {
 protected:
-  Pad1D( const PadSize&, const RangeByVar& );
-  Pad1D( const PadSize&, const double min, const double max );
-  Pad1D( const PadSize& );
+  Pad1D( Canvas* ,const PadSize&, const RangeByVar& );
+  Pad1D( Canvas* ,const PadSize&, const double min, const double max );
+  Pad1D( Canvas* ,const PadSize& );
 
   virtual void InitDraw();
   virtual void Finalize();
@@ -64,62 +64,160 @@ public:
   Pad1D()               = delete;
   Pad1D( const Pad1D& ) = delete;
 
-#define DECLARE_PAD1D_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )              \
-  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg>& );                  \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> & list ){   \
-    return FUNC_NAME( *x, list );                                              \
-  }                                                                            \
-  inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }           \
-  inline RET_TYPE FUNC_NAME( TYPE* x ){ return FUNC_NAME( x, {} ); }           \
-  template<typename ... Args>                                                  \
-  inline RET_TYPE FUNC_NAME( TYPE& x, const RooCmdArg & arg1, Args ... args ){ \
-    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
-  }                                                                            \
-  template<typename ... Args>                                                  \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const RooCmdArg & arg1, Args ... args ){ \
-    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
-  }
-
   /**
    * @{
    * @brief Plotting 1D histogram objects
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotHist, TH1D, TH1D& );
+  TH1D& PlotHist( TH1D&, const std::vector<RooCmdArg>& );
+  inline TH1D&
+  PlotHist( TH1D* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotHist( *x, list );
+  }
+  inline TH1D& PlotHist( TH1D& x ){ return PlotHist( &x, {} ); }
+  inline TH1D& PlotHist( TH1D* x ){ return PlotHist( x, {} );}
+  template<typename ... Args>
+  inline TH1D&
+  PlotHist( TH1D& x, const RooCmdArg & arg1, Args ... args )
+  {
+    return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TH1D&
+  PlotHist( TH1D* x, const RooCmdArg & arg1, Args ... args )
+  {
+    return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
   /**
    * @{
    * @brief Special case for TProfile plotting
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotProfile, TProfile, TH1D& );
+  TH1D& PlotProfile( TProfile&, const std::vector<RooCmdArg>& );
+  inline TH1D&
+  PlotProfile( TProfile* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotProfile( *x, list );
+  }
+  inline TH1D& PlotProfile( TProfile& x ){ return PlotProfile( x, {} ); }
+  inline TH1D& PlotProfile( TProfile* x ){ return PlotProfile( *x, {} );}
+  template<typename ... Args>
+  inline TH1D&
+  PlotProfile( TProfile& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotProfile( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TH1D&
+  PlotProfile( TProfile* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotProfile( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
   /**
    * @{
    * @brief Plotting TEfficiency objects
    */
+  TEfficiency& PlotEff( TEfficiency&, const std::vector<RooCmdArg>& );
+  inline TEfficiency&
+  PlotEff( TEfficiency* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotEff( *x, list );
+  }
+  inline TEfficiency& PlotEff( TEfficiency& x ){ return PlotEff( x, {} ); }
+  inline TEfficiency& PlotEff( TEfficiency* x ){ return PlotEff( *x, {} );}
+  template<typename ... Args>
+  inline TEfficiency&
+  PlotEff( TEfficiency& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotEff( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TEfficiency&
+  PlotEff( TEfficiency* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotEff( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotEff,   TEfficiency, TEfficiency& );
 
   /**
    * @{
    * @brief Plotting x-y scatter graph objects
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotGraph, TGraph,      TGraph& );
+  TGraph& PlotGraph( TGraph&, const std::vector<RooCmdArg>& );
+  inline TGraph&
+  PlotGraph( TGraph* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotGraph( *x, list );
+  }
+  inline TGraph& PlotGraph( TGraph& x ){ return PlotGraph( x, {} ); }
+  inline TGraph& PlotGraph( TGraph* x ){ return PlotGraph( x, {} );}
+  template<typename ... Args>
+  inline TGraph&
+  PlotGraph( TGraph& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TGraph&
+  PlotGraph( TGraph* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
   /**
    * @{
    * @brief Plotting ROOT flavoured 1D function
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotFunc, TF1, TGraph& );
+  TGraph& PlotFunc( TF1&, const std::vector<RooCmdArg>& );
+  inline TGraph&
+  PlotFunc( TF1* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotFunc( *x, list );
+  }
+  inline TGraph& PlotFunc( TF1& x ){ return PlotFunc( x, {} ); }
+  inline TGraph& PlotFunc( TF1* x ){ return PlotFunc( x, {} );}
+  template<typename ... Args>
+  inline TGraph&
+  PlotFunc( TF1& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TGraph&
+  PlotFunc( TF1* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
   /**
    * @{
    * @brief Plotting RooFit's @ROOT{RooAbsData}s
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotData, RooAbsData, TGraphAsymmErrors& );
+  TGraphAsymmErrors& PlotData( RooAbsData&, const std::vector<RooCmdArg>& );
+  inline TGraphAsymmErrors&
+  PlotData( RooAbsData* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotData( *x, list );
+  }
+  inline TGraphAsymmErrors& PlotData( RooAbsData& x ){ return PlotData( x, {} ); }
+  inline TGraphAsymmErrors& PlotData( RooAbsData* x ){ return PlotData( x, {} );}
+  template<typename ... Args>
+  inline TGraphAsymmErrors&
+  PlotData( RooAbsData& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotData( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TGraphAsymmErrors&
+  PlotData( RooAbsData* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotData( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
   /**
@@ -127,7 +225,26 @@ public:
    * @brief
    * Plotting RooFit's @ROOT{RooAbsPdf}s
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( PlotPdf, RooAbsPdf, TGraph& );
+  TGraph& PlotPdf( RooAbsPdf&, const std::vector<RooCmdArg>& );
+  inline TGraph&
+  PlotPdf( RooAbsPdf* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotPdf( *x, list );
+  }
+  inline TGraph& PlotPdf( RooAbsPdf& x ){ return PlotPdf( x, {} ); }
+  inline TGraph& PlotPdf( RooAbsPdf* x ){ return PlotPdf( x, {} );}
+  template<typename ... Args>
+  inline TGraph&
+  PlotPdf( RooAbsPdf& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotPdf( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TGraph&
+  PlotPdf( RooAbsPdf* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotPdf( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
 
@@ -135,18 +252,29 @@ public:
    * @{
    *  @brief function for drawing a horizontal line across pad
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( DrawHLine, const double, TLine& );
+  TLine& DrawHLine( const double&, const std::vector<RooCmdArg>& );
+  inline TLine& DrawHLine( const double& x ){ return DrawHLine( x, {} ); }
+  template<typename ... Args>
+  inline TLine&
+  DrawHLine( const double& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return DrawHLine( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
   /**
    * @{
    * @brief Function for drawing a vertical along in the pad
    */
-  DECLARE_PAD1D_PLOT_FUNCTIONS( DrawVLine, const double, TLine& );
+  TLine& DrawVLine( const double&, const std::vector<RooCmdArg>& );
+  inline TLine& DrawVLine( const double& x ){ return DrawVLine( x, {} ); }
+  template<typename ... Args>
+  inline TLine&
+  DrawVLine( const double& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return DrawVLine( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
-
-
-#undef DECLARE_PAD1D_PLOT_FUNCTIONS
 
   void DrawCMSLabel( const std::string&      = cap::prelim,
                      const std::string& main = "CMS" );
@@ -269,9 +397,9 @@ protected:
   void FixVLines();
 
   void _init_legend();
-  void AddLegendEntry( TH1D&, const EntryText&, const PlotType& );
-  void AddLegendEntry( TGraph&, const EntryText&, const PlotType& );
-  void AddLegendEntry( TEfficiency&, const EntryText&, const PlotType& );
+  void AddLegendEntry( TH1D&, const RooCmdArg&, const RooCmdArg& );
+  void AddLegendEntry( TGraph&, const RooCmdArg&, const RooCmdArg& );
+  void AddLegendEntry( TEfficiency&, const RooCmdArg&, const RooCmdArg& );
 
   // Helper function for Plot<> Functions
   void    TrackObjectY( const TObject& obj, const int tracky );

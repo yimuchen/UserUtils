@@ -111,7 +111,7 @@ BatchRequest::GenerateSampleComparePlot()
       }
       c.PlotHist( process.GetScaledClone( histrequest.filekey, 1.0 ),
         usr::plt::PlotType( usr::plt::hist ),
-        usr::plt::TrackY( usr::plt::TrackY::both ),
+        usr::plt::TrackY( usr::plt::tracky::both ),
         usr::plt::LineColor( usr::plt::col::color( process.color ) ),
         usr::plt::EntryText( process.name ) );
     }

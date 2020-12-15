@@ -52,8 +52,8 @@ Pad1D::_init_legend()
 void
 Pad1D::AddLegendEntry(
   TH1D&            hist,
-  const EntryText& entryopt,
-  const PlotType&  plotopt )
+  const RooCmdArg& entryopt,
+  const RooCmdArg& plotopt )
 {
   const int popt    = plotopt.getInt( 0 );
   const bool varbin = hist.GetXaxis()->IsVariableBinSize();
@@ -65,19 +65,20 @@ Pad1D::AddLegendEntry(
     ( popt == plottype::histnewstack       ) ? "F"    :
     ( popt == plottype::scatter && varbin  ) ? "PLE"  :
     ( popt == plottype::scatter && !varbin ) ? "PE"   :
-    ( plotopt.getString( 0 )               ) ? "PLFE" :
+    ( plotopt.getString( 0 ) ) ? "PLFE" :
     "";
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
-    _legend.AddEntry( &hist, entryopt.c_str(), legopt.c_str() );
+    _legend.AddEntry( &hist, entryopt.getString( 0 ), legopt.c_str() );
 
   } else {
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &hist, entryopt.c_str(), legopt.c_str() );
-    if( entryopt.PlaceLast() ){
+    auto entry = new TLegendEntry( &hist
+                                 , entryopt.getString( 0 ), legopt.c_str() );
+    if( entryopt.getInt( 0 ) ){
       _legend.GetListOfPrimitives()->AddLast( entry );
     } else {
       _legend.GetListOfPrimitives()->AddFirst( entry );
@@ -107,8 +108,8 @@ Pad1D::AddLegendEntry(
 void
 Pad1D::AddLegendEntry(
   TGraph&          graph,
-  const EntryText& entryopt,
-  const PlotType&  plotopt )
+  const RooCmdArg& entryopt,
+  const RooCmdArg& plotopt )
 {
   const int plottype = plotopt.getInt( 0 );
   double x_width     = 0;
@@ -139,13 +140,14 @@ Pad1D::AddLegendEntry(
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
-    _legend.AddEntry( &graph, entryopt.c_str(), legopt.c_str() );
+    _legend.AddEntry( &graph, entryopt.getString( 0 ), legopt.c_str() );
   } else {
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &graph, entryopt.c_str(), legopt.c_str() );
-    if( entryopt.PlaceLast() ){
+    auto entry = new TLegendEntry( &graph
+                                 , entryopt.getString( 0 ), legopt.c_str() );
+    if( entryopt.getInt( 0 ) ){
       _legend.GetListOfPrimitives()->AddLast( entry );
     } else {
       _legend.GetListOfPrimitives()->AddFirst( entry );
@@ -165,15 +167,15 @@ Pad1D::AddLegendEntry(
  * - plottype::histerr: Fill only
  * - other/undetermined: all attributes would be used.
  *
- * @param graph    graph to be added to legend.
+ * @param eff      Efficiency object to be added to legend.
  * @param entryopt text for entry in legend.
  * @param plotopt  plotting options used for graph object.
  */
 void
 Pad1D::AddLegendEntry(
   TEfficiency&     eff,
-  const EntryText& entryopt,
-  const PlotType&  plotopt )
+  const RooCmdArg& entryopt,
+  const RooCmdArg& plotopt )
 {
   const int plottype = plotopt.getInt( 0 );
 
@@ -186,13 +188,14 @@ Pad1D::AddLegendEntry(
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
-    _legend.AddEntry( &eff, entryopt.c_str(), legopt.c_str() );
+    _legend.AddEntry( &eff, entryopt.getString( 0 ), legopt.c_str() );
   } else {
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &eff, entryopt.c_str(), legopt.c_str() );
-    if( entryopt.PlaceLast() ){
+    auto entry = new TLegendEntry( &eff
+                                 , entryopt.getString( 0 ), legopt.c_str() );
+    if( entryopt.getInt( 0 ) ){
       _legend.GetListOfPrimitives()->AddLast( entry );
     } else {
       _legend.GetListOfPrimitives()->AddFirst( entry );
@@ -228,9 +231,9 @@ Pad1D::FinalizeLegend( const align newposition )
   // Early exit if Legend wasn't requested
   if( !_legend.GetListOfPrimitives() ){ return; }
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
-  if( !TPad::FindObject( &_legend ) ){ PlotObj( _legend, "" ); }
+  if( !_pad->FindObject( &_legend ) ){ PlotObj( _legend, "" ); }
 
-  TPad::cd();
+  _pad->cd();
   double width  = 0;
   double height = 0;
 

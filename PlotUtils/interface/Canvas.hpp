@@ -26,6 +26,7 @@
 #include "TPad.h"
 
 #include <fstream>
+#include <memory>
 #include <string>
 
 namespace usr  {
@@ -67,7 +68,7 @@ typedef font FontSet;
 /*-----------------------------------------------------------------------------
  *  Detailed documentation in doc/
    --------------------------------------------------------------------------*/
-class PadBase : protected TPad
+class PadBase
 {
 public:
   virtual ~PadBase ();
@@ -82,29 +83,6 @@ public:
   double RelHeight() const;
   double AbsWidth() const;
   double AbsHeight() const;
-
-  /**
-   * @{
-   * @brief Pass throught for the margine setting and getting functions.
-   */
-  inline void
-  SetTopMargin( const float x ){ TPad::SetTopMargin( x ); }
-  inline void
-  SetLeftMargin( const float x ){ TPad::SetLeftMargin( x ); }
-  inline void
-  SetRightMargin( const float x ){ TPad::SetRightMargin( x ); }
-  inline void
-  SetBottomMargin( const float x ){ TPad::SetBottomMargin( x ); }
-
-  inline float
-  GetTopMargin() const { return TPad::GetTopMargin(); }
-  inline float
-  GetLeftMargin() const { return TPad::GetLeftMargin(); }
-  inline float
-  GetRightMargin() const { return TPad::GetRightMargin(); }
-  inline float
-  GetBottomMargin() const { return TPad::GetBottomMargin(); }
-  /** @} */
 
   float FontSize() const;
   short FontFace() const;
@@ -146,7 +124,7 @@ public:
 
   /** @brief pointer interface to PlotObj */
   inline void
-  PlotObj( TObject* obj, Option_t* opt = "" ){  PlotObj( *obj, opt ); }
+  PlotObj( TObject* obj, Option_t* opt = "" ){ PlotObj( *obj, opt ); }
 
   bool HasObject( const TObject& ) const;
   inline bool
@@ -166,7 +144,7 @@ public:
   MakeObj( Args ... args )
   {
     _generated_objects.emplace_back( new ObjType( args ... ) );
-    return *dynamic_cast<ObjType*>( _generated_objects.back().get() );
+    return *dynamic_cast<ObjType*>( _generated_objects.back() );
   }
 
   void ClaimObject( TObject* );
@@ -174,27 +152,43 @@ public:
   // Changing plot sequence.
   bool MoveTargetToBefore( const TObject& target, const TObject& before );
 
-#define TPAD_RETURN_PASSTHROUGH( RETURN_TYPE, FUNCTION_NAME ) \
-  template<typename ... Args>                                 \
-  inline RETURN_TYPE FUNCTION_NAME( Args ... args ){          \
-    return TPad::FUNCTION_NAME( args ... );                   \
+  /**
+   * @{
+   * @brief Pass-through interface for Margin control
+   */
+  inline float
+  GetTopMargin() const { return _pad->GetTopMargin(); }
+  inline float
+  GetLeftMargin() const { return _pad->GetLeftMargin(); }
+  inline float
+  GetRightMargin() const { return _pad->GetRightMargin(); }
+  inline float
+  GetBottomMargin() const { return _pad->GetBottomMargin(); }
+
+  inline void SetTopMargin( const float x )   {  _pad->SetTopMargin( x ); }
+  inline void SetLeftMargin( const float x )  {  _pad->SetLeftMargin( x ); }
+  inline void SetRightMargin( const float x ) {  _pad->SetRightMargin( x ); }
+  inline void SetBottomMargin( const float x ){  _pad->SetBottomMargin( x ); }
+  /** @} */
+
+
+  inline void
+  SetFillColorAlpha( const int x, const float y )
+  {
+    _pad->SetFillColorAlpha( x, y );
   }
 
-#define TPAD_VOID_PASSTHROUGH( FUNCTION_NAME ) \
-  template<typename ... Args>                  \
-  inline void FUNCTION_NAME( Args ... args ){  \
-    TPad::FUNCTION_NAME( args ... );           \
-  }
-
-  TPAD_VOID_PASSTHROUGH( SetFillColorAlpha );
-
-
-#undef TPAD_RETURN_PASSTHROUGH
-#undef TPAD_VOID_PASSTHROUGH
 
   // Access to Parent
   const Canvas& ParentCanvas() const;
   Canvas&       ParentCanvas();
+
+
+
+  // Access to the base object
+  inline const TPad&
+               TPad_() const { return *( _pad ); }
+  inline TPad& TPad_()       { return *( _pad ); }
 
 protected:
 
@@ -207,45 +201,47 @@ protected:
    *  updates when WriteLine() is called. */
   float _latex_cursory;
 
-  PadBase( const PadSize& );
+  PadBase( Canvas*, const PadSize& );
   const FontSet& Font() const;
   virtual void   InitDraw();
   virtual void   Finalize();
 
-  /** @brief a lot of objects for plotting will be dynamically generated (ex. text objects )
-   * The Pad object will then claim ownership of these objects
+  /** @brief a lot of objects for plotting will be dynamically generated (ex.
+   * text objects ) The Pad object will then claim ownership of these objects
+   * and will be cleaned when the object is deleted.
    */
-  std::vector<std::unique_ptr<TObject> > _generated_objects;
+  std::vector<TObject*> _generated_objects;
 
   /** @brief Getting the list of objects to be plotted on the pad */
   inline TList*
-  GetListOfPrimitives() const { return TPad::GetListOfPrimitives(); }
+  GetListOfPrimitives() const { return _pad->GetListOfPrimitives(); }
+
+  Canvas* _parentcanvas;
+  TPad* _pad;
 };
 
 /*-----------------------------------------------------------------------------
  *  Detailed documentation in doc/
    --------------------------------------------------------------------------*/
-class Canvas : protected TCanvas
+class Canvas
 {
 public:
   Canvas (
     const length_t width,
     const length_t height,
-    const FontSet& = FontSet()
-    );
+    const FontSet& = FontSet() );
   virtual ~Canvas ();
 
   template<typename PadType, typename ... Args>
   PadType&
   Add( const PadSize& padsize, Args ... args )
   {
-    TCanvas::cd();// Ensureing the new Pad object spawn under this Canvas
-
-    _padlist.push_back( new PadType( padsize, args ... ) );
-    _padlist.back()->Draw();// Drawing the Pad object immediately
-                            // to make sure the relation is recorded.
+    _canvas->cd();// Ensureing the new Pad object spawn under this Canvas
+    _padlist.emplace_back( new PadType( this, padsize, args ... ) );
+    _padlist.back()->_pad->Draw();// Drawing the Pad object immediately
+                                  // to make sure the relation is recorded.
     _padlist.back()->InitDraw();// Allow for pad to predefine draw objects
-    return *( dynamic_cast<PadType*>( _padlist.back() ) );
+    return *( dynamic_cast<PadType*>( _padlist.back().get() ) );
   }
 
   /**
@@ -256,20 +252,27 @@ public:
   PadType&
   GetPad( const unsigned i )
   {
-    return *( dynamic_cast<PadType*>( _padlist.at( i ) ) );
+    return *( dynamic_cast<PadType*>( _padlist.at( i ).get() ) );
+  }
+
+  template<typename PadType = PadBase>
+  const PadType&
+  GetPad( const unsigned i ) const
+  {
+    return *( dynamic_cast<PadType*>( _padlist.at( i ).get() ) );
   }
 
   /**
    * @brief A more comprehensive interface to the canvas dimensions.
    */
   inline unsigned
-  Width() const { return TCanvas::GetWw(); }
+  Width() const { return TCanvas_().GetWw(); }
 
   /**
    * @brief A more comprehensive interface ot the canvas dimensions.
    */
   inline unsigned
-  Height() const { return TCanvas::GetWh(); }
+  Height() const { return TCanvas_().GetWh(); }
 
   inline const FontSet&
   Font() const { return _fontset; }
@@ -279,8 +282,16 @@ public:
   void SaveAsCPP( const fs::path& );
   void SaveToROOT( const fs::path&, const std::string& name );
 
+  // string interface to allow for python interfacing
+  // void SaveAsPDF( const std::string& s ){ SaveAsPDF( fs::path( s ) ); }
+
   inline void
-  Clear(){ TCanvas::Clear(); }
+  Clear(){ TCanvas_().Clear(); }
+
+
+  inline const TCanvas&
+                  TCanvas_() const { return *( _canvas ); }
+  inline TCanvas& TCanvas_()       { return *( _canvas ); }
 
 protected:
   void     Finalize( const fs::path& );
@@ -302,7 +313,8 @@ protected:
    * non-public inheritance of objects that already have its `new` operator
    * overloaded.
    */
-  std::vector<PadBase*> _padlist;
+  std::vector<std::unique_ptr<PadBase> > _padlist;
+  TCanvas* _canvas;
 };
 
 }/* plt */

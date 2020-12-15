@@ -15,8 +15,9 @@ namespace usr {
 namespace plt {
 
 /**
- * Returning the maximum bin-value of a histogram object with the bin error
- * taken into consideration.
+ * @brief Getting the maximum y value of a histogram
+ * @details Returning the maximum bin-value of a histogram object with the bin
+ * error taken into consideration.
  */
 double
 GetYmax( const TH1D& hist )
@@ -37,8 +38,9 @@ GetYmax( const TH1D& hist )
 }
 
 /**
- * Returning the minimum bin value of a histogram object, with the bin error
- * taken into account.
+ * @brief Getting the minimum y value of a histogram
+ * @details Returning the minimum bin value of a histogram object, with the bin
+ * error taken into account.
  */
 double
 GetYmin( const TH1D& hist )
@@ -63,9 +65,10 @@ GetYmin( const TH1D& hist )
 }
 
 /**
- * Returning maximum y value stored in a TGraphs object, with the Y error bar
- * taken into account (The GetErrorYhigh method is virtual, so TGraphs with
- * asymmetric errors would be handled properly.)
+ * @brief Get the maximum y value stored in the TGraph
+ * @details Returning maximum y value stored in a TGraphs object, with the Y
+ * error bar taken into account (The GetErrorYhigh method is virtual, so TGraphs
+ * with asymmetric errors would be handled properly.)
  */
 double
 GetYmax( const TGraph& x )
@@ -81,8 +84,9 @@ GetYmax( const TGraph& x )
 }
 
 /**
- * Returning the minimum y value stored in a TGraph object, with the y error
- * bar taken into account. (Again exploiting the fact that GetErrorYlow is
+ * @brief Get the maximum y value stored in the TGraph
+ * @details Returning the minimum y value stored in a TGraph object, with the y
+ * error bar taken into account. (Again exploiting the fact that GetErrorYlow is
  * virtual.)
  */
 double
@@ -102,8 +106,9 @@ GetYmin( const TGraph& x )
 }
 
 /**
- * Returning the minimum value of x stored in the TGraph object with x errors
- * taken into account.
+ * @brief Get the minimmum x value of a graph.
+ * @details Returning the minimum value of x stored in the TGraph object with x
+ * errors taken into account.
  */
 double
 GetXmin( const TGraph& x )
@@ -120,8 +125,9 @@ GetXmin( const TGraph& x )
 }
 
 /**
- * Returning the maximum value of x stored in the TGraph object with x errors
- * taken into account.
+ * @brief Get the maximum x value of a graph.
+ * @details Returning the maximum value of x stored in the TGraph object with x
+ * errors taken into account.
  */
 double
 GetXmax( const TGraph& x )
@@ -136,6 +142,12 @@ GetXmax( const TGraph& x )
   return ans;
 }
 
+/**
+ * @brief Get the minimum y value of the TEfficiency object
+ *
+ * This function also takes into account the bin uncertainties which is helpful
+ * for determining plot range.
+ */
 double
 GetYmin( const TEfficiency& x )
 {
@@ -153,6 +165,12 @@ GetYmin( const TEfficiency& x )
   return ans;
 }
 
+/**
+ * @brief Get the maximum y value of the TEfficiency object.
+ *
+ * This function also takes into account the bin uncertainties to allow for help
+ * with determining the plot range.
+ */
 double
 GetYmax( const TEfficiency& x )
 {
@@ -171,8 +189,9 @@ GetYmax( const TEfficiency& x )
 }
 
 /**
- * Retuning the maximum bin value of a THStack object, the bin errors of each
- * histogram would *not* be taken into account. This functions assumes
+ * @brief Getting the minimum y value of te THStack object.
+ * @details Retuning the maximum bin value of a THStack object, the bin errors of
+ * each histogram would *not* be taken into account. This functions assumes
  * *identical* binning of the internal histograms, though this might not be the
  * case. Use at your own risk.
  */
@@ -198,10 +217,10 @@ GetYmax( const THStack& x )
 }
 
 /**
- * Getting the minimum bin value of a THStack object, the bin errors of each
- * internal histogram would *not* be taken into account. This function currently
- * assume *identical* binning for the histograms, though this is not necessary
- * the case. Use at your own risk.
+ * @brief Getting the minimum y value of a THStack object.
+ * @details The bin errors of each internal histogram would *not* be taken into
+ * account. This function currently assume *identical* binning for the
+ * histograms, though this is not necessary the case. Use at your own risk.
  */
 double
 GetYmin( const THStack& x )

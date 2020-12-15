@@ -41,38 +41,79 @@ public:
 
 
   inline Pad1D& Pad( unsigned padid ){ return GetPad<Pad1D>( padid ); }
-  inline Pad1D& FirstPad()           { return Pad( 0 ); }
-  inline Pad1D& LastPad()            { return Pad( _padlist.size()-1 ); }
+  inline Pad1D& FirsTPad_()           { return Pad( 0 ); }
+  inline Pad1D& LasTPad_()            { return Pad( _padlist.size()-1 ); }
 
   template<unsigned padid>
   inline Pad1D& Pad(){ return Pad( padid ); }
 
-
-#define PASSTHROUGH_PLOTFUNC( FUNC_NAME, PLOT_TYPE, RET_TYPE ) \
-  template<unsigned pad_id, typename ... Args>                 \
-  inline RET_TYPE& FUNC_NAME( PLOT_TYPE& obj, Args ... args ){ \
-    CheckPadAxis( &obj );                                  \
-    return Pad<pad_id>().FUNC_NAME( obj, args ... );           \
-  }                                                            \
-  template<unsigned pad_id, typename ... Args>                 \
-  inline RET_TYPE& FUNC_NAME( PLOT_TYPE* obj, Args ... args ){ \
-    CheckPadAxis( obj );                                   \
-    return Pad<pad_id>().FUNC_NAME( obj, args ... );           \
-  }
 
   /**
    * @{
    * @brief passing through for Pad1D plotting function, The pad ID to plot on is
    *        uses template argument to help keep a uniform interface.
    */
-  PASSTHROUGH_PLOTFUNC( PlotHist,  TH1D,       TH1D );
-  PASSTHROUGH_PLOTFUNC( PlotFunc,  TF1,        TGraph );
-  PASSTHROUGH_PLOTFUNC( PlotGraph, TGraph,     TGraph );
-  PASSTHROUGH_PLOTFUNC( PlotData,  RooAbsData, TGraphAsymmErrors );
-  PASSTHROUGH_PLOTFUNC( PlotPdf,   RooAbsPdf,  TGraph );
+  template<unsigned pad_id, typename ...Args>
+  inline TH1D& PlotHist( TH1D& obj, Args... args ){
+    CheckPadAxis( &obj );
+    return Pad<pad_id>().PlotHist( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TH1D& PlotHist( TH1D* obj, Args... args ){
+    CheckPadAxis( obj );
+    return Pad<pad_id>().PlotHist( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraph& PlotGraph( TGraph& obj, Args ... args  ){
+    CheckPadAxis( &obj );
+    return Pad<pad_id>().PlotGraph( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraph& PlotGraph( TGraph* obj, Args ... args  ){
+    CheckPadAxis( obj );
+    return Pad<pad_id>().PlotGraph( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraph& PlotFunc( TF1& obj, Args ... args  ){
+    CheckPadAxis( &obj );
+    return Pad<pad_id>().PlotFunc( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraph& PlotFunc( TF1* obj, Args ... args  ){
+    CheckPadAxis( obj );
+    return Pad<pad_id>().PlotFunc( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraphAsymmErrors& PlotData( RooAbsData& obj, Args ... args  ){
+    CheckPadAxis( &obj );
+    return Pad<pad_id>().PlotData( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraphAsymmErrors& PlotData( RooAbsData* obj, Args ... args  ){
+    CheckPadAxis( obj );
+    return Pad<pad_id>().PlotData( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraph& PlotPdf( RooAbsPdf& obj, Args ... args  ){
+    CheckPadAxis( &obj );
+    return Pad<pad_id>().PlotPdf( obj, args... );
+  }
+
+  template<unsigned pad_id, typename ...Args>
+  inline TGraph& PlotPdf( RooAbsPdf* obj, Args ... args  ){
+    CheckPadAxis( obj );
+    return Pad<pad_id>().PlotPdf( obj, args... );
+  }
   /** @} */
 
-#undef PASSTHROUGH_PLOTFUNC
 
 private:
   void CheckPadAxis( const TObject* );

@@ -109,257 +109,43 @@ private:
  */
 
 
-/**
- * @class PlotUnder
- * @brief Specifying the plot object to be placed under another.
- */
-class PlotUnder : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  PlotUnder( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  PlotUnder( const TObject& );
-  PlotUnder( const TObject* );
-  virtual ~PlotUnder(){}
-  inline const TObject&
-  obj() const { return *getObject( 0 ); }
-};
+RooCmdArg        PlotUnder( const TObject* x );
+inline RooCmdArg PlotUnder( const TObject& x ){ return PlotUnder( &x ); }
 
 /**
- * @class TrackY
  * @brief Plot argument to specify which edges of data to keep track of.
  */
-class TrackY : public RooCmdArg
+enum tracky
 {
-public:
-  enum tracky
-  {
-    none, min, max, both, aut
-  };
-  static const std::string CmdName;
-  TrackY( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  TrackY( int x = aut );
-  virtual
-  ~TrackY(){}
-  inline operator int() const { return getInt( 0 );
-  }
+  none, min, max, both, aut
 };
 
-/**
- * @class EntryText
- * @brief Argument for defining text to place in legend.
- */
-class EntryText : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  EntryText( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  EntryText( const std::string&, const int place_last = 0 );
-  virtual ~EntryText(){}
-  inline operator std::string() const { return getString( 0 );
-  }
-  inline bool
-  PlaceLast() const { return getInt( 0 ); }
-  inline const char*
-  c_str() const { return getString( 0 );}
-};
+RooCmdArg TrackY( int x );
+
+RooCmdArg EntryText( const std::string&, const int place_last = 0 );
+
+// ------------------------------------------------------------------------------
+RooCmdArg TextColor( const int col, const float alpha = 1 );
+RooCmdArg TextSize( const double size );
+RooCmdArg TextAngle( const float x );
+RooCmdArg TextAlign( const int a );
 
 // ------------------------------------------------------------------------------
 
-/**
- *  @class TextColor
- *  @brief Defining the text color for a certain plot process
- */
-class TextColor : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  TextColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  TextColor( const int color, const float alpha = 1 );
-  virtual ~TextColor(){}
-  inline int
-  Col() const { return getInt( 0 ); }
-  inline float
-  Alpha() const { return getDouble( 0 ); }
-};
-
-/**
- *  @class TextSize
- *  @brief Defining the text size for a certain plot process
- */
-class TextSize : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  TextSize( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  TextSize( const double size );
-  virtual ~TextSize(){}
-  inline operator double() const { return getDouble( 0 );
-  }
-};
-
-/**
- *  @class TextAngle
- *  @brief Defining the text angle for a certain plot process
- */
-class TextAngle : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  TextAngle( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  TextAngle( const float a );
-  virtual ~TextAngle(){}
-  inline operator float() const { return getDouble( 0 );
-  }
-};
-
-/**
- *  @class TextAlign
- *  @brief Defining the text alignment for a certain plot process
- */
-class TextAlign : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  TextAlign( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  TextAlign( const int a );
-  virtual ~TextAlign(){}
-  inline operator int() const { return getInt( 0 );
-  }
-};
+RooCmdArg LineColor( const int col, const float alpha = 1 );
+RooCmdArg LineStyle( const short style );
+RooCmdArg LineWidth( const short width );
 
 // ------------------------------------------------------------------------------
 
-/**
- *  @class LineColor
- *  @brief Defining the LineColor (with transparency) for a certain plot process
- */
-class LineColor : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  LineColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  LineColor( const int color, const float alpha = 1 );
-  virtual ~LineColor(){}
-  inline int
-  Col() const { return getInt( 0 ); }
-  inline float
-  Alpha() const { return getDouble( 0 ); }
-};
-
-/**
- *  @class LineStyle
- *  @brief Defining the LineStyle for a certain plot process
- */
-class LineStyle : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  LineStyle( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  LineStyle( const short style );
-  virtual ~LineStyle(){};
-  inline operator short() const { return getInt( 0 );
-  }
-};
-
-/**
- *  @class LineWidth
- *  @brief Defining the LineWidth for a certain plot process
- */
-class LineWidth : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  LineWidth( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  LineWidth( const short style );
-  virtual ~LineWidth(){};
-  inline operator short() const { return getInt( 0 );
-  }
-};
+RooCmdArg FillColor( const int col, const float alpha = 1.0 );
+RooCmdArg FillStyle( const short style );
 
 // ------------------------------------------------------------------------------
 
-/**
- *  @class FillColor
- *  @brief Defining the FillColor (with transparency) for a certain plot process
- */
-class FillColor : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  FillColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  FillColor( const int color, const float alpha = 1 );
-  virtual ~FillColor(){}
-  inline int
-  Col() const { return getInt( 0 ); }
-  inline float
-  Alpha() const { return getDouble( 0 ); }
-};
-
-/**
- *  @class FillStyle
- *  @brief Defining the FillStyle for a certain plot process
- */
-class FillStyle : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  FillStyle( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  FillStyle( const short style );
-  virtual ~FillStyle(){};
-  inline operator short() const { return getInt( 0 );
-  }
-};
-
-// ------------------------------------------------------------------------------
-
-/**
- *  @class MarkerColor
- *  @brief Defining the MarkerColor (with transparency) for a certain plot
- *  process
- */
-class MarkerColor : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  MarkerColor( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  MarkerColor( const int color, const float alpha = 1 );
-  virtual ~MarkerColor(){}
-  inline int
-  Col() const { return getInt( 0 ); }
-  inline float
-  Alpha() const { return getDouble( 0 ); }
-};
-
-/**
- *  @class MarkerStyle
- *  @brief Defining the MarkerStyle for a certain plot process
- */
-class MarkerStyle : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  MarkerStyle( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  MarkerStyle( const short style );
-  virtual ~MarkerStyle(){};
-  inline operator short() const { return getInt( 0 );
-  }
-};
-
-/**
- *  @class MarkerSize
- *  @brief Defining the MarkerSize for a certain plot process
- */
-class MarkerSize : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  MarkerSize( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  MarkerSize( const float style );
-  virtual ~MarkerSize(){};
-  inline operator double() const { return getDouble( 0 );
-  }
-};
+RooCmdArg MarkerColor( const int col, const float alpha = 1 );
+RooCmdArg MarkerStyle( const short style );
+RooCmdArg MarkerSize( const float style );
 
 // ------------------------------------------------------------------------------
 
@@ -379,45 +165,11 @@ enum plottype
   fittedfunc// < for graphs representing a function with fitting uncertainty
 };
 
-/**
- * @class PlotType
- * @brief Plot argument to specify how data should be presented in a 1D graph.
- */
-class PlotType : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  PlotType( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  /** @brief Enum interface for plottype input */
-  PlotType( const int );
-
-  /** @brief specifying raw ROOT style string */
-  PlotType( const std::string& );
-  virtual
-  ~PlotType(){}
-  inline operator int() const { return getInt( 0 );
-  }
-  inline std::string
-  str() const { return getString( 0 ); }
-  inline const char*
-  c_str() const { return getString( 0 ); }
-};
+RooCmdArg PlotType( const int );
+RooCmdArg PlotType( const std::string& );
 
 
-/**
- * @class ScaleY
- * @brief Plot argument to scale a data by a specific amount.
- */
-class ScaleY : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  ScaleY ( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  ScaleY( const double s );
-  virtual ~ScaleY(){}
-  inline operator double() const { return getDouble( 0 );
-  }
-};
+RooCmdArg ScaleY( const double x );
 
 /**
  * @brief Enum for defining plot for 2D plot types. Putting this in global plt
@@ -434,95 +186,33 @@ enum plot2df
   density,// < Plotting scatter type historgrams
 };
 
-/**
- * @class Plot2DF
- * @brief Plot argument to specify how data should be presented in a 2D plot.
- */
-class Plot2DF : public RooCmdArg
+RooCmdArg Plot2DF( const int );
+RooCmdArg Plot2DF( const std::string& );
+
+RooCmdArg VisualizeError( const TFitResultPtr&, const double z = 1 );
+
+template<typename ... Args>
+inline RooCmdArg
+VisualizeError( const RooFitResult& fit, Args... args )
 {
-public:
-  static const std::string CmdName;
-  Plot2DF( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  /** @brief Enum interface for plottype input */
-  Plot2DF( const int );
+  return RooFit::VisualizeError( fit, args ... );
+}
 
-  /** @brief specifying raw ROOT style string */
-  Plot2DF( const std::string& );
-  virtual
-  ~Plot2DF(){}
-  inline
-  operator int() const { return getInt( 0 ); }
-  inline std::string
-  str() const { return getString( 0 ); }
-  inline const char*
-  c_str() const { return getString( 0 ); }
-};
+RooCmdArg ExtrapolateInRatio( const int flag = true );
 
-/**
- * @class VisualizedError
- * @brief Plot argument to plot a fitted TF1 with fit uncertainties.
- * Intentionally using the same interface as the VisualizeError for
- * @ROOT{RooAbsPdf}.
- */
-class VisualizeError : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  VisualizeError( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  VisualizeError( const TFitResultPtr&,
-                  const double z = 1 );
-  VisualizeError( const RooFitResult&,
-                  const double z            = 1,
-                  const bool   linearmethod = true  );
-  VisualizeError( const RooFitResult&,
-                  const RooArgSet& param,
-                  const double     z            = 1,
-                  const bool       linearmethod = true  );
-  const RooFitResult& GetRooFitResult() const;
-  const TFitResult&   GetTFitResult() const;
-  const RooArgSet&    set() const;
-  bool                has_set() const;
-  virtual ~VisualizeError(){}
-};
-
-/**
- * @class ExtrapolateInRatio
- * @brief Whether or not to extrapolate data points in a ratio plot if the number
- * of data points in a denominator is smaller than the number of number of data
- * points in the denominator (Specifically for TGraph family plotting).
- */
-class ExtrapolateInRatio : public RooCmdArg
-{
-public:
-  static const std::string CmdName;
-  ExtrapolateInRatio( const RooCmdArg* x ) : RooCmdArg( *x ){}
-  ExtrapolateInRatio( const int flat = kTRUE );
-  inline
-  operator bool() const {return getInt( 0 ); }
-};
-
-/** @} */
-
+RooCmdArg ExtendXRange( const bool flat      = true );
+/**  @} */
 
 /**
  * @addtogroup PlotUtilsHelper
  * @{
  */
 
-/**
- * @{
- * @brief Getting the min-max value for a histogram object
- */
 extern double GetYmax( const TH1D& );
 extern double GetYmin( const TH1D& );
 inline double GetYmax( const TH1D* x ){ return GetYmax( *x ); }
 inline double GetYmin( const TH1D* x ){ return GetYmin( *x ); }
-/** @} */
 
-/**
- * @{
- * @brief getting the min-max x/y value for a TGraph object
- */
 extern double GetYmax( const TGraph& );
 extern double GetYmin( const TGraph& );
 extern double GetXmax( const TGraph& );
@@ -531,36 +221,19 @@ inline double GetYmax( const TGraph* x ){ return GetYmax( *x ); }
 inline double GetYmin( const TGraph* x ){ return GetYmin( *x ); }
 inline double GetXmax( const TGraph* x ){ return GetXmax( *x ); }
 inline double GetXmin( const TGraph* x ){ return GetXmin( *x ); }
-/** @} */
 
-/**
- * @{
- * @brief Get the min-max value for a TEfficiency object
- */
 extern double GetYmax( const TEfficiency& );
 extern double GetYmin( const TEfficiency& );
 inline double GetYmax( const TEfficiency* x ){ return GetYmax( *x ); }
 inline double GetYmin( const TEfficiency* x ){ return GetYmin( *x ); }
-/** @} */
 
-
-/**
- * @{
- * @brief Gettin the min-max value for a THStack object.
- **/
 extern double GetYmin( const THStack& );
 extern double GetYmax( const THStack& );
 inline double GetYmin( const THStack* x ){ return GetYmin( *x ); }
 inline double GetYmax( const THStack* x ){ return GetYmax( *x ); }
-/** @} */
 
-/**
- * @{
- * @brief Estimating dimension of a ROOT flavoured latex string
- * } */
 extern double EstimateLatexWidth( const std::string& text );
 extern double EstimateLatexHeight( const std::string& text );
-/** @} */
 
 /** @} */
 

@@ -36,8 +36,8 @@ namespace plt {
 class Pad2DFlat : public PadBase
 {
 protected:
-  Pad2DFlat( const PadSize& );
-  Pad2DFlat( const PadSize&,
+  Pad2DFlat( Canvas* , const PadSize& );
+  Pad2DFlat( Canvas* , const PadSize&,
              const double xmin, const double xmax,
              const double ymin, const double ymax );
 
@@ -51,51 +51,111 @@ public:
   Pad2DFlat()                   = delete;
   Pad2DFlat( const Pad2DFlat& ) = delete;
 
-#define DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( FUNC_NAME, TYPE, RET_TYPE )          \
-  RET_TYPE FUNC_NAME( TYPE&, const std::vector<RooCmdArg>& );                \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const std::vector<RooCmdArg> & list ){   \
-    return FUNC_NAME( *x, list );                                              \
-  }                                                                            \
-  inline RET_TYPE FUNC_NAME( TYPE& x ){ return FUNC_NAME( x, {} ); }          \
-  inline RET_TYPE FUNC_NAME( TYPE* x ){ return FUNC_NAME( x, {} ); }          \
-  template<typename ... Args>                                                  \
-  inline RET_TYPE FUNC_NAME( TYPE& x, const RooCmdArg & arg1, Args ... args ){ \
-    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
-  }                                                                            \
-  template<typename ... Args>                                                  \
-  inline RET_TYPE FUNC_NAME( TYPE* x, const RooCmdArg & arg1, Args ... args ){ \
-    return FUNC_NAME( x, MakeVector<RooCmdArg>( arg1, args ... ) );            \
-  }
-
   /**
    * @{
    * @brief Plotting 2D histogram object
    */
-  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
+  TH2D& PlotHist( TH2D&, const std::vector<RooCmdArg>& );
+  inline TH2D&
+  PlotHist( TH2D* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotHist( *x, list );
+  }
+  inline TH2D& PlotHist( TH2D& x ){ return PlotHist( x, {} );}
+  inline TH2D& PlotHist( TH2D* x ){ return PlotHist( *x, {} );}
+  template<typename ... Args>
+  inline TH2D&
+  PlotHist( TH2D& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TH2D&
+  PlotHist( TH2D* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotHist( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
   /** @} */
 
   /**
    * @{
    * @brief Plotting 2D function object
    */
-  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
+  TGraph2D& PlotFunc( TF2&, const std::vector<RooCmdArg>& );
+  inline TGraph2D&
+  PlotFunc( TF2* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotFunc( *x, list );
+  }
+  inline TGraph2D& PlotFunc( TF2& x ){ return PlotFunc( x, {} );}
+  inline TGraph2D& PlotFunc( TF2* x ){ return PlotFunc( *x, {} );}
+  template<typename ... Args>
+  inline TGraph2D&
+  PlotFunc( TF2& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TGraph2D&
+  PlotFunc( TF2* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotFunc( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
   /** @} */
 
   /**
    * @{
    * @brief Plotting 2D graph object
    */
-  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotGraph, TGraph2D, TGraph2D& );
+  TGraph2D& PlotGraph( TGraph2D&, const std::vector<RooCmdArg>& );
+  inline TGraph2D&
+  PlotGraph( TGraph2D* x, const std::vector<RooCmdArg>& list )
+  {
+    return PlotGraph( *x, list );
+  }
+  inline TGraph2D& PlotGraph( TGraph2D& x ){ return PlotGraph( x, {} );}
+  inline TGraph2D& PlotGraph( TGraph2D* x ){ return PlotGraph( *x, {} );}
+  template<typename ... Args>
+  inline TGraph2D&
+  PlotGraph( TGraph2D& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TGraph2D&
+  PlotGraph( TGraph2D* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return PlotGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
 
   /**
    * @{
    * @brief Plotting 1D graph object
    */
-  DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( Plot1DGraph, TGraph, TGraph& );
+  TGraph& Plot1DGraph( TGraph&, const std::vector<RooCmdArg>& );
+  inline TGraph&
+  Plot1DGraph( TGraph* x, const std::vector<RooCmdArg>& list )
+  {
+    return Plot1DGraph( *x, list );
+  }
+  inline TGraph& Plot1DGraph( TGraph& x ){ return Plot1DGraph( x, {} );}
+  inline TGraph& Plot1DGraph( TGraph* x ){ return Plot1DGraph( *x, {} );}
+  template<typename ... Args>
+  inline TGraph&
+  Plot1DGraph( TGraph& x, const RooCmdArg& arg1, Args ... args )
+  {
+    return Plot1DGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
+  template<typename ... Args>
+  inline TGraph&
+  Plot1DGraph( TGraph* x, const RooCmdArg& arg1, Args ... args )
+  {
+    return Plot1DGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
+  }
   /** @} */
-
-#undef DECLARE_PAD2DFLAT_PLOT_FUNCTIONS
 
   TObject*     GetAxisObject() const;
   TAxis&       Xaxis();
@@ -121,9 +181,9 @@ public:
   void DrawLuminosity( const double luminosity );
   void DrawLuminosity( const std::string& string );
 
-  inline void SetLogx( int x = 1  ){ TPad::SetLogx( x ); }
-  inline void SetLogy( int x = 1  ){ TPad::SetLogy( x ); }
-  inline void SetLogz( int x = 1  ){ TPad::SetLogz( x ); }
+  inline void SetLogx( int x = 1  ){ TPad_().SetLogx( x ); }
+  inline void SetLogy( int x = 1  ){ TPad_().SetLogy( x ); }
+  inline void SetLogz( int x = 1  ){ TPad_().SetLogz( x ); }
 
 private:
 

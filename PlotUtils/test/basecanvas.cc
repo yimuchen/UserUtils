@@ -42,10 +42,6 @@ main( int argc, char* argv[] )
     pad2.PlotHist( hist );
 
     c.SaveAsPDF( "image/basecanvas_test.pdf" );
-
-    std::cout << c.Width() << " " << c.Height() << std::endl
-              << pad1.RelWidth() << " " << pad1.AbsWidth() << std::endl
-              << pad2.RelHeight() << " " << pad2.AbsHeight() << std::endl;
   }
 
 

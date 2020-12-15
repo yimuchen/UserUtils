@@ -31,25 +31,32 @@ namespace plt  {
  * The name used to constructed the pad would be a random string to avoid name
  * collision.
  */
-PadBase::PadBase( const PadSize& size ) :
-  TPad( ( "Pad" + RandomString( 12 ) ).c_str(), "",
-        size.xmin, size.ymin, size.xmax, size.ymax )
+PadBase::PadBase( Canvas* c, const PadSize& size ) :
+  _parentcanvas(  c ),
+  _pad( new TPad( ( "Pad" + RandomString( 12 ) ).c_str(), "",
+                  size.xmin, size.ymin, size.xmax, size.ymax ) )
 {
-  TPad::SetTicks( 1, 1 );
-
-  _latex.SetTextFont( FontFace() );
-  _latex.SetTextSize( FontSize() );
-  _latex.SetTextAlign( font::top_left );
+  _pad->SetTicks( 1, 1 );
 }
 
 /**
- * Nothing particular to do with the destructor.
+ * Deleting the internal TPad object
  */
 PadBase::~PadBase()
 {
-  // TODO: Horrible hack to stop programs from running into double free errors.
-  // Must try and find a proper solution.
-  TPad::fCollideGrid = nullptr;
+  // The TPad here should only be declared directly associated with a TCanvas
+  // instance, in which case the ownership of the TPad instance is handled by the
+  // ROOT memory manager instead of our class. Currently, I have NO solution to
+  // have this behave properly.
+  for( auto obj : _generated_objects ){
+    if( obj->IsOnHeap() ){
+      obj->Delete();
+    }
+  }
+
+  if( _pad->IsOnHeap() &&  _pad->TestBits( TObject::kMustCleanup ) ){
+    _pad->Delete();
+  }
 }
 
 /**
@@ -61,7 +68,7 @@ PadBase::~PadBase()
 const Canvas&
 PadBase::ParentCanvas() const
 {
-  return *( (Canvas*)( TPad::GetMother() ) );
+  return *( _parentcanvas );
 }
 
 /**
@@ -73,7 +80,7 @@ PadBase::ParentCanvas() const
 Canvas&
 PadBase::ParentCanvas()
 {
-  return *( (Canvas*)( TPad::GetMother() ) );
+  return *( _parentcanvas );
 }
 
 /**
@@ -88,10 +95,10 @@ PadBase::Font() const
  * @brief Dimensions relative to the parent canvas.
  */
 double
-PadBase::RelWidth() const { return TPad::GetWNDC(); }
+PadBase::RelWidth() const { return _pad->GetWNDC(); }
 
 double
-PadBase::RelHeight() const { return TPad::GetHNDC(); }
+PadBase::RelHeight() const { return _pad->GetHNDC(); }
 /** @} */
 
 /**
@@ -152,14 +159,14 @@ PadBase::WriteAtData(
   const std::string&            line,
   const std::vector<RooCmdArg>& arglist )
 {
-  TPad::cd();// We will still need to cd to pad to get the correct dimensions.
+  _pad->cd();// We will still need to cd to pad to get the correct dimensions.
 
   const RooArgContainer args( arglist,
       {
         TextColor( usr::plt::col::black ),
         TextSize( FontSize() ),
         TextAngle( 0.0 )
-      });
+      } );
 
   auto& newlatex = MakeObj<TLatex>( _latex );
   newlatex.SetNDC( false );
@@ -179,14 +186,14 @@ PadBase&
 PadBase::WriteLine( const std::string&            line,
                     const std::vector<RooCmdArg>& arglist  )
 {
-  TPad::cd();
+  _pad->cd();
 
   const RooArgContainer args( arglist,
       {// Defining default arguments
         TextColor( usr::plt::col::black ),// Black text
         TextSize( FontSize() ),// Canvas font settings,
         TextAngle( 0.0 )
-      });
+      } );
 
   auto& newlatex = MakeObj<TLatex>( _latex );
   newlatex.SetNDC( true );
@@ -194,8 +201,8 @@ PadBase::WriteLine( const std::string&            line,
   SetTextAttr( newlatex, args );
   PlotObj( newlatex, "" );
 
-  const double fsize = args.Get( TextSize::CmdName ).getDouble( 0 );
-  _latex_cursory -= std::max( double( RelLineHeight() * fsize / FontSize() ),
+  const double fsize = args.GetDouble( "TextSize" );
+  _latex_cursory -= std::max( double(RelLineHeight() * fsize / FontSize() ),
     EstimateLatexHeight( line )* fsize /AbsHeight() );
   return *this;
 }
@@ -227,15 +234,15 @@ PadBase::SetTextCursor( const double x, const double y )
 void
 PadBase::PlotObj( TObject& obj, Option_t* opt )
 {
-  TPad::cd();
+  _pad->cd();
   obj.Draw( opt );
-  TPad::Update();
+  _pad->Update();
 }
 
 bool
 PadBase::HasObject( const TObject& obj ) const
 {
-  return TPad::FindObject( obj.GetName() )  == &obj;
+  return _pad->FindObject( obj.GetName() )  == &obj;
 }
 
 /**
@@ -261,7 +268,11 @@ PadBase::MoveTargetToBefore( const TObject& target, const TObject& before )
  */
 void
 PadBase::InitDraw()
-{}
+{
+  _latex.SetTextFont( FontFace() );
+  _latex.SetTextSize( FontSize() );
+  _latex.SetTextAlign( font::top_left );
+}
 
 /**
  * @brief Additional steps to be performed by the pad before the canvas saving

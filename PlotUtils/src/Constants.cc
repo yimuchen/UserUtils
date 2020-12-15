@@ -20,7 +20,7 @@ namespace usr  {
 namespace plt  {
 
 /**
- * Plotting length in ROOT is defined using pixels (usually), with the
+ * @details Plotting length in ROOT is defined using pixels (usually), with the
  * conversion of pixels into printable formats using the old standard of 72 DPI.
  *
  * Here we provide functions for convert from printing units (inches, mm... etc),
@@ -33,35 +33,46 @@ extern const unsigned ROOT_DPI = 72;
 extern const float INCH_TO_CM  = 2.54;
 
 /**
- * @{
- * @brief Converting conventional units into ROOT standard length units.
+ * @brief Convert inches to standard ROOT size.
  */
 extern length_t
 inch( const float x ){ return std::round( ROOT_DPI*x ); }
 
+/**
+ * @brief Convert centimeters to standard ROOT size.
+ */
 extern length_t
 cm( const float x ){ return inch( x/INCH_TO_CM ); }
 
+/**
+ * @brief Conver millimeters to standard ROOT size.
+ */
 extern length_t
 mm( const float x ){ return cm( x/10 ); }
-/** @} */
 
-extern unsigned
+/**
+ * @brief A4 Paper is 210mm wide.
+ */
+extern length_t
 a4paperwidth(){ return mm( 210 ); }
 
-extern unsigned
+/**
+ * @brief A4 paper is 297mm tall.
+ */
+extern length_t
 a4paperheight(){ return mm( 297 ); }
 
 /**
- * @{
- * @brief Document dimensions taken from cms-tdr.cls
+ * @brief Width of text area defined in CMS TDR is 160mm.
  */
-extern unsigned
+extern length_t
 a4textwidth_default(){ return mm( 160 ); }
 
-extern unsigned
+/**
+ * @brief Height of text area defined in CMS TDR is 235mm.
+ */
+extern length_t
 a4textheight_default(){ return mm( 235 ); }
-/** @} */
 
 }/* len */
 
@@ -237,7 +248,13 @@ const short fillhashforward  = fillhash( 2, angle1( 60 ), angle2( -1 ) );
 const short fillhashbackward = fillhash( 2, angle1( -1 ), angle2( 120 ) );
 /** @} */
 
-const short fill( const std::string& x )
+/**
+ * @brief Translating a fill style string to the corresponding integer code
+ *
+ * fill( "solid" ) will returng 1001 and such.
+ */
+const short
+fill( const std::string& x )
 {
   const std::string op_string = StripToNaming( x );
 
@@ -363,7 +380,14 @@ const short lindashed    = 9;
 const short linshortdash = 7;
 /** @} */
 
-const short line( const std::string& x )
+/**
+ * @brief Converting a string to the corresponding line style integer code.
+ *
+ * line( "solid" ) will returng linsolid(=1). An so on. By default it will
+ * returng linsolid.
+ */
+const short
+line( const std::string& x )
 {
   const std::string op = StripToNaming( x );
 #define STRINGIFY( x ) \
@@ -399,7 +423,14 @@ extern const short mkropencross        = 28;
 extern const short mkropenstar         = 30;
 /** @} */
 
-const short marker( const std::string x )
+/**
+ * @brief Given a string return the corresponding marker style code
+ *
+ * marker("circle") will returng mkrcircle(=20) so so forth. By default, it will
+ * returng mkrcircle if the string is not known.
+ */
+const short
+marker( const std::string x )
 {
   const std::string op = StripToNaming( x );
 #define STRINGIFY( x ) \

@@ -276,14 +276,14 @@ Pad1D::AutoSetYRange( const rangetype type )
 void
 Pad1D::AutoSetYRangeHist()
 {
-  if( !GetLogy() ){// None log scale
+  if( !_pad->GetLogy() ){// None log scale
     const double diff = _datamax - _datamin;
     SetYaxisMax( _datamin + diff * 1.25 );
     SetYaxisMin( _datamin * 0.9 );
   } else {
     const double opmin = _datamin <= 0 ? 1e-6 : _datamin * 0.9;
     const double diff  = std::log10( _datamax / opmin );
-    SetYaxisMax( opmin * std::pow( 10, diff * 1.25 ) );
+    SetYaxisMax( opmin * std::pow( 10, diff * 1.5 ) );
     SetYaxisMin( opmin );
   }
 }
@@ -299,7 +299,7 @@ Pad1D::AutoSetYRangeHist()
 void
 Pad1D::AutoSetYRangeGraph()
 {
-  if( !GetLogy() ){// None log scale
+  if( !_pad->GetLogy() ){// None log scale
     const double diff = _datamax - _datamin;
     SetYaxisMax( _datamin + diff * 1.2 );
     SetYaxisMin( _datamax - diff * 1.1 );
@@ -317,7 +317,7 @@ Pad1D::AutoSetYRangeGraph()
  *
  * The y axis range would be centered around 1. With the range extended to
  * contain the data min/max values, rounded to the closest 0.1 to avoid
- * funny tick values. The maximum range would be 0.4--1.6 to avoid details
+ * funny tick values. The maximum range would be -0.1,2.1 to avoid details
  * being lost around data values close to 1. (If there is still nothing in your
  * plot, then there might be something wrong with your data...)
  * An additional 5% margin is left on top and bottom for aesthetic reasons.
@@ -325,7 +325,7 @@ Pad1D::AutoSetYRangeGraph()
 void
 Pad1D::AutoSetYRangeRatio()
 {
-  const double diff = std::min( std::max( _datamax - 1, 1-_datamin ), 0.6 );
+  const double diff = std::min( std::max( _datamax - 1, 1-_datamin ), 1.1 );
   // rounding to the closest .1 to avoid weird axis tick labels
   const double opdiff = std::ceil( diff * 10 ) /10.;
   SetYaxisMax( 1 + opdiff *1.05 );

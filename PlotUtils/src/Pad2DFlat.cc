@@ -16,16 +16,16 @@ namespace usr {
 
 namespace plt {
 
-Pad2DFlat::Pad2DFlat( const PadSize& padsize ):
-  PadBase(padsize)
+Pad2DFlat::Pad2DFlat( Canvas* c, const PadSize& padsize ):
+  PadBase(c,padsize)
 {
   init_legend();
 }
 
-Pad2DFlat::Pad2DFlat( const PadSize& padsize ,
+Pad2DFlat::Pad2DFlat( Canvas* c, const PadSize& padsize ,
   const double xmin, const double xmax,
   const double ymin, const double ymax ):
-  PadBase(padsize),
+  PadBase(c,padsize),
   _frame(xmin,xmax,ymin,ymax)
 {
   init_legend();
@@ -60,7 +60,7 @@ void Pad2DFlat::InitDraw()
 
 void Pad2DFlat::Finalize()
 {
-  TPad::cd();
+  _pad->cd();
   PadBase::Finalize();
   MakeLegend();
   MakeLegend();  // Must run twice... not sure why

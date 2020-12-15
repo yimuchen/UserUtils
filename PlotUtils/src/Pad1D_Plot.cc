@@ -87,7 +87,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   // Getting the flags
   const RooArgContainer args( arglist, {
         PlotType( hist ),
-        TrackY( TrackY::max ),
+        TrackY( tracky::max ),
         FillColor( 0, 0 ),
         MarkerStyle( sty::mkrcircle ),
         MarkerSize( 0.05 )
@@ -107,6 +107,8 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   // Forcing no statistics. and wiping title
   obj.SetStats( 0 );
   obj.SetTitle( "" );
+  obj.SetBinErrorOption( TH1::kPoisson );// This options will not affect
+  // weighted histograms, only the non-weighted ones.
 
   // Removing the poly marker from TSpectrum search function
   TObject* polymarker = obj.GetListOfFunctions()->FindObject( "TPolyMarker" );
@@ -118,7 +120,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   }
 
   // Running the draw commands.
-  const int pt = args.Get<PlotType>();
+  const int pt = args.GetInt( "PlotType" );
 
   // Flushing the _working stack if hist is no longer used
   if( pt != histstack && _workingstack ){
@@ -152,29 +154,29 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     _workingstack->Add( &obj, "HIST" );
     break;
   case plottype::plottype_dummy:
-    PlotObj( obj, ( args.Get<PlotType>().str()+" SAME" ).c_str() );
+    PlotObj( obj, ( args.GetStr( "PlotType" )+" SAME" ).c_str() );
     break;
   default:
     std::cerr << "Skipping over invalid value ("<< pt <<")" << std::endl;
   }
 
   if( _workingstack ){
-    TrackObjectY( *_workingstack, args.Get<TrackY>() );
+    TrackObjectY( *_workingstack, args.GetInt( "TrackY" ) );
   } else {
-    TrackObjectY( obj, args.Get<TrackY>() );
+    TrackObjectY( obj, args.GetInt( "TrackY" ) );
   }
 
   // Adding legend
-  if( args.Has<EntryText>() ){
-    AddLegendEntry( obj, args.Get<EntryText>(), args.Get<PlotType>() );
+  if( args.Has( "EntryText" ) ){
+    AddLegendEntry( obj, args.Get( "EntryText" ), args.Get( "PlotType" ) );
   }
 
   // Moving to under something
-  if( args.Has<PlotUnder>() ){
+  if( args.Has( "PlotUnder" ) ){
     if( _workingstack ){
-      PadBase::MoveTargetToBefore( *_workingstack, args.Get<PlotUnder>() );
+      PadBase::MoveTargetToBefore( *_workingstack, args.GetObj( "PlotUnder" ) );
     } else {
-      PadBase::MoveTargetToBefore( obj, args.Get<PlotUnder>() );
+      PadBase::MoveTargetToBefore( obj, args.GetObj( "PlotUnder" ) );
     }
   }
 
@@ -232,7 +234,6 @@ Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
  * - PlotUnder: Specifying the that plot object be plotted underneath a specific
  *   object. Not that if the object specified in PlotUnder is not found in the
  *   pad, this option will have no effect and will raise no excpetions.
- *
  */
 TEfficiency&
 Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
@@ -240,7 +241,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
   // Getting the flags
   const RooArgContainer args( arglist, {
         PlotType( scatter ),
-        TrackY( TrackY::both ),
+        TrackY( tracky::both ),
         FillColor( usr::plt::col::cyan )
       } );
 
@@ -251,7 +252,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
 
   if( !GetAxisObject() ){
     // MUST ust a clone, otherwise messes with THStack
-    TH1D& axisobj = MakeObj<TH1D>( *((TH1D*)obj.GetTotalHistogram()) );
+    TH1D& axisobj = MakeObj<TH1D>( *( (TH1D*)obj.GetTotalHistogram() ) );
     axisobj.Reset();
     axisobj.SetStats( 0 );
     axisobj.SetTitle( "" );
@@ -264,7 +265,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
   obj.SetTitle( "" );
 
   // Running the draw commands.
-  const int pt = args.Get<PlotType>();
+  const int pt = args.GetInt( "PlotType" );
 
   // Plot case for different plot types
   switch( pt ){
@@ -274,27 +275,27 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
     break;
   case plottype::scatter:
     PlotObj( obj, "PZ SAME" );
-      break;
+    break;
   case plottype::histerr:
     PlotObj( obj, "E2 SAME" );
     break;
   case plottype::plottype_dummy:
-    PlotObj( obj, ( args.Get<PlotType>().str()+" SAME" ).c_str() );
+    PlotObj( obj, ( args.GetStr( "PlotType" )+" SAME" ).c_str() );
     break;
   default:
     std::cerr << "Skipping over invalid value ("<< pt <<")" << std::endl;
   }
 
-  TrackObjectY( obj, args.Get<TrackY>() );
+  TrackObjectY( obj, args.GetInt( "TrackY" ) );
 
   // Adding legend
-  if( args.Has<EntryText>() ){
-    AddLegendEntry( obj, args.Get<EntryText>(), args.Get<PlotType>() );
+  if( args.Has( "EntryText" ) ){
+    AddLegendEntry( obj, args.Get( "EntryText" ), args.Get( "PlotType" ) );
   }
 
   // Moving to under something
-  if( args.Has<PlotUnder>() ){
-    PadBase::MoveTargetToBefore( obj, args.Get<PlotUnder>() );
+  if( args.Has( "PlotUnder" ) ){
+    PadBase::MoveTargetToBefore( obj, args.GetObj( "PlotUnder" ) );
   }
 
   SetLineAttr( obj, args );
@@ -348,18 +349,19 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
   const RooArgContainer args( arglist,
       {
         PlotType( simplefunc ),
-        !GetAxisObject() ? TrackY( TrackY::both ) : TrackY( TrackY::none ),
-        FillColor( 0, 0 ),
+        !GetAxisObject() ? TrackY( tracky::both ) : TrackY( tracky::none ),
+        FillColor( usr::plt::col::white, 0 ),
         MarkerStyle( sty::mkrcircle ),
-        MarkerSize( 0.05 )
+        MarkerSize( 0.05 ),
+        ExtendXRange( true )
       } );
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
     const double xmin = GetXmin( obj );
     const double xmax = GetXmax( obj );
-    const double diff = xmax-xmin;
-    auto& axishist    = MakeObj<TH1D>(
+    const double diff = args.GetInt( "ExtendXRange" ) ? xmax-xmin : 0;
+    auto& axishist = MakeObj<TH1D>(
       ( genaxisname + RandomString( 6 ) ).c_str(),
       "",
       10, xmin-0.1*diff, xmax+0.1*diff );
@@ -376,7 +378,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     func->SetBit( TF1::kNotDraw, true );
   }
 
-  const int pt = args.Get<PlotType>();
+  const int pt = args.GetInt( "PlotType" );
 
   switch( pt ){
   case simplefunc:
@@ -391,7 +393,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     PadBase::PlotObj( obj, "PZ0" );
     break;
   case plottype_dummy:
-    PlotObj( obj, args.Get<PlotType>().c_str() );
+    PlotObj( obj, args.GetStr( "PlotType" ).c_str() );
     break;
 
   default:
@@ -399,16 +401,16 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     break;
   }
 
-  TrackObjectY( obj, args.Get<TrackY>() );
+  TrackObjectY( obj, args.GetInt( "TrackY" ) );
 
   // Adding legend
-  if( args.Has<EntryText>() ){
-    AddLegendEntry( obj, args.Get<EntryText>(), args.Get<PlotType>() );
+  if( args.Has( "EntryText" ) ){
+    AddLegendEntry( obj, args.Get( "EntryText" ), args.Get( "PlotType" ) );
   }
 
   // Moving to under something
-  if( args.Has<PlotUnder>() ){
-    PadBase::MoveTargetToBefore( obj, args.Get<PlotUnder>() );
+  if( args.Has( "PlotUnder" ) ){
+    PadBase::MoveTargetToBefore( obj, args.GetObj( "PlotUnder" ) );
   }
 
   // Setting styling attributes
@@ -434,7 +436,7 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
     arglist,
       {
         PlotType(// Inserting default plotting style
-          RooArgContainer::CheckList( arglist, VisualizeError::CmdName ) ?
+          RooArgContainer::CheckList( arglist, "VisualizeError" ) ?
           fittedfunc : simplefunc ),
         RooFit::Precision( 1e-3 )
       }
@@ -488,15 +490,14 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     zero[i]   = 0;
   }
 
-  if( !args.Has<VisualizeError>() ){
+  if( !args.Has( "VisualizeError" ) ){
     TGraph& graph = MakeObj<TGraph>( x.size(), x.data(), y.data() );
     graph.SetName( graphname.c_str() );
     return graph;
   } else {
-    const auto cmd    = args.Get<VisualizeError>();
-    const auto& fit   = cmd.GetTFitResult();
-    const double zval = cmd.getDouble( 0 );
-
+    const TFitResult& fit
+      = dynamic_cast<const TFitResult&>( args.GetObj( "VisualizeError" ) );
+    const double zval                       = args.GetDouble( "VisualizeError" );
     const std::vector<double> bestfit_param = fit.Parameters();
 
     // Getting matrix for random parameter generation
@@ -588,7 +589,7 @@ Pad1D::PlotData(
     arglist,
       {
         PlotType( scatter ),
-        TrackY( TrackY::max )
+        TrackY( tracky::max )
       }
     );
 
@@ -700,8 +701,8 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
 {
   const RooArgContainer args( arglist,
       {// Defining default arguments
-        TrackY( TrackY::max ),// Default track y: only top
-        RooArgContainer::CheckList( arglist, VisualizeError::CmdName ) ?
+        TrackY( tracky::max ),// Default track y: only top
+        RooArgContainer::CheckList( arglist, "VisualizeError" ) ?
         PlotType( fittedfunc ) : PlotType( simplefunc )// default plot style.
       }
                               );
@@ -740,16 +741,16 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
     = [this]( const RooAbsPdf& pdf,
               const usr::RooArgContainer& args ) -> RooCmdArg
       {
-        if( args.Has<VisualizeError>() ){
-          auto& cmd = args.Get<VisualizeError>();
-          if( cmd.has_set() ){
+        if( args.Has( "VisualizeError" ) ){
+          auto& cmd = args.Get( "VisualizeError" );
+          if( cmd.getSet( 0 ) ){
             // If Visualized Parameter set is already specified, then simply
             // return the original parameter
             return cmd;
           } else {
             RooCmdArg ans( cmd );
-            const auto& fit = cmd.GetRooFitResult();
-            // Memory leak??
+            const RooFitResult& fit
+              = *dynamic_cast<const RooFitResult*>( cmd.getObject( 0 ) );
             RooArgSet* cloneParams = pdf.getObservables( fit.floatParsFinal() );
             ans.setSet( 0, *cloneParams );
             this->ClaimObject( cloneParams );
@@ -761,9 +762,9 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
       };
 
   const RooCmdArg viscmd = CorrectVisError( pdf, args );
-  RooLinkedList roolist  = args.MakeRooList( {VisualizeError::CmdName} );
+  RooLinkedList roolist  = args.MakeRooList( {"VisualizeError"} );
 
-  if( !args.Has<VisualizeError>() ){
+  if( !args.Has( "VisualizeError" ) ){
     // Nothing special needs to be done for simple plotting.
     return GenGraph( pdf, roolist );
   } else {
@@ -869,7 +870,7 @@ void
 Pad1D::TrackObjectY( const TObject& obj, const int tracky )
 {
   // Perfroming the axis range setting
-  if( tracky == TrackY::min || tracky == TrackY::both ){
+  if( tracky == tracky::min || tracky == tracky::both ){
     const double obj_min =
       obj.InheritsFrom( TH1D::Class() ) ?
       GetYmin( &dynamic_cast<const TH1D&>( obj ) ) :
@@ -877,12 +878,12 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
       GetYmin( &dynamic_cast<const TGraph&>( obj ) ) :
       obj.InheritsFrom( THStack::Class() ) ?
       GetYmin( &dynamic_cast<const THStack&>( obj ) ) :
-      obj.InheritsFrom( TEfficiency::Class() )?
+      obj.InheritsFrom( TEfficiency::Class() ) ?
       GetYmin( &dynamic_cast<const TEfficiency&>( obj ) ) :
       0;
     _datamin = obj_min == 0 ? _datamin : std::min( _datamin, obj_min );
   }
-  if( tracky == TrackY::max || tracky == TrackY::both ){
+  if( tracky == tracky::max || tracky == tracky::both ){
     const double obj_max =
       obj.InheritsFrom( TH1D::Class() ) ?
       GetYmax( &dynamic_cast<const TH1D&>( obj ) ) :
@@ -890,7 +891,7 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
       GetYmax( &dynamic_cast<const TGraph&>( obj ) ) :
       obj.InheritsFrom( THStack::Class() ) ?
       GetYmax( &dynamic_cast<const THStack&>( obj ) ) :
-      obj.InheritsFrom( TEfficiency::Class() )?
+      obj.InheritsFrom( TEfficiency::Class() ) ?
       GetYmax( &dynamic_cast<const TEfficiency&>( obj ) ) :
       0;
     _datamax = std::max( _datamax, obj_max );
