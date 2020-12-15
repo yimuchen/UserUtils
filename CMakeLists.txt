@@ -21,6 +21,7 @@ find_package( ROOT REQUIRED
   COMPONENTS RooFitCore RooFit MathMore)
 
 find_package( GSL REQUIRED )
+find_package( LibLZMA REQUIRED )
 
 ## Ghostscript requires intervention:
 find_path( GHOSTSCRIPT_INCLUDES
@@ -40,3 +41,4 @@ execute_process(COMMAND ${CMAKE_HOME_DIRECTORY}/GenReflex.sh)
 add_subdirectory(Common)
 add_subdirectory(MathUtils)
 add_subdirectory(PlotUtils)
+add_subdirectory(python)
