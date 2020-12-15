@@ -142,6 +142,37 @@ RooArgContainer::MakeRooList( const std::vector<std::string>& exclude ) const
   return ans;
 }
 
+int
+RooArgContainer::GetInt( const std::string& name, const unsigned index  ) const
+{
+  assert( index == 0 || index == 1 );
+  return Get( name ).getInt( index );
+}
+
+double
+RooArgContainer::GetDouble( const std::string& name, const unsigned index ) const
+{
+  assert( index == 0 || index == 1 );
+  return Get( name ).getDouble( index );
+}
+
+std::string
+RooArgContainer::GetStr( const std::string& name, const unsigned index  ) const
+{
+  assert( index == 0 || index == 1 );
+
+  return Get( name ).getString( 0 ) == 0 ? "" :
+         Get( name ).getString( 0 );
+}
+
+const TObject&
+RooArgContainer::GetObj( const std::string& name, const unsigned index  ) const
+{
+  assert( index == 0 || index == 1 );
+  assert( Get( name ).getObject( index ) != 0 );
+  return *Get( name ).getObject( index );
+}
+
 /**
  * @brief The list of custom commands that is used defined.
  *

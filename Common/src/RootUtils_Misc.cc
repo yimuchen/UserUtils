@@ -5,11 +5,19 @@
  *
  */
 
+#ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#else
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#endif
+
+
 #include <string>
 #include <vector>
 
 #include "TChain.h"
 #include "TH1D.h"
+#include "TMatrixD.h"
 
 namespace usr {
 
@@ -42,51 +50,29 @@ MakeHist( const std::string&         name,
   return TH1D( name.c_str(), title.c_str(), bins.size() -1, bins.data() );
 }
 
-/**
- * @brief Reverse engineering the effective number of entries of a bin in a
- * histogram.
- *
- * The official recipe for computing the effective number of events for a list of
- * (non-negative) weighted events is typically:
- *
- * \[
- *  N_{eff} = \frac{\left(\sum_i w_i\right)^2}{\sum_i w_i^2 }
- * \]
- *
- * In fact is this the method of obtaining the effective number of events for an
- * entire histogram, as implemented in the TH1::GetEffectiveEntries() method.
- * This method however is not readily available for Effective Entry in a single
- * bin, but a per bin implementation does exists for the official calculation of
- * the bin uncertainties using the TH1::SumW2 method, defaulted for weighted
- * histograms:
- *
- * \[
- *    UNC = \sqrt{N_{eff}} \frac{\sum_i w_i}{N_i}
- * \]
- *
- * Effectively, ROOT treats the bin as having effectively \[N_{eff}\] events, and
- * scale the uncertainty according to the sum of weight to have an identical
- * relative uncertainty.
- *
- * So our function will effectively return
- * \[
- * N_{eff} = \left(\frac{GetBinContent(i)}{GetBinError(i)}\right)^2
- * \]
- * With additional parses to avoid NAN errors:
- */
-double
-GetBinEffectiveEntry( const TH1& hist,
-                      const int  bin )
+std::string
+str( const TMatrixD& m, const unsigned format )
 {
-  if( hist.GetBinError( bin ) == 0 ){
-    return 0;
+  if( format == 0 ){
+    std::string ans = "\\begin{pmatrix}\n";
+
+    for( int i = 0; i < m.GetNrows(); ++i ){
+      for( int j = 0; j < m.GetNcols(); ++j ){
+        ans += usr::fstr( "%10.8lf ", m( i, j ) );
+        if( j == m.GetNcols() - 1 && i != m.GetNrows() -1 ){
+          ans += "\\\\\n";
+        } else {
+          ans += " & ";
+        }
+      }
+    }
+
+    ans += "\n\\end{pmatrix}";
+
+    return ans;
   } else {
-    return ( hist.GetBinContent( bin ) * hist.GetBinContent( bin ) ) /
-           ( hist.GetBinError( bin ) * hist.GetBinError( bin ) );
+    return "";
   }
-
-  return 0.0;
 }
-
 
 }

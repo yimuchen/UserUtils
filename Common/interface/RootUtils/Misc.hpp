@@ -12,6 +12,7 @@
 
 #include "TChain.h"
 #include "TH1D.h"
+#include "TMatrixD.h"
 
 namespace usr {
 
@@ -22,7 +23,7 @@ extern TH1D MakeHist( const std::string&         name,
                       const std::string&         title,
                       const std::vector<double>& bins );
 
-extern double GetBinEffectiveEntry( const TH1&, const int bin );
+extern std::string str( const TMatrixD&, const unsigned format=0 );
 
 }
 

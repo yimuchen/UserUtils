@@ -28,39 +28,27 @@ public:
                    const std::vector<RooCmdArg>& default_list = {} );
   virtual ~RooArgContainer();
 
-  /**
-   * @brief Template function for casting the result of Get() into a specific
-   * type of RooCmdArg.
-   *
-   * This allow for access to more human readable version of the values stored in
-   * the RooCmdArg.
-   */
-  template<typename TYPE>
-  inline const TYPE
-  Get() const { return TYPE( &Get( TYPE::CmdName ) ); }
-
-  /**
-   * @brief Template function for checking if a certain type of RooCmdArg exists
-   * in the container. Reduces verbosity.
-   */
-  template<typename TYPE>
-  inline bool
-  Has() const { return Has( TYPE::CmdName ); }
-
   const RooCmdArg& Get( const std::string& name ) const;
   bool             Has( const std::string& name ) const;
   static bool      CheckList( const std::vector<RooCmdArg>&,
-                             const std::string& name );
+                              const std::string& name );
+
+  // Directly getting the Cmd stored arguments
+  int            GetInt( const std::string&, const unsigned index    = 0 ) const;
+  double         GetDouble( const std::string&, const unsigned index = 0 ) const;
+  std::string    GetStr( const std::string&, const unsigned index    = 0 ) const;
+  const TObject& GetObj( const std::string&, const unsigned index    = 0 ) const;
+
+
   RooLinkedList MakeRooList( const std::vector<std::string>& exclude = {} )
   const;
 };
 
 }// namespace
 
-// MACRO FOR DEFINING A NEW COMMAND
-#define USRUTILS_COMMON_REGISTERCMD( TYPE )              \
-  const std::string TYPE::CmdName = #TYPE;               \
+
+#define USERUTILS_COMMON_REGISTERCMD( TYPE )              \
   static int __usrutils_common_register__dummy ## TYPE = \
-     usr::RooArgContainer::RegistorCommand( #TYPE );
+    usr::RooArgContainer::RegistorCommand( #TYPE );
 
 #endif
