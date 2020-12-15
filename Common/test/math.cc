@@ -21,5 +21,13 @@ int main()
 
   std::cout << usr::Hash32Join( usr::Hash32Join( a, b ), a ) << " "
             << usr::Hash32Join( usr::Hash32Join( a, a ), b )  << std::endl;
+
+  std::vector<double> lintest = usr::LinSpace(0,5,6);
+  for( auto x : lintest ){
+    std::cout << x << " " ;
+  }
+  std::cout << std::endl;
+
+
   return 0;
 }
