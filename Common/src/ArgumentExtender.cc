@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <exception>
+#include <fstream>
 #include <iostream>
 
 namespace opt = boost::program_options;
@@ -146,17 +147,7 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
 /**
  * @brief parsing the program input with the standard argc, argv interface.
  *
- * Raising exception if there is any error in parsing. Additional criteria
- * that counts as an error in parsing includes:
- * 1. The json file contains an options not listed in the final
- *     options_description instance.
- * 2. A option listed in the json does not have a corresponding user input.
- * 3. The user input for an option listed in the json file doesn't match
- *    any of inputs listed in the json file.
- *
- * After all parsing is complete, the function will check for the "help/h"
- * input. If it exists, the function will print the options_description and
- * terminate the program.
+ * See the function _check_parse_valid for additional parsing.
  */
 void
 ArgumentExtender::ParseOptions( int argc, char** argv )
@@ -177,6 +168,53 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
     throw;// Continue throwing exception
   }
 
+  _check_parse_valid();
+}
+
+/**
+ * @brief parsing the program input with an external config file interface.
+ *
+ * See the function _check_parse_valid for additional parsing.
+ */
+void
+ArgumentExtender::ParseFile( const std::string& argfile )
+{
+  try {
+    std::ifstream f( argfile, std::ios::in );
+    opt::store( opt::parse_config_file( f, Description() )
+              , Args() );
+    opt::notify( Args() );
+  } catch( boost::exception& e ){
+    std::cerr << "Error parsing command!" << std::endl
+              << boost::diagnostic_information( e )
+              << Description()
+              << std::endl;
+    throw;// Continue throwing exception
+  }
+
+  _check_parse_valid();
+}
+
+/**
+ * @brief Checking if the options are valid as in whether there are options
+ * missing
+ *
+ * Raising exception if there is any error in parsing. Additional criteria
+ * that counts as an error in parsing includes:
+ * 1. The json file contains an options not listed in the final
+ *     options_description instance.
+ * 2. A option listed in the json does not have a corresponding user input.
+ * 3. The user input for an option listed in the json file doesn't match
+ *    any of inputs listed in the json file.
+ *
+ * After all parsing is complete, the function will check for the "help/h"
+ * input. If it exists, the function will print the options_description and
+ * terminate the program.
+ *
+ */
+void
+ArgumentExtender::_check_parse_valid()
+{
   // Checking that each of the options listed in the json files
   // are present. Will need to
   for( const auto& member : _jsonmap.GetObject() ){
@@ -527,6 +565,24 @@ ArgumentExtender::IsMultiToken( const std::string& x ) const
   if( !description ){ return false; }// Not found
 
   return description->semantic()->max_tokens() > 1;
+}
+
+
+/**
+ * @brief Specialization for getting a list of string from a file.
+ */
+std::vector<std::string>
+ArgumentExtender::ArgList( const std::string& opt ) const
+{
+  if( CheckArg( opt + "_list" ) ){
+    const std::string txtfile = Arg<std::string>( opt+"_list" );
+    return ListFromFile( txtfile );
+  } else if( !CheckArg( opt ) ){
+    throw std::invalid_argument(
+      usr::fstr( "Option [%s] was not provided as a program options, "
+        ", see --help output", opt ) );
+  }
+  return _argmap[opt].as<std::vector<std::string> >();
 }
 
 

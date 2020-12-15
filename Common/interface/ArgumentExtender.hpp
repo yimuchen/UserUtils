@@ -60,6 +60,7 @@ public:
 
   ArgumentExtender& AddOptions( const po::options_description& optdesc );
   void              ParseOptions( int argc, char** argv );
+  void              ParseFile( const std::string& file );
   bool              CheckArg( const std::string& opt ) const;
 
   /**
@@ -93,6 +94,8 @@ public:
    */
   template<typename TYPE>
   std::vector<TYPE> ArgList( const std::string& opt ) const;
+
+  std::vector<std::string> ArgList( const std::string& opt ) const;
 
   /**
    * @brief template function for getting the extend object to an options.
@@ -183,6 +186,7 @@ private:
   PathScheme _namescheme;
 
   void        _init( const std::vector<std::string>& filelist );
+  void        _check_parse_valid();
   std::string genPathString( const ArgPathScheme& ) const;
 
   // Helper functions for path generation.
@@ -231,25 +235,6 @@ ArgumentExtender::ArgList( const std::string& opt ) const
   }
   return _argmap[opt].as<std::vector<T> >();
 }
-
-/**
- * @brief Specialization for getting a list of string from a file.
- */
-template<>
-std::vector<std::string>
-ArgumentExtender::ArgList( const std::string& opt ) const
-{
-  if( CheckArg( opt + "_list" ) ){
-    const std::string txtfile = Arg<std::string>( opt+"_list" );
-    return ListFromFile( txtfile );
-  } else if( !CheckArg( opt ) ){
-    throw std::invalid_argument(
-      usr::fstr( "Option [%s] was not provided as a program options, "
-        ", see --help output", opt ) );
-  }
-  return _argmap[opt].as<std::vector<std::string> >();
-}
-
 
 }/* usr */
 
