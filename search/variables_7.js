@@ -1,4 +1,11 @@
 var searchData=
 [
-  ['precision_5fdefault_1132',['precision_default',['../group__ostreamutils.html#gaa793b07ecf0c58b97c06b9e2fa727b85',1,'usr::fmt::base']]]
+  ['gainsboro_1330',['gainsboro',['../group__PlotUtilsConstants.html#gabdf7406d83b63793f6b827b06b943223',1,'usr::plt::col']]],
+  ['ghostwhite_1331',['ghostwhite',['../group__PlotUtilsConstants.html#ga10231e1b616e6cc7f18118af7095c466',1,'usr::plt::col']]],
+  ['gold_1332',['gold',['../group__PlotUtilsConstants.html#ga6850d55aac66fb83c578edcbef60ce45',1,'usr::plt::col']]],
+  ['goldenrod_1333',['goldenrod',['../group__PlotUtilsConstants.html#ga54d7dab7dc560e38f03232875ebb31c9',1,'usr::plt::col']]],
+  ['gray_1334',['gray',['../group__PlotUtilsConstants.html#gae0e4778a15f80a8bfcd58dae2aebc5c3',1,'usr::plt::col']]],
+  ['green_1335',['green',['../group__PlotUtilsConstants.html#gad428fe8301e82c8a4415d8c0e2ba4c56',1,'usr::plt::col']]],
+  ['greenyellow_1336',['greenyellow',['../group__PlotUtilsConstants.html#gafeb794f5da70a7beb358b3aa4001cc83',1,'usr::plt::col']]],
+  ['grey_1337',['grey',['../group__PlotUtilsConstants.html#ga4d440ac33ffa360324137bcbc784c3b4',1,'usr::plt::col']]]
 ];

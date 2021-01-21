@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['vectorutils_2ehpp_560',['VectorUtils.hpp',['../VectorUtils_8hpp.html',1,'']]],
-  ['vector_20enhancements_561',['Vector enhancements',['../group__VecUtils.html',1,'']]],
-  ['visualizederror_562',['VisualizedError',['../classVisualizedError.html',1,'']]],
-  ['visualizeerror_563',['VisualizeError',['../classusr_1_1plt_1_1VisualizeError.html',1,'usr::plt::VisualizeError'],['../classusr_1_1plt_1_1VisualizeError.html#ae5a27b02e5765f2b563e7f01a05c4c66',1,'usr::plt::VisualizeError::VisualizeError()']]]
+  ['vector_20enhancements_711',['Vector enhancements',['../group__VecUtils.html',1,'']]],
+  ['vectorutils_2ehpp_712',['VectorUtils.hpp',['../VectorUtils_8hpp.html',1,'']]],
+  ['violet_713',['violet',['../group__PlotUtilsConstants.html#ga18ee6aa7a6684dfb269f41936fa86edc',1,'usr::plt::col']]],
+  ['visualizeerror_714',['VisualizeError',['../group__PlotUtilsArgument.html#ga9806576fc2b9bb494c8756ab7ca33bc2',1,'usr::plt']]]
 ];

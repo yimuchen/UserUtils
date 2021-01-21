@@ -1,8 +1,19 @@
 var searchData=
 [
-  ['large_903',['large',['../classusr_1_1plt_1_1font.html#ac3cd16dffb4356946973532d00f58b88',1,'usr::plt::font::large() const'],['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font::Large() const'],['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font::LARGE() const']]],
-  ['lastplot_904',['LastPlot',['../classusr_1_1plt_1_1RooFrame.html#a3126111c892480b970b09adbf6e6bd3d',1,'usr::plt::RooFrame']]],
-  ['legend_905',['Legend',['../classusr_1_1plt_1_1Pad1D.html#a55bcfa71a9850382836d41acbf4ede6e',1,'usr::plt::Pad1D::Legend()'],['../classusr_1_1plt_1_1Pad2DFlat.html#a28b3e22ba4b49a27a9eb6b7aeeb32ce6',1,'usr::plt::Pad2DFlat::Legend()']]],
-  ['linearvariancenll_906',['LinearVarianceNLL',['../group__StatUtils.html#ga0cc9def7b06377667d7ae5ad7cca6e73',1,'usr']]],
-  ['lineheight_907',['LineHeight',['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase::LineHeight()'],['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font::lineheight()']]]
+  ['large_1055',['large',['../classusr_1_1plt_1_1font.html#ac3cd16dffb4356946973532d00f58b88',1,'usr::plt::font']]],
+  ['large_1056',['Large',['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font']]],
+  ['large_1057',['LARGE',['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font']]],
+  ['lastplot_1058',['LastPlot',['../classusr_1_1plt_1_1RooFrame.html#a3126111c892480b970b09adbf6e6bd3d',1,'usr::plt::RooFrame']]],
+  ['lazy_1059',['Lazy',['../group__StatUtils.html#gaffbd9f0f47f3a7487580643edd0f2bb7',1,'usr::Poisson::Lazy()'],['../CommonDistro_8hpp.html#a90eaee08ef3ce1c2088a4e238c8e7bc8',1,'usr::Efficiency::Lazy()']]],
+  ['lazyevaluateuncorrelated_1060',['LazyEvaluateUncorrelated',['../group__StatUtils.html#ga88a44b7ce97588e80fb1ff7927d74fd8',1,'usr']]],
+  ['legend_1061',['Legend',['../classusr_1_1plt_1_1Pad2DFlat.html#a28b3e22ba4b49a27a9eb6b7aeeb32ce6',1,'usr::plt::Pad2DFlat::Legend()'],['../classusr_1_1plt_1_1Pad1D.html#a55bcfa71a9850382836d41acbf4ede6e',1,'usr::plt::Pad1D::Legend()']]],
+  ['line_1062',['line',['../group__PlotUtilsConstants.html#ga3bb30df1c30a3d0a6ab5ad0d15780f38',1,'usr::plt::sty']]],
+  ['linearvariancenll_1063',['LinearVarianceNLL',['../group__StatUtils.html#gab032f76ddbdaeb1673ba7b506ffc7dc4',1,'usr']]],
+  ['linecolor_1064',['LineColor',['../group__PlotUtilsArgument.html#ga0ca2672da7d0cd8b4aff5c5b11fb0cf1',1,'usr::plt']]],
+  ['lineheight_1065',['LineHeight',['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase']]],
+  ['lineheight_1066',['lineheight',['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font']]],
+  ['linestyle_1067',['LineStyle',['../group__PlotUtilsArgument.html#ga4e4e0f0345091c58d7d491e53c6f9016',1,'usr::plt']]],
+  ['linewidth_1068',['LineWidth',['../group__PlotUtilsArgument.html#ga75eaa4bd82d210e6b22c930b8fd9c86b',1,'usr::plt']]],
+  ['linspace_1069',['LinSpace',['../group__STLMaths.html#ga64cdb675f9350b7acb3dd78a114c47e9',1,'usr']]],
+  ['listfromfile_1070',['ListFromFile',['../group__StringUtils.html#ga533eef591140640561071cd33e22ae00',1,'usr']]]
 ];

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['spacesep_5fdefault_1134',['spacesep_default',['../group__ostreamutils.html#ga1258b5de1d20e5b752b502f75e4d3392',1,'usr::fmt::base']]],
-  ['spacestr_5fdefault_1135',['spacestr_default',['../group__ostreamutils.html#ga82345ddc055c409876f95e12789cd3a7',1,'usr::fmt::base']]],
-  ['sum_1136',['sum',['../structusr_1_1SimplifiedData.html#a5ee972816ae12014bf3bfbb1518ca536',1,'usr::SimplifiedData']]],
-  ['sumsq_1137',['sumsq',['../structusr_1_1SimplifiedData.html#aa645f9f435849eafc85339134ff514c1',1,'usr::SimplifiedData']]]
+  ['indianred_1340',['indianred',['../group__PlotUtilsConstants.html#ga8db79c88e87cc22248b9e55bf6b61163',1,'usr::plt::col']]],
+  ['indigo_1341',['indigo',['../group__PlotUtilsConstants.html#gae4528760d6bba71c4cc6f654e6e82878',1,'usr::plt::col']]],
+  ['ivory_1342',['ivory',['../group__PlotUtilsConstants.html#ga341b766e340af3cf9713f6768af462ab',1,'usr::plt::col']]]
 ];

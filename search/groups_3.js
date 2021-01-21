@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gslutils_1153',['GSLUtils',['../group__GSLUtils.html',1,'']]]
+  ['ksroofit_1466',['KSRooFit',['../group__KSRooFit.html',1,'']]]
 ];

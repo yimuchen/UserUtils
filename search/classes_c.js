@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['rangebyvar_621',['RangeByVar',['../structusr_1_1plt_1_1RangeByVar.html',1,'usr::plt']]],
-  ['ratio1dcanvas_622',['Ratio1DCanvas',['../classusr_1_1plt_1_1Ratio1DCanvas.html',1,'usr::plt']]],
-  ['rooargcontainer_623',['RooArgContainer',['../classusr_1_1RooArgContainer.html',1,'usr']]],
-  ['rooframe_624',['RooFrame',['../classusr_1_1plt_1_1RooFrame.html',1,'usr::plt']]]
+  ['scientific_770',['scientific',['../classusr_1_1fmt_1_1base_1_1scientific.html',1,'usr::fmt::base::scientific'],['../classusr_1_1fmt_1_1scientific.html',1,'usr::fmt::scientific']]],
+  ['separator_771',['separator',['../classusr_1_1separator.html',1,'usr']]],
+  ['simple1dcanvas_772',['Simple1DCanvas',['../classusr_1_1plt_1_1Simple1DCanvas.html',1,'usr::plt']]],
+  ['simplifiedcdf_773',['SimplifiedCDF',['../structusr_1_1SimplifiedCDF.html',1,'usr']]],
+  ['simplifieddata_774',['SimplifiedData',['../structusr_1_1SimplifiedData.html',1,'usr']]]
 ];
