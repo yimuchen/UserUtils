@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-doxygen:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -20,9 +20,9 @@ jobs:
         #chmod +x ./.github/workflows/doxygen_custom.sh 
         #./.github/workflows/doxygen_custom.sh 
         sudo mkdir -p docs/html/customjs
-        cp docs/customjs/* docs/html/customjs
+        sudo cp docs/customjs/* docs/html/customjs
         sudo mkdir -p docs/html/image
-        cp docs/image/* docs/html/image
+        sudo cp docs/image/* docs/html/image
 
  
     - name: Deploy
