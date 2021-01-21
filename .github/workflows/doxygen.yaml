@@ -9,8 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: generate custom css 
-      run: sass docs/style.scss:docs/style.css --style compressed
+
+    - name: Compile CSS from SCSS files
+      uses: gha-utilities/sass-build@v0.3.3
+      with:
+        source: docs/style.scss
+        destination: docs/style.css
 
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
