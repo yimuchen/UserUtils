@@ -21,6 +21,11 @@ jobs:
       with:
         doxyfile-path: "doxygen.cfg" 
         working-directory: "./docs" # default is .
+
+    - name: Installing root:
+      run: |
+        sudo snap install root-framework
+        snap run root-framework
    
     - name: Copy custom elements 
       run: |
