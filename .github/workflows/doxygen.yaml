@@ -17,12 +17,12 @@ jobs:
    
     - name: Copy custom elements 
       run: |
-         chmod +x ./.github/workflows/doxygen_custom.sh 
-         ./.github/workflows/doxygen_custom.sh 
-
-         sass style.scss:style.css --style compressed
-         mkdir -p ./docs/html/customjs
-         mkdir -p ./
+        #chmod +x ./.github/workflows/doxygen_custom.sh 
+        #./.github/workflows/doxygen_custom.sh 
+        sudo mkdir -p docs/html/customjs
+        cp docs/customjs/* docs/html/customjs
+        sudo mkdir -p docs/html/image
+        cp docs/image/* docs/html/image
 
  
     - name: Deploy
