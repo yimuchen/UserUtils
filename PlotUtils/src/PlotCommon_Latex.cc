@@ -148,7 +148,7 @@ EstimateLatexWidth( const std::string& text )
   // Should have no more symbols
   for( const auto c : un_text ){
     if( char_width.find( c ) != char_width.end() ){
-      ans += char_width.at( c );
+      ans += char_width.at( c ) * 1.3;
     } else {
       ans += char_width.at( 'M' );// Adding M with for undetermined symbols
     }

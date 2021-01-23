@@ -75,6 +75,7 @@ public:
   friend class Canvas;
 
   PadBase()                 = delete;
+  // PadBase(){}
   PadBase( const PadBase& ) = delete;
 
 public:
@@ -125,6 +126,14 @@ public:
   /** @brief pointer interface to PlotObj */
   inline void
   PlotObj( TObject* obj, Option_t* opt = "" ){ PlotObj( *obj, opt ); }
+
+  inline void
+  PlotObject( TObject* obj, const std::string& opt = "" )
+  { PlotObject( obj, opt.c_str() ); }
+
+  inline void
+  PlotObject( TObject& obj, const std::string& opt = "" )
+  { PlotObject( obj, opt.c_str() ); }
 
   bool HasObject( const TObject& ) const;
   inline bool
@@ -281,6 +290,26 @@ public:
   void SaveAsPNG( const fs::path&, const unsigned dpi = 300 );
   void SaveAsCPP( const fs::path& );
   void SaveToROOT( const fs::path&, const std::string& name );
+
+  // String based interface for reflection
+  // inline void SaveAsPDF( const std::string& x )
+  // { SaveAsPDF( fs::path( x ) ); }
+  // inline void SaveAsPNG( const std::string& x, const unsigned d  )
+  // { SaveAsPNG( fs::path( x ), d ); }
+  // inline void SaveAsCPP( const std::string& x )
+  // { SaveAsCPP( fs::path( x ) ); }
+  // inline void SaveToROOT( const std::string& x, const std::string& name )
+  // { SaveToROOT( fs::path( x ), name ); }
+
+  // Char based interface since now overloading is ambiguous with string literals
+  // inline void SaveAsPDF( const char* x )
+  // { SaveAsPDF( fs::path( x ) ); }
+  // inline void SaveAsPNG( const char* x, const unsigned d  )
+  // { SaveAsPNG( fs::path( x ), d ); }
+  // inline void SaveAsCPP( const char* x )
+  // { SaveAsCPP( fs::path( x ) ); }
+  // inline void SaveToROOT( const char* x, const std::string& name )
+  // { SaveToROOT( fs::path( x ), name ); }
 
   // string interface to allow for python interfacing
   // void SaveAsPDF( const std::string& s ){ SaveAsPDF( fs::path( s ) ); }

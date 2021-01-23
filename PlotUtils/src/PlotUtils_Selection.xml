@@ -32,6 +32,9 @@
     <function name="usr::plt::VisualizeError"    />
     <function name="usr::plt::ExtrapolateInRatio"/>
 
+    <variable name="usr::plt::col::black"/>
+    <variable name="usr::plt::col::blue"/>
+
     <!--No need to update the enums, those are handled automatically-->
     <!--No need to add the global constants, those are handled automatically-->
     <!--No need to add the the dimensoin function-->

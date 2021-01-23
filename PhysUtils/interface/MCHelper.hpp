@@ -9,6 +9,7 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
+#include <functional>
 #include <vector>
 
 namespace usr {
@@ -19,6 +20,7 @@ namespace usr {
  * @ingroup  PhysUtils
  * @{
  */
+namespace mc {
 
 /**
  * @brief
@@ -48,47 +50,71 @@ enum PID
   HIGGS_BOSON_ID = 25
 };
 
-enum GET_FLAG
+/*------------------------------------------------------------------------------
+ * Simple wrapper class for that flags for topology parsing.
+   ---------------------------------------------------------------------------*/
+class ParticleParser
 {
-  GET_ALL       = 0,
-  GET_IMMEDIATE = 1
+public:
+  ParticleParser();
+  ParticleParser( bool( * )( const reco::Candidate* ) );
+  ParticleParser( bool( * )( const reco::Candidate*
+                           , const reco::Candidate* ) );
+  bool operator()( const reco::Candidate*, const reco::Candidate* ) const;
+  bool is_null() const;
+
+private:
+  std::function<bool(const reco::Candidate*)> _single;
+  std::function<bool(const reco::Candidate*,
+                     const reco::Candidate*)> _double;
 };
+typedef ParticleParser pp;
 
 /*------------------------------------------------------------------------------
- *  MC truth topology crawling function.
+ * Commonly used particle parsing functions.
    ---------------------------------------------------------------------------*/
-const reco::Candidate* GetDirectMother( const reco::Candidate*, int );
+bool IsSMQuark( const reco::Candidate* );
+bool IsSMHadron( const reco::Candidate* );
+bool HasCorrectiveParent( const reco::Candidate* );
+bool HasCorrectiveChildren( const reco::Candidate* );
+bool HasDaughter( const reco::Candidate*, const ParticleParser& );
+bool HasMother( const reco::Candidate*, const ParticleParser& );
+bool NoTermination( const reco::Candidate* );
 
-bool IsIntermediate( const reco::Candidate* );
-inline bool
-IsIntermediate( const reco::Candidate& x  )
-{
-  return IsIntermediate( &x );
-}
+/*------------------------------------------------------------------------------
+ *  Generic MC truth topology crawling function.
+   ---------------------------------------------------------------------------*/
+std::vector<const reco::Candidate*> FindAll(
+  const std::vector<reco::GenParticle>&,
+  const ParticleParser& );
+
+std::vector<const reco::Candidate*> FindDecendants(
+  const reco::Candidate*,
+  const ParticleParser&,
+  const ParticleParser& = ParticleParser() );
+
+std::vector<const reco::Candidate*> FindAncestors(
+  const reco::Candidate*,
+  const ParticleParser&,
+  const ParticleParser& = ParticleParser() );
+
+
+const reco::Candidate* GetLastInChain( const reco::Candidate* );
+
+const reco::Candidate* GetFirstInChain( const reco::Candidate* );
 
 const reco::Candidate* GetLeastCommonAncestor(
   const reco::Candidate*                    root,
   const std::vector<const reco::Candidate*> list );
 
-const reco::Candidate* GetLastInChain( const reco::Candidate* );
-const reco::Candidate* GetFirstInChain( const reco::Candidate* );
-
 const reco::Candidate* GetDaughter( const reco::Candidate*, int );
-
-const reco::Candidate* FindAncestor( const reco::Candidate*, int );
-
-bool IsSMHadron( const reco::Candidate* );
-
-std::vector<const reco::Candidate*> GetDecendants(
-  const reco::Candidate*,
-  bool ( * )( const reco::Candidate* ),
-  int flag = GET_ALL );
-
-std::vector<const reco::Candidate*> GetSMHadrons( const reco::Candidate* );
 
 math::XYZPoint GetGenVertex( const std::vector<reco::GenParticle>& );
 
+
 /** @} */
+
+}/* mc */
 
 }/* usr */
 

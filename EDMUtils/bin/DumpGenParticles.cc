@@ -122,9 +122,9 @@ main( int argc, char* argv[] )
   auto MatchAncestors = [] ( const std::vector<int> anc_list,
                             const reco::Candidate* x ) -> bool {
                          for( const auto id : anc_list ){
-                           if( usr::FindAncestor( x, id ) ){
+                           //if( usr::FindAncestor( x, id ) ){
                              return true;
-                           }
+                           //}
                          }
 
                          return false;

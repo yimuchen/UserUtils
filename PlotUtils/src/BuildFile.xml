@@ -5,6 +5,8 @@
 <use name="UserUtils/MathUtils"/>
 
 <flags CXXFLAGS="-g"/>
+<!--flags LCG_DICT_HEADER="PlotUtils_Selection.h"/-->
+<!--flags LCG_DICT_XML="PlotUtils_Selection.xml"/-->
 
 <export>
    <lib name="1"/>

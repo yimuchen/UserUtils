@@ -8,3 +8,4 @@
 
 <bin name="DumpGenParticles"   file="DumpGenParticles.cc"/>
 <bin name="DumpLHERunInfo"     file="DumpLHERunInfo.cc"/>
+<bin name="DumpPileupInfo"     file="DumpPileupInfo.cc"/>

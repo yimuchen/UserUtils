@@ -49,6 +49,7 @@ protected:
 public:
   virtual ~Pad2DFlat();
   Pad2DFlat()                   = delete;
+  // Pad2DFlat() {} // Needed for reflex should never be used by
   Pad2DFlat( const Pad2DFlat& ) = delete;
 
   /**

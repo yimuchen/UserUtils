@@ -96,7 +96,6 @@ BatchRequest::GenerateSampleComparePlot()
 
     for( unsigned i = signallist.size()-1; i < signallist.size(); --i ){
       const auto& process = signallist.at( i );
-
       if( !process.CheckKey( histrequest.filekey ) ){
         usr::fout(
           "Warning! Objects for plot [%s] in process [%s] is not found!\n"
@@ -109,7 +108,7 @@ BatchRequest::GenerateSampleComparePlot()
           );
         continue;
       }
-      c.PlotHist( process.GetScaledClone( histrequest.filekey, 1.0 ),
+      auto x = c.PlotHist( process.GetScaledClone( histrequest.filekey, 1.0 ),
         usr::plt::PlotType( usr::plt::hist ),
         usr::plt::TrackY( usr::plt::tracky::both ),
         usr::plt::LineColor( usr::plt::col::color( process.color ) ),

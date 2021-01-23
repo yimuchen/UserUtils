@@ -14,106 +14,77 @@
 
 namespace usr {
 
+namespace mc {
+
+
 /**
- * @brief returning pointer to the particle in the parent topology with a
- *        specified flavour.
+ * @class ParticleParser
+ * @brief Simple interface for wrapping a two particle function and thw 1
+ * particle function in the same interface
  *
- * For an input particle x, it will traverse the topology towards the parent
- * side, until
- * 1. the parent particle has the target flavour F, in which case it returns the
- *    pointer to the parent particle. Note that the absolute value will be taken
- *    for the for the flavour.
- * 2. The parent particle has a flavour different to x, in which case a null
- *    pointer is return.
- *
- * This function help find direct parent of a particle while avoid the
- * possibility of final state radiations affecting the topology parsing. For
- * example, the following topology is actually rather common in CMSSW truth
- * topologies:
- *
- * \f[F\rightarrow(x+g)\rightarrow(x'+gg)\rightarrow(x''+ggg) \f]
- *
- * The three function calls GetDirectMother( x, F ), GetDirectMother( x', F ),
- * and GetDirectMother( x'', F ) should all return the same pointer F.
- *
- *  Topologies in MiniAOD also have some times have the topologies like: \f$x
- *  \rightarrow x' \rightarrow x''\f$, where  the radiation particles are dropped
- *  to save space. This function will also avoid cases like this.
+ * This class uses the std::function class to stored instances of functions that
+ * stores the function pointer to singe reco::Candidate input function, and two
+ * reco::Candidate input functions. Only one of these functions should be
+ * non-nullptr, and this is used to run the standard operator() process.
  */
-const reco::Candidate*
-GetDirectMother( const reco::Candidate* x, int target_ID )
+ParticleParser::ParticleParser() :
+  _single( nullptr ),
+  _double( nullptr )
+{}
+
+ParticleParser::ParticleParser( bool( *x )( const reco::Candidate* ) ) :
+  _single( x ),
+  _double( nullptr ){}
+
+ParticleParser::ParticleParser( bool( *y )( const reco::Candidate*
+                                          , const reco::Candidate* ) ) :
+  _single( nullptr ),
+  _double( y )
+{}
+
+bool
+ParticleParser::operator()( const reco::Candidate* x, const reco::Candidate* y ) const
 {
-  std::queue<const reco::Candidate*> bfs_queue;
-  bfs_queue.push( x );
+  if( _single != nullptr ){ return _single( x ); } else {return _double( x, y );}
+}
 
-  while( !bfs_queue.empty() ){
-    const reco::Candidate* temp = bfs_queue.front();
-    bfs_queue.pop();
-    if( abs( temp->pdgId() ) == abs( target_ID ) ){
-      return temp;
-    }
-
-    for( unsigned i = 0; i < temp->numberOfMothers(); ++i ){
-      if( temp->mother( i )->pdgId() == temp->pdgId() ){
-        bfs_queue.push( temp->mother( i ) );
-      } else if( abs( temp->mother( i )->pdgId() ) == abs( target_ID ) ){
-        return temp->mother( i );
-      }
-    }
-  }
-
-  return nullptr;
+bool
+ParticleParser::is_null() const
+{
+  return _single == nullptr && _double == nullptr;
 }
 
 /**
- * @brief Essentially the same as the GetDirectMother functions, except this time
- *        the traversal directions is towards the children side.
- *
- * It will follow the same flavour decaying chain until there is a flavour
- * change. A major caveat of this functions would be if the decay topology you
- * are interested in is on the otherside of the hard radiation photon, gluon or Z
- * boson. In these cases, the user should be careful that this function is
- * returning what is desired.
- */
-const reco::Candidate*
-GetDaughter( const reco::Candidate* x, int target_ID )
-{
-  std::queue<const reco::Candidate*> bfs_queue;
-  bfs_queue.push( x );
-
-  while( !bfs_queue.empty() ){
-    const reco::Candidate* temp = bfs_queue.front();
-    bfs_queue.pop();
-    if( abs( temp->pdgId() ) == abs( target_ID ) ){
-      // Moving to bottom of single decay chain
-      while( temp->numberOfDaughters() == 1 ){
-        temp = temp->daughter( 0 );
-      }
-
-      return temp;
-    }
-
-    for( unsigned i = 0; i < temp->numberOfDaughters(); ++i ){
-      bfs_queue.push( temp->daughter( i ) );
-    }
-  }
-
-  return nullptr;
-}
-
-/**
- * @brief Check if particles is intermediate part in the decay chain (i.e it has
- * radiative corrections to the particle momentum)
- *
- * This function checks to see if the input particle has any daughter particle
- * has the same partice id as the input particle. If such a daughter particle
- * exists, then the particle is considered intermediate.
+ * @{
+ * @brief  Using PDGID to check if the particle is a SM particle of a certain
+ * type.
  */
 bool
-IsIntermediate( const reco::Candidate* x )
+IsSMQuark( const reco::Candidate* x )
+{
+  return abs( x->pdgId() ) <= 6;
+}
+
+bool
+IsSMHadron( const reco::Candidate* x )
+{
+  // Not accurate but close enough for 99.9% of use cases
+  return abs( x->pdgId() ) >  100 && abs( x->pdgId() ) < 100000;
+}
+
+/** @} */
+
+/**
+ * @brief Has daughter particle that matches a certain criteria
+ *
+ * The input ParticleParser object can take up to two inputs. The first being the
+ * daughter particle, the second being the main reference particle.
+ */
+bool
+HasDaughter( const reco::Candidate* x, const ParticleParser& is_target )
 {
   for( unsigned i = 0; i < x->numberOfDaughters(); ++i ){
-    if( x->daughter( i )->pdgId() == x->pdgId() ){
+    if( is_target( x->daughter( i ), x ) ){
       return true;
     }
   }
@@ -121,6 +92,241 @@ IsIntermediate( const reco::Candidate* x )
   return false;
 }
 
+/**
+ * @brief Has mother particle that matches a certain criteria
+ *
+ * The input ParticleParser object can take up to two inputs. The first being the
+ * mother particle, the second being the main reference particle.
+ */
+bool
+HasMother( const reco::Candidate* x, const ParticleParser& is_target )
+{
+  for( unsigned i = 0; i < x->numberOfMothers(); ++i ){
+    if( is_target( x->mother( i ), x ) ){
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+/**
+ * @brief Checking if the particle has radiative correction particle in
+ * neighboring topology.
+ *
+ * Radiative corrections is current defined as:
+ * - The neighbor only a single particle with the same PDGID.
+ * - That child has pt within 10% of the parent pt.
+ *
+ * If both are satisfied, the function returns true, false otherwise.
+ */
+bool
+HasCorrectiveParent( const reco::Candidate* x )
+{
+  bool is_close  = false;
+  bool is_unique = false;
+
+  for( unsigned i = 0; i < x->numberOfMothers(); ++i ){
+    if( x->mother( i )->pdgId() == x->pdgId() ){
+      const double pt  = x->pt();
+      const double mpt = x->mother( i )->pt();
+
+      if( ( fabs( mpt - pt ) / mpt ) < 0.1 ){
+        is_close = true;
+      }
+
+      if( is_unique == false ){
+        is_unique = true;
+      } else {
+        is_unique = false;
+        break;
+      }
+    }
+  }
+
+  return is_close && is_unique;
+}
+
+bool
+HasCorrectiveChildren( const reco::Candidate* x )
+{
+  bool is_close  = false;
+  bool is_unique = false;
+
+  for( unsigned i = 0; i < x->numberOfDaughters(); ++i ){
+    if( x->daughter( i )->pdgId() == x->pdgId() ){
+      const double pt  = x->daughter( i )->pt();
+      const double mpt = x->pt();
+
+      if( ( fabs( mpt - pt ) / mpt ) < 0.1 ){
+        is_close = true;
+      }
+
+      if( is_unique == false ){
+        is_unique = true;
+      } else {
+        is_unique = false;
+        break;
+      }
+    }
+  }
+
+  return is_close && is_unique;
+}
+/** @} */
+
+/**
+ * @brief Function required for default no-termination condition in topology
+ * crawling.
+ */
+bool
+NoTerminal( const reco::Candidate* x )
+{
+  return false;
+}
+
+
+/**
+ * @brief Returning a list of gen particles pointer that match a certain
+ * selection criteria
+ *
+ * This function simply loops over all the particles in the given gen particle
+ * list and pass all objects the the calculation function. The ordering of the
+ * return list would be according to when they appear in the master list.
+ */
+std::vector<const reco::Candidate*>
+FindAll(
+  const std::vector<reco::GenParticle>& genlist,
+  const ParticleParser&                 is_target )
+{
+  std::vector<const reco::Candidate*> ans;
+
+  for( const auto& gen : genlist ){
+    if( is_target( &gen, nullptr ) ){
+      ans.push_back( &gen );
+    }
+  }
+
+  return ans;
+}
+
+/**
+ * @brief Static function for running the breath-first search algorithm on the
+ * decay topology.
+ *
+ * Given a staring particle x, a target function is_target, the function returns
+ * a list of particle points for particles that matches the targer function. For
+ * each particle during the BFS, the sequence is_terminate is parsed, if true,
+ * then the BFS queue is no-longer extended, if false, the push function is
+ * called to extend the BFS queue at the current BFS number.
+ *
+ * The is_target and is_terminate function can either be functions that take in
+ * one particle: in which case the argument would be the current particle in the
+ * BFS interation, or two particles in which case the two arguments would be the
+ * current particle in the BFS interation and the starting particle.
+ */
+static std::vector<const reco::Candidate*>
+RunBFS( const reco::Candidate* x,
+        const ParticleParser&  is_target,
+        const ParticleParser&  is_terminate,
+        void (*                push )( std::queue<const reco::Candidate*>&,
+          const reco::Candidate* ) )
+{
+  std::vector<const reco::Candidate*> ans;
+  std::queue<const reco::Candidate*> bfs_queue;
+  bfs_queue.push( x );
+
+  while( !bfs_queue.empty() ){
+    const reco::Candidate* temp = bfs_queue.front();
+    bfs_queue.pop();
+
+    if( is_target( temp, x ) && !usr::FindValue( ans, temp ) ){
+      ans.push_back( temp );
+    }
+
+    if( !is_terminate( temp, x ) ){
+      push( bfs_queue, temp );
+    }
+  }
+
+  return ans;
+}
+
+/**
+ * @brief Get the decendants of a particle in the decay topology that matches a
+ * certain criteria.
+ *
+ * The user is responsible to passing the function uses to processes a candidate
+ * particle in the decay topology. Currently the function must be self-contained
+ * (the function argument is only the decandent candidate as the first candidate
+ * and the input particle as the center particle). The return results will be
+ * ordered in terms of the BFS search sequence, so objects that are "closer" to
+ * the given particle will always be added.
+ *
+ * Notice that since the decay toplogy is not a strict tree structure (example
+ * for hadronizations, two quarks can both be the parent of the resulting tow
+ * hadrons), the return result will only contain the first instance at which a
+ * particle if found in the decay chain.
+ *
+ * To save on time, the user can also provide a function to indicate that the BFS
+ * termination criteria. If the particle visited by the BFS algorithm matches the
+ * critera, then the particles daughters will not be added to BFS queue. In case
+ * non is provided, the termination function will be the same as the target
+ * function. so that as soon a particle if found as the target, the BFS search
+ * will be terminated.
+ */
+std::vector<const reco::Candidate*>
+FindDecendants(  const reco::Candidate* x,
+                 const ParticleParser&  is_target,
+                 const ParticleParser&  is_terminate  )
+{
+  const ParticleParser& term = is_terminate.is_null() ? is_target : is_terminate;
+  return RunBFS( x, is_target, term,
+    []( std::queue<const reco::Candidate*>& q
+      , const reco::Candidate* m ){
+        for( unsigned i = 0; i < m->numberOfDaughters(); ++i ){
+          q.push( m->daughter( i ) );
+        }
+      } );
+}
+
+/**
+ * @brief Get the ancestors of a particle in the decay topology that matches a
+ * certain criteria.
+ *
+ * The user is responsible to passing the function uses to processes a candidate
+ * particle in the decay topology. Currently the function must be self-contained
+ * (the function argument is only the decandent candidate). The return results
+ * will be ordered in terms of the BFS search sequence, so objects that are
+ * "closer" to the given particle will always be added.
+ *
+ * Notice that since the decay toplogy is not a strict tree structure (example
+ * for hadronizations, two quarks can both be the parent of the resulting tow
+ * hadrons), the return result will only contain the first instance at which a
+ * particle if found in the decay chain.
+ *
+ * To save on time, the user can also provide a function to indicate that the BFS
+ * termination criteria. If the particle visited by the BFS algorithm matches the
+ * critera, then the particles mothers will not be added to BFS queue. In case
+ * non is provided, the termination function will be the same as the target
+ * function. so that as soon a particle if found as the target, the BFS search
+ * will be terminated.
+ */
+std::vector<const reco::Candidate*>
+FindAncestors( const reco::Candidate* x,
+               const ParticleParser&  is_target,
+               const ParticleParser&  is_terminate  )
+{
+  const ParticleParser& term = is_terminate.is_null() ? is_target : is_terminate;
+  return RunBFS( x, is_target, term,
+    []( std::queue<const reco::Candidate*>& q,
+        const reco::Candidate* m ){
+        for( unsigned i = 0; i < m->numberOfMothers(); ++i ){
+          q.push( m->mother( i ) );
+        }
+      } );
+}
 
 /**
  * @brief Get the last particle in a radiative correction chain
@@ -133,25 +339,24 @@ IsIntermediate( const reco::Candidate* x )
 const reco::Candidate*
 GetLastInChain( const reco::Candidate* x )
 {
-  if( x->numberOfDaughters() == 0 ){ return x; }
+  ParticleParser is_last( []( const reco::Candidate* temp,
+                              const reco::Candidate* root ){
+                          return ( temp->pdgId() == root->pdgId() ) &&
+                          !HasCorrectiveChildren( temp );
+        } );
+  ParticleParser is_end( []( const reco::Candidate* temp,
+                             const reco::Candidate* root ){
+                         return ( temp->pdgId() !=  root->pdgId() ) ||
+                         !HasCorrectiveChildren( temp );
+        } );
 
-  for( unsigned i = 0; i < x->numberOfDaughters(); ++i ){
-    if( x->daughter( i )->pdgId() == x->pdgId() ){
-      if( x->numberOfDaughters() <= 2 ){
-        return GetLastInChain( x->daughter( i ) );
-      } else {
-        const double pt  = x->pt();
-        const double dpt = x->daughter( i )->pt();
+  const auto ans_list = FindDecendants( x, is_last, is_end );
 
-        if( fabs( dpt - pt ) / pt < 0.1 ){
-          return GetLastInChain( x->daughter( i ) );
-        }
-      }
-    }
+  if( ans_list.size() == 0 ){
+    return x;
+  } else {
+    return ans_list.back();
   }
-
-
-  return x;
 }
 
 /**
@@ -171,52 +376,6 @@ GetFirstInChain( const reco::Candidate* x )
   return x;
 }
 
-/**
- * @brief Get the decendants of a particle in the decay topology that matches a
- * certain criteria.
- *
- * The user is responsible to passing the function uses to processes a candidate
- * particle in the decay topology. Currently the function must be self-contained
- * (the function argument is only the decandent candidate).
- *
- * The user can also add a flag that tells the function how deep into the
- * topology to fetch the decendants. As the decay topology is difficult to define
- * in terms of decay 'depth', with radiative correction sharing the same topology
- * as regular decays, the only two options are for immedidate and all.
- */
-std::vector<const reco::Candidate*>
-GetDecendants(
-  const reco::Candidate* x,
-  bool (*                func )( const reco::Candidate* ),
-  const int              flag  )
-{
-  std::vector<const reco::Candidate*> ans;
-  std::queue<const reco::Candidate*> bfs_queue;
-  bfs_queue.push( GetLastInChain( x ) );
-
-  auto PushQueue = [&bfs_queue]( const reco::Candidate* m ){
-                     for( unsigned i = 0; i < m->numberOfDaughters(); ++i ){
-                       bfs_queue.push( GetLastInChain( m->daughter( i ) ) );
-                     }
-                   };
-
-  while( !bfs_queue.empty() ){
-    const reco::Candidate* temp = bfs_queue.front();
-    bfs_queue.pop();
-
-    if( func( temp ) && temp != x ){
-      ans.push_back( temp );
-      if( flag != GET_IMMEDIATE ){
-        PushQueue( temp );
-      }
-    } else {
-      PushQueue( temp );
-    }
-
-  }
-
-  return ans;
-}
 
 /**
  * @brief Get the Least Common Ancestor in the decay topology
@@ -310,16 +469,6 @@ GetLeastCommonAncestor( const reco::Candidate*                    root,
   return ans;
 }
 
-/**
- * @brief Simple function to check if particle is a hadron.
- *
- * PDGID paring flag. Not accurate but close enough for 99.9% of use cases
- */
-bool
-IsSMHadron( const reco::Candidate* x )
-{
-  return abs( x->pdgId() ) >  100 && abs( x->pdgId() ) < 100000;
-}
 
 /**
  * @brief Get the Gen-Level Vertex position from the list of gen particles
@@ -368,5 +517,7 @@ FindAncestor( const reco::Candidate* x, int pdgid )
 
   return nullptr;
 }
+
+}/* mc */
 
 }/* usr */

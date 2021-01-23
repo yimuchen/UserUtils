@@ -19,24 +19,17 @@ jobs:
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
       with:
-        doxyfile-path: "doxygen.cfg" 
-        working-directory: "./docs" # default is .
+        doxyfile-path: "doxygen.cfg"
+        working-directory: "./docs"
 
-    - name: Installing root
+    - name: Copy custom elements
       run: |
-        sudo snap install root-framework
-        snap run root-framework
-   
-    - name: Copy custom elements 
-      run: |
-        #chmod +x ./.github/workflows/doxygen_custom.sh 
-        #./.github/workflows/doxygen_custom.sh 
         sudo mkdir -p docs/html/customjs
         sudo cp docs/customjs/* docs/html/customjs
         sudo mkdir -p docs/html/image
         sudo cp docs/image/* docs/html/image
 
- 
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:

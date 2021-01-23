@@ -50,9 +50,9 @@ namespace plt {
 class Pad1D : public PadBase
 {
 protected:
-  Pad1D( Canvas* ,const PadSize&, const RangeByVar& );
-  Pad1D( Canvas* ,const PadSize&, const double min, const double max );
-  Pad1D( Canvas* ,const PadSize& );
+  Pad1D( Canvas*, const PadSize&, const RangeByVar& );
+  Pad1D( Canvas*, const PadSize&, const double min, const double max );
+  Pad1D( Canvas*, const PadSize& );
 
   virtual void InitDraw();
   virtual void Finalize();
@@ -61,7 +61,8 @@ protected:
 
 public:
   virtual ~Pad1D ();
-  Pad1D()               = delete;
+  Pad1D() = delete;
+  // Pad1D(){};// Needed for reflex, should never be used!
   Pad1D( const Pad1D& ) = delete;
 
   /**
@@ -75,7 +76,7 @@ public:
     return PlotHist( *x, list );
   }
   inline TH1D& PlotHist( TH1D& x ){ return PlotHist( &x, {} ); }
-  inline TH1D& PlotHist( TH1D* x ){ return PlotHist( x, {} );}
+  inline TH1D& PlotHist( TH1D* x ){ return PlotHist( x, {} ); }
   template<typename ... Args>
   inline TH1D&
   PlotHist( TH1D& x, const RooCmdArg & arg1, Args ... args )
@@ -88,6 +89,7 @@ public:
   {
     return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
   /** @} */
 
   /**
@@ -252,7 +254,7 @@ public:
    * @{
    *  @brief function for drawing a horizontal line across pad
    */
-  TLine& DrawHLine( const double&, const std::vector<RooCmdArg>& );
+  TLine&        DrawHLine( const double&, const std::vector<RooCmdArg>& );
   inline TLine& DrawHLine( const double& x ){ return DrawHLine( x, {} ); }
   template<typename ... Args>
   inline TLine&
@@ -266,7 +268,7 @@ public:
    * @{
    * @brief Function for drawing a vertical along in the pad
    */
-  TLine& DrawVLine( const double&, const std::vector<RooCmdArg>& );
+  TLine&        DrawVLine( const double&, const std::vector<RooCmdArg>& );
   inline TLine& DrawVLine( const double& x ){ return DrawVLine( x, {} ); }
   template<typename ... Args>
   inline TLine&
