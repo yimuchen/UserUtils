@@ -97,40 +97,89 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gabd27ddeb20defa504e7d57bff52dc212"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#gabd27ddeb20defa504e7d57bff52dc212">usr::GetDirectMother</a> (const reco::Candidate *x, int target_ID)</td></tr>
-<tr class="memdesc:gabd27ddeb20defa504e7d57bff52dc212"><td class="mdescLeft">&#160;</td><td class="mdescRight">returning pointer to the particle in the parent topology with a specified flavour.  <a href="group__MCHelper.html#gabd27ddeb20defa504e7d57bff52dc212">More...</a><br /></td></tr>
-<tr class="separator:gabd27ddeb20defa504e7d57bff52dc212"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga963664419c35e79e2bc4e1d52a0d7836"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga963664419c35e79e2bc4e1d52a0d7836">usr::GetDaughter</a> (const reco::Candidate *x, int target_ID)</td></tr>
-<tr class="memdesc:ga963664419c35e79e2bc4e1d52a0d7836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Essentially the same as the GetDirectMother functions, except this time the traversal directions is towards the children side.  <a href="group__MCHelper.html#ga963664419c35e79e2bc4e1d52a0d7836">More...</a><br /></td></tr>
-<tr class="separator:ga963664419c35e79e2bc4e1d52a0d7836"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga27548e8aaf531a36cc74bff66260bb7a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga27548e8aaf531a36cc74bff66260bb7a">usr::IsIntermediate</a> (const reco::Candidate *x)</td></tr>
-<tr class="memdesc:ga27548e8aaf531a36cc74bff66260bb7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if particles is intermediate part in the decay chain (i.e it has radiative corrections to the particle momentum)  <a href="group__MCHelper.html#ga27548e8aaf531a36cc74bff66260bb7a">More...</a><br /></td></tr>
-<tr class="separator:ga27548e8aaf531a36cc74bff66260bb7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaebdc7e73bccfe1c4c3ec90ddee872b8c"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#gaebdc7e73bccfe1c4c3ec90ddee872b8c">usr::GetLastInChain</a> (const reco::Candidate *x)</td></tr>
-<tr class="memdesc:gaebdc7e73bccfe1c4c3ec90ddee872b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the last particle in a radiative correction chain.  <a href="group__MCHelper.html#gaebdc7e73bccfe1c4c3ec90ddee872b8c">More...</a><br /></td></tr>
-<tr class="separator:gaebdc7e73bccfe1c4c3ec90ddee872b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad123fe9c87d3087cfcd53502ef5ef2df"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#gad123fe9c87d3087cfcd53502ef5ef2df">usr::GetFirstInChain</a> (const reco::Candidate *x)</td></tr>
-<tr class="memdesc:gad123fe9c87d3087cfcd53502ef5ef2df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the First particle in the radiative correction chain.  <a href="group__MCHelper.html#gad123fe9c87d3087cfcd53502ef5ef2df">More...</a><br /></td></tr>
-<tr class="separator:gad123fe9c87d3087cfcd53502ef5ef2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadda7a17d1533ef00422cfe518f53c080"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const reco::Candidate * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#gadda7a17d1533ef00422cfe518f53c080">usr::GetDecendants</a> (const reco::Candidate *x, bool(* func)(const reco::Candidate *), const int flag)</td></tr>
-<tr class="memdesc:gadda7a17d1533ef00422cfe518f53c080"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the decendants of a particle in the decay topology that matches a certain criteria.  <a href="group__MCHelper.html#gadda7a17d1533ef00422cfe518f53c080">More...</a><br /></td></tr>
-<tr class="separator:gadda7a17d1533ef00422cfe518f53c080"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga38be8b38b90101cd7b7f9ee216df37f0"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga38be8b38b90101cd7b7f9ee216df37f0">usr::GetLeastCommonAncestor</a> (const reco::Candidate *root, const std::vector&lt; const reco::Candidate * &gt; list)</td></tr>
-<tr class="memdesc:ga38be8b38b90101cd7b7f9ee216df37f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Least Common Ancestor in the decay topology.  <a href="group__MCHelper.html#ga38be8b38b90101cd7b7f9ee216df37f0">More...</a><br /></td></tr>
-<tr class="separator:ga38be8b38b90101cd7b7f9ee216df37f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga12a92107aa5e300874e17452fa11b3d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga12a92107aa5e300874e17452fa11b3d8">usr::IsSMHadron</a> (const reco::Candidate *x)</td></tr>
-<tr class="memdesc:ga12a92107aa5e300874e17452fa11b3d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple function to check if particle is a hadron.  <a href="group__MCHelper.html#ga12a92107aa5e300874e17452fa11b3d8">More...</a><br /></td></tr>
-<tr class="separator:ga12a92107aa5e300874e17452fa11b3d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga90f04d4b818ec455edecf08376a364fb"><td class="memItemLeft" align="right" valign="top">math::XYZPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga90f04d4b818ec455edecf08376a364fb">usr::GetGenVertex</a> (const std::vector&lt; reco::GenParticle &gt; &amp;genlist)</td></tr>
-<tr class="memdesc:ga90f04d4b818ec455edecf08376a364fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Gen-Level Vertex position from the list of gen particles.  <a href="group__MCHelper.html#ga90f04d4b818ec455edecf08376a364fb">More...</a><br /></td></tr>
-<tr class="separator:ga90f04d4b818ec455edecf08376a364fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab660f2919d9b27417f3a890de2f13103"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#gab660f2919d9b27417f3a890de2f13103">usr::FindAncestor</a> (const reco::Candidate *x, int pdgid)</td></tr>
-<tr class="memdesc:gab660f2919d9b27417f3a890de2f13103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the closest ancestor that matches the given PDG id.  <a href="group__MCHelper.html#gab660f2919d9b27417f3a890de2f13103">More...</a><br /></td></tr>
-<tr class="separator:gab660f2919d9b27417f3a890de2f13103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga051512096ed15956c1da8707844b7d41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga051512096ed15956c1da8707844b7d41">usr::mc::HasDaughter</a> (const reco::Candidate *x, const ParticleParser &amp;is_target)</td></tr>
+<tr class="memdesc:ga051512096ed15956c1da8707844b7d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has daughter particle that matches a certain criteria.  <a href="group__MCHelper.html#ga051512096ed15956c1da8707844b7d41">More...</a><br /></td></tr>
+<tr class="separator:ga051512096ed15956c1da8707844b7d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga75d2c3956672bc0a4afdd96b71776499"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga75d2c3956672bc0a4afdd96b71776499">usr::mc::HasMother</a> (const reco::Candidate *x, const ParticleParser &amp;is_target)</td></tr>
+<tr class="memdesc:ga75d2c3956672bc0a4afdd96b71776499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has mother particle that matches a certain criteria.  <a href="group__MCHelper.html#ga75d2c3956672bc0a4afdd96b71776499">More...</a><br /></td></tr>
+<tr class="separator:ga75d2c3956672bc0a4afdd96b71776499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga00f4e68beba9d7485bea62b404000ef8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga00f4e68beba9d7485bea62b404000ef8">usr::mc::HasCorrectiveParent</a> (const reco::Candidate *x)</td></tr>
+<tr class="memdesc:ga00f4e68beba9d7485bea62b404000ef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checking if the particle has radiative correction particle in neighboring topology.  <a href="group__MCHelper.html#ga00f4e68beba9d7485bea62b404000ef8">More...</a><br /></td></tr>
+<tr class="separator:ga00f4e68beba9d7485bea62b404000ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7bd3521b754061c5d4097956d336d86a"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>usr::mc::HasCorrectiveChildren</b> (const reco::Candidate *)</td></tr>
+<tr class="separator:ga7bd3521b754061c5d4097956d336d86a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798905f6b7a946b35746be8759ca3e6f"><td class="memItemLeft" align="right" valign="top"><a id="a798905f6b7a946b35746be8759ca3e6f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="MCHelper_8cc.html#a798905f6b7a946b35746be8759ca3e6f">usr::mc::NoTerminal</a> (const reco::Candidate *x)</td></tr>
+<tr class="memdesc:a798905f6b7a946b35746be8759ca3e6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function required for default no-termination condition in topology crawling. <br /></td></tr>
+<tr class="separator:a798905f6b7a946b35746be8759ca3e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga60c121cab7773e2a31f1aaf54d6e99ed"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const reco::Candidate * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga60c121cab7773e2a31f1aaf54d6e99ed">usr::mc::FindAll</a> (const std::vector&lt; reco::GenParticle &gt; &amp;genlist, const ParticleParser &amp;is_target)</td></tr>
+<tr class="memdesc:ga60c121cab7773e2a31f1aaf54d6e99ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning a list of gen particles pointer that match a certain selection criteria.  <a href="group__MCHelper.html#ga60c121cab7773e2a31f1aaf54d6e99ed">More...</a><br /></td></tr>
+<tr class="separator:ga60c121cab7773e2a31f1aaf54d6e99ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b29dca6e83fa81781fff5b00e4711c3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const reco::Candidate * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga3b29dca6e83fa81781fff5b00e4711c3">usr::mc::FindDecendants</a> (const reco::Candidate *x, const ParticleParser &amp;is_target, const ParticleParser &amp;is_terminate)</td></tr>
+<tr class="memdesc:ga3b29dca6e83fa81781fff5b00e4711c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the decendants of a particle in the decay topology that matches a certain criteria.  <a href="group__MCHelper.html#ga3b29dca6e83fa81781fff5b00e4711c3">More...</a><br /></td></tr>
+<tr class="separator:ga3b29dca6e83fa81781fff5b00e4711c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga31b0defc2f6f1b3c3c479c40b3cd4f60"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const reco::Candidate * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga31b0defc2f6f1b3c3c479c40b3cd4f60">usr::mc::FindAncestors</a> (const reco::Candidate *x, const ParticleParser &amp;is_target, const ParticleParser &amp;is_terminate)</td></tr>
+<tr class="memdesc:ga31b0defc2f6f1b3c3c479c40b3cd4f60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the ancestors of a particle in the decay topology that matches a certain criteria.  <a href="group__MCHelper.html#ga31b0defc2f6f1b3c3c479c40b3cd4f60">More...</a><br /></td></tr>
+<tr class="separator:ga31b0defc2f6f1b3c3c479c40b3cd4f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10553b3fa46ba6418ea9f2449609a0b8"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga10553b3fa46ba6418ea9f2449609a0b8">usr::mc::GetLastInChain</a> (const reco::Candidate *x)</td></tr>
+<tr class="memdesc:ga10553b3fa46ba6418ea9f2449609a0b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the last particle in a radiative correction chain.  <a href="group__MCHelper.html#ga10553b3fa46ba6418ea9f2449609a0b8">More...</a><br /></td></tr>
+<tr class="separator:ga10553b3fa46ba6418ea9f2449609a0b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaad1d306b1e620fdff1d80ed6c66f84d3"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#gaad1d306b1e620fdff1d80ed6c66f84d3">usr::mc::GetFirstInChain</a> (const reco::Candidate *x)</td></tr>
+<tr class="memdesc:gaad1d306b1e620fdff1d80ed6c66f84d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the First particle in the radiative correction chain.  <a href="group__MCHelper.html#gaad1d306b1e620fdff1d80ed6c66f84d3">More...</a><br /></td></tr>
+<tr class="separator:gaad1d306b1e620fdff1d80ed6c66f84d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b77ce18bb391d849a098be88a76146b"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga4b77ce18bb391d849a098be88a76146b">usr::mc::GetLeastCommonAncestor</a> (const reco::Candidate *root, const std::vector&lt; const reco::Candidate * &gt; list)</td></tr>
+<tr class="memdesc:ga4b77ce18bb391d849a098be88a76146b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Least Common Ancestor in the decay topology.  <a href="group__MCHelper.html#ga4b77ce18bb391d849a098be88a76146b">More...</a><br /></td></tr>
+<tr class="separator:ga4b77ce18bb391d849a098be88a76146b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ff788777292a18576c646b2e74cd924"><td class="memItemLeft" align="right" valign="top">math::XYZPoint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga1ff788777292a18576c646b2e74cd924">usr::mc::GetGenVertex</a> (const std::vector&lt; reco::GenParticle &gt; &amp;genlist)</td></tr>
+<tr class="memdesc:ga1ff788777292a18576c646b2e74cd924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Gen-Level Vertex position from the list of gen particles.  <a href="group__MCHelper.html#ga1ff788777292a18576c646b2e74cd924">More...</a><br /></td></tr>
+<tr class="separator:ga1ff788777292a18576c646b2e74cd924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1baed63d3ce39788d1d0f76eb4296ad4"><td class="memItemLeft" align="right" valign="top">const reco::Candidate *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="MCHelper_8cc.html#a1baed63d3ce39788d1d0f76eb4296ad4">usr::mc::FindAncestor</a> (const reco::Candidate *x, int pdgid)</td></tr>
+<tr class="memdesc:a1baed63d3ce39788d1d0f76eb4296ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the closest ancestor that matches the given PDG id.  <a href="MCHelper_8cc.html#a1baed63d3ce39788d1d0f76eb4296ad4">More...</a><br /></td></tr>
+<tr class="separator:a1baed63d3ce39788d1d0f76eb4296ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:ga242ad0417e1a423dcc5bafe63e862fa3"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga242ad0417e1a423dcc5bafe63e862fa3">usr::mc::IsSMQuark</a> (const reco::Candidate *x)</td></tr>
+<tr class="memdesc:ga242ad0417e1a423dcc5bafe63e862fa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Using PDGID to check if the particle is a SM particle of a certain type. <br /></td></tr>
+<tr class="separator:ga242ad0417e1a423dcc5bafe63e862fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0a37d8dc775d7e19c35a6070f5b1e03e"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MCHelper.html#ga0a37d8dc775d7e19c35a6070f5b1e03e">usr::mc::IsSMHadron</a> (const reco::Candidate *)</td></tr>
+<tr class="memdesc:ga0a37d8dc775d7e19c35a6070f5b1e03e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Using PDGID to check if the particle is a SM particle of a certain type. <br /></td></tr>
+<tr class="separator:ga0a37d8dc775d7e19c35a6070f5b1e03e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Yi-Mu "Enoch" Chen </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a1baed63d3ce39788d1d0f76eb4296ad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1baed63d3ce39788d1d0f76eb4296ad4">&#9670;&nbsp;</a></span>FindAncestor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const reco::Candidate* usr::mc::FindAncestor </td>
+          <td>(</td>
+          <td class="paramtype">const reco::Candidate *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pdgid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Using a BFS algorithm to find the closest ancestor </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/>
