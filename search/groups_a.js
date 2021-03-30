@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vector_20enhancements_1499',['Vector enhancements',['../group__VecUtils.html',1,'']]]
+  ['vector_20enhancements_1501',['Vector enhancements',['../group__VecUtils.html',1,'']]]
 ];
