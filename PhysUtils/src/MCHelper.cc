@@ -177,11 +177,20 @@ HasCorrectiveChildren( const reco::Candidate* x )
 /** @} */
 
 /**
- * @brief Function required for default no-termination condition in topology
- * crawling.
+ * @brief Function used for getting all topology particle in
+ * BFS order.
  */
 bool
-NoTerminal( const reco::Candidate* x )
+Any( const reco::Candidate* x )
+{
+  return true;
+}
+
+/**
+ * @brief Function required for no-termination condition in topology crawling.
+ */
+bool
+NoTermination( const reco::Candidate* x )
 {
   return false;
 }

@@ -79,6 +79,9 @@ bool HasCorrectiveParent( const reco::Candidate* );
 bool HasCorrectiveChildren( const reco::Candidate* );
 bool HasDaughter( const reco::Candidate*, const ParticleParser& );
 bool HasMother( const reco::Candidate*, const ParticleParser& );
+
+// Generic functions, to help with topology crawling
+bool Any( const reco::Candidate* );
 bool NoTermination( const reco::Candidate* );
 
 /*------------------------------------------------------------------------------

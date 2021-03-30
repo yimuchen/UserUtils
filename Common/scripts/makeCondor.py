@@ -7,12 +7,21 @@ import os
 
 parser = argparse.ArgumentParser("Generating condor jobs from a list of input")
 parser.add_argument('--executable', '-e', type=str, help='Executable to run')
-parser.add_argument('--jobname','-j', type=str, help='Unique name for job in case the name is not unique, existing files might overwritten.' )
-parser.add_argument('--jobcount',
-                    '-n',
-                    type=int,
-                    default=1,
-                    help='Number of jobs to submit, In case the certain input/outputs need to vary by the job process, you can use the arguments options with $(Process), just be careful of bash string expansion.')
+parser.add_argument(
+    '--jobname',
+    '-j',
+    type=str,
+    help=
+    'Unique name for job in case the name is not unique, existing files might overwritten.'
+)
+parser.add_argument(
+    '--jobcount',
+    '-n',
+    type=int,
+    default=1,
+    help=
+    'Number of jobs to submit, In case the certain input/outputs need to vary by the job process, you can use the arguments options with $(Process), just be careful of bash string expansion.'
+)
 parser.add_argument('--logdir',
                     '-l',
                     type=str,
@@ -41,18 +50,16 @@ Arguments             = {ARGS}
 Queue {JOBCOUNT}
 """
 
-condor_args = "{exe} {args}".format(
-      exe=args.executable,
-      args=" ".join(args.arguments))
+condor_args = "{exe} {args}".format(exe=args.executable,
+                                    args=" ".join(args.arguments))
 
-jdldir  = args.jdldir
+jdldir = args.jdldir
 jobname = args.jobname
 
-with open( jdldir + '/' + jobname + '.jdl', 'w') as f :
-  f.write( CONDOR_JDL_TEMPLATE.format(
-      CMS_BASE=os.environ['CMSSW_BASE'],
-      LOGDIR=args.logdir,
-      JOBNAME=jobname,
-      ARGS=condor_args,
-      JOBCOUNT=args.jobcount
-    ) )
+with open(jdldir + '/' + jobname + '.jdl', 'w') as f:
+  f.write(
+      CONDOR_JDL_TEMPLATE.format(CMS_BASE=os.environ['CMSSW_BASE'],
+                                 LOGDIR=args.logdir,
+                                 JOBNAME=jobname,
+                                 ARGS=condor_args,
+                                 JOBCOUNT=args.jobcount))
