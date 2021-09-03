@@ -11,9 +11,6 @@
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
-#include <boost/algorithm/string.hpp>
-#include <boost/range/algorithm_ext/erase.hpp>
-
 #include <algorithm>
 #include <cstdlib>
 #include <fstream>
@@ -21,6 +18,9 @@
 #include <regex>
 #include <sstream>
 #include <string>
+
+#include <boost/algorithm/string.hpp>
+#include <boost/range/algorithm_ext/erase.hpp>
 
 namespace usr  {
 
@@ -226,33 +226,5 @@ ends_with( const std::string& master, const std::string& target )
   if( target.size() > master.size() ){ return false; }
   return std::equal( target.rbegin(), target.rend(), master.rbegin() );
 }
-
-/**
- * @brief Getting a list of strings from a file.
- *
- * Given a file path, the function return the contents of file broken by
- * delimiters (be default the delimiter character is '\n').
- */
-std::vector<std::string>
-ListFromFile( const std::string& file, const std::string& delimiter )
-{
-  std::ifstream f( file );
-  std::stringstream buffer;
-  std::string content;
-  std::vector<std::string> ans;
-
-  // Getting the full contents of the file
-  buffer << f.rdbuf();
-  content = buffer.str();
-
-  // Boost algorithm for string splitting
-  boost::split( ans, content, boost::is_any_of( delimiter ) );
-
-  // std algorithm for removing empty strings.
-  ans.erase( std::remove( ans.begin(), ans.end(), "" ), ans.end() );
-
-  return ans;
-}
-
 
 }/* usr  */

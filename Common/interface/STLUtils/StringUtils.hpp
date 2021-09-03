@@ -54,8 +54,6 @@ extern size_t NextOpenBrace( const std::string&, const unsigned start );
 extern bool starts_with( const std::string&, const std::string& );
 extern bool ends_with( const std::string&, const std::string& );
 
-extern std::vector<std::string> ListFromFile( const std::string& file,
-                                              const std::string& delim = "\n" );
 /**
  * @{
  * @brief Variadic interface for generating formmatted strings.

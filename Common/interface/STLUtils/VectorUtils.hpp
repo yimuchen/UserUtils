@@ -7,8 +7,14 @@
 #ifndef USERUTILS_COMMON_STLUTILS_VECTORUTILS_HPP
 #define USERUTILS_COMMON_STLUTILS_VECTORUTILS_HPP
 #include <algorithm>
+#include <fstream>
 #include <set>
+#include <sstream>
+#include <string>
 #include <vector>
+
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace usr {
 
@@ -35,10 +41,14 @@ template<typename OBJTYPE>
 void ClearValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x );
 
 template<typename OBJTYPE>
-void ClearIf( std::vector<OBJTYPE>& vec, bool (*func)(const OBJTYPE& ) );
+void ClearIf( std::vector<OBJTYPE>& vec, bool ( * func )( const OBJTYPE& ) );
 
 template<typename OBJTYPE>
 bool FindValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x );
+
+template<typename OBJTYPE=std::string>
+std::vector<OBJTYPE> ListFromFile( const std::string& file,
+                                   const std::string& delim = "\n" );
 
 /** @} */
 
@@ -113,7 +123,7 @@ ClearValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
  */
 template<typename OBJTYPE>
 void
-ClearIf( std::vector<OBJTYPE>& vec, bool (*func)(const OBJTYPE&) )
+ClearIf( std::vector<OBJTYPE>& vec, bool ( * func )( const OBJTYPE& ) )
 {
   vec.erase( std::remove_if( vec.begin(), vec.end(), func ), vec.end() );
 }
@@ -156,6 +166,39 @@ OBJTYPE
 GetMinimum( std::vector<OBJTYPE>& vec )
 {
   return *std::min_element( vec.begin(), vec.end() );
+}
+
+/**
+ * @brief Getting a list of objects from a file.
+ *
+ * Given a file path, the function return the contents of file broken by
+ * delimiters (be default the delimiter character is '\n').
+ */
+template<typename OBJTYPE>
+std::vector<OBJTYPE>
+ListFromFile( const std::string& file, const std::string& delimiter )
+{
+  std::ifstream f( file );
+  std::stringstream buffer;
+  std::string content;
+  std::vector<std::string> tokens;
+  std::vector<OBJTYPE> ans;
+
+  // Getting the full contents of the file
+  buffer << f.rdbuf();
+  content = buffer.str();
+
+  // Boost algorithm for string splitting
+  boost::split( tokens, content, boost::is_any_of( delimiter ) );
+
+  // std algorithm for removing empty strings.
+  tokens.erase( std::remove( tokens.begin(), tokens.end(), "" ), tokens.end() );
+
+  for( const auto& t : tokens ){
+    ans.push_back( boost::lexical_cast<OBJTYPE>( t ) );
+  }
+
+  return ans;
 }
 
 }/* usr */
