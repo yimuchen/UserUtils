@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ksroofit_1480',['KSRooFit',['../group__KSRooFit.html',1,'']]]
+  ['ksroofit_0',['KSRooFit',['../group__KSRooFit.html',1,'']]]
 ];
