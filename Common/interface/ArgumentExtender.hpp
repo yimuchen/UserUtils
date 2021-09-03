@@ -95,8 +95,6 @@ public:
   template<typename TYPE>
   std::vector<TYPE> ArgList( const std::string& opt ) const;
 
-  std::vector<std::string> ArgList( const std::string& opt ) const;
-
   /**
    * @brief template function for getting the extend object to an options.
    * @details The user is responsible for providing the correct string tag, and
@@ -228,12 +226,16 @@ template<typename T>
 std::vector<T>
 ArgumentExtender::ArgList( const std::string& opt ) const
 {
-  if( !CheckArg( opt ) ){
+  if( CheckArg( opt + "_list" ) ){
+    const std::string txtfile = Arg<std::string>( opt+"_list" );
+    return ListFromFile<T>( txtfile );
+  } else if( !CheckArg( opt ) ){
     throw std::invalid_argument(
       usr::fstr( "Option [%s] was not provided as a program options, "
         ", see --help output", opt ) );
+  } else {
+    return _argmap[opt].as<std::vector<T> >();
   }
-  return _argmap[opt].as<std::vector<T> >();
 }
 
 }/* usr */

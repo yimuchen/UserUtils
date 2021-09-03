@@ -277,7 +277,7 @@ ArgumentExtender::PrintHelpAndExit() const
 bool
 ArgumentExtender::CheckArg( const std::string& opt ) const
 {
-  return Args().count( opt );
+  return Args().count( opt ) || Args().count( "_list" );
 }
 
 /**
@@ -571,19 +571,7 @@ ArgumentExtender::IsMultiToken( const std::string& x ) const
 /**
  * @brief Specialization for getting a list of string from a file.
  */
-std::vector<std::string>
-ArgumentExtender::ArgList( const std::string& opt ) const
-{
-  if( CheckArg( opt + "_list" ) ){
-    const std::string txtfile = Arg<std::string>( opt+"_list" );
-    return ListFromFile( txtfile );
-  } else if( !CheckArg( opt ) ){
-    throw std::invalid_argument(
-      usr::fstr( "Option [%s] was not provided as a program options, "
-        ", see --help output", opt ) );
-  }
-  return _argmap[opt].as<std::vector<std::string> >();
-}
+//template<>
 
 
 
