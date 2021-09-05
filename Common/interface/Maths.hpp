@@ -6,6 +6,7 @@
 #ifndef USERUTILS_COMMON_MATHS_HPP
 #define USERUTILS_COMMON_MATHS_HPP
 
+#include <cstdlib>
 #include <cstdint>
 #include <vector>
 

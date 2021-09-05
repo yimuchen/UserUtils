@@ -9,3 +9,7 @@
 #include "UserUtils/PlotUtils/StandardPlotFormat.hpp"
 #endif
 
+int main()
+{
+  return 0;
+}
