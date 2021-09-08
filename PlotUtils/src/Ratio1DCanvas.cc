@@ -197,7 +197,7 @@ Ratio1DCanvas::MakeBottomAxis()
     BottomPad().PlotObj( hist, "AXIS" );
     BottomPad().FrameObj().addObject( hist );
   } else if( TopPad().GetAxisObject()->InheritsFrom( TH1D::Class() ) ){
-    TH1F* hist = dynamic_cast<TH1F*>( TopPad().GetAxisObject()->Clone() );
+    TH1D* hist = dynamic_cast<TH1D*>( TopPad().GetAxisObject()->Clone() );
     hist->Reset();
     BottomPad().PlotObj( hist, "AXIS" );
     BottomPad().FrameObj().addObject( hist );
