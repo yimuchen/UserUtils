@@ -266,6 +266,16 @@ multivalue()
 }
 
 /**
+ * @brief Template short hand to indicate an option is required.
+ */
+template<typename T>
+value_semantic*
+reqvalue()
+{
+  return boost::program_options::value<T>()->required();
+}
+
+/**
  * @brief Template shorthand for assigning a option to take multiple tokes with
  * default values.
  *
