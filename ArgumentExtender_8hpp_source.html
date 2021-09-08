@@ -278,20 +278,28 @@ $(function() {
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordflow">return</span> boost::program_options::value&lt;std::vector&lt;T&gt; &gt;()-&gt;multitoken();</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>}</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>value_semantic*</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="ArgumentExtender_8hpp.html#a5b9bf904e5e93cd8d4b0c7296671372d">  277</a></span><a class="code hl_function" href="ArgumentExtender_8hpp.html#a5b9bf904e5e93cd8d4b0c7296671372d">defmultivalue</a>( <span class="keyword">const</span> std::vector&lt;T&gt; def )</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>{</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keywordflow">return</span> boost::program_options::value&lt;std::vector&lt;T&gt; &gt;()</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>         -&gt;multitoken()-&gt;default_value( def );</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>}</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>}<span class="comment">/* program_options */</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>}<span class="comment">/* boost */</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="preprocessor">#endif</span><span class="comment">/* end of include guard: USERUTILS_COMMON_OPTSNAMER_HPP */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>value_semantic*</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="ArgumentExtender_8hpp.html#aa3dc55098a555ed95acf74862b57de57">  273</a></span><a class="code hl_function" href="ArgumentExtender_8hpp.html#aa3dc55098a555ed95acf74862b57de57">reqvalue</a>()</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>{</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  <span class="keywordflow">return</span> boost::program_options::value&lt;T&gt;()-&gt;required();</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>}</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>value_semantic*</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="ArgumentExtender_8hpp.html#a5b9bf904e5e93cd8d4b0c7296671372d">  287</a></span><a class="code hl_function" href="ArgumentExtender_8hpp.html#a5b9bf904e5e93cd8d4b0c7296671372d">defmultivalue</a>( <span class="keyword">const</span> std::vector&lt;T&gt; def )</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>{</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>  <span class="keywordflow">return</span> boost::program_options::value&lt;std::vector&lt;T&gt; &gt;()</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>         -&gt;multitoken()-&gt;default_value( def );</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>}</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>}<span class="comment">/* program_options */</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>}<span class="comment">/* boost */</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="preprocessor">#endif</span><span class="comment">/* end of include guard: USERUTILS_COMMON_OPTSNAMER_HPP */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aArgumentExtender_8hpp_html_a03c37592d12a5ebe93cfb6567ae865a6"><div class="ttname"><a href="ArgumentExtender_8hpp.html#a03c37592d12a5ebe93cfb6567ae865a6">boost::program_options::defvalue</a></div><div class="ttdeci">value_semantic * defvalue(const T def)</div><div class="ttdoc">Template short hand for assigning a option with a default value.</div><div class="ttdef"><b>Definition:</b> ArgumentExtender.hpp:253</div></div>
-<div class="ttc" id="aArgumentExtender_8hpp_html_a5b9bf904e5e93cd8d4b0c7296671372d"><div class="ttname"><a href="ArgumentExtender_8hpp.html#a5b9bf904e5e93cd8d4b0c7296671372d">boost::program_options::defmultivalue</a></div><div class="ttdeci">value_semantic * defmultivalue(const std::vector&lt; T &gt; def)</div><div class="ttdoc">Template shorthand for assigning a option to take multiple tokes with default values.</div><div class="ttdef"><b>Definition:</b> ArgumentExtender.hpp:277</div></div>
+<div class="ttc" id="aArgumentExtender_8hpp_html_a5b9bf904e5e93cd8d4b0c7296671372d"><div class="ttname"><a href="ArgumentExtender_8hpp.html#a5b9bf904e5e93cd8d4b0c7296671372d">boost::program_options::defmultivalue</a></div><div class="ttdeci">value_semantic * defmultivalue(const std::vector&lt; T &gt; def)</div><div class="ttdoc">Template shorthand for assigning a option to take multiple tokes with default values.</div><div class="ttdef"><b>Definition:</b> ArgumentExtender.hpp:287</div></div>
+<div class="ttc" id="aArgumentExtender_8hpp_html_aa3dc55098a555ed95acf74862b57de57"><div class="ttname"><a href="ArgumentExtender_8hpp.html#aa3dc55098a555ed95acf74862b57de57">boost::program_options::reqvalue</a></div><div class="ttdeci">value_semantic * reqvalue()</div><div class="ttdoc">Template short hand to indicate an option is required.</div><div class="ttdef"><b>Definition:</b> ArgumentExtender.hpp:273</div></div>
 <div class="ttc" id="aArgumentExtender_8hpp_html_ab0325526572105980c9d787e0af5e7a0"><div class="ttname"><a href="ArgumentExtender_8hpp.html#ab0325526572105980c9d787e0af5e7a0">boost::program_options::multivalue</a></div><div class="ttdeci">value_semantic * multivalue()</div><div class="ttdoc">Template short had for assign a option to take multiple tokens.</div><div class="ttdef"><b>Definition:</b> ArgumentExtender.hpp:263</div></div>
 <div class="ttc" id="aclassusr_1_1ArgumentExtender_html"><div class="ttname"><a href="classusr_1_1ArgumentExtender.html">usr::ArgumentExtender</a></div><div class="ttdoc">A helper class for helping with command line parsing.</div><div class="ttdef"><b>Definition:</b> ArgumentExtender.hpp:31</div></div>
 <div class="ttc" id="aclassusr_1_1ArgumentExtender_html_a09635a5b1a610e1831e68ae915767906"><div class="ttname"><a href="classusr_1_1ArgumentExtender.html#a09635a5b1a610e1831e68ae915767906">usr::ArgumentExtender::AddNameScheme</a></div><div class="ttdeci">void AddNameScheme(const ArgPathScheme &amp;)</div><div class="ttdoc">Incrementally adding single basename name scheme to the final list.</div><div class="ttdef"><b>Definition:</b> ArgumentExtender.cc:342</div></div>
