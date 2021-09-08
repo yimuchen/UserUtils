@@ -153,7 +153,7 @@ FindValue( std::vector<OBJTYPE>& vec, const OBJTYPE& x )
  */
 template<typename OBJTYPE>
 OBJTYPE
-GetMaximum( std::vector<OBJTYPE>& vec )
+GetMaximum( const std::vector<OBJTYPE>& vec )
 {
   return *std::max_element( vec.begin(), vec.end() );
 }
@@ -163,7 +163,7 @@ GetMaximum( std::vector<OBJTYPE>& vec )
  */
 template<typename OBJTYPE>
 OBJTYPE
-GetMinimum( std::vector<OBJTYPE>& vec )
+GetMinimum( const std::vector<OBJTYPE>& vec )
 {
   return *std::min_element( vec.begin(), vec.end() );
 }
