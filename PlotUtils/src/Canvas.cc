@@ -4,11 +4,13 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/interface/SystemUtils/Command.hpp"
 #include "UserUtils/PlotUtils/interface/Canvas.hpp"
 #include "UserUtils/PlotUtils/interface/Constants.hpp"
 #else
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/SystemUtils/Command.hpp"
 #include "UserUtils/PlotUtils/Canvas.hpp"
@@ -23,7 +25,7 @@
 #include <iostream>
 #include <string>
 
-
+static bool has_ghostscript();
 static bool run_ghostscript( const std::vector<std::string>& args );
 
 namespace usr  {
@@ -62,7 +64,7 @@ Canvas::~Canvas()
   // for the user, we will the use the kIsOnHeap flag of the canvas to detect
   // when the canvas can be deleted.
   if( _canvas->IsOnHeap() ){
-    delete _canvas; // TCanvas::Delete cannot be used directly
+    delete _canvas;// TCanvas::Delete cannot be used directly
   }
 }
 
@@ -337,6 +339,16 @@ Canvas::SaveTempPDF( const fs::path& finalpath )
 #include <ghostscript/ierrors.h>
 
 /**
+ * @brief Already has the official API and shared objects files if compile is
+ * successful, assuming True.
+ */
+bool
+has_ghostscript()
+{
+  return true;
+}
+
+/**
  * @brief Running ghostscript using the [official
  * API](https://www.ghostscript.com/doc/current/API.htm)
  *
@@ -391,6 +403,20 @@ run_ghostscript( const std::vector<std::string>& args )
 
 #else
 
+#include <cstdlib>
+/**
+ * @brief Using system which to check for command availability.
+ */
+bool
+has_ghostscript()
+{
+  if( system( "which gs > /dev/null 2>&1" ) ){
+    return false;
+  } else {
+    return true;
+  }
+}
+
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
@@ -414,8 +440,11 @@ run_ghostscript( const std::vector<std::string>& args )
               << cmd[cmd.find_first_not_of( legalchar )] << "]"
               << std::endl;
     return false;
+  } else if( !has_ghostscript() ){
+    std::cout << "Ghostscript is not available." << std::endl;
+    return false;
   } else {
-    usr::GetCMDOutput( cmd );
+    usr::GetCMDSTDOutput( cmd );
     return true;
   }
 }
