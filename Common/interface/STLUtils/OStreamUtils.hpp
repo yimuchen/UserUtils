@@ -60,16 +60,45 @@ public:
  */
 template<typename ... ARGS>
 inline
-std::ostream& fout( ARGS... args )
+std::ostream&
+fout( ARGS... args )
 {
   return std::cout << usr::fstr( std::forward<ARGS>( args )... ) << std::flush;
+}
+
+
+/**
+ * @brief Simple function for generating logs.
+ */
+namespace log {
+
+enum level: short
+{
+  INTERNAL = 0,
+  DEBUG    = 1,
+  INFO     = 2,
+  WARNING  = 3,
+  ERROR    = 4
+};
+
+/**
+ * @brief Setting the global log level.
+ */
+void SetLogLevel( const short i );
+
+/**
+ * @brief Printing a single line with log level.
+ */
+void PrintLog( const short        i,
+               const std::string& line,
+               const std::string& header = "" );
 }
 
 /** @} */
 
 }/* usr */
 
-namespace std{
+namespace std {
 
 /**
  * @brief Default interface for ostreaming a vector.
@@ -78,7 +107,8 @@ namespace std{
  */
 template<typename T>
 inline
-std::ostream& operator<<( std::ostream& os, const std::vector<T>& vec )
+std::ostream&
+operator<<( std::ostream& os, const std::vector<T>& vec )
 {
   os << "[";
 
