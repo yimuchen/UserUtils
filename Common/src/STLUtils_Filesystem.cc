@@ -6,9 +6,11 @@
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/STLUtils/Filesystem.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #else
 #include "UserUtils/Common/STLUtils/Filesystem.hpp"
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
@@ -83,11 +85,12 @@ GlobLocal( const std::string& query )
 
 
 /**
- * @brief Checking if the parent directory of the filepath exists, and
- *        attempting to create if it doesn't exists.
+ * @brief Checking if the parent directory of the filepath exists, and attempting
+ *        to create if it doesn't exists.
  *
- * This functions is intentionally noisy when creating the parent directories
- * as this calls system commands and is potentially dangerous.
+ * This functions is a few exception of being intentionally noisy when creating
+ * the parent directories as this calls system commands and is potentially
+ * dangerous.
  */
 bool
 MakeParent( const fs::path& filepath )
@@ -98,12 +101,10 @@ MakeParent( const fs::path& filepath )
   }
 
   if( fs::create_directories( parent ) ){
-    std::cout << "New directory [" << parent << "] created!"
-              << std::endl;
+    std::cerr << fstr( "New directory [%s] created!", parent ) << std::endl;
     return true;
   } else {
-    std::cout << "Failed making new directory [" << parent << "]!"
-              <<  std::endl;
+    std::cerr << fstr( "Failed to create directory [%s]!", parent ) << std::endl;
     return false;
   }
 }
