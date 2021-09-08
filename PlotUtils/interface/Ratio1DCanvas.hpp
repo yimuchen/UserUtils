@@ -141,74 +141,104 @@ public:
    */
   template<typename ... Args>
   inline TH1D&
-  PlotHist( TH1D& x, Args... args ){ return TopPad().PlotHist( x, args ... ); }
+  PlotHist( TH1D& x, Args... args )
+  {
+    auto& ans = TopPad().PlotHist( x, args ... );
+    MakeBottomAxis();
+    return ans;
+  }
   template<typename ... Args>
   inline TH1D&
-  PlotHist( TH1D* x, Args... args ){ return TopPad().PlotHist( x, args ... ); }
+  PlotHist( TH1D* x, Args... args )
+  {
+    auto& ans = TopPad().PlotHist( x, args ... );
+    MakeBottomAxis();
+    return ans;
+  }
 
   template<typename ... Args>
   inline TGraph&
   PlotGraph( TGraph& x, Args... args )
   {
-    return TopPad().PlotGraph( x, args ... );
+    auto& ans = TopPad().PlotGraph( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
   template<typename ... Args>
   inline TGraph&
   PlotGraph( TGraph* x, Args... args )
   {
-    return TopPad().PlotGraph( x, args ... );
+    auto& ans = TopPad().PlotGraph( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
 
   template<typename ... Args>
   inline TGraph&
   PlotFunc( TF1& x, Args... args )
   {
-    return TopPad().PlotFunc( x, args ... );
+    auto& ans = TopPad().PlotFunc( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
   template<typename ... Args>
   inline TGraph&
   PlotFunc( TF1* x, Args... args )
   {
-    return TopPad().PlotFunc( x, args ... );
+    auto& ans = TopPad().PlotFunc( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
 
   template<typename ... Args>
   inline TEfficiency&
   PlotEff( TEfficiency& x, Args... args )
   {
-    return TopPad().PlotEff( x, args ... );
+    auto& ans = TopPad().PlotEff( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
   template<typename ... Args>
   inline TEfficiency&
   PlotEff( TEfficiency* x, Args... args )
   {
-    return TopPad().PlotEff( x, args ... );
+    auto& ans = TopPad().PlotEff( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
 
   template<typename ... Args>
   inline TGraphAsymmErrors&
   PlotData( RooAbsData& x, Args... args )
   {
-    return TopPad().PlotData( x, args ... );
+    auto& ans = TopPad().PlotData( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
   template<typename ... Args>
   inline TGraphAsymmErrors&
   PlotData( RooAbsData* x, Args... args )
   {
-    return TopPad().PlotData( x, args ... );
+    auto& ans = TopPad().PlotData( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
 
   template<typename ... Args>
   inline TGraph&
   PlotPdf( RooAbsPdf& x, Args... args )
   {
-    return TopPad().PlotPdf( x, args ... );
+    auto& ans = TopPad().PlotPdf( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
   template<typename ... Args>
   inline TGraph&
   PlotPdf( RooAbsPdf* x, Args... args )
   {
-    return TopPad().PlotPdf( x, args ... );
+    auto& ans = TopPad().PlotPdf( x, args ... );
+    MakeBottomAxis();
+    return ans;
   }
   /** @} */
 
