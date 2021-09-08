@@ -416,6 +416,15 @@ protected:
 
   bool CheckLogy() const;
   bool CheckLogx() const;
+
+  // Creating the histogram object used to handle the axis object
+  // In Pad1D_Plot.cc
+  void CreateAxisObject( const TH1D&, const RooArgContainer& );
+  void CreateAxisObject( const TGraph&, const RooArgContainer&  );
+  void CreateAxisObject( const TF1&, const RooArgContainer&  );
+  void CreateAxisObject( const TEfficiency&, const RooArgContainer&  );
+  // Common call function to be called by the CreateAxisObject calls
+  void PlotCreatedAxisObject( TH1D& );
 };
 
 }/* plt */

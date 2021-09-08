@@ -4,9 +4,11 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #else
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/Format.hpp"
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
@@ -396,7 +398,7 @@ Pad1D::SetHistAxisTitles(
   const double       forcebinwidth )
 {
   if( !GetAxisObject() ){
-    std::cout << "Error! Axis object doesn't exist yet!" << std::endl;
+    log::PrintLog( log::ERROR, "ERROR! Axis object not created" );
     return;
   }
   // X axis is straight forwards

@@ -5,11 +5,13 @@
  */
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/Miscellaneous.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #else
 #include "UserUtils/Common/Maths.hpp"
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/Miscellaneous.hpp"
 #include "UserUtils/PlotUtils/Pad1D.hpp"
@@ -94,14 +96,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
       } );
 
   if( !GetAxisObject() ){
-    // MUST ust a clone, otherwise messes with THStack
-    TH1D& axisobj = MakeObj<TH1D>( obj );
-    axisobj.Reset();
-    axisobj.SetStats( 0 );
-    axisobj.SetTitle( "" );
-    axisobj.SetName( ( genaxisname+RandomString( 6 ) ).c_str() );
-    PlotObj( axisobj, "AXIS" );
-    this->SetAxisFont();
+    CreateAxisObject( obj, args );
   }
 
   // Forcing no statistics. and wiping title
@@ -157,7 +152,8 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     PlotObj( obj, ( args.GetStr( "PlotType" )+" SAME" ).c_str() );
     break;
   default:
-    std::cerr << "Skipping over invalid value ("<< pt <<")" << std::endl;
+    usr::log::PrintLog( usr::log::ERROR,
+      usr::fstr( "Skipping over invalid value (%d)", pt ) );
   }
 
   if( _workingstack ){
@@ -246,19 +242,13 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
       } );
 
   if( obj.GetDimension() != 1 ){
-    std::cerr << "Can only plot 1 Dimensional TEfficiency objects" << std::endl;
+    usr::log::PrintLog( usr::log::ERROR,
+      "Can only plot 1 Dimensional TEfficiency objects" );
     return obj;
   }
 
   if( !GetAxisObject() ){
-    // MUST ust a clone, otherwise messes with THStack
-    TH1D& axisobj = MakeObj<TH1D>( *( (TH1D*)obj.GetTotalHistogram() ) );
-    axisobj.Reset();
-    axisobj.SetStats( 0 );
-    axisobj.SetTitle( "" );
-    axisobj.SetName( ( genaxisname+RandomString( 6 ) ).c_str() );
-    PlotObj( axisobj, "AXIS" );
-    this->SetAxisFont();
+    CreateAxisObject( obj, args );
   }
 
   // Forcing no statistics. and wiping title
@@ -283,7 +273,8 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
     PlotObj( obj, ( args.GetStr( "PlotType" )+" SAME" ).c_str() );
     break;
   default:
-    std::cerr << "Skipping over invalid value ("<< pt <<")" << std::endl;
+    usr::log::PrintLog( usr::log::ERROR,
+      usr::fstr( "Skipping over invalid value (%d)", pt ) );
   }
 
   TrackObjectY( obj, args.GetInt( "TrackY" ) );
@@ -341,7 +332,8 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
 {
   // Early Exit for Graphs without any data points
   if( obj.GetN() <= 0 ){
-    std::cerr << "Cannot plot TGraphs with no data points!" << std::endl;
+    usr::log::PrintLog( usr::log::ERROR,
+      "Cannot plot TGraphs with no data points!" );
     return obj;
   }
 
@@ -358,16 +350,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
-    const double xmin = GetXmin( obj );
-    const double xmax = GetXmax( obj );
-    const double diff = args.GetInt( "ExtendXRange" ) ? xmax-xmin : 0;
-    auto& axishist = MakeObj<TH1D>(
-      ( genaxisname + RandomString( 6 ) ).c_str(),
-      "",
-      10, xmin-0.1*diff, xmax+0.1*diff );
-    axishist.SetStats( 0 );
-    PadBase::PlotObj( axishist, "AXIS" );
-    SetAxisFont();
+    CreateAxisObject( obj, args );
   }
 
   // Object fixing
@@ -395,9 +378,9 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
   case plottype_dummy:
     PlotObj( obj, args.GetStr( "PlotType" ).c_str() );
     break;
-
   default:
-    std::cerr << "Skipping over invalid value" << std::endl;
+    usr::log::PrintLog( usr::log::ERROR,
+      usr::fstr( "Skipping over invalid value (%d)", pt ) );
     break;
   }
 
@@ -444,13 +427,7 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
-    auto& axishist = MakeObj<TH1D>(
-      ( genaxisname + RandomString( 10 ) ).c_str(),
-      "",
-      10, func.GetXmin(), func.GetXmax() );
-    axishist.SetStats( 0 );
-    PadBase::PlotObj( axishist, "AXIS" );
-    SetAxisFont();
+    CreateAxisObject( func, args );
   }
 
   return PlotGraph( MakeTF1Graph( func, args ), args );
@@ -897,6 +874,58 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
     _datamax = std::max( _datamax, obj_max );
   }
   AutoSetYRange();
+}
+
+void
+Pad1D::PlotCreatedAxisObject( TH1D& axisobj )
+{
+  axisobj.Reset();
+  axisobj.SetStats( 0 );
+  axisobj.SetTitle( "" );
+  axisobj.SetName( ( genaxisname+RandomString( 6 ) ).c_str() );
+  PlotObj( axisobj, "AXIS" );
+  this->SetAxisFont();
+}
+
+void
+Pad1D::CreateAxisObject( const TH1D& oldhist, const RooArgContainer& args )
+{
+  // MUST ust a clone, otherwise messes with THStack
+  TH1D& axisobj = MakeObj<TH1D>( oldhist );
+  PlotCreatedAxisObject( axisobj );
+}
+
+
+void
+Pad1D::CreateAxisObject( const TF1& func, const RooArgContainer& args )
+{
+  // If no axis are available. Generating a TH1 object for axis:
+  TH1D& axishist = MakeObj<TH1D>(
+    ( genaxisname + RandomString( 10 ) ).c_str(),
+    "",
+    10, func.GetXmin(), func.GetXmax() );
+  PlotCreatedAxisObject( axishist );
+}
+
+void
+Pad1D::CreateAxisObject( const TGraph& graph, const RooArgContainer& args )
+{
+  const double xmin = GetXmin( graph );
+  const double xmax = GetXmax( graph );
+  const double diff = args.GetInt( "ExtendXRange" ) ? xmax-xmin : 0;
+  TH1D& axishist    = MakeObj<TH1D>(
+    ( genaxisname + RandomString( 6 ) ).c_str(),
+    "",
+    10, xmin-0.1*diff, xmax+0.1*diff );
+  PlotCreatedAxisObject( axishist );
+}
+
+void
+Pad1D::CreateAxisObject( const TEfficiency& obj, const RooArgContainer& args )
+{
+  // MUST ust a clone, otherwise messes with THStack
+  TH1D& axisobj = MakeObj<TH1D>( *( (TH1D*)obj.GetTotalHistogram() ) );
+  PlotCreatedAxisObject( axisobj );
 }
 
 }/* plt */
