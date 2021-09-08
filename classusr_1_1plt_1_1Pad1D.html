@@ -684,6 +684,21 @@ TGraph &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MakeTF1Graph<
 <tr class="memitem:a8e4ccd9bdca1e9c6f24a2b40d28d1a47"><td class="memItemLeft" align="right" valign="top"><a id="a8e4ccd9bdca1e9c6f24a2b40d28d1a47" name="a8e4ccd9bdca1e9c6f24a2b40d28d1a47"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckLogx</b> () const</td></tr>
 <tr class="separator:a8e4ccd9bdca1e9c6f24a2b40d28d1a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfa3b12fa5b966e93bbeb78450398721"><td class="memItemLeft" align="right" valign="top"><a id="acfa3b12fa5b966e93bbeb78450398721" name="acfa3b12fa5b966e93bbeb78450398721"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAxisObject</b> (const TH1D &amp;, const <a class="el" href="classusr_1_1RooArgContainer.html">RooArgContainer</a> &amp;)</td></tr>
+<tr class="separator:acfa3b12fa5b966e93bbeb78450398721"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8b7ffae6ed528a7d90c04c18a5b9aaa"><td class="memItemLeft" align="right" valign="top"><a id="aa8b7ffae6ed528a7d90c04c18a5b9aaa" name="aa8b7ffae6ed528a7d90c04c18a5b9aaa"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAxisObject</b> (const TGraph &amp;, const <a class="el" href="classusr_1_1RooArgContainer.html">RooArgContainer</a> &amp;)</td></tr>
+<tr class="separator:aa8b7ffae6ed528a7d90c04c18a5b9aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8677f86c0ed76d0b0468259a11ed0e6"><td class="memItemLeft" align="right" valign="top"><a id="af8677f86c0ed76d0b0468259a11ed0e6" name="af8677f86c0ed76d0b0468259a11ed0e6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAxisObject</b> (const TF1 &amp;, const <a class="el" href="classusr_1_1RooArgContainer.html">RooArgContainer</a> &amp;)</td></tr>
+<tr class="separator:af8677f86c0ed76d0b0468259a11ed0e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45fe794d3f8b5903b66c85cd0a45c442"><td class="memItemLeft" align="right" valign="top"><a id="a45fe794d3f8b5903b66c85cd0a45c442" name="a45fe794d3f8b5903b66c85cd0a45c442"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CreateAxisObject</b> (const TEfficiency &amp;, const <a class="el" href="classusr_1_1RooArgContainer.html">RooArgContainer</a> &amp;)</td></tr>
+<tr class="separator:a45fe794d3f8b5903b66c85cd0a45c442"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4892515fb27267610ac70b607f79f6b"><td class="memItemLeft" align="right" valign="top"><a id="ae4892515fb27267610ac70b607f79f6b" name="ae4892515fb27267610ac70b607f79f6b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>PlotCreatedAxisObject</b> (TH1D &amp;)</td></tr>
+<tr class="separator:ae4892515fb27267610ac70b607f79f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classusr_1_1plt_1_1PadBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classusr_1_1plt_1_1PadBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classusr_1_1plt_1_1PadBase.html">usr::plt::PadBase</a></td></tr>
 <tr class="memitem:a7979f842994e3a97bdad63c0b32dac5a inherit pro_methods_classusr_1_1plt_1_1PadBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a7979f842994e3a97bdad63c0b32dac5a">PadBase</a> (<a class="el" href="classusr_1_1plt_1_1Canvas.html">Canvas</a> *, const <a class="el" href="structusr_1_1plt_1_1PadSize.html">PadSize</a> &amp;)</td></tr>
 <tr class="memdesc:a7979f842994e3a97bdad63c0b32dac5a inherit pro_methods_classusr_1_1plt_1_1PadBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construction of the new pad object requires the new wrapper class <a class="el" href="structusr_1_1plt_1_1PadSize.html" title="A constructor helper class for Pad objects.">PadSize</a>.  <a href="classusr_1_1plt_1_1PadBase.html#a7979f842994e3a97bdad63c0b32dac5a">More...</a><br /></td></tr>
@@ -1800,7 +1815,7 @@ template&lt;typename ... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >The Y axis plotting range is not defined by the Y axis object itself, but rather the <a class="el" href="VectorUtils_8hpp.html#a8dcc2e38b21fe4190215416b8401eb82" title="Get the Maximum element value in a vector.">GetMaximum()</a> function of the object used for drawing the Y axis of the canvas. This function would return an NAN the the GetAxisObject is not found. </p>
+<p >The Y axis plotting range is not defined by the Y axis object itself, but rather the <a class="el" href="VectorUtils_8hpp.html#a39f8b8010c90650b896ef644670b5884" title="Get the Maximum element value in a vector.">GetMaximum()</a> function of the object used for drawing the Y axis of the canvas. This function would return an NAN the the GetAxisObject is not found. </p>
 
 </div>
 </div>
@@ -1818,7 +1833,7 @@ template&lt;typename ... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >The Y axis plotting range is not defined by the Y axis object itself, but rather the <a class="el" href="VectorUtils_8hpp.html#a8dcc2e38b21fe4190215416b8401eb82" title="Get the Maximum element value in a vector.">GetMaximum()</a> function of the object used for drawing the Y axis of the canvas. This function would return an NAN the the GetAxisObject is not found. </p>
+<p >The Y axis plotting range is not defined by the Y axis object itself, but rather the <a class="el" href="VectorUtils_8hpp.html#a39f8b8010c90650b896ef644670b5884" title="Get the Maximum element value in a vector.">GetMaximum()</a> function of the object used for drawing the Y axis of the canvas. This function would return an NAN the the GetAxisObject is not found. </p>
 
 </div>
 </div>

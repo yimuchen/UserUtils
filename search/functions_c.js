@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['large_0',['Large',['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font']]],
-  ['large_1',['large',['../classusr_1_1plt_1_1font.html#ac3cd16dffb4356946973532d00f58b88',1,'usr::plt::font']]],
-  ['large_2',['LARGE',['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font']]],
+  ['large_0',['LARGE',['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font']]],
+  ['large_1',['Large',['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font']]],
+  ['large_2',['large',['../classusr_1_1plt_1_1font.html#ac3cd16dffb4356946973532d00f58b88',1,'usr::plt::font']]],
   ['lastplot_3',['LastPlot',['../classusr_1_1plt_1_1RooFrame.html#aacf81698befd036fda1a67f55efc7cee',1,'usr::plt::RooFrame']]],
   ['lazy_4',['Lazy',['../group__StatUtils.html#gaffbd9f0f47f3a7487580643edd0f2bb7',1,'usr::Poisson::Lazy()'],['../CommonDistro_8hpp.html#a90eaee08ef3ce1c2088a4e238c8e7bc8',1,'usr::Efficiency::Lazy()']]],
   ['lazyevaluateuncorrelated_5',['LazyEvaluateUncorrelated',['../group__StatUtils.html#ga88a44b7ce97588e80fb1ff7927d74fd8',1,'usr']]],

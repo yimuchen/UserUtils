@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UserUtils: /github/workspace/Common/src/STLUtils_OStreamUtils.cc File Reference</title>
+<title>UserUtils: usr::log Namespace Reference</title>
 <!-- Overriding the tabs css with our own -->
 <!--link href="tabs.css" rel="stylesheet" type="text/css"/-->
 <script type="text/javascript" src="jquery.js"></script>
@@ -76,73 +76,80 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_4ab6b4cc6a7edbff49100e9123df213f.html">Common</a></li><li class="navelem"><a class="el" href="dir_3752367cbca4c9b58dde90984de9bccc.html">src</a></li>  </ul>
+<li class="navelem"><b>usr</b></li><li class="navelem"><a class="el" href="namespaceusr_1_1log.html">log</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">STLUtils_OStreamUtils.cc File Reference</div></div>
+  <div class="headertitle"><div class="title">usr::log Namespace Reference<div class="ingroups"><a class="el" href="group__Common.html">Common</a> &raquo; <a class="el" href="group__ostreamutils.html">ostream Helpers</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>ostream interaction class implementation.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;UserUtils/Common/STLUtils/OStreamUtils.hpp&quot;</code><br />
-<code>#include &quot;TError.h&quot;</code><br />
-<code>#include &lt;ostream&gt;</code><br />
-</div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespaceusr_1_1log"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html">usr::log</a></td></tr>
-<tr class="memdesc:namespaceusr_1_1log"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple function for generating logs. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<p>Simple function for generating logs.  
+<a href="namespaceusr_1_1log.html#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a75e39c748f306efe89c4412d86c327b3"><td class="memItemLeft" align="right" valign="top"><a id="a75e39c748f306efe89c4412d86c327b3" name="a75e39c748f306efe89c4412d86c327b3"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>level</b> : short { <br />
+&#160;&#160;<b>INTERNAL</b> = 0
+, <b>DEBUG</b> = 1
+, <b>INFO</b> = 2
+, <b>WARNING</b> = 3
+, <br />
+&#160;&#160;<b>ERROR</b> = 4
+<br />
+ }</td></tr>
+<tr class="separator:a75e39c748f306efe89c4412d86c327b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae26501eb368cd4820df4f97be68c2c4d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="STLUtils__OStreamUtils_8cc.html#ae26501eb368cd4820df4f97be68c2c4d">usr::operator&lt;&lt;</a> (std::ostream &amp;os, const clearline &amp;)</td></tr>
-<tr class="separator:ae26501eb368cd4820df4f97be68c2c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05cdfc67267e3c1d0ff6c0b03d2fa39b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="STLUtils__OStreamUtils_8cc.html#a05cdfc67267e3c1d0ff6c0b03d2fa39b">usr::operator&lt;&lt;</a> (std::ostream &amp;os, const separator &amp;x)</td></tr>
-<tr class="memdesc:a05cdfc67267e3c1d0ff6c0b03d2fa39b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation is essentially what it says on the tin.  <a href="STLUtils__OStreamUtils_8cc.html#a05cdfc67267e3c1d0ff6c0b03d2fa39b">More...</a><br /></td></tr>
-<tr class="separator:a05cdfc67267e3c1d0ff6c0b03d2fa39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f909acc0dcac208f2550b682cdea69d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html#a5f909acc0dcac208f2550b682cdea69d">usr::log::SetLogLevel</a> (const short i)</td></tr>
+<tr class="memitem:a5f909acc0dcac208f2550b682cdea69d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html#a5f909acc0dcac208f2550b682cdea69d">SetLogLevel</a> (const short i)</td></tr>
 <tr class="memdesc:a5f909acc0dcac208f2550b682cdea69d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setting the global log level.  <a href="namespaceusr_1_1log.html#a5f909acc0dcac208f2550b682cdea69d">More...</a><br /></td></tr>
 <tr class="separator:a5f909acc0dcac208f2550b682cdea69d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affc647790d6f575043cc5542d2509304"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html#affc647790d6f575043cc5542d2509304">usr::log::PrintLog</a> (const short i, const std::string &amp;line, const std::string &amp;header=&quot;&quot;)</td></tr>
+<tr class="memitem:affc647790d6f575043cc5542d2509304"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html#affc647790d6f575043cc5542d2509304">PrintLog</a> (const short i, const std::string &amp;line, const std::string &amp;header=&quot;&quot;)</td></tr>
 <tr class="memdesc:affc647790d6f575043cc5542d2509304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Printing a single line with log level.  <a href="namespaceusr_1_1log.html#affc647790d6f575043cc5542d2509304">More...</a><br /></td></tr>
 <tr class="separator:affc647790d6f575043cc5542d2509304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a16914eda04585b3e01ea29713bf312ee"><td class="memItemLeft" align="right" valign="top"><a id="a16914eda04585b3e01ea29713bf312ee" name="a16914eda04585b3e01ea29713bf312ee"></a>
-short&#160;</td><td class="memItemRight" valign="bottom"><b>usr::log::__global_log_level</b> = WARNING</td></tr>
+short&#160;</td><td class="memItemRight" valign="bottom"><b>__global_log_level</b> = WARNING</td></tr>
 <tr class="separator:a16914eda04585b3e01ea29713bf312ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e475d7930a054ddc8545626bf39e206"><td class="memItemLeft" align="right" valign="top"><a id="a6e475d7930a054ddc8545626bf39e206" name="a6e475d7930a054ddc8545626bf39e206"></a>
-short&#160;</td><td class="memItemRight" valign="bottom"><b>usr::log::__dummy_int</b> = __dummy_set_root_level()</td></tr>
+short&#160;</td><td class="memItemRight" valign="bottom"><b>__dummy_int</b> = __dummy_set_root_level()</td></tr>
 <tr class="separator:a6e475d7930a054ddc8545626bf39e206"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd><a href="https://github.com/yimuchen">Yi-Mu "Enoch" Chen</a> </dd></dl>
+<div class="textblock"><p >Very simple function for generating the print level control.</p>
+<p >For analysis function, one typically wants to have a print levels that can be accessed during development and disabled during production. Here we provide a very simple facility to generate such outputs:</p>
+<p >A global log level object is created, which can bet set using the provided SetLogLevel function. For every log that occurs in the analysis function, the user defines the log level of that message, if the log will only be printed if the message log level is greater than that of the global log level variable. Internal function defined in the UserUtils package should refine from using this function, as these should be well defined functions with minimal output. Internal functions should only use the INTERNAL output level. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ae26501eb368cd4820df4f97be68c2c4d" name="ae26501eb368cd4820df4f97be68c2c4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae26501eb368cd4820df4f97be68c2c4d">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[1/2]</span></h2>
+<a id="affc647790d6f575043cc5542d2509304" name="affc647790d6f575043cc5542d2509304"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affc647790d6f575043cc5542d2509304">&#9670;&nbsp;</a></span>PrintLog()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; usr::operator&lt;&lt; </td>
+          <td class="memname">void usr::log::PrintLog </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
+          <td class="paramtype">const short&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classusr_1_1clearline.html">clearline</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>header</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -151,36 +158,26 @@ short&#160;</td><td class="memItemRight" valign="bottom"><b>usr::log::__dummy_in
         </tr>
       </table>
 </div><div class="memdoc">
-<p >currently the clear line implementation consists of printing multiple backspace and whitespaces. Maybe not the best? </p>
+<p >The output will be passed to STDERR such that logs can be stored seperately of nominal analysis output for simpler debugging. </p>
 
 </div>
 </div>
-<a id="a05cdfc67267e3c1d0ff6c0b03d2fa39b" name="a05cdfc67267e3c1d0ff6c0b03d2fa39b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05cdfc67267e3c1d0ff6c0b03d2fa39b">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[2/2]</span></h2>
+<a id="a5f909acc0dcac208f2550b682cdea69d" name="a5f909acc0dcac208f2550b682cdea69d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f909acc0dcac208f2550b682cdea69d">&#9670;&nbsp;</a></span>SetLogLevel()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; usr::operator&lt;&lt; </td>
+          <td class="memname">void usr::log::SetLogLevel </td>
           <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const short&#160;</td>
+          <td class="paramname"><em>new_level</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classusr_1_1separator.html">separator</a> &amp;&#160;</td>
-          <td class="paramname"><em>x</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >duplicating the character multiple times. </p>
+<p >Here we are providing the global log level. </p>
 
 </div>
 </div>

@@ -82,6 +82,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">OStreamUtils.hpp File Reference</div></div>
 </div><!--header-->
@@ -103,12 +105,37 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">class for printing a ling of characters on the screen.  <a href="classusr_1_1separator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceusr_1_1log"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html">usr::log</a></td></tr>
+<tr class="memdesc:namespaceusr_1_1log"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple function for generating logs. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a75e39c748f306efe89c4412d86c327b3"><td class="memItemLeft" align="right" valign="top"><a id="a75e39c748f306efe89c4412d86c327b3" name="a75e39c748f306efe89c4412d86c327b3"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>level</b> : short { <br />
+&#160;&#160;<b>INTERNAL</b> = 0
+, <b>DEBUG</b> = 1
+, <b>INFO</b> = 2
+, <b>WARNING</b> = 3
+, <br />
+&#160;&#160;<b>ERROR</b> = 4
+<br />
+ }</td></tr>
+<tr class="separator:a75e39c748f306efe89c4412d86c327b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga0b882a509591481366a529055d2d3481"><td class="memTemplParams" colspan="2">template&lt;typename ... ARGS&gt; </td></tr>
 <tr class="memitem:ga0b882a509591481366a529055d2d3481"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ostreamutils.html#ga0b882a509591481366a529055d2d3481">usr::fout</a> (ARGS... args)</td></tr>
 <tr class="memdesc:ga0b882a509591481366a529055d2d3481"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic interface for printf like stream output.  <a href="group__ostreamutils.html#ga0b882a509591481366a529055d2d3481">More...</a><br /></td></tr>
 <tr class="separator:ga0b882a509591481366a529055d2d3481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f909acc0dcac208f2550b682cdea69d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html#a5f909acc0dcac208f2550b682cdea69d">usr::log::SetLogLevel</a> (const short i)</td></tr>
+<tr class="memdesc:a5f909acc0dcac208f2550b682cdea69d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setting the global log level.  <a href="namespaceusr_1_1log.html#a5f909acc0dcac208f2550b682cdea69d">More...</a><br /></td></tr>
+<tr class="separator:a5f909acc0dcac208f2550b682cdea69d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affc647790d6f575043cc5542d2509304"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceusr_1_1log.html#affc647790d6f575043cc5542d2509304">usr::log::PrintLog</a> (const short i, const std::string &amp;line, const std::string &amp;header=&quot;&quot;)</td></tr>
+<tr class="memdesc:affc647790d6f575043cc5542d2509304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Printing a single line with log level.  <a href="namespaceusr_1_1log.html#affc647790d6f575043cc5542d2509304">More...</a><br /></td></tr>
+<tr class="separator:affc647790d6f575043cc5542d2509304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad16bc28dff02444f458ada98e0491d57"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad16bc28dff02444f458ada98e0491d57"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="OStreamUtils_8hpp.html#ad16bc28dff02444f458ada98e0491d57">std::operator&lt;&lt;</a> (std::ostream &amp;os, const std::vector&lt; T &gt; &amp;vec)</td></tr>
 <tr class="memdesc:ad16bc28dff02444f458ada98e0491d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default interface for ostreaming a vector.  <a href="OStreamUtils_8hpp.html#ad16bc28dff02444f458ada98e0491d57">More...</a><br /></td></tr>
