@@ -4,7 +4,6 @@
 <use name="FWCore/Framework"/>
 <use name="FWCore/ParameterSet"/>
 <use name="FWCore/ServiceRegistry"/>
-<use name="FWCore/ServiceRegistry"/>
 <use name="CommonTools/UtilAlgos"/>
 
 <flags LCG_DICT_HEADER="classes.h"/>
