@@ -483,13 +483,13 @@ ArgumentExtender::genPathString_List( const ArgPathScheme& x ) const
   std::string ans = "";
 
   if( Args()[x.option].value().type() == typeid( std::vector<std::string> ) ){
-    for( const auto in : ArgList<std::string>( x.option ) ){
+    for( const auto& in : ArgList<std::string>( x.option ) ){
       ans += in + '-';
     }
 
     ans.erase( ans.end() - 1 );
   } else if( Args()[x.option].value().type() == typeid( std::vector<int> ) ){
-    for( const auto in : ArgList<int>( x.option ) ){
+    for( const auto& in : ArgList<int>( x.option ) ){
       ans += std::to_string( in ) + '-';
     }
 

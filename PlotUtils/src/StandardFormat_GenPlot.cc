@@ -45,7 +45,7 @@ namespace fmt {
 void
 BatchRequest::GeneratePlots()
 {
-  for( const auto histrequest :  histlist ){
+  for( const auto& histrequest :  histlist ){
     GenerateBackgroundObjects( histrequest );
     GenerateData( histrequest );
 
@@ -411,7 +411,7 @@ BatchRequest::GenerateData( const HistRequest& hist )
 {
   _data_hist = nullptr;
 
-  for( const auto process : data ){
+  for( const auto& process : data ){
     if( _data_hist == nullptr ){
       _data_hist.reset( process.GetClone( hist.filekey ) );
     } else {

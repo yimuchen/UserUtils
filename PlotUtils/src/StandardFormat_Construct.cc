@@ -84,7 +84,7 @@ BatchRequest::initialize( const usr::JSONMap& map )
     usr::ExceptJSONObj( map, "data sets" );
     data = ProcessGroup( map["data sets"], this );
 
-    for( const auto d : data ){
+    for( const auto& d : data ){
       _total_luminosity += d.effective_luminosity;
     }
   } else {

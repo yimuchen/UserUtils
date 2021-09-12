@@ -30,7 +30,7 @@ MakeTChain( const std::string&              title,
 {
   TChain* tree = new TChain( title.c_str() );
 
-  for( const auto file : inputfiles ){
+  for( const auto& file : inputfiles ){
     if( !file.empty() ){
       tree->Add( file.c_str() );
     }

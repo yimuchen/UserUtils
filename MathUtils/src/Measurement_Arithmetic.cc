@@ -172,7 +172,7 @@ EvaluateUncorrelated(
   std::vector<double> lowerguess;
   double diff_sqsum = 0;
 
-  for( const auto m : m_list ){
+  for( const auto& m : m_list ){
     init.push_back( m.CentralValue() );
   }
 
