@@ -75,6 +75,8 @@ typedef ParticleParser pp;
    ---------------------------------------------------------------------------*/
 bool IsSMQuark( const reco::Candidate* );
 bool IsSMHadron( const reco::Candidate* );
+bool IsSMHiggs( const reco::Candidate* );
+bool IsSMGluon( const reco::Candidate* );
 bool HasCorrectiveParent( const reco::Candidate* );
 bool HasCorrectiveChildren( const reco::Candidate* );
 bool HasDaughter( const reco::Candidate*, const ParticleParser& );

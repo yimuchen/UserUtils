@@ -72,6 +72,19 @@ IsSMHadron( const reco::Candidate* x )
   return abs( x->pdgId() ) >  100 && abs( x->pdgId() ) < 100000;
 }
 
+bool
+IsSMHiggs( const reco::Candidate* x )
+{
+  // Not accurate but close enough for 99.9% of use cases
+  return abs( x->pdgId() ) == HIGGS_BOSON_ID;
+}
+
+bool
+IsSMGluon( const reco::Candidate* x )
+{
+  return abs( x->pdgId() ) == GLUON_ID;
+}
+
 /** @} */
 
 /**
@@ -351,12 +364,12 @@ GetLastInChain( const reco::Candidate* x )
   ParticleParser is_last( []( const reco::Candidate* temp,
                               const reco::Candidate* root ){
                           return ( temp->pdgId() == root->pdgId() ) &&
-                          !HasCorrectiveChildren( temp );
+                                 !HasCorrectiveChildren( temp );
         } );
   ParticleParser is_end( []( const reco::Candidate* temp,
                              const reco::Candidate* root ){
                          return ( temp->pdgId() !=  root->pdgId() ) ||
-                         !HasCorrectiveChildren( temp );
+                                !HasCorrectiveChildren( temp );
         } );
 
   const auto ans_list = FindDecendants( x, is_last, is_end );
