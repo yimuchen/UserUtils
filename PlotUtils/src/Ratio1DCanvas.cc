@@ -9,6 +9,8 @@
 #include "UserUtils/PlotUtils/Ratio1DCanvas.hpp"
 #endif
 
+#include "CmdSetAttr.hpp"
+
 namespace usr  {
 
 namespace plt {
@@ -364,6 +366,10 @@ Ratio1DCanvas::ScaleDivide(
     }
   }
 
+  CopyLineAttrTo( *num, *ans );
+  CopyFillAttrTo( *num, *ans );
+  CopyMarkAttrTo( *num, *ans );
+
   return ans;
 }
 
@@ -414,6 +420,9 @@ Ratio1DCanvas::ScaleDivide(
     }
   }
 
+  CopyLineAttrTo( *num, *ans );
+  CopyFillAttrTo( *num, *ans );
+  CopyMarkAttrTo( *num, *ans );
   return ans;
 }
 
@@ -494,14 +503,9 @@ Ratio1DCanvas::ScaleDivide(
     num->GetXaxis()->GetXmin(),
     num->GetXaxis()->GetXmax() );
   // duplicating style
-  ans->SetLineColor( num->GetLineColor() );
-  ans->SetLineStyle( num->GetLineStyle() );
-  ans->SetLineWidth( num->GetLineWidth() );
-  ans->SetFillColor( num->GetFillColor() );
-  ans->SetFillStyle( num->GetFillStyle() );
-  ans->SetMarkerColor( num->GetMarkerColor() );
-  ans->SetMarkerStyle( num->GetMarkerStyle() );
-  ans->SetMarkerSize( num->GetMarkerSize() );
+  CopyLineAttrTo( *num, *ans );
+  CopyFillAttrTo( *num, *ans );
+  CopyMarkAttrTo( *num, *ans );
 
   return ans;
 }
@@ -526,16 +530,6 @@ Ratio1DCanvas::PullDivide(
   const double  cen )
 {
   TGraphAsymmErrors* ans = new TGraphAsymmErrors( num->GetN() );
-
-  // duplicating style
-  ans->SetLineColor( num->GetLineColor() );
-  ans->SetLineStyle( num->GetLineStyle() );
-  ans->SetLineWidth( num->GetLineWidth() );
-  ans->SetFillColor( num->GetFillColor() );
-  ans->SetFillStyle( num->GetFillStyle() );
-  ans->SetMarkerColor( num->GetMarkerColor() );
-  ans->SetMarkerStyle( num->GetMarkerStyle() );
-  ans->SetMarkerSize( num->GetMarkerSize() );
 
   // Making error graphs for interpolation
   TGraph denerrup   = TGraph( den->GetN() );
@@ -565,6 +559,10 @@ Ratio1DCanvas::PullDivide(
     }
   }
 
+  // duplicating style
+  CopyLineAttrTo( *num, *ans );
+  CopyFillAttrTo( *num, *ans );
+  CopyMarkAttrTo( *num, *ans );
 
   return ans;
 }
