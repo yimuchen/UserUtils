@@ -16,7 +16,9 @@ var searchData=
   ['iosetting_13',['IOSetting',['../classusr_1_1plt_1_1fmt_1_1IOSetting.html',1,'usr::plt::fmt']]],
   ['isbooleanflag_14',['IsBooleanFlag',['../classusr_1_1ArgumentExtender.html#a978a1d52256f2e8c54561767076f45e6',1,'usr::ArgumentExtender']]],
   ['ismultitoken_15',['IsMultiToken',['../classusr_1_1ArgumentExtender.html#ad40f116078a7c5a2bcce45c671aeb9d1',1,'usr::ArgumentExtender']]],
-  ['issmhadron_16',['IsSMHadron',['../group__MCHelper.html#ga0a37d8dc775d7e19c35a6070f5b1e03e',1,'usr::mc']]],
-  ['issmquark_17',['IsSMQuark',['../group__MCHelper.html#ga242ad0417e1a423dcc5bafe63e862fa3',1,'usr::mc']]],
-  ['ivory_18',['ivory',['../group__PlotUtilsConstants.html#ga341b766e340af3cf9713f6768af462ab',1,'usr::plt::col']]]
+  ['issmgluon_16',['IsSMGluon',['../group__MCHelper.html#gae3ffbf1b9aba4bf28b68aa7aa245f94f',1,'usr::mc']]],
+  ['issmhadron_17',['IsSMHadron',['../group__MCHelper.html#ga0a37d8dc775d7e19c35a6070f5b1e03e',1,'usr::mc']]],
+  ['issmhiggs_18',['IsSMHiggs',['../group__MCHelper.html#gad61932b3a7c222a1722e8b202cc3fc90',1,'usr::mc']]],
+  ['issmquark_19',['IsSMQuark',['../group__MCHelper.html#ga242ad0417e1a423dcc5bafe63e862fa3',1,'usr::mc']]],
+  ['ivory_20',['ivory',['../group__PlotUtilsConstants.html#ga341b766e340af3cf9713f6768af462ab',1,'usr::plt::col']]]
 ];

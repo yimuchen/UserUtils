@@ -13,6 +13,8 @@ var searchData=
   ['intpower_10',['IntPower',['../group__STLMaths.html#ga13654519211021e35189e9637221373a',1,'usr']]],
   ['isbooleanflag_11',['IsBooleanFlag',['../classusr_1_1ArgumentExtender.html#a978a1d52256f2e8c54561767076f45e6',1,'usr::ArgumentExtender']]],
   ['ismultitoken_12',['IsMultiToken',['../classusr_1_1ArgumentExtender.html#ad40f116078a7c5a2bcce45c671aeb9d1',1,'usr::ArgumentExtender']]],
-  ['issmhadron_13',['IsSMHadron',['../group__MCHelper.html#ga0a37d8dc775d7e19c35a6070f5b1e03e',1,'usr::mc']]],
-  ['issmquark_14',['IsSMQuark',['../group__MCHelper.html#ga242ad0417e1a423dcc5bafe63e862fa3',1,'usr::mc']]]
+  ['issmgluon_13',['IsSMGluon',['../group__MCHelper.html#gae3ffbf1b9aba4bf28b68aa7aa245f94f',1,'usr::mc']]],
+  ['issmhadron_14',['IsSMHadron',['../group__MCHelper.html#ga0a37d8dc775d7e19c35a6070f5b1e03e',1,'usr::mc']]],
+  ['issmhiggs_15',['IsSMHiggs',['../group__MCHelper.html#gad61932b3a7c222a1722e8b202cc3fc90',1,'usr::mc']]],
+  ['issmquark_16',['IsSMQuark',['../group__MCHelper.html#ga242ad0417e1a423dcc5bafe63e862fa3',1,'usr::mc']]]
 ];
