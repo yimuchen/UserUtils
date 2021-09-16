@@ -291,29 +291,6 @@ public:
   void SaveAsCPP( const fs::path& );
   void SaveToROOT( const fs::path&, const std::string& name );
 
-  // String based interface for reflection
-  // inline void SaveAsPDF( const std::string& x )
-  // { SaveAsPDF( fs::path( x ) ); }
-  // inline void SaveAsPNG( const std::string& x, const unsigned d  )
-  // { SaveAsPNG( fs::path( x ), d ); }
-  // inline void SaveAsCPP( const std::string& x )
-  // { SaveAsCPP( fs::path( x ) ); }
-  // inline void SaveToROOT( const std::string& x, const std::string& name )
-  // { SaveToROOT( fs::path( x ), name ); }
-
-  // Char based interface since now overloading is ambiguous with string literals
-  // inline void SaveAsPDF( const char* x )
-  // { SaveAsPDF( fs::path( x ) ); }
-  // inline void SaveAsPNG( const char* x, const unsigned d  )
-  // { SaveAsPNG( fs::path( x ), d ); }
-  // inline void SaveAsCPP( const char* x )
-  // { SaveAsCPP( fs::path( x ) ); }
-  // inline void SaveToROOT( const char* x, const std::string& name )
-  // { SaveToROOT( fs::path( x ), name ); }
-
-  // string interface to allow for python interfacing
-  // void SaveAsPDF( const std::string& s ){ SaveAsPDF( fs::path( s ) ); }
-
   inline void
   Clear(){ TCanvas_().Clear(); }
 
