@@ -82,3 +82,38 @@ SetMarkAttr( TAttMarker&                 obj,
     obj.SetMarkerSize( args.Get( "MarkerSize" ).getDouble( 0 ) );
   }
 }
+extern void
+CopyTextAttrTo( const TAttText& source,
+                TAttText&       target )
+{
+  target.SetTextColor( source.GetTextColor() ); // alpha handled
+  target.SetTextSize( source.GetTextSize() );
+  target.SetTextAngle( source.GetTextAngle() );
+  target.SetTextAlign( source.GetTextAlign() );
+}
+
+extern void
+CopyLineAttrTo( const TAttLine& source,
+                TAttLine&       target )
+{
+  target.SetLineColor( source.GetLineColor() );// alpha already handled
+  target.SetLineStyle( source.GetLineStyle() );
+  target.SetLineWidth( source.GetLineWidth() );
+}
+
+extern void
+CopyFillAttrTo( const TAttFill& source,
+                TAttFill&       target )
+{
+  target.SetFillColor( source.GetFillColor() ); // alpha handled
+  target.SetFillStyle( source.GetFillStyle() );
+}
+
+extern void
+CopyMarkAttrTo( const TAttMarker& source,
+                TAttMarker&       target )
+{
+  target.SetMarkerColor( source.GetMarkerColor() ); // alpha handled
+  target.SetMarkerStyle( source.GetMarkerStyle() );
+  target.SetMarkerSize( source.GetMarkerSize() );
+}
