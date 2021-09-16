@@ -39,9 +39,11 @@ bin/**
 PyUtils/*.cc
 PyUtils/*.cpp
 PyUtils/*.pcm
+python/*.cpp
+python/*.pcm
 
 # Specific file inclusion
 # ![relative/path/to/file]
 !**/CMakeLists.txt
-!docs/image/*.png 
+!docs/image/*.png
 !docs/image/*.pdf
