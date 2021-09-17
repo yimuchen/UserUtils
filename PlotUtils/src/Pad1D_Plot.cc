@@ -152,7 +152,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     PlotObj( obj, ( args.GetStr( "PlotType" )+" SAME" ).c_str() );
     break;
   default:
-    usr::log::PrintLog( usr::log::ERROR,
+    usr::log::PrintLog( usr::log::INTERNAL,
       usr::fstr( "Skipping over invalid value (%d)", pt ) );
   }
 
@@ -242,7 +242,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
       } );
 
   if( obj.GetDimension() != 1 ){
-    usr::log::PrintLog( usr::log::ERROR,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Can only plot 1 Dimensional TEfficiency objects" );
     return obj;
   }
@@ -273,7 +273,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
     PlotObj( obj, ( args.GetStr( "PlotType" )+" SAME" ).c_str() );
     break;
   default:
-    usr::log::PrintLog( usr::log::ERROR,
+    usr::log::PrintLog( usr::log::INTERNAL,
       usr::fstr( "Skipping over invalid value (%d)", pt ) );
   }
 
@@ -332,7 +332,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
 {
   // Early Exit for Graphs without any data points
   if( obj.GetN() <= 0 ){
-    usr::log::PrintLog( usr::log::ERROR,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Cannot plot TGraphs with no data points!" );
     return obj;
   }
@@ -379,7 +379,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     PlotObj( obj, args.GetStr( "PlotType" ).c_str() );
     break;
   default:
-    usr::log::PrintLog( usr::log::ERROR,
+    usr::log::PrintLog( usr::log::INTERNAL,
       usr::fstr( "Skipping over invalid value (%d)", pt ) );
     break;
   }
