@@ -117,7 +117,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   const fs::path dimpath  = fs::path( tmppath ).replace_extension( ".txt" );
 
   if( filepath.extension() != ".pdf" ){
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Warning! File extension is not .pdf. The file will be created but "
       "external programs might not able to understand it" );
   }
@@ -140,7 +140,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   };
 
   if( !run_ghostscript( gs_fixrotate ) ){
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Error in starting ghostscript processes, saving as unaltered PDF file" );
     fs::copy( tmppath, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmppath );
@@ -165,7 +165,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   };
 
   if( !run_ghostscript( gs_getdim ) ){
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Cannot get PDF file dimensions, saving a unscaled version of the PDF." );
     fs::copy( tmp2path, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmp2path );
@@ -204,7 +204,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   };
 
   if( !run_ghostscript( gs_fixscale ) ){
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Error in running rescaling processes, saving as unscaled PDF file" );
     fs::copy( tmp2path, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmp2path );
@@ -229,7 +229,7 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
   Finalize( filepath );
 
   if( filepath.extension() != ".png" ){
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "File extension is not .png. The file will be created but external "
       "programs might not able to understand it" );
   }
@@ -258,7 +258,7 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
   if( run_ghostscript( gs_png ) ){
     fs::remove( tmppath );
   } else {
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Ghostscript conversion failed, saving via in-built root function "
       "(Display maybe bad!)" );
     fs::remove( tmppath );
@@ -418,12 +418,12 @@ run_ghostscript( const std::vector<std::string>& args )
   }
 
   if( cmd.find_first_not_of( legalchar ) != std::string::npos ){
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       usr::fstr( "Command contains illegal character: [%c]",
         cmd[ cmd.find_first_not_of( legalchar ) ] ) );
     return false;
   } else if( !has_ghostscript() ){
-    usr::log::PrintLog( usr::log::WARNING,
+    usr::log::PrintLog( usr::log::INTERNAL,
       "Ghostscript is not available." );
     return false;
   } else {
