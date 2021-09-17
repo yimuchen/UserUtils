@@ -78,7 +78,8 @@ enum level: short
   DEBUG    = 1,
   INFO     = 2,
   WARNING  = 3,
-  ERROR    = 4
+  ERROR    = 4,
+  FATAL    = 5
 };
 
 /**
@@ -92,7 +93,8 @@ void SetLogLevel( const short i );
 void PrintLog( const short        i,
                const std::string& line,
                const std::string& header = "" );
-}
+
+}/* log */
 
 /** @} */
 

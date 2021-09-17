@@ -62,9 +62,27 @@ operator<<( std::ostream& os, const separator& x )
  * SetLogLevel function. For every log that occurs in the analysis function, the
  * user defines the log level of that message, if the log will only be printed if
  * the message log level is greater than that of the global log level variable.
- * Internal function defined in the UserUtils package should refine from using
- * this function, as these should be well defined functions with minimal output.
- * Internal functions should only use the INTERNAL output level.
+ * Functions and classes defined in the UserUtils package should refrain from
+ * using this function, as these should be well defined functions with minimal
+ * output, and should only use at most the INTERNAL log level, unless the
+ * function uses certain functions that can actively disrupt the program (such as
+ * with system manipulation).
+ *
+ * While the heirarchy is not set is stone, here is a good rule of thumb of when
+ * log levels should be used.
+ * - DEBUG: For a detailed track of program progress, mainly for debugging where
+ *   i within a main program the process fails.
+ * - INFO: Generic information that would be useful to the user to check that the
+ *   users is running nominally (process information, numerical value outputs...
+ *   etc.)
+ * - WARNING: Results that will not cause immediate issues in runtime, but can
+ *   cause the program to misbehave that the user should be aware of by default
+ *   (bad fit results causing subsequent calculations to be undesirable...etc)
+ * - ERROR: Results that will cause immediate issues (values are undetermined,
+ *   NAN errors ...etc). All results after this message are to be trusted.
+ * - FATAL: The program should be halted immediately, due to critical components
+ *   not being able to be found. An std::runtime_error will automatically be
+ *   raised if this level is specified.
  */
 namespace log
 {
@@ -88,14 +106,18 @@ SetLogLevel( const short new_level )
  * nominal analysis output for simpler debugging.
  */
 void
-PrintLog( const short i, const std::string& line, const std::string& header )
+PrintLog( const short level, const std::string& line, const std::string& header )
 {
-  if( i >= __global_log_level ){
+  const std::string msg = header.size() > 0 ? header + " " + line : line;
+  if( level >= __global_log_level ){
     if( header.size() > 0 ){
       std::cerr << header << " " << line << std::endl;
     } else {
-      std::cerr << header << " " << line << std::endl;
+      std::cerr << line << std::endl;
     }
+  }
+  if( level >= FATAL ){
+    throw std::runtime_error( msg );
   }
 }
 
@@ -110,6 +132,6 @@ __dummy_set_root_level()
 }
 short __dummy_int = __dummy_set_root_level();
 
-}
+}/* log */
 
 }/* usr */
