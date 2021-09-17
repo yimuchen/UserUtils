@@ -54,11 +54,13 @@ public:
    * @brief varidaic initialization for multiple json files.
    * @details see ArgumentExtender::_init() for more details.
    */
-  template<typename ... TS> ArgumentExtender( const std::string& first, TS ... others );
+  template<typename ... TS> ArgumentExtender( const std::string& first,
+                                              TS ...             others );
 
   virtual ~ArgumentExtender ();
 
   ArgumentExtender& AddOptions( const po::options_description& optdesc );
+  ArgumentExtender& AddVerboseOpt( const unsigned level = usr::log::WARNING );
   void              ParseOptions( int argc, char** argv );
   void              ParseFile( const std::string& file );
   bool              CheckArg( const std::string& opt ) const;
@@ -85,12 +87,12 @@ public:
    * boost::program_options' multitoken when defining the options description.
    * Again the user is responsible for providing the appropriate casting.
    *
-   * A special case is when option "myarg" is defined for receiving multivalue
-   * std::string and option "myarg_list" is defined for receiving a single
-   * string. are both defined as an optional program option. In this case, this
-   * function will look for the file described by "myarg_list" and extract its
-   * contents (per-line) as the return list. This is particularly useful for
-   * listing files.
+   * A special case is when option "opt" is defined for receiving multivalue
+   * std::string and option "opt_list" is defined for receiving a single string.
+   * are both defined as an optional program option. In this case, this function
+   * will look for the file described by "opt_list" and extract its contents
+   * (per-line) as the return list. This is particularly useful for listing
+   * files.
    */
   template<typename TYPE>
   std::vector<TYPE> ArgList( const std::string& opt ) const;

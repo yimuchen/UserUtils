@@ -145,6 +145,31 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
 }
 
 /**
+ * @brief  Adding the options for verbose level adjustment
+ *
+ * Adding the commonly used option for adjusting the verbose level of the main
+ * program. The user can also provide the default log level. Notice that the user
+ * will not need to set the Log level, that will the handled by the automatic
+ * parsing options.
+ */
+ArgumentExtender&
+ArgumentExtender::AddVerboseOpt( const unsigned level )
+{
+  opt::options_description desc( "Logging verbose level adjustment" );
+  desc.add_options()
+    ( "verbose,v", po::defvalue<int>( level ),
+    usr::fstr( "Verbose level (int):\n%s\n%s\n%s\n%s\n%s\n",
+      usr::fstr( "%d UserUtils/Internal messages", usr::log::INTERNAL ),
+      usr::fstr( "%d debugging messages",          usr::log::DEBUG ),
+      usr::fstr( "%d process information",         usr::log::INFO ),
+      usr::fstr( "%d warning information",         usr::log::WARNING ),
+      usr::fstr( "%d error information",           usr::log::ERROR )
+      ).c_str() )
+  ;
+  return AddOptions( desc );
+}
+
+/**
  * @brief parsing the program input with the standard argc, argv interface.
  *
  * See the function _check_parse_valid for additional parsing.
@@ -257,6 +282,10 @@ ArgumentExtender::_check_parse_valid()
 
   if( CheckArg( "help" ) ){
     PrintHelpAndExit();
+  }
+
+  if( CheckArg( "verbose" ) ){
+    usr::log::SetLogLevel( Arg<int>( "verbose" ) );
   }
 }
 
@@ -571,7 +600,7 @@ ArgumentExtender::IsMultiToken( const std::string& x ) const
 /**
  * @brief Specialization for getting a list of string from a file.
  */
-//template<>
+// template<>
 
 
 
