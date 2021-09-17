@@ -215,6 +215,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~ArgumentExtender<
 <tr class="memitem:aa3527a9bf8ec6156a76ddfafe3deb86f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classusr_1_1ArgumentExtender.html">ArgumentExtender</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1ArgumentExtender.html#aa3527a9bf8ec6156a76ddfafe3deb86f">AddOptions</a> (const po::options_description &amp;optdesc)</td></tr>
 <tr class="memdesc:aa3527a9bf8ec6156a76ddfafe3deb86f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adding more options definition to the class.  <a href="classusr_1_1ArgumentExtender.html#aa3527a9bf8ec6156a76ddfafe3deb86f">More...</a><br /></td></tr>
 <tr class="separator:aa3527a9bf8ec6156a76ddfafe3deb86f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb16f824dddd7a5363279b8bd30664c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classusr_1_1ArgumentExtender.html">ArgumentExtender</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1ArgumentExtender.html#a0fb16f824dddd7a5363279b8bd30664c">AddVerboseOpt</a> (const unsigned level=usr::log::WARNING)</td></tr>
+<tr class="memdesc:a0fb16f824dddd7a5363279b8bd30664c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adding the options for verbose level adjustment.  <a href="classusr_1_1ArgumentExtender.html#a0fb16f824dddd7a5363279b8bd30664c">More...</a><br /></td></tr>
+<tr class="separator:a0fb16f824dddd7a5363279b8bd30664c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e638edf8475fdfe95aef82d3ee74dcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1ArgumentExtender.html#a9e638edf8475fdfe95aef82d3ee74dcd">ParseOptions</a> (int argc, char **argv)</td></tr>
 <tr class="memdesc:a9e638edf8475fdfe95aef82d3ee74dcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">parsing the program input with the standard argc, argv interface.  <a href="classusr_1_1ArgumentExtender.html#a9e638edf8475fdfe95aef82d3ee74dcd">More...</a><br /></td></tr>
 <tr class="separator:a9e638edf8475fdfe95aef82d3ee74dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -607,6 +610,25 @@ template&lt;typename ... TS&gt; </div>
 
 </div>
 </div>
+<a id="a0fb16f824dddd7a5363279b8bd30664c" name="a0fb16f824dddd7a5363279b8bd30664c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fb16f824dddd7a5363279b8bd30664c">&#9670;&nbsp;</a></span>AddVerboseOpt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classusr_1_1ArgumentExtender.html">ArgumentExtender</a> &amp; usr::ArgumentExtender::AddVerboseOpt </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>level</em> = <code>usr::log::WARNING</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Adding the commonly used option for adjusting the verbose level of the main program. The user can also provide the default log level. Notice that the user will not need to set the Log level, that will the handled by the automatic parsing options. </p>
+
+</div>
+</div>
 <a id="a590da0152e8a69fd06fe8f4fe84bb38e" name="a590da0152e8a69fd06fe8f4fe84bb38e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a590da0152e8a69fd06fe8f4fe84bb38e">&#9670;&nbsp;</a></span>Arg()</h2>
 
@@ -677,7 +699,7 @@ template&lt;typename TYPE &gt; </div>
       </table>
 </div><div class="memdoc">
 <p >Notice that this must be used together with a boost::program_options' multitoken when defining the options description. Again the user is responsible for providing the appropriate casting.</p>
-<p >A special case is when option "myarg" is defined for receiving multivalue std::string and option "myarg_list" is defined for receiving a single string. are both defined as an optional program option. In this case, this function will look for the file described by "myarg_list" and extract its contents (per-line) as the return list. This is particularly useful for listing files. </p>
+<p >A special case is when option "opt" is defined for receiving multivalue std::string and option "opt_list" is defined for receiving a single string. are both defined as an optional program option. In this case, this function will look for the file described by "opt_list" and extract its contents (per-line) as the return list. This is particularly useful for listing files. </p>
 
 </div>
 </div>
