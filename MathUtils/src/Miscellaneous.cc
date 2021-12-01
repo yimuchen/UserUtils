@@ -52,9 +52,10 @@ Intersect(
  * @brief Performing a Cholesky decomposing of a covariance matrix from fit
  *
  * In the case that the input matrix is not positive definite, this function will
- * a diagonal matrix  that is just the square root of the diagonal components of
+ * a diagonal matrix that is just the square root of the diagonal components of
  * the original covariance matrix. The function is essentially the
- * [TDecompChol::Decompose](https://root.cern.ch/doc/master/classTDecompChol.html#af14df10a3c766330cb93063161ecedc0) method.
+ * [TDecompChol::Decompose](https://root.cern.ch/doc/master/classTDecompChol.html#af14df10a3c766330cb93063161ecedc0)
+ * method without exceptions.
  */
 extern TMatrixD
 DecompCorvariance( const TMatrixDSym& m )
