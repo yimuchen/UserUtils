@@ -40,7 +40,7 @@ RooCmdArg
 PlotUnder( const TObject* obj )
 {
   return RooCmdArg( "PlotUnder",
-    0, 0,/*int*/ 0, 0,/* double*/ 0, 0,/*char*/ obj );
+    0, 0, /*int*/ 0, 0, /* double*/ 0, 0, /*char*/ obj );
 }
 
 USERUTILS_COMMON_REGISTERCMD( PlotUnder );
@@ -212,12 +212,25 @@ USERUTILS_COMMON_REGISTERCMD( ScaleY );
 RooCmdArg
 VisualizeError( const TFitResultPtr& fit, const double z )
 {
+  return VisualizeError( *fit, z );
+}
+
+RooCmdArg
+VisualizeError( const TFitResult& fit, const double z )
+{
+  return VisualizeError( &fit, z );
+}
+
+RooCmdArg
+VisualizeError( const TFitResult* fit, const double z )
+{
   return RooCmdArg( "VisualizeError",
     0, 0,// int
     z, 0,// double
     0, 0,// c_string
-    dynamic_cast<const TObject*>( &( *fit ) ) );
+    dynamic_cast<const TObject*>( fit ) );
 }
+
 
 // ---------------------------------------------------------------------------//
 RooCmdArg ExtrapolateInRatio( const int flag )
