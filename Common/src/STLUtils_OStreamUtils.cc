@@ -130,6 +130,7 @@ __dummy_set_root_level()
   gErrorIgnoreLevel = kWarning;
   return 0;
 }
+
 short __dummy_int = __dummy_set_root_level();
 
 }/* log */
