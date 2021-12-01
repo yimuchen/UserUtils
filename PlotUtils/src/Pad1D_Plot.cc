@@ -444,8 +444,9 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
                                   + std::string( "_gengraph" )
                                   + RandomString( 6 );
 
-  const double xmax      = func.GetXmax();
-  const double xmin      = func.GetXmin();
+  TF1 f                  = func; // Making a copy of the function
+  const double xmax      = f.GetXmax();
+  const double xmin      = f.GetXmin();
   const double xspace    = args.Get( "Precision" ).getDouble( 0 );
   const unsigned xsample = 1 / ( xspace ) + 1;
 
@@ -458,7 +459,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
   // Getting common elements for graph generation
   for( unsigned i = 0; i < xsample; ++i ){
     const double xval = xmin + i * ( xmax-xmin ) * xspace;
-    const double yval = func.Eval( xval );
+    const double yval = f.Eval( xval );
 
     x[i]      = xval;
     y[i]      = yval;
@@ -475,6 +476,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     const TFitResult& fit
       = dynamic_cast<const TFitResult&>( args.GetObj( "VisualizeError" ) );
     const double zval                       = args.GetDouble( "VisualizeError" );
+
     const std::vector<double> bestfit_param = fit.Parameters();
 
     // Getting matrix for random parameter generation
@@ -500,20 +502,17 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 
       // Shifting to central value of function.
       for( int j = 0; j < vec.GetNrows(); ++j ){
-        func.SetParameter( j, vec[j] + bestfit_param[j] );
+        f.SetParameter( j, vec[j] + bestfit_param[j] );
       }
 
       // Finding evelope of randomly generated parameter values
       for( unsigned j = 0; j < xsample; ++j ){
         const double xval = x.at( j );
-        const double yerr = func.Eval( xval ) - y.at( j );
+        const double yerr = f.Eval( xval ) - y.at( j );
         yerrhi[j] = std::max( yerr, yerrhi.at( j ) );
         yerrlo[j] = std::max( -yerr, yerrlo.at( j ) );
       }
     }
-
-    // Reseting the function parameters to best value
-    func.SetParameters( bestfit_param.data() );
 
     TGraphAsymmErrors& graph = MakeObj<TGraphAsymmErrors>( x.size(),
       x.data(), y.data(),
