@@ -190,6 +190,8 @@ RooCmdArg Plot2DF( const int );
 RooCmdArg Plot2DF( const std::string& );
 
 RooCmdArg VisualizeError( const TFitResultPtr&, const double z = 1 );
+RooCmdArg VisualizeError( const TFitResult*, const double z    = 1 );
+RooCmdArg VisualizeError( const TFitResult&, const double z    = 1 );
 
 template<typename ... Args>
 inline RooCmdArg
@@ -200,7 +202,7 @@ VisualizeError( const RooFitResult& fit, Args... args )
 
 RooCmdArg ExtrapolateInRatio( const int flag = true );
 
-RooCmdArg ExtendXRange( const bool flat      = true );
+RooCmdArg ExtendXRange( const bool flat = true );
 /**  @} */
 
 /**
