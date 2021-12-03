@@ -7,7 +7,7 @@ var searchData=
   ['textangle_4',['TextAngle',['../group__PlotUtilsArgument.html#gaf16660d0a2d71456e034151d885edcc6',1,'usr::plt']]],
   ['textcolor_5',['TextColor',['../group__PlotUtilsArgument.html#gaf49b72f5945e6454165e3ddfbabb46b4',1,'usr::plt']]],
   ['textsize_6',['TextSize',['../group__PlotUtilsArgument.html#gac6ca93a16b0fd51e856b2d4ce178f029',1,'usr::plt']]],
-  ['th1dfromroodata_7',['TH1DFromRooData',['../group__KSRooFit.html#ga7292ebf744f095440f3830c9b521812f',1,'usr::TH1DFromRooData(RooAbsData &amp;data, const RooAbsRealLValue &amp;xvar, const RooCmdArg &amp;arg1, Args... args)'],['../group__KSRooFit.html#gab7aa9073d8f36582cd938fb040c5451e',1,'usr::TH1DFromRooData(RooAbsData &amp;data, const RooAbsRealLValue &amp;xvar)'],['../group__KSRooFit.html#gaa7772a001d9b16c325a5788fe17b0879',1,'usr::TH1DFromRooData(RooAbsData &amp;, const RooAbsRealLValue &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)']]],
+  ['th1dfromroodata_7',['TH1DFromRooData',['../group__KSRooFit.html#ga66e8cde4831a67ef4c909c2b57c8e2f2',1,'usr::TH1DFromRooData(RooAbsData &amp;data, const RooAbsRealLValue &amp;xvar, const RooCmdArg &amp;arg1, Args ... args)'],['../group__KSRooFit.html#gab7aa9073d8f36582cd938fb040c5451e',1,'usr::TH1DFromRooData(RooAbsData &amp;data, const RooAbsRealLValue &amp;xvar)'],['../group__KSRooFit.html#gaa7772a001d9b16c325a5788fe17b0879',1,'usr::TH1DFromRooData(RooAbsData &amp;, const RooAbsRealLValue &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)']]],
   ['thistle_8',['thistle',['../group__PlotUtilsConstants.html#ga62dd188db202112cce68f74222cd5c4e',1,'usr::plt::col']]],
   ['time_2ehpp_9',['Time.hpp',['../Time_8hpp.html',1,'']]],
   ['tiny_10',['tiny',['../classusr_1_1plt_1_1font.html#a3a80993b3d993d9b7f569c3fdfee65e6',1,'usr::plt::font']]],

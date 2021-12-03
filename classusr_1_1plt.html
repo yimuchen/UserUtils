@@ -91,7 +91,7 @@ $(function() {
 <li><em>key name</em>: By default the uncertainty is assumed to be a shape like uncertainty, with uncertainty "up" and "down" shapes stored as shifted histograms. The effects of shape distortion is performed bin-by-bn using the histograms is done bin by bin. The key name is then used to specify which histograms in the same file should be used as the shifted templates. For each histogram request, the <code>histogram name + key name + "Up"</code> and <code>histogram name + key name + "Down"</code> will be taken as the shifted templates. In case the templates are not found, the central template will be used (which is equivalent to saying this process is not affected by the specified uncertainty). In the case that the key name is not specified, and the norm uncertainty is not specifed, the key name default to the "name" entry in the decalration.</li>
 </ul>
 <p >A special uncertainty source should be noted here, and that is the "cross
-section" uncertainty, since uncertainties on the process cross sections are more normalization uncertainties that are process specific. To activate the treatment of the cross section uncertainties, simply add a uncertainty source with the name "cross section" and nothing else. </p>
+ section" uncertainty, since uncertainties on the process cross sections are more normalization uncertainties that are process specific. To activate the treatment of the cross section uncertainties, simply add a uncertainty source with the name "cross section" and nothing else. </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -186,19 +186,19 @@ Static Public Attributes</h2></td></tr>
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
 <div class="line">  </div>
 <div class="line">  {</div>
-<div class="line">    5/10,     6/11.,      6/12.,         0.5</div>
+<div class="line">    5 / 10,     6 / 11.,      6 / 12.,         0.5</div>
 <div class="line">  },{</div>
-<div class="line">    8/10,     9/11.,      10/12.,        0.75</div>
+<div class="line">    8 / 10,     9 / 11.,      10 / 12.,        0.75</div>
 <div class="line">  },{</div>
-<div class="line">    9/10,     10/11.,     10.95/12.,     0.9</div>
+<div class="line">    9 / 10,     10 / 11.,     10.95 / 12.,     0.9</div>
 <div class="line">  },{</div>
-<div class="line">    12/10,    12/11.,     14.4/12.,      1.2</div>
+<div class="line">    12 / 10,    12 / 11.,     14.4 / 12.,      1.2</div>
 <div class="line">  },{</div>
-<div class="line">    14.4/10,  14.4/11.,   17.28/12.,     14.4</div>
+<div class="line">    14.4 / 10,  14.4 / 11.,   17.28 / 12.,     14.4</div>
 <div class="line">  },{</div>
-<div class="line">    17.28/10, 17.28/11.,  20.74/12.,     1.72</div>
+<div class="line">    17.28 / 10, 17.28 / 11.,  20.74 / 12.,     1.72</div>
 <div class="line">  },{</div>
-<div class="line">    20.7/10,  20.7/11.,   24.8/12.,      2   }</div>
+<div class="line">    20.7 / 10,  20.7 / 11.,   24.8 / 12.,      2   }</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>

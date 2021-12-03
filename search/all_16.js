@@ -9,5 +9,5 @@ var searchData=
   ['whitesmoke_6',['whitesmoke',['../group__PlotUtilsConstants.html#gac669b761885fe3f6adb2dafd4af454f3',1,'usr::plt::col']]],
   ['width_7',['Width',['../classusr_1_1plt_1_1Canvas.html#aa2496c7034206ad9eb6a6d09077e7ec7',1,'usr::plt::Canvas']]],
   ['writeatdata_8',['WriteAtData',['../classusr_1_1plt_1_1PadBase.html#a0d956c026f65089b07e9b2f57d406bfd',1,'usr::plt::PadBase']]],
-  ['writeline_9',['WriteLine',['../classusr_1_1plt_1_1PadBase.html#a18f530ac7f6aeee4b2bdf6465548f9ec',1,'usr::plt::PadBase::WriteLine()'],['../classusr_1_1plt_1_1Simple1DCanvas.html#ab47c566c9631cba00c551ef838091235',1,'usr::plt::Simple1DCanvas::WriteLine()']]]
+  ['writeline_9',['WriteLine',['../classusr_1_1plt_1_1PadBase.html#a18f530ac7f6aeee4b2bdf6465548f9ec',1,'usr::plt::PadBase::WriteLine()'],['../classusr_1_1plt_1_1Simple1DCanvas.html#a1b8df0af8de68465ee0862b756d0564a',1,'usr::plt::Simple1DCanvas::WriteLine()']]]
 ];
