@@ -24,7 +24,8 @@
 
 using namespace std;
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief Returning the number of thread available on the machine. Simpler
@@ -36,6 +37,7 @@ NumOfThreads()
   return std::thread::hardware_concurrency();
 }
 
+
 /**
  * @brief Executing a command, and storing the STD output to the return string.
  *
@@ -43,17 +45,18 @@ NumOfThreads()
  * be displayed on screen, so the user is responsible for ensuring the command
  * would complete execution without user intervention.
  *
- * The main reference for the command could be obtained [here]( https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix)
+ * The main reference for the command could be obtained [here](
+ * https://stackoverflow.com/questions/478898/how-to-execute-a-command-and-get-output-of-command-within-c-using-posix)
  */
 std::string
 GetCMDOutput( const std::string& cmd )
 {
   static const unsigned MAXBUFFER = 65536;
-  static unsigned callcount       = 0;
+  static unsigned       callcount = 0;
   // Main reference
   std::array<char, MAXBUFFER> buffer;
-  std::string result;
-  std::shared_ptr<FILE> pipe( popen( cmd.c_str(), "r" ), pclose );
+  std::string                 result;
+  std::shared_ptr<FILE>       pipe( popen( cmd.c_str(), "r" ), pclose );
   ++callcount;
   if( !pipe ){ throw std::runtime_error( "popen() failed!" );}
 
@@ -66,6 +69,7 @@ GetCMDOutput( const std::string& cmd )
   return result;
 }
 
+
 /**
  * @brief The same as the GetCMDOutput() function, except that the std error
  *        outputs would be discarded into `/dev/null`.
@@ -76,6 +80,7 @@ GetCMDSTDOutput( const std::string& cmd )
   return GetCMDOutput( cmd+" 2> /dev/null" );
 
 }
+
 
 /**
  * @brief The same as the GetCMDOutput() function, except that only the
@@ -88,6 +93,7 @@ GetCMDERROutput( const string& cmd )
   return GetCMDOutput( cmd+" > /dev/null  2>&1 " );
 }
 
+
 /**
  * @brief Return the number of the processes whose name contains the string
  *        "cmd", but doesn't include the string "exclude".
@@ -98,15 +104,16 @@ GetCMDERROutput( const string& cmd )
 int
 HasProcess( const std::string& cmd, const std::string& exclude )
 {
-  static const std::string common = "ps -U ${USER} | awk '{print $4}' ";
-  static const std::string count  = " | wc --lines";
-  const std::string grepcmd       = " | grep " + cmd;
-  const std::string excludecmd    = exclude == "" ? "" :
-                                    " | grep --invert-match " + exclude;
+  static const std::string common     = "ps -U ${USER} | awk '{print $4}' ";
+  static const std::string count      = " | wc --lines";
+  const std::string        grepcmd    = " | grep "+cmd;
+  const std::string        excludecmd = exclude == "" ? "" :
+                                        " | grep --invert-match "+exclude;
 
-  const std::string ans = GetCMDOutput( common + grepcmd + excludecmd + count );
+  const std::string ans = GetCMDOutput( common+grepcmd+excludecmd+count );
   return stoi( ans );
 }
+
 
 /**
  * @brief Sleep current thread until the results of HasProcess returns 0
@@ -117,23 +124,22 @@ HasProcess( const std::string& cmd, const std::string& exclude )
  * By default, the check is performed every 100ms.
  */
 void
-WaitProcess(
-  const std::string& x,
-  const std::string& exclude,
-  const unsigned     sleeptime )
+WaitProcess( const std::string& x,
+             const std::string& exclude,
+             const unsigned     sleeptime )
 {
   while( 1 ){
-    const int proc_count          = HasProcess( x, exclude );
+    const int         proc_count  = HasProcess( x, exclude );
     const std::string time_string = CurrentTime();
 
     if( proc_count == 0 ){ break; }
 
     cout <<
       usr::fstr( "\r[%s|%s] %d instance(s) of [%s]...",
-      GetEnv( "HOSTNAME" ),
-      time_string,
-      proc_count,
-      x )
+                 GetEnv( "HOSTNAME" ),
+                 time_string,
+                 proc_count,
+                 x )
          << flush;
 
     SleepMillSec( sleeptime );

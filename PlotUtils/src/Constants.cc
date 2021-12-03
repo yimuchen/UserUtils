@@ -15,40 +15,44 @@
 #include <boost/algorithm/string.hpp>
 #include <string>
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * @details Plotting length in ROOT is defined using pixels (usually), with the
  * conversion of pixels into printable formats using the old standard of 72 DPI.
  *
- * Here we provide functions for convert from printing units (inches, mm... etc),
+ * Here we provide functions for convert from printing units (inches, mm...
+ *etc),
  * to the standard ROOT length units, as well as commonly used dimension in
  * CMS documents.
  */
-namespace len {
+namespace len
+{
 
-extern const unsigned ROOT_DPI = 72;
-extern const float INCH_TO_CM  = 2.54;
+extern const unsigned ROOT_DPI   = 72;
+extern const float    INCH_TO_CM = 2.54;
 
 /**
  * @brief Convert inches to standard ROOT size.
  */
 extern length_t
-inch( const float x ){ return std::round( ROOT_DPI*x ); }
+inch( const float x ){ return std::round( ROOT_DPI * x ); }
 
 /**
  * @brief Convert centimeters to standard ROOT size.
  */
 extern length_t
-cm( const float x ){ return inch( x/INCH_TO_CM ); }
+cm( const float x ){ return inch( x / INCH_TO_CM ); }
 
 /**
  * @brief Conver millimeters to standard ROOT size.
  */
 extern length_t
-mm( const float x ){ return cm( x/10 ); }
+mm( const float x ){ return cm( x / 10 ); }
 
 /**
  * @brief A4 Paper is 210mm wide.
@@ -105,11 +109,11 @@ float font::default_lineheight = 1.2;
 font::font( float basesize,
             face  face,
             float lineheight ) :
-  _basesize( basesize ),
-  _face( face ),
+  _basesize  ( basesize ),
+  _face      ( face ),
   _lineheight( em( lineheight ) )
-{
-}
+{}
+
 
 /** @brief returning base size */
 float
@@ -123,8 +127,9 @@ font::lineheight() const { return _lineheight; }
 short
 font::fontface() const
 {
-  return ( _face * 10 )/10 + 3;
+  return ( _face * 10 ) / 10+3;
 }
+
 
 /** @brief returning scaled font size */
 float
@@ -133,25 +138,26 @@ font::em( const float x ) const
   return x * _basesize;
 }
 
+
 /*-----------------------------------------------------------------------------
  *  Font-size conversion helper variables.
    --------------------------------------------------------------------------*/
 static const float scaletable[7][4] = {
   // 10      11          12             others
   {
-    5/10,     6/11.,      6/12.,         0.5// tiny
+    5 / 10,     6 / 11.,      6 / 12.,         0.5// tiny
   },{
-    8/10,     9/11.,      10/12.,        0.75// footnote
+    8 / 10,     9 / 11.,      10 / 12.,        0.75// footnote
   },{
-    9/10,     10/11.,     10.95/12.,     0.9// small
+    9 / 10,     10 / 11.,     10.95 / 12.,     0.9// small
   },{
-    12/10,    12/11.,     14.4/12.,      1.2// large
+    12 / 10,    12 / 11.,     14.4 / 12.,      1.2// large
   },{
-    14.4/10,  14.4/11.,   17.28/12.,     14.4// Large
+    14.4 / 10,  14.4 / 11.,   17.28 / 12.,     14.4// Large
   },{
-    17.28/10, 17.28/11.,  20.74/12.,     1.72// LARGE
+    17.28 / 10, 17.28 / 11.,  20.74 / 12.,     1.72// LARGE
   },{
-    20.7/10,  20.7/11.,   24.8/12.,      2   }// huge
+    20.7 / 10,  20.7 / 11.,   24.8 / 12.,      2   }// huge
 };
 
 enum e_size : short
@@ -174,36 +180,38 @@ getcol( const float x )
          3;
 }
 
+
 /** @{
- * @brief conversion to LateX [in-build font sizes](https://en.wikibooks.org/wiki/LaTeX/Fonts#Built-in_sizes)
+ * @brief conversion to LateX [in-build font
+ *sizes](https://en.wikibooks.org/wiki/LaTeX/Fonts#Built-in_sizes)
  */
 float
 font::tiny() const
-{ return _basesize*scaletable[e_tiny][getcol( _basesize )]; }
+{ return _basesize * scaletable[e_tiny][getcol( _basesize )]; }
 
 float
 font::footnote() const
-{ return _basesize*scaletable[e_footnote][getcol( _basesize )]; }
+{ return _basesize * scaletable[e_footnote][getcol( _basesize )]; }
 
 float
 font::small() const
-{ return _basesize*scaletable[e_small][getcol( _basesize )]; }
+{ return _basesize * scaletable[e_small][getcol( _basesize )]; }
 
 float
 font::large() const
-{ return _basesize*scaletable[e_large][getcol( _basesize )]; }
+{ return _basesize * scaletable[e_large][getcol( _basesize )]; }
 
 float
 font::Large() const
-{ return _basesize*scaletable[e_llarge][getcol( _basesize )]; }
+{ return _basesize * scaletable[e_llarge][getcol( _basesize )]; }
 
 float
 font::LARGE() const
-{ return _basesize*scaletable[e_lllarge][getcol( _basesize )]; }
+{ return _basesize * scaletable[e_lllarge][getcol( _basesize )]; }
 
 float
 font::huge() const
-{ return _basesize*scaletable[e_huge][getcol( _basesize )]; }
+{ return _basesize * scaletable[e_huge][getcol( _basesize )]; }
 
 /** @} */
 
@@ -213,25 +221,33 @@ font::huge() const
  * so it will be using the ROOT style '#' for latex commands rather than
  * backslashes
  */
-namespace unit  {
+namespace unit
+{
+
 const std::string GeV   = "GeV";
 const std::string GeVc  = "GeV/#it{c}";
 const std::string GeVcc = "GeV/#it{c}^{2}";
+
 }/* unit  */
 
 
-namespace cap  {
+namespace cap
+{
+
 const std::string prelim = "Preliminary";
 const std::string sim    = "Simulation";
+
 }/* cap  */
 
 /**
  * @details  Probably one of the worst offenders of magic-number usage in @ROOT:
  * that of the styling variables. Unless you have memorised the contents of the
- * documentation, you would probably have no idea what someone else code is doing
+ * documentation, you would probably have no idea what someone else code is
+ *doing
  * to stylise the plots.
  */
-namespace sty {
+namespace sty
+{
 
 /**
  * @{
@@ -274,6 +290,7 @@ fill( const std::string& x )
 #undef STRINGIFY
 }
 
+
 /**
  * @brief  A human readable interface to hash-fill styles in @ROOT{TAttFill}.
  *
@@ -298,8 +315,9 @@ fillhash( unsigned short distance,
   distance = std::min( distance, (unsigned short)9 );
   angle1   = std::min( angle1,  (unsigned short)9 );
   angle2   = std::min( angle2,  (unsigned short)9 );
-  return 3000 + 100*distance+10*angle1+1*angle2;
+  return 3000+100 * distance+10 * angle1+1 * angle2;
 }
+
 
 /**
  * @brief Converting actual hash distances in millimeters into the unit
@@ -321,6 +339,7 @@ distmm( const float x )
          x < usr::plt::len::mm( 5.65625 ) ? 8 :
          9;
 }
+
 
 /**
  * @brief Converting the first angle of the hash in degrees into defined digits.
@@ -344,6 +363,7 @@ angle1( const float x )
          anglenone;
 }
 
+
 /**
  * @brief Converting the first angle of the hash in degrees into defined digits.
  *
@@ -365,6 +385,7 @@ angle2( const float x )
          x >= 90   ? 9 :
          anglenone;
 }
+
 
 /** @brief Flag to use if you want to diplay a certain angle display */
 const short anglenone = 5;
@@ -402,6 +423,7 @@ line( const std::string& x )
 
 #undef STRINGIFY
 }
+
 
 /**
  * @{

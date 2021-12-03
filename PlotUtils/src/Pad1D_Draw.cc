@@ -13,9 +13,11 @@
 #include <boost/format.hpp>
 
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * @{
@@ -26,38 +28,45 @@ namespace plt  {
 float
 Pad1D::InnerTextLeft() const
 {
-  return GetLeftMargin() + 1.5 * Yaxis().GetTickLength();
+  return GetLeftMargin()+1.5 * Yaxis().GetTickLength();
 }
+
 
 float
 Pad1D::InnerTextRight() const
 {
-  return 1. - GetRightMargin() - 1.5 * Yaxis().GetTickLength();
+  return 1.-GetRightMargin()-1.5 * Yaxis().GetTickLength();
 }
+
 
 float
 Pad1D::InnerTextHCenter() const
 {
-  return ( InnerTextLeft() + InnerTextRight() ) /2;
+  return ( InnerTextLeft()+InnerTextRight() ) / 2;
 }
+
 
 float
 Pad1D::InnerTextTop() const
 {
-  return 1 - GetTopMargin() - 1.5 * Xaxis().GetTickLength();
+  return 1-GetTopMargin()-1.5 * Xaxis().GetTickLength();
 }
+
 
 float
 Pad1D::InnerTextBottom() const
 {
-  return GetBottomMargin() + 1.5 * Xaxis().GetTickLength();
+  return GetBottomMargin()+1.5 * Xaxis().GetTickLength();
 }
+
 
 float
 Pad1D::InnerTextVCenter() const
 {
-  return ( InnerTextTop() + InnerTextBottom() ) /2;
+  return ( InnerTextTop()+InnerTextBottom() ) / 2;
 }
+
+
 /** @} */
 
 /**
@@ -68,16 +77,16 @@ Pad1D::InnerTextVCenter() const
  * Also returns a reference to the line generated.
  */
 TLine&
-Pad1D::DrawHLine(
-  const double&                 y,
-  const std::vector<RooCmdArg>& arglist  )
+Pad1D::DrawHLine( const double&                 y,
+                  const std::vector<RooCmdArg>& arglist  )
 {
   RooArgContainer args( arglist );
-  TLine& line = MakeObj<TLine>( GetXaxisMin(), y, GetXaxisMax(), y );
+  TLine&          line = MakeObj<TLine>( GetXaxisMin(), y, GetXaxisMax(), y );
   SetLineAttr( line, args );
   PadBase::PlotObj( line );
   return line;
 }
+
 
 /**
  * @brief Drawing vertical line
@@ -87,19 +96,21 @@ Pad1D::DrawHLine(
  * Also return a reference to the line generated.
  */
 TLine&
-Pad1D::DrawVLine(
-  const double&                 x,
-  const std::vector<RooCmdArg>& arglist )
+Pad1D::DrawVLine( const double&                 x,
+                  const std::vector<RooCmdArg>& arglist )
 {
   RooArgContainer args( arglist );
-  TLine& line = MakeObj<TLine>(
-    x, Yaxis().GetXmin(),
-    x, Yaxis().GetXmax() );
+  TLine&          line = MakeObj<TLine>(
+    x,
+    Yaxis().GetXmin(),
+    x,
+    Yaxis().GetXmax() );
   SetLineAttr( line, args );
   PadBase::PlotObj( line );
   _linelist.push_back( &line );
   return line;
 }
+
 
 /**
  * @brief Drawing CMS label
@@ -121,9 +132,10 @@ Pad1D::DrawCMSLabel( const std::string& tag, const std::string& main )
   SetTextCursor( InnerTextLeft(), InnerTextTop(), font::top_left );
   WriteLine( "#bf{"+main+"}", TextSize( Font().large() ) );
   if( tag != "" ){
-    WriteLine( "#it{" + tag + "}", TextSize( Font().large() ) );
+    WriteLine( "#it{"+tag+"}", TextSize( Font().large() ) );
   }
 }
+
 
 /**
  * @brief Drawing luminosity label.
@@ -137,13 +149,14 @@ Pad1D::DrawCMSLabel( const std::string& tag, const std::string& main )
 void
 Pad1D::DrawLuminosity( const std::string& x )
 {
-  const float ymargin = 0.3*Xaxis().GetTickLength();
-  const float cursorx = 1 - GetRightMargin();
-  const float cursory = 1 - GetTopMargin() + ymargin;
+  const float ymargin = 0.3 * Xaxis().GetTickLength();
+  const float cursorx = 1-GetRightMargin();
+  const float cursory = 1-GetTopMargin()+ymargin;
 
   SetTextCursor( cursorx, cursory, font::bottom_right );
   WriteLine( x );
 }
+
 
 /**
  * @brief Drawing luminosity label.
@@ -157,6 +170,7 @@ Pad1D::DrawLuminosity( const double lumi )
 {
   DrawLuminosity( usr::fstr( "%.1f fb^{-1} (13 TeV)", lumi ) );
 }
+
 
 /**
  * @brief Resetting the vertical lines according to the data plotted on the pad

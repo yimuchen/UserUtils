@@ -19,7 +19,8 @@
 #include <boost/format.hpp>
 #include <memory>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief Helper structure for expressing a 1D data set (RooDataSet) simply
@@ -41,8 +42,8 @@ namespace usr {
 struct SimplifiedData
 {
   typedef std::pair<double, double> Evt;
-  double           sum;   /**< @brief Sum of weights */
-  double           sumsq; /**< @brief Sum of squared weights */
+  double sum;             /**< @brief Sum of weights */
+  double sumsq;           /**< @brief Sum of squared weights */
   std::vector<Evt> dataset;
 
   inline static bool
@@ -50,13 +51,10 @@ struct SimplifiedData
   { return x.first < y.first; }
 
   double EffectiveNum() const;
-
-  SimplifiedData(
-    RooDataSet&      data,
-    RooRealVar&      x,
-    const RooCmdArg& cut1,
-    const RooCmdArg& cut2
-    );
+  SimplifiedData( RooDataSet&      data,
+                  RooRealVar&      x,
+                  const RooCmdArg& cut1,
+                  const RooCmdArg& cut2 );
 };
 
 /**
@@ -99,10 +97,10 @@ struct SimplifiedData
  */
 struct SimplifiedCDF
 {
-  std::unique_ptr<RooAbsReal>             rawcdf;
-  RooRealVar&                             var;
+  std::unique_ptr<RooAbsReal> rawcdf;
+  RooRealVar& var;
   std::vector<std::pair<double, double> > rangelist;
-  double                                  norm;
+  double norm;
 
   double operator()( const double x );
   double rawval( const double x );
@@ -111,13 +109,10 @@ struct SimplifiedCDF
   min( unsigned x ){ return rangelist.at( x ).first; }
   inline double
   max( unsigned x ){ return rangelist.at( x ).second; }
-
-  SimplifiedCDF(
-    RooAbsPdf&       pdf,
-    RooRealVar&      x,
-    const RooCmdArg& cut1,
-    const RooCmdArg& cut2
-    );
+  SimplifiedCDF( RooAbsPdf&       pdf,
+                 RooRealVar&      x,
+                 const RooCmdArg& cut1,
+                 const RooCmdArg& cut2 );
   void AddRange( const RooCmdArg& cmd );
 };
 
@@ -136,16 +131,14 @@ bool CheckCutCmd( const RooCmdArg& cmd, RooRealVar& x );
  *    the cumulative PDF is handled, see the helper class SimplifiedCDF.
  */
 double
-KSDistance(
-  RooDataSet&      dataset,
-  RooAbsPdf&       pdf,
-  RooRealVar&      var,
-  const RooCmdArg& cut1,
-  const RooCmdArg& cut2
-  )
+KSDistance( RooDataSet&      dataset,
+            RooAbsPdf&       pdf,
+            RooRealVar&      var,
+            const RooCmdArg& cut1,
+            const RooCmdArg& cut2 )
 {
   SimplifiedData sim( dataset, var, cut1, cut2 );
-  SimplifiedCDF cdf( pdf, var, cut1, cut2 );
+  SimplifiedCDF  cdf( pdf, var, cut1, cut2 );
 
   double empcdf  = 0;
   double maxdist = 0;
@@ -156,11 +149,12 @@ KSDistance(
     const double val = evt.first;
     const double wgt = evt.second;
     empcdf += wgt;
-    maxdist = std::max( maxdist, fabs( cdf( val ) - ( empcdf/sim.sum ) ) );
+    maxdist = std::max( maxdist, fabs( cdf( val )-( empcdf / sim.sum ) ) );
   }
 
   return sqrt( sim.EffectiveNum() ) * maxdist;
 }
+
 
 /**
  * @brief Returning the corresponding KS probability after calculating the KS
@@ -170,17 +164,16 @@ KSDistance(
  * TMath::KolmogorovProb() function, will not attempt to recreate.
  */
 double
-KSProb(
-  RooDataSet&      dataset,
-  RooAbsPdf&       pdf,
-  RooRealVar&      var,
-  const RooCmdArg& cut1,
-  const RooCmdArg& cut2
-  )
+KSProb( RooDataSet&      dataset,
+        RooAbsPdf&       pdf,
+        RooRealVar&      var,
+        const RooCmdArg& cut1,
+        const RooCmdArg& cut2 )
 {
   const double dist = KSDistance( dataset, pdf, var, cut1, cut2 );
   return TMath::KolmogorovProb( dist );
 }
+
 
 /**
  * @brief Calculating the Kolmogorov-Smirnov distance between two data sets.
@@ -192,13 +185,11 @@ KSProb(
  * class SimplifiedData.
  */
 double
-KSDistance(
-  RooDataSet&      set1,
-  RooDataSet&      set2,
-  RooRealVar&      var,
-  const RooCmdArg& cut1,
-  const RooCmdArg& cut2
-  )
+KSDistance( RooDataSet&      set1,
+            RooDataSet&      set2,
+            RooRealVar&      var,
+            const RooCmdArg& cut1,
+            const RooCmdArg& cut2 )
 {
   SimplifiedData sim1( set1, var, cut1, cut2 );
   SimplifiedData sim2( set2, var, cut1, cut2 );
@@ -229,14 +220,16 @@ KSDistance(
       }
     }
     maxdist = TMath::Max( maxdist,
-      fabs( ( empcdf1/sim1.sum ) - ( empcdf2/sim2.sum ) ) );
+                          fabs( ( empcdf1 / sim1.sum )
+                                -( empcdf2 / sim2.sum ) ) );
   }
 
   const double num1 = std::max( sim1.EffectiveNum(), sim2.EffectiveNum() );
   const double num2 = std::min( sim1.EffectiveNum(), sim2.EffectiveNum() );
-  return maxdist * sqrt( ( num1/( num1 + num2 ) )*num2 );
+  return maxdist * sqrt( ( num1 / ( num1+num2 ) ) * num2 );
 
 }
+
 
 /**
  * @brief Returning the KS probability of two data sets
@@ -244,30 +237,31 @@ KSDistance(
  * to the TMath::KolmogorovProb() functions.
  */
 double
-KSProb(
-  RooDataSet&      set1,
-  RooDataSet&      set2,
-  RooRealVar&      var,
-  const RooCmdArg& cut1,
-  const RooCmdArg& cut2 )
+KSProb( RooDataSet&      set1,
+        RooDataSet&      set2,
+        RooRealVar&      var,
+        const RooCmdArg& cut1,
+        const RooCmdArg& cut2 )
 {
   const double dist = KSDistance( set1, set2, var, cut1, cut2 );
   return TMath::KolmogorovProb( dist );
 }
 
+
 /**
  * @brief An alternative, effective p-value of the KS test for two data set.
  * @details the alternative calculation is described in
-  [this]( https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test) page.
-  Hard limiting the calculation output to 1 for a more "sane" output value
+   [this](
+    *https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test)
+    *page.
+   Hard limiting the calculation output to 1 for a more "sane" output value
  */
 double
-KSProbAlt(
-  RooDataSet&      set1,
-  RooDataSet&      set2,
-  RooRealVar&      var,
-  const RooCmdArg& cut1,
-  const RooCmdArg& cut2 )
+KSProbAlt( RooDataSet&      set1,
+           RooDataSet&      set2,
+           RooRealVar&      var,
+           const RooCmdArg& cut1,
+           const RooCmdArg& cut2 )
 {
   const double dist = KSDistance( set1, set2, var, cut1, cut2 );
 
@@ -275,21 +269,21 @@ KSProbAlt(
   return std::min( exp( -2. * dist * dist ) * 2., 1. );
 }
 
+
 /*-----------------------------------------------------------------------------
  *  SimplifiedData function implementations
    --------------------------------------------------------------------------*/
-SimplifiedData::SimplifiedData(
-  RooDataSet&      data,
-  RooRealVar&      x,
-  const RooCmdArg& cut1,
-  const RooCmdArg& cut2 ) :
-  sum( 0 ),
+SimplifiedData::SimplifiedData( RooDataSet&      data,
+                                RooRealVar&      x,
+                                const RooCmdArg& cut1,
+                                const RooCmdArg& cut2 ) :
+  sum  ( 0 ),
   sumsq( 0 )
 {
   RooDataSet* op_set  = 0;
   RooDataSet* tmp_set = 0;
   if( !CheckCutCmd( cut1, x ) && !CheckCutCmd( cut2, x ) ){
-    op_set = (RooDataSet*)( data.reduce( RooFit::SelectVars(x) ));
+    op_set = (RooDataSet*)( data.reduce( RooFit::SelectVars( x ) ));
   } else if( CheckCutCmd( cut1, x ) && !CheckCutCmd( cut2, x ) ){
     op_set = (RooDataSet*)( data.reduce( RooFit::SelectVars( x ), cut1 ) );
   } else if( CheckCutCmd( cut2, x ) && !CheckCutCmd( cut1, x ) ){
@@ -312,7 +306,7 @@ SimplifiedData::SimplifiedData(
     } else {
       dataset.push_back( std::pair<double, double>( d, w ) );
       sum   += w;
-      sumsq += w*w;
+      sumsq += w * w;
     }
   }
 
@@ -321,6 +315,7 @@ SimplifiedData::SimplifiedData(
 
   std::sort( dataset.begin(), dataset.end(), Compare );
 }
+
 
 /*----------------------------------------------------------------------------*/
 
@@ -336,16 +331,16 @@ SimplifiedData::EffectiveNum() const
   }
 }
 
+
 /*-----------------------------------------------------------------------------
  *  SimplifiedCDF implementations
    --------------------------------------------------------------------------*/
-SimplifiedCDF::SimplifiedCDF(
-  RooAbsPdf&       pdf,
-  RooRealVar&      x,
-  const RooCmdArg& cut1,
-  const RooCmdArg& cut2 ) :
+SimplifiedCDF::SimplifiedCDF( RooAbsPdf&       pdf,
+                              RooRealVar&      x,
+                              const RooCmdArg& cut1,
+                              const RooCmdArg& cut2 ) :
   rawcdf( pdf.createCdf( RooArgSet( x ) ) ),
-  var( x )
+  var   ( x )
 {
   if( CheckCutCmd( cut1, var ) ){ AddRange( cut1 ); }
   if( CheckCutCmd( cut2, var ) ){ AddRange( cut2 ); }
@@ -361,20 +356,21 @@ SimplifiedCDF::SimplifiedCDF(
     // reducing the second range if overlaps
     if( max( 0 ) >= min( 1 ) ){
       rangelist.at( 0 ).second = rangelist.at( 1 ).second;
-      rangelist.erase( rangelist.begin() + 1 );
+      rangelist.erase( rangelist.begin()+1 );
     }
   }
 
   // Saving normalization denominator
   if( rangelist.size() == 0 ){
-    norm = rawval( var.getMax() )  - rawval( var.getMin() );// Should be 1
+    norm = rawval( var.getMax() )-rawval( var.getMin() );   // Should be 1
   } else if( rangelist.size() == 1 ){
-    norm = rawval( max( 0 ) ) - rawval( min( 0 ) );
+    norm = rawval( max( 0 ) )-rawval( min( 0 ) );
   } else {
-    norm = ( rawval( max( 0 ) ) - rawval( min( 0 ) ) )
-           + ( rawval( max( 1 ) ) - rawval( min( 1 ) ) );
+    norm = ( rawval( max( 0 ) )-rawval( min( 0 ) ) )
+           +( rawval( max( 1 ) )-rawval( min( 1 ) ) );
   }
 }
+
 
 /**
  * @brief Returning the effective CDF value with the cut ranges taken into
@@ -388,20 +384,22 @@ SimplifiedCDF::operator()( const double x )
     return ans;
   } else if( rangelist.size() == 1 ){
     if( min( 0 ) < x && x < max( 0 ) ){
-      return ( ans - rawval( min( 0 ) ) )/norm;
+      return ( ans-rawval( min( 0 ) ) ) / norm;
     } else {
       return ans;
     }
   } else {
     if( min( 0 ) < x && x < max( 0 ) ){
-      return ( ans - rawval( min( 0 ) ) )/norm;
+      return ( ans-rawval( min( 0 ) ) ) / norm;
     } else if( min( 1 ) < x && x < max( 1 ) ){
-      return ( ans - rawval( min( 1 ) ) + ( rawval( max( 0 ) )-rawval( min( 0 ) ) ) )/norm;
+      return ( ans-rawval( min( 1 ) )
+               +( rawval( max( 0 ) )-rawval( min( 0 ) ) ) ) / norm;
     } else {
       return ans;
     }
   }
 }
+
 
 /**
  * @brief returning the raw CDF functions value as constructed by RooFit.
@@ -413,16 +411,17 @@ SimplifiedCDF::rawval( const double x )
   return rawcdf->getVal();
 }
 
+
 /*----------------------------------------------------------------------------*/
 
 void
 SimplifiedCDF::AddRange( const RooCmdArg& cmd )
 {
   rangelist.push_back( std::pair<double, double>(
-    var.getMin( cmd.getString( 0 ) ),
-    var.getMax( cmd.getString( 0 ) ) )
-    );
+                         var.getMin( cmd.getString( 0 ) ),
+                         var.getMax( cmd.getString( 0 ) ) ));
 }
+
 
 /*----------------------------------------------------------------------------*/
 
@@ -436,6 +435,5 @@ CheckCutCmd( const RooCmdArg& cmd, RooRealVar& var )
   }
   return true;
 }
-
 
 }/* usr */

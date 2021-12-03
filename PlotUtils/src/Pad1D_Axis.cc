@@ -4,21 +4,23 @@
  * @author  [Yi-Mu "Enoch" Chen](https://github.com/yimuchen)
  */
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/Format.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Pad1D.hpp"
 #else
-#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/Format.hpp"
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * A static constant for getting defining something as not-found
@@ -31,7 +33,9 @@ static double unfound = std::numeric_limits<double>::quiet_NaN();
  * Getting the pointer to the TObject responsible for drawing the axis.
  * Based on how the Various Draw functions works, this will be the first object
  * on the TPad that is either a TH1 or a TGraph. The code for iterating through
- * the objects in the pad is copied from the  [TPad::RedrawAxis()](https://root.cern.ch/doc/master/TPad_8cxx_source.html#l05243) code.
+ * the objects in the pad is copied from the
+ * [TPad::RedrawAxis()](https://root.cern.ch/doc/master/TPad_8cxx_source.html#l05243)
+ *code.
  */
 TObject*
 Pad1D::GetAxisObject() const
@@ -46,6 +50,7 @@ Pad1D::GetAxisObject() const
 
   return nullptr;
 }
+
 
 /**
  * @brief Setting the axis fonts according to canvas settings.
@@ -241,7 +246,7 @@ Pad1D::AutoSetYRange( const rangetype type )
       if( ( obj->InheritsFrom( TH1::Class() )
             && ( (TH1*)obj )->GetXaxis() != _frame.GetXaxis() )
           || ( obj->InheritsFrom( THStack::Class() ) )
-           ){
+          ){
         optype = rangetype::hist;
         break;
       } else if( obj->InheritsFrom( TGraph::Class() ) ){
@@ -258,11 +263,11 @@ Pad1D::AutoSetYRange( const rangetype type )
     AutoSetYRangePull();
   } else if( optype == rangetype::ratio ){
     AutoSetYRangeRatio();
-  } else {
-  }
+  } else {}
 
   _prevrangetype = optype;
 }
+
 
 /**
  * @brief Y range setting optimized for histogram data presentation.
@@ -279,8 +284,8 @@ void
 Pad1D::AutoSetYRangeHist()
 {
   if( !_pad->GetLogy() ){// None log scale
-    const double diff = _datamax - _datamin;
-    SetYaxisMax( _datamin + diff * 1.25 );
+    const double diff = _datamax-_datamin;
+    SetYaxisMax( _datamin+diff * 1.25 );
     SetYaxisMin( _datamin * 0.9 );
   } else {
     const double opmin = _datamin <= 0 ? 1e-6 : _datamin * 0.9;
@@ -289,6 +294,7 @@ Pad1D::AutoSetYRangeHist()
     SetYaxisMin( opmin );
   }
 }
+
 
 /**
  * @brief Y axis range setting optimized for scatter data presentation.
@@ -302,17 +308,18 @@ void
 Pad1D::AutoSetYRangeGraph()
 {
   if( !_pad->GetLogy() ){// None log scale
-    const double diff = _datamax - _datamin;
-    SetYaxisMax( _datamin + diff * 1.2 );
-    SetYaxisMin( _datamax - diff * 1.1 );
+    const double diff = _datamax-_datamin;
+    SetYaxisMax( _datamin+diff * 1.2 );
+    SetYaxisMin( _datamax-diff * 1.1 );
   } else {
     const double opmin = _datamin <= 0 ? 1e-6 : _datamin;
     const double diff  = std::log10( _datamax / opmin );
     SetYaxisMax( opmin * std::pow( 10, diff * 1.2 ) );
-    SetYaxisMin( _datamax / std::pow( 10, diff*1.1 ) );
+    SetYaxisMin( _datamax / std::pow( 10, diff * 1.1 ) );
     // Minium value is a little smaller
   }
 }
+
 
 /**
  * @brief Y axis range setting optimized for data ratio comparison.
@@ -327,12 +334,13 @@ Pad1D::AutoSetYRangeGraph()
 void
 Pad1D::AutoSetYRangeRatio()
 {
-  const double diff = std::min( std::max( _datamax - 1, 1-_datamin ), 1.1 );
+  const double diff = std::min( std::max( _datamax-1, 1-_datamin ), 1.1 );
   // rounding to the closest .1 to avoid weird axis tick labels
-  const double opdiff = std::ceil( diff * 10 ) /10.;
-  SetYaxisMax( 1 + opdiff *1.05 );
-  SetYaxisMin( 1 - opdiff *1.05 );
+  const double opdiff = std::ceil( diff * 10 ) / 10.;
+  SetYaxisMax( 1+opdiff * 1.05 );
+  SetYaxisMin( 1-opdiff * 1.05 );
 }
+
 
 /**
  * @brief Y axis range setting optimized for pull results comparison.
@@ -349,10 +357,11 @@ Pad1D::AutoSetYRangePull()
 {
   const double diff = std::min( std::max( _datamax, -_datamin ), 5.0 );
   // rounding to the closest .1 to avoid weird axis tick labels
-  const double opdiff = std::ceil( diff * 10 ) /10.;
-  SetYaxisMax( 1 + opdiff *1.1 );
-  SetYaxisMin( 1 - opdiff *1.1 );
+  const double opdiff = std::ceil( diff * 10 ) / 10.;
+  SetYaxisMax( 1+opdiff * 1.1 );
+  SetYaxisMin( 1-opdiff * 1.1 );
 }
+
 
 /**
  * @brief setting axis title according to given unit.
@@ -363,17 +372,16 @@ Pad1D::AutoSetYRangePull()
  * the choice of using the square braces is arbitrary.
  */
 void
-Pad1D::SetAxisTitle(
-  TAxis&             axis,
-  const std::string& title,
-  const std::string& unit
-  )
+Pad1D::SetAxisTitle( TAxis&             axis,
+                     const std::string& title,
+                     const std::string& unit )
 {
   const std::string optitle =
-    unit == "" ? title : title + " [" + boost::trim_copy( unit ) +  "]";
+    unit == "" ? title : title+" ["+boost::trim_copy( unit )+"]";
 
   axis.SetTitle( optitle.c_str() );
 }
+
 
 /**
  * @brief Naming x-y axis according to x axis unit and bin-width
@@ -391,11 +399,10 @@ Pad1D::SetAxisTitle(
  * as it makes reading the diagram difficult.
  */
 void
-Pad1D::SetHistAxisTitles(
-  const std::string& title,
-  const std::string& unit,
-  const std::string& ytitle,
-  const double       forcebinwidth )
+Pad1D::SetHistAxisTitles( const std::string& title,
+                          const std::string& unit,
+                          const std::string& ytitle,
+                          const double       forcebinwidth )
 {
   if( !GetAxisObject() ){
     log::PrintLog( log::ERROR, "ERROR! Axis object not created" );
@@ -423,6 +430,7 @@ Pad1D::SetHistAxisTitles(
   SetAxisTitle( Yaxis(), ytitle_string );
 }
 
+
 /**
  * @brief static flag for bin-width determination.
  */
@@ -432,7 +440,6 @@ const double Pad1D::autobinwidth = -1;
  * @brief static flag for forcing the variable bin-width scheme.
  */
 const double Pad1D::forcevarbinwidth = 0;
-
 
 }/* plt  */
 

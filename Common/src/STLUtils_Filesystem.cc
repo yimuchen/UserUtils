@@ -17,13 +17,14 @@
 #include <glob.h>
 #include <iostream>
 
-namespace usr  {
+namespace usr
+{
 
 /**
  * @brief returning path to the CMSSW/src directory.
  */
 fs::path
-cmssw_src(){ return GetEnv( "CMSSW_BASE" ) + "/src/";  }
+cmssw_src(){ return GetEnv( "CMSSW_BASE" )+"/src/";  }
 
 /**
  * @brief returning path to a main package directory.
@@ -34,14 +35,16 @@ pkgpath( const std::string& x )
   return cmssw_src() / fs::path( x );
 }
 
+
 /**
  * @brief returning path to a sub-package directory
  */
 fs::path
 subpkgpath( const std::string& x, const std::string& y )
 {
-  return pkgpath( x )/fs::path( y );
+  return pkgpath( x ) / fs::path( y );
 }
+
 
 /**
  * @brief returning path to the data directory of a sub-package.
@@ -49,8 +52,9 @@ subpkgpath( const std::string& x, const std::string& y )
 fs::path
 datapath( const std::string& x, const std::string& y )
 {
-  return subpkgpath( x, y )/fs::path( "data" );
+  return subpkgpath( x, y ) / fs::path( "data" );
 }
+
 
 /**
  * @brief returning path to the results directory of a sub-package (unofficial)
@@ -58,8 +62,9 @@ datapath( const std::string& x, const std::string& y )
 fs::path
 resultpath( const std::string& x, const std::string& y )
 {
-  return subpkgpath( x, y )/fs::path( "result" );
+  return subpkgpath( x, y ) / fs::path( "result" );
 }
+
 
 /**
  * @brief returning the globbing results of a query string.
@@ -76,8 +81,7 @@ GlobLocal( const std::string& query )
 
   std::vector<fs::path> ans(
     glob_result.gl_pathv,
-    glob_result.gl_pathv + glob_result.gl_pathc
-    );
+    glob_result.gl_pathv+glob_result.gl_pathc );
   globfree( &glob_result );
 
   return ans;
@@ -85,8 +89,8 @@ GlobLocal( const std::string& query )
 
 
 /**
- * @brief Checking if the parent directory of the filepath exists, and attempting
- *        to create if it doesn't exists.
+ * @brief Checking if the parent directory of the filepath exists, and
+ * attempting to create if it doesn't exists.
  *
  * This functions is a few exception of being intentionally noisy when creating
  * the parent directories as this calls system commands and is potentially
@@ -104,7 +108,8 @@ MakeParent( const fs::path& filepath )
     std::cerr << fstr( "New directory [%s] created!", parent ) << std::endl;
     return true;
   } else {
-    std::cerr << fstr( "Failed to create directory [%s]!", parent ) << std::endl;
+    std::cerr <<
+      fstr( "Failed to create directory [%s]!", parent ) << std::endl;
     return false;
   }
 }

@@ -9,7 +9,8 @@
 #include <string>
 #include <thread>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief unix time template functions for helping with the various time units
@@ -20,9 +21,9 @@ inline size_t
 CurrentTimeIn()
 {
   return std::chrono::duration_cast<T>(
-    std::chrono::high_resolution_clock::now().time_since_epoch()
-    ).count();
+    std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 }
+
 
 /**
  * @brief Current unix time in nano seconds.
@@ -33,6 +34,7 @@ CurrentTimeInNanSec()
   return CurrentTimeIn<std::chrono::nanoseconds>();
 }
 
+
 /**
  * @brief current unix time in microseconds
  */
@@ -41,6 +43,7 @@ CurrentTimeInMuSec()
 {
   return CurrentTimeIn<std::chrono::microseconds>();
 }
+
 
 /**
  * @brief Current unix time in milliseconds
@@ -51,6 +54,7 @@ CurrentTimeInMSec()
   return CurrentTimeIn<std::chrono::milliseconds>();
 }
 
+
 /**
  * @brief Current unix time in seconds.
  */
@@ -59,6 +63,7 @@ CurrentTimeInSec()
 {
   return CurrentTimeIn<std::chrono::seconds>();
 }
+
 
 /**
  * @brief Representing the current time as as string.
@@ -71,9 +76,9 @@ std::string
 CurrentTime( const std::string& fmt )
 {
   static const unsigned MAXBUFFER = 80;
-  time_t rawtime;
-  struct tm* timeinfo;
-  char buffer [MAXBUFFER];
+  time_t                rawtime;
+  struct tm*            timeinfo;
+  char                  buffer[MAXBUFFER];
   time( &rawtime );
   timeinfo = localtime( &rawtime );
   strftime( buffer, MAXBUFFER, fmt.c_str(), timeinfo );
@@ -91,6 +96,7 @@ SleepFor( const unsigned x )
   std::this_thread::sleep_for( T( x ) );
 }
 
+
 /**
  * @brief sleeping thread for x microseconds.
  */
@@ -100,6 +106,7 @@ SleepMicroSec( const unsigned x )
   SleepFor<std::chrono::microseconds>( x );
 }
 
+
 /**
  * @brief sleeping thread for x milliseconds.
  */
@@ -108,6 +115,7 @@ SleepMillSec( const unsigned x )
 {
   SleepFor<std::chrono::milliseconds>( x );
 }
+
 
 /**
  * @brief sleeping thread for x seconds.

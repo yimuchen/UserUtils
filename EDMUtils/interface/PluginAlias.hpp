@@ -19,7 +19,8 @@
 
 #include <string>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @class PluginAlias
@@ -40,7 +41,8 @@ public:
    * Like all EDM plugins, this requires a parameterset to initialize. A
    * reference to the parameterset is stored for less verbose parsing.
    */
-  PluginAlias( const edm::ParameterSet& config ) : _config( config ){}
+  PluginAlias( const edm::ParameterSet& config ) :
+    _config( config ){}
   virtual
   ~PluginAlias(){}
 
@@ -61,6 +63,7 @@ protected:
       _config.getParameter<edm::InputTag>( configtag ) );
   }
 
+
   /**
    * @brief Same template function as GetToken() except for getting Run level
    *        objects.
@@ -72,6 +75,7 @@ protected:
     return edm::EDConsumerBase::consumes<TYPE, edm::InRun>(
       _config.getParameter<edm::InputTag>( configtag ) );
   }
+
 
   /**
    * @brief getting a clone of an object described in a file. See static
@@ -94,34 +98,35 @@ protected:
    *        EDM::FileInPath was used.
    */
   static std::string
-  GetFilePath(
-    const edm::ParameterSet& config,
-    const std::string&       filetag )
+  GetFilePath( const edm::ParameterSet& config,
+               const std::string&       filetag )
   {
     return config.getParameter<edm::FileInPath>( filetag ).fullPath();
   }
 
+
   /**
-   * @brief Given a file path in the form of an EDM::FileInPath, and a object key
+   * @brief Given a file path in the form of an EDM::FileInPath, and a object
+   *key
    *        as a parameter set string.
    *
    * This function return a clone to the object stored in a file for analysis
    * use.
    */
   static TObject*
-  GetFileObj(
-    const edm::ParameterSet& config,
-    const std::string&       filetag,
-    const std::string&       objtag )
+  GetFileObj( const edm::ParameterSet& config,
+              const std::string&       filetag,
+              const std::string&       objtag )
   {
     const std::string filename = GetFilePath( config, filetag );
     const std::string objname  = config.getParameter<std::string>( objtag );
-    TFile* file                = TFile::Open( filename.c_str() );
-    TObject* ans               = file->Get( objname.c_str() )->Clone();
+    TFile*            file     = TFile::Open( filename.c_str() );
+    TObject*          ans      = file->Get( objname.c_str() )->Clone();
     // ans->SetDirectory(0); // Detach object from parent directory.
     file->Close();
     return ans;
   }
+
 
 private:
   const edm::ParameterSet& _config;
@@ -131,7 +136,6 @@ typedef PluginAlias<edm::one::EDAnalyzer<edm::one::SharedResources> >
   EDAnalyzer;
 typedef PluginAlias<edm::one::EDFilter<edm::one::SharedResources> >
   EDFilter;
-
 
 }/* usr */
 

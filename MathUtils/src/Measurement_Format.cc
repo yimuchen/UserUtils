@@ -20,7 +20,8 @@
 namespace usr
 {
 
-namespace fmt {
+namespace fmt
+{
 
 /**
  * @brief Re-implementing a double input for common fmt interface
@@ -30,19 +31,20 @@ namespace fmt {
  */
 decimal::decimal( const double input, const int p ) :
   _central( input ),
-  _upper( 0 ),
-  _lower( 0 )
+  _upper  ( 0 ),
+  _lower  ( 0 )
 {
   precision( p );
 }
+
 
 /**
  * @brief normal construction for typical measurements.
  */
 decimal::decimal( const Measurement& input, const int p ) :
   _central( input.CentralValue() ),
-  _upper( input.AbsUpperError() ),
-  _lower( input.AbsLowerError() )
+  _upper  ( input.AbsUpperError() ),
+  _lower  ( input.AbsLowerError() )
 {
   if( p < 0 ){
     SetPrecision();
@@ -50,14 +52,15 @@ decimal::decimal( const Measurement& input, const int p ) :
     precision( p );
   }
 }
+
 
 /**
  * @brief Construct using a RooRealVar status.
  */
 decimal::decimal( const RooRealVar& input, const int p ) :
   _central( input.getVal() ),
-  _upper( fabs( input.getErrorHi() ) ),
-  _lower( fabs( input.getErrorLo() ) )
+  _upper  ( fabs( input.getErrorHi() ) ),
+  _lower  ( fabs( input.getErrorLo() ) )
 {
   if( p < 0 ){
     SetPrecision();
@@ -66,13 +69,14 @@ decimal::decimal( const RooRealVar& input, const int p ) :
   }
 }
 
+
 /**
  * @brief Construct using a RooRealVar status.
  */
 decimal::decimal( const RooRealVar* input, const int p ) :
   _central( input->getVal() ),
-  _upper( fabs( input->getErrorHi() ) ),
-  _lower( fabs( input->getErrorLo() ) )
+  _upper  ( fabs( input->getErrorHi() ) ),
+  _lower  ( fabs( input->getErrorLo() ) )
 {
   if( p < 0 ){
     SetPrecision();
@@ -80,6 +84,7 @@ decimal::decimal( const RooRealVar* input, const int p ) :
     precision( p );
   }
 }
+
 
 /**
  * @brief main operation for creating a latex string.
@@ -107,6 +112,7 @@ decimal::str() const
   }
 }
 
+
 /**
  * @brief Base precision overloaded to allow for autoamtic precision setting
  *        with negative settings.
@@ -122,6 +128,7 @@ decimal::precision( const int p )
   return *this;
 }
 
+
 /**
  * @brief automatic precision setting for the decimal representation.
  * @details The precision is set such that the larger uncertain would display
@@ -132,13 +139,14 @@ void
 decimal::SetPrecision()
 {
   const double op_unc = std::max( _upper, _lower );
-  const int exp       = GetExponent( op_unc );
+  const int    exp    = GetExponent( op_unc );
   if( exp > 0 ){
     _precision = 0;
   } else {
     _precision = -exp+1;
   }
 }
+
 
 /*-----------------------------------------------------------------------------
  *  Scientific notation implementation functions
@@ -153,22 +161,23 @@ decimal::SetPrecision()
  */
 scientific::scientific( const double input, const unsigned p ) :
   _central( input ),
-  _upper( 0 ),
-  _lower( 0 ),
-  _exp( 0 )
+  _upper  ( 0 ),
+  _lower  ( 0 ),
+  _exp    ( 0 )
 {
   precision( p );
   SetExponent();
 }
+
 
 /**
  * @brief simple construction with a measurement with uncertainties.
  */
 scientific::scientific( const Measurement& input, const int p ) :
   _central( input.CentralValue() ),
-  _upper( input.AbsUpperError() ),
-  _lower( input.AbsLowerError() ),
-  _exp( 0 )
+  _upper  ( input.AbsUpperError() ),
+  _lower  ( input.AbsLowerError() ),
+  _exp    ( 0 )
 {
   SetExponent();
   if( p < 0 ){
@@ -177,15 +186,16 @@ scientific::scientific( const Measurement& input, const int p ) :
     precision( p );
   }
 }
+
 
 /**
  * @brief Construct using a RooRealVar instance
  */
 scientific::scientific( const RooRealVar& input, const int p ) :
   _central( input.getVal() ),
-  _upper( fabs( input.getErrorHi() ) ),
-  _lower( fabs( input.getErrorLo() ) ),
-  _exp( 0 )
+  _upper  ( fabs( input.getErrorHi() ) ),
+  _lower  ( fabs( input.getErrorLo() ) ),
+  _exp    ( 0 )
 {
   SetExponent();
   if( p < 0 ){
@@ -195,14 +205,15 @@ scientific::scientific( const RooRealVar& input, const int p ) :
   }
 }
 
+
 /**
  * @brief Construct using a RooRealVar instance
  */
 scientific::scientific( const RooRealVar* input, const int p ) :
   _central( input->getVal() ),
-  _upper( fabs( input->getErrorHi() ) ),
-  _lower( fabs( input->getErrorLo() ) ),
-  _exp( 0 )
+  _upper  ( fabs( input->getErrorHi() ) ),
+  _lower  ( fabs( input->getErrorLo() ) ),
+  _exp    ( 0 )
 {
   SetExponent();
   if( p < 0 ){
@@ -211,6 +222,7 @@ scientific::scientific( const RooRealVar* input, const int p ) :
     precision( p );
   }
 }
+
 
 /**
  * @brief implementing the virtual function.
@@ -231,11 +243,14 @@ scientific::str() const
 
   const std::string ans =
     ( _exp == 0 )               ? base :
-    ( up == lo && _upper != 0 ) ? usr::fstr( "(%s)\\times10^{%d}", base, _exp ) :
+    ( up == lo && _upper != 0 ) ? usr::fstr( "(%s)\\times10^{%d}",
+                                             base,
+                                             _exp ) :
     usr::fstr( "%s\\times10^{%d}", base, _exp );
 
   return ans;
 }
+
 
 /**
  * @brief overloading base implementation to allow for precision autodetection
@@ -251,6 +266,7 @@ scientific::precision( const int i )
   }
   return *this;
 }
+
 
 /**
  * @brief reducing/magnifying the central value and uncertainties by a common
@@ -277,6 +293,7 @@ scientific::SetExponent()
     _lower   /= IntPower( 10, _exp );
   }
 }
+
 
 /**
  * @brief automatically determining the precision to use.
@@ -333,6 +350,7 @@ ExceptJSONEntry<Measurement>( const JSONMap&     map,
   ExceptJSONList( map, index );
 }
 
+
 template<>
 Measurement
 JSONEntry<Measurement>( const JSONMap&     map,
@@ -350,6 +368,7 @@ JSONEntry<Measurement>( const JSONMap&     map,
   }
 }
 
+
 template<>
 Measurement
 JSONEntry<Measurement>( const JSONMap&     map,
@@ -362,6 +381,5 @@ JSONEntry<Measurement>( const JSONMap&     map,
     return def;
   }
 }
-
 
 }/* usr */

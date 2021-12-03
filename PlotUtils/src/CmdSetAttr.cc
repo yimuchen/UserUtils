@@ -33,6 +33,7 @@ SetTextAttr( TAttText&                   obj,
   }
 }
 
+
 extern void
 SetLineAttr( TAttLine&                   obj,
              const usr::RooArgContainer& args  )
@@ -51,6 +52,7 @@ SetLineAttr( TAttLine&                   obj,
   }
 }
 
+
 extern void
 SetFillAttr( TAttFill&                   obj,
              const usr::RooArgContainer& args  )
@@ -64,6 +66,7 @@ SetFillAttr( TAttFill&                   obj,
     obj.SetFillStyle( args.Get( "FillStyle" ).getInt( 0 ) );
   }
 }
+
 
 extern void
 SetMarkAttr( TAttMarker&                 obj,
@@ -82,6 +85,8 @@ SetMarkAttr( TAttMarker&                 obj,
     obj.SetMarkerSize( args.Get( "MarkerSize" ).getDouble( 0 ) );
   }
 }
+
+
 extern void
 CopyTextAttrTo( const TAttText& source,
                 TAttText&       target )
@@ -92,6 +97,7 @@ CopyTextAttrTo( const TAttText& source,
   target.SetTextAlign( source.GetTextAlign() );
 }
 
+
 extern void
 CopyLineAttrTo( const TAttLine& source,
                 TAttLine&       target )
@@ -101,6 +107,7 @@ CopyLineAttrTo( const TAttLine& source,
   target.SetLineWidth( source.GetLineWidth() );
 }
 
+
 extern void
 CopyFillAttrTo( const TAttFill& source,
                 TAttFill&       target )
@@ -108,6 +115,7 @@ CopyFillAttrTo( const TAttFill& source,
   target.SetFillColor( source.GetFillColor() ); // alpha handled
   target.SetFillStyle( source.GetFillStyle() );
 }
+
 
 extern void
 CopyMarkAttrTo( const TAttMarker& source,

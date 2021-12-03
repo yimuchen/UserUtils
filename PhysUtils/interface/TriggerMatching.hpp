@@ -24,8 +24,8 @@
 
 #include "TLorentzVector.h"
 
-namespace usr {
-
+namespace usr
+{
 
 /**
  * @defgroup triggermatching Trigger Matching
@@ -40,8 +40,7 @@ extern bool HasTriggerMatch(
   const std::string&                            reqtrigger,
   const std::string&                            reqlabel,
   const edm::TriggerNames&                      trgnames,
-  const double                                  mindelta_r = 0.1
-  );
+  const double                                  mindelta_r = 0.1 );
 
 extern TLorentzVector TriggerMatchP4(
   const reco::Candidate&                        recoobj,
@@ -49,8 +48,7 @@ extern TLorentzVector TriggerMatchP4(
   const std::string&                            reqtrigger,
   const std::string&                            reqlabel,
   const edm::TriggerNames&                      trgnames,
-  const double                                  mindelta_r = 0.1
-  );
+  const double                                  mindelta_r = 0.1 );
 
 
 extern pat::TriggerObjectStandAloneCollection::const_iterator MatchTrgObj(
@@ -59,14 +57,11 @@ extern pat::TriggerObjectStandAloneCollection::const_iterator MatchTrgObj(
   const std::string&                            reqtrigger,
   const std::string&                            reqfilter,
   const edm::TriggerNames&                      trgnames,
-  const double                                  mindelta_r = 0.1
-  );
+  const double                                  mindelta_r = 0.1 );
 
-extern bool TrigObjMatchPathFilter(
-  const pat::TriggerObjectStandAlone& obj,
-  const std::string&                  path,
-  const std::string&                  filter
-  );
+extern bool TrigObjMatchPathFilter( const pat::TriggerObjectStandAlone& obj,
+                                    const std::string&                  path,
+                                    const std::string&                  filter );
 
 /** @} */
 

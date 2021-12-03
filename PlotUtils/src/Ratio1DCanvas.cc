@@ -11,9 +11,11 @@
 
 #include "CmdSetAttr.hpp"
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @class PadRatio
@@ -40,9 +42,9 @@ float PadRatio::default_gap = 0.005;
  * 0.45 times the full textwidth to be exact), with the top pad remaining
  * having a square frame. And a font size of 8.
  */
-length_t Ratio1DCanvas::default_width = 0.45*len::a4textwidth_default();
+length_t Ratio1DCanvas::default_width = 0.45 * len::a4textwidth_default();
 length_t Ratio1DCanvas::default_height
-  = ( 5./4. )*0.45*len::a4textwidth_default();
+  = ( 5. / 4. ) * 0.45 * len::a4textwidth_default();
 FontSet Ratio1DCanvas::default_font = FontSet( 8 );
 /** @} */
 
@@ -50,29 +52,28 @@ FontSet Ratio1DCanvas::default_font = FontSet( 8 );
  * @brief Construct a Ratio1DCanvas without specific @ROOT{RooRealVar} to
  * define x axis of both pads.
  */
-Ratio1DCanvas::Ratio1DCanvas(
-  const length_t  width,
-  const length_t  height,
-  const PadRatio& pad,
-  const FontSet&  set
-  ) : Canvas( width, height, set )
+Ratio1DCanvas::Ratio1DCanvas( const length_t  width,
+                              const length_t  height,
+                              const PadRatio& pad,
+                              const FontSet&  set ) :
+  Canvas( width, height, set )
 {
   Add<Top1DPad>(    PadSize( 0, _splitNDC( pad.ratio ), 1, 1 ) );
   Add<Bottom1DPad>( PadSize( 0, 0, 1, _splitNDC( pad.ratio ) ) );
   _init_margin( pad.gap );
 }
 
+
 /**
  * @brief Construct a Ratio1DCanvas with specific @ROOT{RooRealVar} to define x
  * axis of both pads.
  */
-Ratio1DCanvas::Ratio1DCanvas(
-  const RangeByVar& range,
-  const length_t    width,
-  const length_t    height,
-  const PadRatio&   pad,
-  const FontSet&    set
-  ) : Canvas( width, height, set )
+Ratio1DCanvas::Ratio1DCanvas( const RangeByVar& range,
+                              const length_t    width,
+                              const length_t    height,
+                              const PadRatio&   pad,
+                              const FontSet&    set ) :
+  Canvas( width, height, set )
 {
   Add<Top1DPad>(    PadSize( 0, _splitNDC( pad.ratio ), 1, 1 ), range );
   Add<Bottom1DPad>( PadSize( 0, 0, 1, _splitNDC( pad.ratio ) ), range );
@@ -80,6 +81,7 @@ Ratio1DCanvas::Ratio1DCanvas(
   TopPad().SetAxisFont();
   BottomPad().SetAxisFont();
 }
+
 
 Ratio1DCanvas::~Ratio1DCanvas(){}
 
@@ -90,9 +92,10 @@ Ratio1DCanvas::~Ratio1DCanvas(){}
 float
 Ratio1DCanvas::_splitNDC( const float x ) const
 {
-  return ( 1-3.5*Font().lineheight()/Height() )/( x+1. )
-         + 3.*Font().lineheight()/Height();
+  return ( 1-3.5 * Font().lineheight() / Height() ) / ( x+1. )
+         +3. * Font().lineheight() / Height();
 }
+
 
 /**
  * @brief Initialization the margins of the two pads.
@@ -102,20 +105,21 @@ Ratio1DCanvas::_splitNDC( const float x ) const
 void
 Ratio1DCanvas::_init_margin( const float gap )
 {
-  SetTopMargin( 1.5*Font().lineheight()/Height() );
-  SetLeftMargin( 3.5*Font().lineheight()/Width() );
-  SetBottomMargin( 2.0*Font().lineheight()/Height() );
+  SetTopMargin( 1.5 * Font().lineheight() / Height() );
+  SetLeftMargin( 3.5 * Font().lineheight() / Width() );
+  SetBottomMargin( 2.0 * Font().lineheight() / Height() );
   SetRightMargin(
     std::max(
-      ( 3.5*Font().lineheight()/Height() - ( 3.5*Font().lineheight()/Width() ) )
-            ,
-      ( 0.6*Font().lineheight()/Width() ) )
-    );
+      ( 3.5 * Font().lineheight() / Height()
+        -( 3.5 * Font().lineheight() / Width() ) )
+      ,
+      ( 0.6 * Font().lineheight() / Width() ) ));
 
   // Additional margin setting for gap
   TopPad().SetBottomMargin( 0.5 * gap * Height() / TopPad().AbsHeight() );
   BottomPad().SetTopMargin( 0.5 * gap * Height() / BottomPad().AbsHeight() );
 }
+
 
 /**
  * @{
@@ -129,6 +133,7 @@ Ratio1DCanvas::SetTopMargin( const float x )
   TCanvas_().SetTopMargin( x );
 }
 
+
 void
 Ratio1DCanvas::SetLeftMargin( const float x )
 {
@@ -136,6 +141,7 @@ Ratio1DCanvas::SetLeftMargin( const float x )
   BottomPad().SetLeftMargin( x );
   TCanvas_().SetLeftMargin( x );
 }
+
 
 void
 Ratio1DCanvas::SetRightMargin( const float x )
@@ -145,12 +151,15 @@ Ratio1DCanvas::SetRightMargin( const float x )
   TCanvas_().SetRightMargin( x );
 }
 
+
 void
 Ratio1DCanvas::SetBottomMargin( const float x )
 {
   BottomPad().SetBottomMargin( x * Height() / BottomPad().AbsHeight() );
   TCanvas_().SetBottomMargin( x );
 }
+
+
 /** @} */
 
 /**
@@ -167,6 +176,7 @@ Top1DPad::SetAxisFont()
   Yaxis().SetTitleOffset( 2.0 );
 }
 
+
 /**
  * @brief New font settings for the bottom pad.
  *
@@ -182,6 +192,7 @@ Bottom1DPad::SetAxisFont()
   Yaxis().SetNdivisions( 503 );// Better ticks for axis box
   Yaxis().SetTitleOffset( 2.0 );
 }
+
 
 /**
  * @brief Making the bottom axis object immediately after AxisObject in the top
@@ -208,6 +219,7 @@ Ratio1DCanvas::MakeBottomAxis()
   BottomPad().SetAxisFont();
 }
 
+
 /**
  * @details
  * Given a numerator and denominator histogram, this function generates
@@ -217,10 +229,9 @@ Ratio1DCanvas::MakeBottomAxis()
  * method available.
  */
 TH1D&
-Ratio1DCanvas::PlotScale(
-  const TH1D&                   num,
-  const TH1D&                   den,
-  const std::vector<RooCmdArg>& arglist )
+Ratio1DCanvas::PlotScale( const TH1D&                   num,
+                          const TH1D&                   den,
+                          const std::vector<RooCmdArg>& arglist )
 {
   TH1D* ans = ScaleDivide( &num, &den );
   BottomPad().FrameObj().addObject( ans );
@@ -237,19 +248,19 @@ Ratio1DCanvas::PlotScale(
   return *ans;
 }
 
+
 /**
  * @details
  * Given a numerator histgram and denominator graph, this function generates the
- * scale division results to the histogram/graph (see static method for details);
+ * scale division results to the histogram/graph (see static method for
+ *details);
  * and claims ownership of the newly generated histogram. The new histogram is
  * then plotted on the bottom pad, with additional plotting method available.
  */
 TH1D&
-Ratio1DCanvas::PlotScale(
-  const TH1D&                   num,
-  const TGraph&                 den,
-  const std::vector<RooCmdArg>& arglist
-  )
+Ratio1DCanvas::PlotScale( const TH1D&                   num,
+                          const TGraph&                 den,
+                          const std::vector<RooCmdArg>& arglist )
 {
   // Parsing arguments.
   const RooArgContainer args( arglist, {
@@ -259,8 +270,11 @@ Ratio1DCanvas::PlotScale(
       } );
 
   // Generating the scaled histogram object
-  TH1D* ans = ScaleDivide( &num, &den
-                         , 1.0, args.GetInt( "ExtrapolateInRatio" ) );
+  TH1D* ans = ScaleDivide( &num,
+                           &den
+                           ,
+                           1.0,
+                           args.GetInt( "ExtrapolateInRatio" ) );
 
   // Plotting.
   BottomPad().FrameObj().addObject( ans );
@@ -269,6 +283,7 @@ Ratio1DCanvas::PlotScale(
 
   return *ans;
 }
+
 
 /**
  * @details
@@ -279,10 +294,9 @@ Ratio1DCanvas::PlotScale(
  * method available.
  */
 TGraphAsymmErrors&
-Ratio1DCanvas::PlotScale(
-  const TGraph&                 num,
-  const TGraph&                 den,
-  const std::vector<RooCmdArg>& arglist )
+Ratio1DCanvas::PlotScale( const TGraph&                 num,
+                          const TGraph&                 den,
+                          const std::vector<RooCmdArg>& arglist )
 {
   const RooArgContainer args( arglist, {
         PlotType( plt::simplefunc ),
@@ -291,8 +305,11 @@ Ratio1DCanvas::PlotScale(
       } );
 
   TGraphAsymmErrors* ans
-    = ScaleDivide( &num, &den
-                 , 1.0, args.GetInt( "ExtrapolateInRatio" ) );
+    = ScaleDivide( &num,
+                   &den
+                   ,
+                   1.0,
+                   args.GetInt( "ExtrapolateInRatio" ) );
 
   BottomPad().FrameObj().addObject( ans );
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
@@ -300,6 +317,7 @@ Ratio1DCanvas::PlotScale(
 
   return *ans;
 }
+
 
 /**
  * @details
@@ -309,10 +327,9 @@ Ratio1DCanvas::PlotScale(
  * bottom pad, with additional plotting method available.
  */
 TGraphAsymmErrors&
-Ratio1DCanvas::PlotPull(
-  const TGraph&                 num,
-  const TGraph&                 den,
-  const std::vector<RooCmdArg>& arglist )
+Ratio1DCanvas::PlotPull( const TGraph&                 num,
+                         const TGraph&                 den,
+                         const std::vector<RooCmdArg>& arglist )
 {
   const RooArgContainer args( arglist, {
         PlotType( scatter ),
@@ -327,6 +344,7 @@ Ratio1DCanvas::PlotPull(
 
   return *ans;
 }
+
 
 /**
  * @brief dividing two histogram a/b by scaling the numerator by the denominator
@@ -345,11 +363,9 @@ Ratio1DCanvas::PlotPull(
  * generated histogram.
  */
 TH1D*
-Ratio1DCanvas::ScaleDivide(
-  const TH1D*  num,
-  const TH1D*  den,
-  const double cen
-  )
+Ratio1DCanvas::ScaleDivide( const TH1D*  num,
+                            const TH1D*  den,
+                            const double cen )
 {
   TH1D* ans = new TH1D( *num );
 
@@ -361,8 +377,8 @@ Ratio1DCanvas::ScaleDivide(
       ans->SetBinContent( i, cen );
       ans->SetBinError( i, 0 );
     } else {
-      ans->SetBinContent( i, n/d );
-      ans->SetBinError( i, e/d );
+      ans->SetBinContent( i, n / d );
+      ans->SetBinError( i, e / d );
     }
   }
 
@@ -373,11 +389,14 @@ Ratio1DCanvas::ScaleDivide(
   return ans;
 }
 
+
 /**
- * @brief dividing a histogram by a graph. Calculated by scaling the numerator by
+ * @brief dividing a histogram by a graph. Calculated by scaling the numerator
+ *by
  * the denominator
  *
- * This function determines the the denominator by getting the value of the graph
+ * This function determines the the denominator by getting the value of the
+ *graph
  * at the bin center of the histogram. Uncertainties are also scaled by the same
  * denominator value.
  *
@@ -385,18 +404,17 @@ Ratio1DCanvas::ScaleDivide(
  * content of the resulting histogram would be set to the value cen (1) by
  * default for aesthetic reasons.
  *
- * The output histogram would copy it's styling from the numerator histogram, and
+ * The output histogram would copy it's styling from the numerator histogram,
+ *and
  * the user is responsible for handling the pointer ownership of the generated
  * histogram.
  */
 
 TH1D*
-Ratio1DCanvas::ScaleDivide(
-  const TH1D*   num,
-  const TGraph* den,
-  const double  cen,
-  const bool    extrapolate
-  )
+Ratio1DCanvas::ScaleDivide( const TH1D*   num,
+                            const TGraph* den,
+                            const double  cen,
+                            const bool    extrapolate )
 {
   TH1D* ans = new TH1D( *num );
 
@@ -415,8 +433,8 @@ Ratio1DCanvas::ScaleDivide(
       ans->SetBinContent( i, cen );
       ans->SetBinError( i, 0 );
     } else {
-      ans->SetBinContent( i, n/d );
-      ans->SetBinError( i, e/d );
+      ans->SetBinContent( i, n / d );
+      ans->SetBinError( i, e / d );
     }
   }
 
@@ -425,6 +443,7 @@ Ratio1DCanvas::ScaleDivide(
   CopyMarkAttrTo( *num, *ans );
   return ans;
 }
+
 
 /**
  * @brief Dividing a graph by another graph by scaling the numerator by the
@@ -442,14 +461,13 @@ Ratio1DCanvas::ScaleDivide(
  * graph.
  */
 TGraphAsymmErrors*
-Ratio1DCanvas::ScaleDivide(
-  const TGraph* num,
-  const TGraph* den,
-  const double  cen,
-  const bool    extrapolate  )
+Ratio1DCanvas::ScaleDivide( const TGraph* num,
+                            const TGraph* den,
+                            const double  cen,
+                            const bool    extrapolate  )
 {
-  const double xmin = GetXmin( den );
-  const double xmax = GetXmax( den );
+  const double        xmin = GetXmin( den );
+  const double        xmax = GetXmax( den );
   std::vector<double> x_list;
   std::vector<double> y_list;
   std::vector<double> xerrlo_list;
@@ -478,11 +496,11 @@ Ratio1DCanvas::ScaleDivide(
       yerrhi_list.push_back( 0 );
     } else {
       x_list.push_back( origx );
-      y_list.push_back( origy/deny );
+      y_list.push_back( origy / deny );
       xerrlo_list.push_back( xerrlo );
       xerrhi_list.push_back( xerrhi );
-      yerrlo_list.push_back( yerrlo/deny );
-      yerrhi_list.push_back( yerrhi/deny );
+      yerrlo_list.push_back( yerrlo / deny );
+      yerrhi_list.push_back( yerrhi / deny );
     }
   }
 
@@ -494,9 +512,15 @@ Ratio1DCanvas::ScaleDivide(
 
   TGraphAsymmErrors* ans
     = new TGraphAsymmErrors( x_list.size()
-                           , x_list.data(), y_list.data()
-                           , xerrlo_list.data(), xerrhi_list.data()
-                           , yerrlo_list.data(), yerrhi_list.data() );
+                             ,
+                             x_list.data(),
+                             y_list.data()
+                             ,
+                             xerrlo_list.data(),
+                             xerrhi_list.data()
+                             ,
+                             yerrlo_list.data(),
+                             yerrhi_list.data() );
 
   ans->SetTitle( "" );
   ans->GetXaxis()->SetLimits(
@@ -510,6 +534,7 @@ Ratio1DCanvas::ScaleDivide(
   return ans;
 }
 
+
 /**
  * @brief Generating the pull diagram when comparing two graphs
  *
@@ -520,14 +545,14 @@ Ratio1DCanvas::ScaleDivide(
  *
  * Interpolation is used on the denominator to obtain the error and value.
  *
- * In the special case that den.ErrY(x) is zero, gen.Y(x) is set to the cen value
+ * In the special case that den.ErrY(x) is zero, gen.Y(x) is set to the cen
+ *value
  * (defaults to 0 for aesthetic reasons).
  */
 TGraphAsymmErrors*
-Ratio1DCanvas::PullDivide(
-  const TGraph* num,
-  const TGraph* den,
-  const double  cen )
+Ratio1DCanvas::PullDivide( const TGraph* num,
+                           const TGraph* den,
+                           const double  cen )
 {
   TGraphAsymmErrors* ans = new TGraphAsymmErrors( num->GetN() );
 
@@ -542,7 +567,7 @@ Ratio1DCanvas::PullDivide(
 
   for( int i = 0; i < num->GetN(); ++i ){
     const double x    = num->GetX()[i];
-    const double diff = num->GetY()[i] - den->Eval( x );
+    const double diff = num->GetY()[i]-den->Eval( x );
     const double err  = diff > 0 ? denerrup.Eval( x ) :
                         denerrdown.Eval( x );
 

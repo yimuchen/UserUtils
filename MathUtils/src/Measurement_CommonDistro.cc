@@ -20,9 +20,11 @@
 #include "TEfficiency.h"
 #include <limits>
 
-namespace usr {
+namespace usr
+{
 
-namespace Efficiency {
+namespace Efficiency
+{
 
 /**
  * @brief simpler interface for creating Efficiency (binomial) measurements
@@ -33,16 +35,19 @@ namespace Efficiency {
  * extreme case of all pass and all fail.
  */
 Measurement
-Minos(
-  const double passed,
-  const double total,
-  const double confidencelevel )
+Minos( const double passed,
+       const double total,
+       const double confidencelevel )
 {
   return MakeMinos( usr::stat::BinomialNLL( passed, total )
-                  ,  usr::eff_machine_epsilon
-                  ,  1-usr::eff_machine_epsilon
-                  ,  confidencelevel  );
+                    ,
+                    usr::eff_machine_epsilon
+                    ,
+                    1-usr::eff_machine_epsilon
+                    ,
+                    confidencelevel  );
 }
+
 
 const bool shortest_interval = true;
 const bool central_interval  = false;
@@ -55,32 +60,33 @@ const bool central_interval  = false;
  * @details Using TEfficiency methods, see those for detailed documentation.
  */
 Measurement
-Bayesian(
-  double passed,
-  double total,
-  double confidencelevel,
-  bool   confidencemethod,
-  double alpha,
-  double beta
-  )
+Bayesian( double passed,
+          double total,
+          double confidencelevel,
+          bool   confidencemethod,
+          double alpha,
+          double beta )
 {
-  const double central = ( passed + alpha - 1. )/( total + alpha + beta - 2. );
+  const double central = ( passed+alpha-1. ) / ( total+alpha+beta-2. );
   const double err_up  = TEfficiency::Bayesian(
-    total, passed,
+    total,
+    passed,
     confidencelevel,
-    alpha, beta,
+    alpha,
+    beta,
     true,// For upper boundary
-    confidencemethod
-    ) - central;
-  const double err_down = central - TEfficiency::Bayesian(
-    total, passed,
+    confidencemethod )-central;
+  const double err_down = central-TEfficiency::Bayesian(
+    total,
+    passed,
     confidencelevel,
-    alpha, beta,
+    alpha,
+    beta,
     false,// For lower boundary
-    confidencemethod
-    );
+    confidencemethod );
   return Measurement( central, err_up, err_down );
 }
+
 
 /**
  * @brief The default method used for efficiency display used in TEfficiency to
@@ -88,22 +94,28 @@ Bayesian(
  * @ingroup StatUtils
  */
 Measurement
-ClopperPearson(
-  const double passed,
-  const double total,
-  const double confidencelevel )
+ClopperPearson( const double passed,
+                const double total,
+                const double confidencelevel )
 {
   const double central = passed / total;
   const double err_up  = TEfficiency::ClopperPearson( total
-                                                    , passed
-                                                    , confidencelevel
-                                                    , true ) - central;
-  const double err_down = central - TEfficiency::ClopperPearson( total
-                                                               , passed
-                                                               , confidencelevel
-                                                               , false );
+                                                      ,
+                                                      passed
+                                                      ,
+                                                      confidencelevel
+                                                      ,
+                                                      true )-central;
+  const double err_down = central-TEfficiency::ClopperPearson( total
+                                                               ,
+                                                               passed
+                                                               ,
+                                                               confidencelevel
+                                                               ,
+                                                               false );
   return Measurement( central, err_up, err_down );
 }
+
 
 /**
  * @brief Lazy method which just uses the method taught in high-school
@@ -130,7 +142,8 @@ Lazy( const double passed,
 
 /*----------------------------------------------------------------------------*/
 
-namespace Poisson {
+namespace Poisson
+{
 
 /**
  * @brief simple interface for creating poisson measurements with minos
@@ -145,9 +158,12 @@ Minos( const double obs, const double confidencelevel )
   }
 
   return MakeMinos( usr::stat::PoissonNLL( obs )
-                  , usr::eff_machine_epsilon
-                  , obs + obs*obs + 1
-                  , confidencelevel );
+                    ,
+                    usr::eff_machine_epsilon
+                    ,
+                    obs+obs * obs+1
+                    ,
+                    confidencelevel );
 }
 
 
@@ -166,7 +182,8 @@ Lazy( const double obs,
 
 
 /**
- * @brief Least undercoverage Interval as recommended by CMS Statistics committee
+ * @brief Least undercoverage Interval as recommended by CMS Statistics
+ *committee
  * @ingroup StatUtils
  *
  * The Complete algorithm can be found here:
@@ -177,12 +194,12 @@ Lazy( const double obs,
 Measurement
 CMSStatCom( const double obs, const double confidencelevel )
 {
-  const double alpha = 1 - confidencelevel;
+  const double alpha = 1-confidencelevel;
   const double lower = ( obs == 0.0 ) ?  0.0 :
-                       ( ROOT::Math::gamma_quantile( alpha/2, obs, 1. ) );
-  const double upper = ROOT::Math::gamma_quantile_c( alpha/2, obs+1, 1 );
+                       ( ROOT::Math::gamma_quantile( alpha / 2, obs, 1. ) );
+  const double upper = ROOT::Math::gamma_quantile_c( alpha / 2, obs+1, 1 );
 
-  return Measurement( obs, upper -obs,  obs-lower );
+  return Measurement( obs, upper-obs,  obs-lower );
 }
 
 }/* Poisson */

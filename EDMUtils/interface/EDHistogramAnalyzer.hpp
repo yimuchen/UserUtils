@@ -17,7 +17,7 @@ public:
   ~EDHistogramAnalyzer();
 
 protected:
-  edm::Service<TFileService> fs;
+  edm::Service<TFileService>   fs;
   std::map<std::string, TH1D*> _histmap;
   std::map<std::string, TH2D*> _hist2dmap;
 
@@ -29,6 +29,7 @@ protected:
     return *( _histmap[name] );
   }
 
+
   template<typename ... Args>
   inline TH2D&
   BookHist2D( const std::string& name, Args ... args )
@@ -37,18 +38,21 @@ protected:
     return *( _hist2dmap[name] );
   }
 
+
   inline TH1D&
   Hist( const std::string& x )
   {
     return *( _histmap[x] );
   }
 
+
   inline TH2D&
   Hist2D( const std::string& x )
   {
     return *( _hist2dmap[x] );
   }
-};
 
+
+};
 
 }// namespace usr

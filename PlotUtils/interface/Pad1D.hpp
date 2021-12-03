@@ -40,9 +40,11 @@
 
 #include <vector>
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Specialized class for 1D data plotting.
@@ -75,6 +77,8 @@ public:
   {
     return PlotHist( *x, list );
   }
+
+
   inline TH1D& PlotHist( TH1D& x ){ return PlotHist( &x, {} ); }
   inline TH1D& PlotHist( TH1D* x ){ return PlotHist( x, {} ); }
   template<typename ... Args>
@@ -83,12 +87,15 @@ public:
   {
     return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TH1D&
   PlotHist( TH1D* x, const RooCmdArg & arg1, Args ... args )
   {
     return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
 
   /** @} */
 
@@ -102,6 +109,8 @@ public:
   {
     return PlotProfile( *x, list );
   }
+
+
   inline TH1D& PlotProfile( TProfile& x ){ return PlotProfile( x, {} ); }
   inline TH1D& PlotProfile( TProfile* x ){ return PlotProfile( *x, {} );}
   template<typename ... Args>
@@ -110,12 +119,16 @@ public:
   {
     return PlotProfile( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TH1D&
   PlotProfile( TProfile* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotProfile( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   /**
@@ -128,6 +141,8 @@ public:
   {
     return PlotEff( *x, list );
   }
+
+
   inline TEfficiency& PlotEff( TEfficiency& x ){ return PlotEff( x, {} ); }
   inline TEfficiency& PlotEff( TEfficiency* x ){ return PlotEff( *x, {} );}
   template<typename ... Args>
@@ -136,12 +151,16 @@ public:
   {
     return PlotEff( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TEfficiency&
   PlotEff( TEfficiency* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotEff( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   /**
@@ -154,6 +173,8 @@ public:
   {
     return PlotGraph( *x, list );
   }
+
+
   inline TGraph& PlotGraph( TGraph& x ){ return PlotGraph( x, {} ); }
   inline TGraph& PlotGraph( TGraph* x ){ return PlotGraph( x, {} );}
   template<typename ... Args>
@@ -162,12 +183,16 @@ public:
   {
     return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TGraph&
   PlotGraph( TGraph* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   /**
@@ -180,6 +205,8 @@ public:
   {
     return PlotFunc( *x, list );
   }
+
+
   inline TGraph& PlotFunc( TF1& x ){ return PlotFunc( x, {} ); }
   inline TGraph& PlotFunc( TF1* x ){ return PlotFunc( x, {} );}
   template<typename ... Args>
@@ -188,12 +215,16 @@ public:
   {
     return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TGraph&
   PlotFunc( TF1* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   /**
@@ -206,20 +237,34 @@ public:
   {
     return PlotData( *x, list );
   }
-  inline TGraphAsymmErrors& PlotData( RooAbsData& x ){ return PlotData( x, {} ); }
-  inline TGraphAsymmErrors& PlotData( RooAbsData* x ){ return PlotData( x, {} );}
+
+
+  inline TGraphAsymmErrors&
+  PlotData( RooAbsData& x )
+  {
+    return PlotData( x, {} );
+  }
+  inline TGraphAsymmErrors&
+  PlotData( RooAbsData* x )
+  {
+    return PlotData( x, {} );
+  }
   template<typename ... Args>
   inline TGraphAsymmErrors&
   PlotData( RooAbsData& x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotData( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TGraphAsymmErrors&
   PlotData( RooAbsData* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotData( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   /**
@@ -233,6 +278,8 @@ public:
   {
     return PlotPdf( *x, list );
   }
+
+
   inline TGraph& PlotPdf( RooAbsPdf& x ){ return PlotPdf( x, {} ); }
   inline TGraph& PlotPdf( RooAbsPdf* x ){ return PlotPdf( x, {} );}
   template<typename ... Args>
@@ -241,12 +288,16 @@ public:
   {
     return PlotPdf( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TGraph&
   PlotPdf( RooAbsPdf* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotPdf( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
 
@@ -254,7 +305,7 @@ public:
    * @{
    *  @brief function for drawing a horizontal line across pad
    */
-  TLine&        DrawHLine( const double&, const std::vector<RooCmdArg>& );
+  TLine& DrawHLine( const double&, const std::vector<RooCmdArg>& );
   inline TLine& DrawHLine( const double& x ){ return DrawHLine( x, {} ); }
   template<typename ... Args>
   inline TLine&
@@ -262,13 +313,15 @@ public:
   {
     return DrawHLine( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   /**
    * @{
    * @brief Function for drawing a vertical along in the pad
    */
-  TLine&        DrawVLine( const double&, const std::vector<RooCmdArg>& );
+  TLine& DrawVLine( const double&, const std::vector<RooCmdArg>& );
   inline TLine& DrawVLine( const double& x ){ return DrawVLine( x, {} ); }
   template<typename ... Args>
   inline TLine&
@@ -276,6 +329,8 @@ public:
   {
     return DrawVLine( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   void DrawCMSLabel( const std::string&      = cap::prelim,
@@ -316,12 +371,10 @@ public:
   // Histogram axis title setting
   static const double autobinwidth;
   static const double forcevarbinwidth;
-  void SetHistAxisTitles(
-    const std::string& title,
-    const std::string& unit          = "",
-    const std::string& ytitle        = "Events",
-    const double       forcebinwidth = autobinwidth
-    );
+  void                SetHistAxisTitles( const std::string& title,
+                                         const std::string& unit          = "",
+                                         const std::string& ytitle        = "Events",
+                                         const double       forcebinwidth = autobinwidth );
 
   /**
    * @brief enum for specifying y range adjustment type.
@@ -387,10 +440,9 @@ protected:
   std::vector<TLine*> _linelist;
 
   static
-  void SetAxisTitle(
-    TAxis&,
-    const std::string& title,
-    const std::string& unit = "" );
+  void SetAxisTitle( TAxis&,
+                     const std::string& title,
+                     const std::string& unit = "" );
 
   void AutoSetYRangeHist();
   void AutoSetYRangeGraph();

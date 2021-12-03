@@ -8,15 +8,15 @@
 #define USERUTILS_MATHUTILS_MEASUREMENT_HPP
 
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Arithmetic.hpp"
-#include "UserUtils/MathUtils/interface/Measurement/Format.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/CommonDistro.hpp"
+#include "UserUtils/MathUtils/interface/Measurement/Format.hpp"
+#include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #else
-#include "UserUtils/MathUtils/Measurement/Measurement.hpp"
 #include "UserUtils/MathUtils/Measurement/Arithmetic.hpp"
-#include "UserUtils/MathUtils/Measurement/Format.hpp"
 #include "UserUtils/MathUtils/Measurement/CommonDistro.hpp"
+#include "UserUtils/MathUtils/Measurement/Format.hpp"
+#include "UserUtils/MathUtils/Measurement/Measurement.hpp"
 #endif
 
 #endif /* end of include guard: USERUTILS_MATHUTILS_MEASUREMENT_HPP */

@@ -15,9 +15,11 @@
 
 #include "Math/IFunction.h"
 
-namespace usr {
+namespace usr
+{
 
-namespace stat {
+namespace stat
+{
 
 /**
  * @addtogroup StatUtils
@@ -40,23 +42,21 @@ extern const double twosigma_level;
 extern double DeltaNLLFromSigma( const double sigma );
 extern double DeltaNLLFromConfidence( const double confidence );
 
-extern int MinosError(
-  const ROOT::Math::IGenFunction& nllfunction,
-  double&                         guess,
-  double&                         min,
-  double&                         max,
-  const double                    confidencelevel = onesigma_level );
+extern int MinosError( const ROOT::Math::IGenFunction& nllfunction,
+                       double&                         guess,
+                       double&                         min,
+                       double&                         max,
+                       const double                    confidencelevel = onesigma_level );
 
-extern int MinosError(
-  const ROOT::Math::IMultiGenFunction& nllfunction,
-  const ROOT::Math::IMultiGenFunction& varfunction,
-  const double*                        initguess,
-  double&                              central,
-  double&                              min,
-  double&                              max,
-  const double                         confidencelevel = onesigma_level,
-  const double*                        upperguess      = nullptr,
-  const double*                        lowerguess      = nullptr );
+extern int MinosError( const ROOT::Math::IMultiGenFunction& nllfunction,
+                       const ROOT::Math::IMultiGenFunction& varfunction,
+                       const double*                        initguess,
+                       double&                              central,
+                       double&                              min,
+                       double&                              max,
+                       const double                         confidencelevel = onesigma_level,
+                       const double*                        upperguess      = nullptr,
+                       const double*                        lowerguess      = nullptr );
 
 /*-----------------------------------------------------------------------------
  *  Providing common distributions NLL fucntions in standard ROOT::Math formats
@@ -65,36 +65,39 @@ extern int MinosError(
 class GaussianNLL : public ROOT::Math::IGenFunction
 {
   double mean, sigma;
-  double DoEval( const double x ) const ;
+  double DoEval( const double x ) const;
   DECLARE_IGENFUNCTION_DEFAULTS( GaussianNLL );
 
 public:
   GaussianNLL( double mean_, double sigma_ ) :
-    mean( mean_ ),
+    mean ( mean_ ),
     sigma( sigma_ ){}
 };
 
 class PoissonNLL : public ROOT::Math::IGenFunction
 {
   double obs;
-  double DoEval( const double x ) const ;
+  double DoEval( const double x ) const;
   DECLARE_IGENFUNCTION_DEFAULTS( PoissonNLL );
 
 public:
-  PoissonNLL( double obs_ ) : obs( obs_ ){}
+  PoissonNLL( double obs_ ) :
+    obs( obs_ ){}
 };
 
 class BinomialNLL : public ROOT::Math::IGenFunction
 {
   double passed, total;
-  double DoEval( const double x ) const ;
+  double DoEval( const double x ) const;
   DECLARE_IGENFUNCTION_DEFAULTS( BinomialNLL );
 
 public:
   BinomialNLL( double passed_, double total_ ) :
     passed( passed_ ),
-    total( total_ ){
-  }
+    total ( total_ )
+  {}
+
+
 };
 
 /** @} */

@@ -13,7 +13,8 @@
 #include "TMath.h"
 #include <cmath>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief returning the intersect points of two segments if exists.
@@ -23,35 +24,42 @@ namespace usr {
  * If yes, store results in intx, and inty return true; return false otherwise.
  */
 bool
-Intersect(
-  const double p1x, const double p1y,
-  const double p2x, const double p2y,
-  const double p3x, const double p3y,
-  const double p4x, const double p4y,
-  double& intx, double& inty
-  )
+Intersect( const double p1x,
+           const double p1y,
+           const double p2x,
+           const double p2y,
+           const double p3x,
+           const double p3y,
+           const double p4x,
+           const double p4y,
+           double&      intx,
+           double&      inty )
 {
-  const double s1x = p2x - p1x;
-  const double s1y = p2y - p1y;
-  const double s2x = p4x - p3x;
-  const double s2y = p4y - p3y;
+  const double s1x = p2x-p1x;
+  const double s1y = p2y-p1y;
+  const double s2x = p4x-p3x;
+  const double s2y = p4y-p3y;
 
-  const double s = ( -s1y * ( p1x - p3x ) + s1x * ( p1y - p3y ) ) / ( -s2x*s1y + s1x*s2y );
-  const double t = ( s2x * ( p1y - p3y ) - s2y * ( p1x - p3x ) ) / ( -s2x*s1y + s1x*s2y );
+  const double s = ( -s1y * ( p1x-p3x )+s1x * ( p1y-p3y ) )
+                   / ( -s2x * s1y+s1x * s2y );
+  const double t = ( s2x * ( p1y-p3y )-s2y * ( p1x-p3x ) )
+                   / ( -s2x * s1y+s1x * s2y );
 
   if( s >= 0 && s <= 1 && t >= 0 && t <= 1 ){
-    intx = p1x + ( t * s1x );
-    inty = p1y + ( t * s1y );
+    intx = p1x+( t * s1x );
+    inty = p1y+( t * s1y );
     return true;
   } else {
     return false;
   }
 }
 
+
 /**
  * @brief Performing a Cholesky decomposing of a covariance matrix from fit
  *
- * In the case that the input matrix is not positive definite, this function will
+ * In the case that the input matrix is not positive definite, this function
+ *will
  * a diagonal matrix that is just the square root of the diagonal components of
  * the original covariance matrix. The function is essentially the
  * [TDecompChol::Decompose](https://root.cern.ch/doc/master/classTDecompChol.html#af14df10a3c766330cb93063161ecedc0)
@@ -60,18 +68,18 @@ Intersect(
 extern TMatrixD
 DecompCorvariance( const TMatrixDSym& m )
 {
-  const unsigned n = m.GetNrows();
-  TMatrixD ans     = m;
-  double* ans_ptr  = ans.GetMatrixArray();
+  const unsigned n       = m.GetNrows();
+  TMatrixD       ans     = m;
+  double*        ans_ptr = ans.GetMatrixArray();
 
   for( unsigned icol = 0; icol < n; icol++ ){
-    const unsigned rowOff = icol*n;
+    const unsigned rowOff = icol * n;
 
     double ujj = ans_ptr[rowOff+icol];
 
     for( unsigned irow = 0; irow < icol; irow++ ){
-      const unsigned pos_ij = irow*n+icol;
-      ujj -= ans_ptr[pos_ij]*ans_ptr[pos_ij];
+      const unsigned pos_ij = irow * n+icol;
+      ujj -= ans_ptr[pos_ij] * ans_ptr[pos_ij];
     }
 
     if( ujj <= 0 ){// Special returning case for any non-definite positive case
@@ -91,7 +99,7 @@ DecompCorvariance( const TMatrixDSym& m )
     if( icol < n-1 ){
       for( unsigned j = icol+1; j < n; j++ ){
         for( unsigned i = 0; i < icol; i++ ){
-          const unsigned rowOff2 = i*n;
+          const unsigned rowOff2 = i * n;
           ans_ptr[rowOff+j] -= ans_ptr[rowOff2+j] * ans_ptr[rowOff2+icol];
         }
       }
@@ -103,7 +111,7 @@ DecompCorvariance( const TMatrixDSym& m )
   }
 
   for( unsigned irow = 0; irow < n; irow++ ){
-    const unsigned rowOff = irow*n;
+    const unsigned rowOff = irow * n;
 
     for( unsigned icol = 0; icol < irow; icol++ ){
       ans_ptr[rowOff+icol] = 0.;
@@ -113,11 +121,13 @@ DecompCorvariance( const TMatrixDSym& m )
   return ans;
 }
 
+
 /**
  * @brief Reverse engineering the effective number of entries of a bin in a
  * histogram.
  *
- * The official recipe for computing the effective number of events for a list of
+ * The official recipe for computing the effective number of events for a list
+ *of
  * (non-negative) weighted events is typically:
  *
  * \f[
@@ -135,7 +145,8 @@ DecompCorvariance( const TMatrixDSym& m )
  *    UNC = \sqrt{N_{eff}} \frac{\sum_i w_i}{N_i}
  * \f]
  *
- * Effectively, ROOT treats the bin as having effectively \[N_{eff}\] events, and
+ * Effectively, ROOT treats the bin as having effectively \[N_{eff}\] events,
+ *and
  * scale the uncertainty according to the sum of weight to have an identical
  * relative uncertainty.
  *
@@ -146,21 +157,22 @@ DecompCorvariance( const TMatrixDSym& m )
  * With additional parses to avoid NAN errors:
  */
 extern double
-GetEffectiveEvents( const TH1& hist , const int bin )
+GetEffectiveEvents( const TH1& hist, const int bin )
 {
   if( hist.GetBinError( bin ) == 0 ){
     return 0;
   } else {
-    return ( hist.GetBinContent( bin ) * hist.GetBinContent( bin ) ) /
-           ( hist.GetBinError( bin ) * hist.GetBinError( bin ) );
+    return ( hist.GetBinContent( bin ) * hist.GetBinContent( bin ) )
+           / ( hist.GetBinError( bin ) * hist.GetBinError( bin ) );
   }
 }
+
 
 /**
  * @brief Pointer interface of GetEffectiveEvents function.
  */
 extern double
-GetEffectiveEvents( const TH1* hist , const int bin )
+GetEffectiveEvents( const TH1* hist, const int bin )
 {
   return GetEffectiveEvents( *hist, bin );
 }

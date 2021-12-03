@@ -20,14 +20,16 @@
 
 #include "TH1D.h"
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @defgroup KSRooFit KSRooFit
  * @brief    Kolmogorov--Smirnov test routines for RooFit objects
  * @ingroup MathUtils
  * @details
- * For some strange reason, there doesn't exist the [Kolmogorov--Smirnov test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+ * For some strange reason, there doesn't exist the [Kolmogorov--Smirnov
+ *test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
  * routines doesn't exit for RooFit objects. The functions provides includes
  * the test for both data--model comparison and data--data comparison, with
  * up to 2 variable range cut for regional and side-band goodness-of-fit tests.
@@ -36,45 +38,35 @@ namespace usr {
  * distribution
  * @{
  */
-extern double KSDistance(
-  RooDataSet&      dataset,
-  RooAbsPdf&       pdf,
-  RooRealVar&      var,
-  const RooCmdArg& cut1 = RooCmdArg::none(),
-  const RooCmdArg& cut2 = RooCmdArg::none()
-  );
+extern double KSDistance( RooDataSet&      dataset,
+                          RooAbsPdf&       pdf,
+                          RooRealVar&      var,
+                          const RooCmdArg& cut1 = RooCmdArg::none(),
+                          const RooCmdArg& cut2 = RooCmdArg::none());
 
-extern double KSProb(
-  RooDataSet&      dataset,
-  RooAbsPdf&       pdf,
-  RooRealVar&      var,
-  const RooCmdArg& cut1 = RooCmdArg::none(),
-  const RooCmdArg& cut2 = RooCmdArg::none()
-  );
+extern double KSProb( RooDataSet&      dataset,
+                      RooAbsPdf&       pdf,
+                      RooRealVar&      var,
+                      const RooCmdArg& cut1 = RooCmdArg::none(),
+                      const RooCmdArg& cut2 = RooCmdArg::none());
 
-extern double KSDistance(
-  RooDataSet&      set1,
-  RooDataSet&      set2,
-  RooRealVar&      var,
-  const RooCmdArg& cut1 = RooCmdArg::none(),
-  const RooCmdArg& cut2 = RooCmdArg::none()
-  );
+extern double KSDistance( RooDataSet&      set1,
+                          RooDataSet&      set2,
+                          RooRealVar&      var,
+                          const RooCmdArg& cut1 = RooCmdArg::none(),
+                          const RooCmdArg& cut2 = RooCmdArg::none());
 
-extern double KSProb(
-  RooDataSet&      set1,
-  RooDataSet&      set2,
-  RooRealVar&      var,
-  const RooCmdArg& cut1 = RooCmdArg::none(),
-  const RooCmdArg& cut2 = RooCmdArg::none()
-  );
+extern double KSProb( RooDataSet&      set1,
+                      RooDataSet&      set2,
+                      RooRealVar&      var,
+                      const RooCmdArg& cut1 = RooCmdArg::none(),
+                      const RooCmdArg& cut2 = RooCmdArg::none());
 
-extern double KSProbAlt(
-  RooDataSet&      set1,
-  RooDataSet&      set2,
-  RooRealVar&      var,
-  const RooCmdArg& cut1 = RooCmdArg::none(),
-  const RooCmdArg& cut2 = RooCmdArg::none()
-  );
+extern double KSProbAlt( RooDataSet&      set1,
+                         RooDataSet&      set2,
+                         RooRealVar&      var,
+                         const RooCmdArg& cut1 = RooCmdArg::none(),
+                         const RooCmdArg& cut2 = RooCmdArg::none());
 /* @} */
 
 /**
@@ -93,22 +85,25 @@ extern double KSProbAlt(
  * @brief Fitting routing with arbitrary many arguments and disables screen
  * output by default.
  */
-extern RooFitResult* FitPDFToData(
-  RooAbsPdf&, RooAbsData&,
-  const std::vector<RooCmdArg>& cmdargs
-  );
+extern RooFitResult* FitPDFToData( RooAbsPdf&,
+                                   RooAbsData&,
+                                   const std::vector<RooCmdArg>& cmdargs );
 
 inline RooFitResult*
-FitPDFToData(
-  RooAbsPdf& pdf, RooAbsData& data ){ return FitPDFToData( pdf, data, {} ); }
+FitPDFToData( RooAbsPdf& pdf, RooAbsData& data )
+{
+  return FitPDFToData( pdf, data, {} );
+}
 
 template<typename ... Args>
 inline RooFitResult*
-FitPDFToData(
-  RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1, Args ... args )
+FitPDFToData( RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1,
+              Args ... args )
 {
   return FitPDFToData( pdf, data, MakeVector<RooCmdArg>( arg1, args ... ) );
 }
+
+
 /* @} */
 
 
@@ -119,33 +114,36 @@ RooCmdArg MaxFitIteration( unsigned x );
  * @brief Running the Fit Routine until converge or pass certain amount of fit
  * calls.
  */
-extern RooFitResult* ConvergeFitPDFToData(
-  RooAbsPdf&, RooAbsData&,
-  const std::vector<RooCmdArg>& cmdargs
-  );
+extern RooFitResult* ConvergeFitPDFToData( RooAbsPdf&,
+                                           RooAbsData&,
+                                           const std::vector<RooCmdArg>& cmdargs );
 
 inline RooFitResult*
-ConvergeFitPDFToData(
-  RooAbsPdf& pdf, RooAbsData& data )
+ConvergeFitPDFToData( RooAbsPdf& pdf, RooAbsData& data )
 {
   return ConvergeFitPDFToData( pdf, data, {} );
 }
 
+
 template<typename ... Args>
 inline RooFitResult*
-ConvergeFitPDFToData(
-  RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1, Args ... args )
+ConvergeFitPDFToData( RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1,
+                      Args ... args )
 {
-  return ConvergeFitPDFToData( pdf, data,
-    MakeVector<RooCmdArg>( arg1, args ... ) );
+  return ConvergeFitPDFToData( pdf,
+                               data,
+                               MakeVector<RooCmdArg>( arg1, args ... ) );
 }
+
+
 /** @} */
 
 /** @}  */
 
 /**
  * @{
- * @brief Converting RooAbsData to a TH1D (standard for plotting in this library)
+ * @brief Converting RooAbsData to a TH1D (standard for plotting in this
+ *library)
  */
 TH1D* TH1DFromRooData( RooAbsData&,
                        const RooAbsRealLValue&,
@@ -158,15 +156,17 @@ TH1DFromRooData( RooAbsData&             data,
   return TH1DFromRooData( data, xvar, {} );
 }
 
+
 template<typename ... Args>
 inline TH1D*
 TH1DFromRooData( RooAbsData&             data,
                  const RooAbsRealLValue& xvar,
                  const RooCmdArg&        arg1,
-                 Args...                 args )
+                 Args ... args )
 {
   return TH1DFromRooData( data, xvar, MakeVector<RooCmdArg>( arg1, args ... ) );
 }
+
 
 /** @} */
 

@@ -18,10 +18,11 @@
 
 #include <vector>
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
-
+namespace plt
+{
 
 // Forward declaration of required classes
 struct RangeByVar;// constructor helper class
@@ -36,8 +37,10 @@ public:
   RooFrame();
   RooFrame( const RangeByVar& );
   RooFrame( const double min, const double max );
-  RooFrame( const double xmin, const double xmax,
-            const double ymin, const double ymax );
+  RooFrame( const double xmin,
+            const double xmax,
+            const double ymin,
+            const double ymax );
   virtual ~RooFrame();
 
   /**
@@ -73,7 +76,7 @@ public:
   template<typename ObjType>
   ObjType&
   LastPlot()
-  { return *( dynamic_cast<ObjType*>( getObject( numItems() -1 ) ) ); }
+  { return *( dynamic_cast<ObjType*>( getObject( numItems()-1 ) ) ); }
 };
 
 /**
@@ -82,21 +85,17 @@ public:
 struct RangeByVar
 {
   const RooRealVar* var;
-  double            xmin;
-  double            xmax;
-  int               nbin;
-  RangeByVar(
-    const RooRealVar& _var,
-    const double      _xmin = find_default,
-    const double      _xmax = find_default,
-    const int         _nbin = -1
-    );
-  RangeByVar(
-    const RooRealVar* _var,
-    const double      _xmin = find_default,
-    const double      _xmax = find_default,
-    const int         _nbin = -1
-    );
+  double xmin;
+  double xmax;
+  int nbin;
+  RangeByVar( const RooRealVar& _var,
+              const double      _xmin = find_default,
+              const double      _xmax = find_default,
+              const int         _nbin = -1 );
+  RangeByVar( const RooRealVar* _var,
+              const double      _xmin = find_default,
+              const double      _xmax = find_default,
+              const int         _nbin = -1 );
 
 private:
   static const double find_default;
@@ -109,7 +108,7 @@ private:
  */
 
 
-RooCmdArg        PlotUnder( const TObject* x );
+RooCmdArg PlotUnder( const TObject* x );
 inline RooCmdArg PlotUnder( const TObject& x ){ return PlotUnder( &x ); }
 
 /**
@@ -195,10 +194,11 @@ RooCmdArg VisualizeError( const TFitResult&, const double z    = 1 );
 
 template<typename ... Args>
 inline RooCmdArg
-VisualizeError( const RooFitResult& fit, Args... args )
+VisualizeError( const RooFitResult& fit, Args ... args )
 {
   return RooFit::VisualizeError( fit, args ... );
 }
+
 
 RooCmdArg ExtrapolateInRatio( const int flag = true );
 

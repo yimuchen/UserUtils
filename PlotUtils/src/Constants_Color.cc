@@ -10,9 +10,11 @@
 #include <regex>
 #include <string>
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @details Most of the colors are defined in:
@@ -22,7 +24,8 @@ namespace plt {
  * gray/grey. A few more standard colors used for CMS plots have also been
  * defined.
  */
-namespace col {
+namespace col
+{
 
 /**
  * @{
@@ -176,7 +179,7 @@ extern const int white                = TColor::GetColor( "#FFFFFF" );
 /** @}*/
 
 // Standard colors for Brazillean flag plot
-extern const int bzgreen  = kGreen + 1;
+extern const int bzgreen  = kGreen+1;
 extern const int bzyellow = kOrange;
 
 // String color code conversion functions
@@ -188,7 +191,8 @@ static int color_from_name( const std::string& x );
  * @details The input string can either be a name of the color (ex. "red") or a
  * hex code for a color with a leading '#' (ex. "#FF00AA", or "#587").
  *
- * In the case that the input string is a color name and a corresponding variable
+ * In the case that the input string is a color name and a corresponding
+ *variable
  * is defined as global variable name in the Constants.hpp file, It would return
  * the same value as the global variable. For example:
  *
@@ -208,7 +212,8 @@ static int color_from_name( const std::string& x );
  * isn't defined, or an illegal color code is given, the default return color is
  * `usr::plt::col::gray` without any error message returns.
  */
-int color( const std::string& x )
+int
+color( const std::string& x )
 {
   if( x.find( "#" ) == 0  ){
     // Starts with #, assuming hex code
@@ -218,7 +223,9 @@ int color( const std::string& x )
   }
 }
 
-int color_from_hex( const std::string& x )
+
+int
+color_from_hex( const std::string& x )
 {
   static const std::regex hex_regex( "#[0-9A-F]{6}" );
 
@@ -238,12 +245,13 @@ int color_from_hex( const std::string& x )
 }
 
 
-int color_from_name( const std::string& x )
+int
+color_from_name( const std::string& x )
 {
   // Reformatting name
   const std::string op_string = StripToNaming( x );
 
-#define STRINGIFY( COLOR_STRING )              \
+#define STRINGIFY( COLOR_STRING ) \
   op_string == #COLOR_STRING ? COLOR_STRING :
 
   return STRINGIFY( white               )

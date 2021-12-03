@@ -22,9 +22,11 @@
 #include <set>
 #include <string>
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @{
@@ -40,8 +42,15 @@ RooCmdArg
 PlotUnder( const TObject* obj )
 {
   return RooCmdArg( "PlotUnder",
-    0, 0, /*int*/ 0, 0, /* double*/ 0, 0, /*char*/ obj );
+                    0,
+                    0, /*int*/
+                    0,
+                    0,  /* double*/
+                    0,
+                    0,                    /*char*/
+                    obj );
 }
+
 
 USERUTILS_COMMON_REGISTERCMD( PlotUnder );
 
@@ -76,8 +85,14 @@ RooCmdArg
 PlotType( const std::string& opt )
 {
   return RooCmdArg( "PlotType"
-                  , usr::plt::plottype_dummy, 0, 0, 0, opt.c_str() );
+                    ,
+                    usr::plt::plottype_dummy,
+                    0,
+                    0,
+                    0,
+                    opt.c_str() );
 }
+
 
 USERUTILS_COMMON_REGISTERCMD( PlotType );
 
@@ -183,7 +198,8 @@ RooCmdArg MarkerColor( const int color, const float alpha )
 USERUTILS_COMMON_REGISTERCMD( MarkerColor );
 
 /**
- * @brief Defining marker style via the style index (see namespace usr::plt::sty)
+ * @brief Defining marker style via the style index (see namespace
+ *usr::plt::sty)
  */
 RooCmdArg MarkerStyle( const short style )
 { return RooFit::MarkerStyle( style ); }
@@ -215,20 +231,25 @@ VisualizeError( const TFitResultPtr& fit, const double z )
   return VisualizeError( *fit, z );
 }
 
+
 RooCmdArg
 VisualizeError( const TFitResult& fit, const double z )
 {
   return VisualizeError( &fit, z );
 }
 
+
 RooCmdArg
 VisualizeError( const TFitResult* fit, const double z )
 {
   return RooCmdArg( "VisualizeError",
-    0, 0,// int
-    z, 0,// double
-    0, 0,// c_string
-    dynamic_cast<const TObject*>( fit ) );
+                    0,
+                    0,// int
+                    z,
+                    0,// double
+                    0,
+                    0,// c_string
+                    dynamic_cast<const TObject*>( fit ) );
 }
 
 
@@ -249,7 +270,6 @@ RooCmdArg ExtendXRange( const bool flag  )
 { return RooCmdArg( "ExtendXRange", flag ); }
 
 USERUTILS_COMMON_REGISTERCMD( ExtendXRange );
-
 
 
 /** @} */

@@ -1,14 +1,16 @@
 #ifdef CMSSW_GIT_HASH
-#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+#include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
-#include "UserUtils/PlotUtils/PlotCommon.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @class RangeByVar
@@ -25,12 +27,11 @@ const double RangeByVar::find_default
  *
  * Could defined x range and number of bins to use for the x axis.
  */
-RangeByVar::RangeByVar(
-  const RooRealVar& _var,
-  const double      _xmin,
-  const double      _xmax,
-  const int         _nbin
-  ) : var( &_var )
+RangeByVar::RangeByVar( const RooRealVar& _var,
+                        const double      _xmin,
+                        const double      _xmax,
+                        const int         _nbin ) :
+  var( &_var )
 {
   xmin = _xmin == find_default ? var->getMin() :
          _xmin > _xmax         ? var->getMin() :
@@ -41,17 +42,17 @@ RangeByVar::RangeByVar(
   nbin = _nbin < 0 ? var->getBins() : _nbin;
 }
 
+
 /**
  * @brief Define a range using the @ROOT{RooRealVar} pointer
  *
  * Could defined x range and number of bins to use for the x axis.
  */
-RangeByVar::RangeByVar(
-  const RooRealVar* _var,
-  const double      _xmin,
-  const double      _xmax,
-  const int         _nbin
-  ) : var( _var )
+RangeByVar::RangeByVar( const RooRealVar* _var,
+                        const double      _xmin,
+                        const double      _xmax,
+                        const int         _nbin ) :
+  var( _var )
 {
   xmin = _xmin == find_default ? var->getMin() :
          _xmin > _xmax         ? var->getMin() :
@@ -80,9 +81,8 @@ RangeByVar::RangeByVar(
 RooFrame::RooFrame( const RangeByVar& range ) :
   RooPlot( RandomString( 12 ).c_str(), "",
            *range.var, range.xmin, range.xmax, range.nbin )
-{
+{}
 
-}
 
 /**
  * @brief Construct a frame with just the x axis range.
@@ -94,16 +94,20 @@ RooFrame::RooFrame( const double min, const double max ) :
   RooPlot::SetTitle( "" );
 }
 
+
 /**
  * @brief Construct a frame with just the x axis range.
  */
-RooFrame::RooFrame( const double xmin, const double xmax,
-                    const double ymin, const double ymax ) :
+RooFrame::RooFrame( const double xmin,
+                    const double xmax,
+                    const double ymin,
+                    const double ymax ) :
   RooPlot( xmin, xmax, ymin, ymax )
 {
   RooPlot::SetName( RandomString( 12 ).c_str() );
   RooPlot::SetTitle( "" );
 }
+
 
 /**
  * @brief Must allow for null constructor for pad that doesn't use a frame.
@@ -112,6 +116,7 @@ RooFrame::RooFrame() :
   RooPlot()
 {// Do nothing
 }
+
 
 RooFrame::~RooFrame(){}
 

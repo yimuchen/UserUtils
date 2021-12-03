@@ -12,21 +12,27 @@
 #endif
 
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
-Pad2DFlat::Pad2DFlat( Canvas* c, const PadSize& padsize ):
-  PadBase(c,padsize)
+Pad2DFlat::Pad2DFlat( Canvas* c, const PadSize& padsize ) :
+  PadBase( c, padsize )
 {
   init_legend();
 }
 
-Pad2DFlat::Pad2DFlat( Canvas* c, const PadSize& padsize ,
-  const double xmin, const double xmax,
-  const double ymin, const double ymax ):
-  PadBase(c,padsize),
-  _frame(xmin,xmax,ymin,ymax)
+
+Pad2DFlat::Pad2DFlat( Canvas*        c,
+                      const PadSize& padsize,
+                      const double   xmin,
+                      const double   xmax,
+                      const double   ymin,
+                      const double   ymax ) :
+  PadBase( c, padsize ),
+  _frame ( xmin, xmax, ymin, ymax )
 {
   init_legend();
 }
@@ -35,19 +41,22 @@ Pad2DFlat::Pad2DFlat( Canvas* c, const PadSize& padsize ,
 Pad2DFlat::~Pad2DFlat()
 {}
 
-void Pad2DFlat::init_legend()
+void
+Pad2DFlat::init_legend()
 {
-  _legend.SetX1( 0 ) ;
+  _legend.SetX1( 0 );
   _legend.SetX2( GetLeftMargin() );
   _legend.SetY1( GetBottomMargin() );
-  _legend.SetY2( 1- GetTopMargin() );
+  _legend.SetY2( 1-GetTopMargin() );
   _legend.SetTextFont( ParentCanvas().Font().fontface() );
   _legend.SetTextSize( ParentCanvas().Font().size() );
   _legend.SetBorderSize( 0 );
   _legend.SetFillColorAlpha( 0, 0 );
 }
 
-void Pad2DFlat::InitDraw()
+
+void
+Pad2DFlat::InitDraw()
 {
   // Early exit if no RooPlot is required;
   if( !_frame.AxisHistPtr() ){ return; }
@@ -58,7 +67,9 @@ void Pad2DFlat::InitDraw()
   SetAxisFont();
 }
 
-void Pad2DFlat::Finalize()
+
+void
+Pad2DFlat::Finalize()
 {
   _pad->cd();
   PadBase::Finalize();

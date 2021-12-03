@@ -22,7 +22,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/range/algorithm_ext/erase.hpp>
 
-namespace usr  {
+namespace usr
+{
 
 /**
  * @brief C++ string version of getting system environment variables.
@@ -33,16 +34,17 @@ GetEnv( const std::string& x )
   return std::getenv( x.c_str() );
 }
 
+
 /**
  * @brief Converting the glob notation to regex comparaison strings.
  */
 std::string
 GlobToRegex( const std::string& query )
 {
-  static const std::regex starmatch( "\\*" );
+  static const std::regex  starmatch( "\\*" );
   static const std::string starrep( ".*" );
 
-  static const std::regex qmmatch( "\\?" );
+  static const std::regex  qmmatch( "\\?" );
   static const std::string qmrep( "." );
 
   std::string ans = query;
@@ -51,6 +53,7 @@ GlobToRegex( const std::string& query )
   return ans;
 }
 
+
 /**
  * @brief Globbing with the return type being a list of string rather than a
  *        the std::filesystem, useful for ROOT and CMSSW interfaces.
@@ -58,15 +61,17 @@ GlobToRegex( const std::string& query )
 std::vector<std::string>
 GlobLocalStr( const std::string& x )
 {
-  const auto orig = GlobLocal( x );
+  const auto               orig = GlobLocal( x );
   std::vector<std::string> ans( orig.size() );
-  std::transform( orig.begin(), orig.end(),
-    ans.begin(),
-    []( const fs::path& x ) -> std::string {
+  std::transform( orig.begin(),
+                  orig.end(),
+                  ans.begin(),
+                  []( const fs::path& x )->std::string {
       return x.string();
     } );
   return ans;
 }
+
 
 /**
  * @brief generating an random alpha-numerical string of length n .
@@ -85,7 +90,7 @@ RandomString( const unsigned n )
   std::string ans = "";
 
   for( unsigned i = 0; i < n; ++i ){
-    ans.push_back( alphanum[rand()%alphanum.length()] );
+    ans.push_back( alphanum[rand() % alphanum.length()] );
   }
 
   return ans;
@@ -101,6 +106,7 @@ ToUpper( const std::string& x )
   return boost::algorithm::to_upper_copy( x );
 }
 
+
 /**
  * @brief Converting entire string to lower case
  */
@@ -109,6 +115,7 @@ ToLower( const std::string& x )
 {
   return boost::algorithm::to_lower_copy( x );
 }
+
 
 /**
  * @brief removing all instances of a certain substring in a given string.
@@ -121,6 +128,7 @@ StripSubstring( const std::string& x, const std::string& sub )
   return ans;
 }
 
+
 /**
  * @brief Remove all characters that is in string list.
  */
@@ -131,6 +139,7 @@ StripCharacters( const std::string& x, const std::string& sub )
   boost::range::remove_erase_if( ans, boost::is_any_of( sub ) );
   return ans;
 }
+
 
 std::string
 StripToNaming( const std::string& x )
@@ -165,13 +174,14 @@ StripToNaming( const std::string& x )
  * ```
  * "Makes sense", in that it indeed returns the expected matching brace for '(',
  * and '[' respectively, thought the actual syntax of the full string in
- * ambiguous. In the case that the matching brace cannot be found (for example in
+ * ambiguous. In the case that the matching brace cannot be found (for example
+ * in
  * the string "((())"), this function will return the end of the string.
  */
 size_t
 MatchBrace( const std::string& x, const unsigned open_brace )
 {
-  size_t ans       = open_brace;
+  size_t   ans     = open_brace;
   unsigned counter = 1;
 
   const char addcount = x.at( open_brace );
@@ -192,6 +202,7 @@ MatchBrace( const std::string& x, const unsigned open_brace )
   return ans;
 }
 
+
 /**
  * @brief Finding the next opening brace character after the given position.
  *
@@ -202,6 +213,7 @@ NextOpenBrace( const std::string& x, const unsigned start )
 {
   return x.find_first_of( "([{", start );
 }
+
 
 /**
  * @brief Checking if master string starts with some target string.
@@ -214,6 +226,7 @@ starts_with( const std::string& master, const std::string& target )
   if( target.size() > master.size() ){ return false; }
   return std::equal( target.begin(), target.end(), master.begin() );
 }
+
 
 /**
  * @brief Checking if a masters string ends with some target string.

@@ -9,20 +9,23 @@
 #include <ostream>
 #include <string>
 
-namespace usr {
+namespace usr
+{
 
-namespace fmt {
+namespace fmt
+{
 
-namespace base {
+namespace base
+{
 
 /**
  * @addtogroup ostreamutils
  * @{
  */
 
-extern int precision_default;
-extern unsigned spacesep_default;
-extern std::string spacestr_default;
+extern int            precision_default;
+extern unsigned       spacesep_default;
+extern std::string    spacestr_default;
 extern const unsigned max_precision;
 
 /**
@@ -33,7 +36,7 @@ extern const unsigned max_precision;
 class format
 {
 public:
-  virtual ~format(){};
+  virtual ~format(){}
 
   /**
    * @brief number of digits to display after the decimal point.
@@ -77,17 +80,18 @@ public:
   }
 
 protected:
-  int _precision;
+  int         _precision;
   std::string _spacestr;
-  unsigned _spacesep;
+  unsigned    _spacesep;
 
   /**
    * @brief constructor can only be called by childern classes.
    * @details intentionally hidden to stop user usage.
    */
-  format() : _precision( precision_default ),
-    _spacestr( spacestr_default ),
-    _spacesep( spacesep_default ){}
+  format() :
+    _precision( precision_default ),
+    _spacestr ( spacestr_default ),
+    _spacesep ( spacesep_default ){}
 };
 
 /**
@@ -100,19 +104,20 @@ operator<<( std::ostream& os, const format& x )
   return os;
 }
 
+
 /**
  * @brief decimal representation of double.
  */
 class decimal : public format
 {
 public:
-  decimal(
-    const double input,
-    const int    p = -precision_default ) :
+  decimal( const double input,
+           const int    p = -precision_default ) :
     _input( input )
   {
     precision( p );
   }
+
 
   virtual
   ~decimal (){}
@@ -137,7 +142,7 @@ public:
 
 private:
   double _mant;
-  int _exp;
+  int    _exp;
 };
 
 /** @} */

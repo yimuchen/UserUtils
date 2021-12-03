@@ -7,11 +7,12 @@
 #ifndef USERUTILS_MATHUTILS_COMMON_HPP
 #define USERUTILS_MATHUTILS_COMMON_HPP
 
+#include "TH1.h"
 #include "TMatrixD.h"
 #include "TMatrixDSym.h"
-#include "TH1.h"
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @defgroup mathmisc Miscellaneous maths functions.
@@ -19,13 +20,16 @@ namespace usr {
  * @ingroup MathUtils
  * @{
  */
-extern bool Intersect(
-  const double p1x, const double p1y,
-  const double p2x, const double p2y,
-  const double p3x, const double p3y,
-  const double p4x, const double p4y,
-  double& intx, double& inty
-  );
+extern bool Intersect( const double p1x,
+                       const double p1y,
+                       const double p2x,
+                       const double p2y,
+                       const double p3x,
+                       const double p3y,
+                       const double p4x,
+                       const double p4y,
+                       double&      intx,
+                       double&      inty );
 
 extern TMatrixD DecompCorvariance( const TMatrixDSym& m );
 

@@ -31,9 +31,11 @@
 // static variables for new object generation
 static const std::string genaxisname = "axishist";
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @details
@@ -56,7 +58,8 @@ namespace plt {
  *     used only if you are plotting two histogram stacks in the same Pad.
  *   - plottype::histerr - Drawing histogram uncertainty as a shaded box region.
  *   - Raw string: The user can use the ROOT style string options to define how
- *     the Histogram options should be plotted. The strings `"SAME"` and `"HIST"`
+ *     the Histogram options should be plotted. The strings `"SAME"` and
+ *`"HIST"`
  *     would be handed by the functions and will be stripped.
  *
  * - EntryText: String to add in the legend entry. If this options is not
@@ -139,13 +142,15 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   case plottype::histstack:
     if( _workingstack  == 0 ){
       _workingstack = &MakeObj<THStack>(
-        ( "stack" + RandomString( 12 ) ).c_str(), "" );
+        ( "stack"+RandomString( 12 ) ).c_str(),
+        "" );
     }
     _workingstack->Add( &obj, "HIST" );
     break;
   case plottype::histnewstack:
     _workingstack = &MakeObj<THStack>(
-      ( "stack" + RandomString( 12 ) ).c_str(), "" );
+      ( "stack"+RandomString( 12 ) ).c_str(),
+      "" );
     _workingstack->Add( &obj, "HIST" );
     break;
   case plottype::plottype_dummy:
@@ -153,7 +158,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
     break;
   default:
     usr::log::PrintLog( usr::log::INTERNAL,
-      usr::fstr( "Skipping over invalid value (%d)", pt ) );
+                        usr::fstr( "Skipping over invalid value (%d)", pt ) );
   }
 
   if( _workingstack ){
@@ -183,6 +188,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   return obj;
 }
 
+
 /**
  * @brief  Plotting a TProfile object
  *
@@ -200,6 +206,7 @@ Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
   return PlotHist( _newhist, args );
 }
 
+
 /**
  * @brief Plotting a TEfficiency object
  *
@@ -214,7 +221,8 @@ Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
  *     cannot have an unfilled color.
  *   - plottype::histerr - Drawing uncertainty as a shaded box region.
  *   - Raw string: The user can use the ROOT style string options to define how
- *     the Histogram options should be plotted. The strings `"SAME"` and `"HIST"`
+ *     the Histogram options should be plotted. The strings `"SAME"` and
+ *`"HIST"`
  *     would be handed by the functions and will be stripped.
  *
  * - EntryText: String to add in the legend entry. If this options is not
@@ -243,7 +251,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
 
   if( obj.GetDimension() != 1 ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Can only plot 1 Dimensional TEfficiency objects" );
+                        "Can only plot 1 Dimensional TEfficiency objects" );
     return obj;
   }
 
@@ -274,7 +282,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
     break;
   default:
     usr::log::PrintLog( usr::log::INTERNAL,
-      usr::fstr( "Skipping over invalid value (%d)", pt ) );
+                        usr::fstr( "Skipping over invalid value (%d)", pt ) );
   }
 
   TrackObjectY( obj, args.GetInt( "TrackY" ) );
@@ -295,6 +303,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
 
   return obj;
 }
+
 
 /**
  * Plotting of the TGraph object has the following supporting options:
@@ -333,7 +342,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
   // Early Exit for Graphs without any data points
   if( obj.GetN() <= 0 ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Cannot plot TGraphs with no data points!" );
+                        "Cannot plot TGraphs with no data points!" );
     return obj;
   }
 
@@ -380,7 +389,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
     break;
   default:
     usr::log::PrintLog( usr::log::INTERNAL,
-      usr::fstr( "Skipping over invalid value (%d)", pt ) );
+                        usr::fstr( "Skipping over invalid value (%d)", pt ) );
     break;
   }
 
@@ -403,6 +412,7 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
 
   return obj;
 }
+
 
 /**
  * Plotting a TF1 object is done by generating a TGraph with 300 samples points
@@ -433,22 +443,23 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
   return PlotGraph( MakeTF1Graph( func, args ), args );
 }
 
+
 /**
  * @brief Generating a graph representation of the TF1 object.
  */
 TGraph&
 Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 {
-  static const unsigned psample = 300;
-  const std::string graphname   = func.GetName()
-                                  + std::string( "_gengraph" )
-                                  + RandomString( 6 );
+  static const unsigned psample   = 300;
+  const std::string     graphname = func.GetName()
+                                    +std::string( "_gengraph" )
+                                    +RandomString( 6 );
 
-  TF1 f                  = func; // Making a copy of the function
-  const double xmax      = f.GetXmax();
-  const double xmin      = f.GetXmin();
-  const double xspace    = args.Get( "Precision" ).getDouble( 0 );
-  const unsigned xsample = 1 / ( xspace ) + 1;
+  TF1            f       = func; // Making a copy of the function
+  const double   xmax    = f.GetXmax();
+  const double   xmin    = f.GetXmin();
+  const double   xspace  = args.Get( "Precision" ).getDouble( 0 );
+  const unsigned xsample = 1 / ( xspace )+1;
 
   std::vector<double> x( xsample );
   std::vector<double> y( xsample );
@@ -458,7 +469,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 
   // Getting common elements for graph generation
   for( unsigned i = 0; i < xsample; ++i ){
-    const double xval = xmin + i * ( xmax-xmin ) * xspace;
+    const double xval = xmin+i * ( xmax-xmin ) * xspace;
     const double yval = f.Eval( xval );
 
     x[i]      = xval;
@@ -475,16 +486,16 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
   } else {
     const TFitResult& fit
       = dynamic_cast<const TFitResult&>( args.GetObj( "VisualizeError" ) );
-    const double zval                       = args.GetDouble( "VisualizeError" );
+    const double zval = args.GetDouble( "VisualizeError" );
 
     const std::vector<double> bestfit_param = fit.Parameters();
 
     // Getting matrix for random parameter generation
     const TMatrixDSym cormatrix = fit.GetCovarianceMatrix();
-    const TMatrixD tmatrix      = usr::DecompCorvariance( cormatrix );
+    const TMatrixD    tmatrix   = usr::DecompCorvariance( cormatrix );
 
-    TVectorD vec( tmatrix.GetNrows() );
-    std::mt19937 gen;
+    TVectorD                 vec( tmatrix.GetNrows() );
+    std::mt19937             gen;
     std::normal_distribution pdf( 0.0, 1.0 );
 
     // Random sample for parameter space
@@ -497,32 +508,36 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 
       // Forcing the vector onto unit sphere, then transforming according to
       // the covariance matrix
-      vec = ( zval /sqrt( vec.Norm2Sqr() ) ) * vec;
+      vec = ( zval / sqrt( vec.Norm2Sqr() ) ) * vec;
       vec = tmatrix * vec;
 
       // Shifting to central value of function.
       for( int j = 0; j < vec.GetNrows(); ++j ){
-        f.SetParameter( j, vec[j] + bestfit_param[j] );
+        f.SetParameter( j, vec[j]+bestfit_param[j] );
       }
 
       // Finding evelope of randomly generated parameter values
       for( unsigned j = 0; j < xsample; ++j ){
         const double xval = x.at( j );
-        const double yerr = f.Eval( xval ) - y.at( j );
+        const double yerr = f.Eval( xval )-y.at( j );
         yerrhi[j] = std::max( yerr, yerrhi.at( j ) );
         yerrlo[j] = std::max( -yerr, yerrlo.at( j ) );
       }
     }
 
     TGraphAsymmErrors& graph = MakeObj<TGraphAsymmErrors>( x.size(),
-      x.data(), y.data(),
-      zero.data(), zero.data(),
-      yerrlo.data(), yerrhi.data() );
+                                                           x.data(),
+                                                           y.data(),
+                                                           zero.data(),
+                                                           zero.data(),
+                                                           yerrlo.data(),
+                                                           yerrhi.data() );
 
     graph.SetName( graphname.c_str() );
     return graph;
   }
 }
+
 
 /**
  * Function for plotting all of the RooAbsData objects, the supported options
@@ -547,7 +562,8 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
  * Additional automation of options include suppressing the X error bars of the
  * generated graph if an equal binning is used for the data set and the
  * RooFit::XErrorSize is not specified. This is to align the plotting style
- * conventions within the CMS collaboration. Another change to the graphs is that
+ * conventions within the CMS collaboration. Another change to the graphs is
+ *that
  * the y uncertainties in the zero bins are suppressed, again, to align with the
  * plotting style conventions.
  *
@@ -556,10 +572,8 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
  * destroyed when the Pad1D goes out of scope.
  */
 TGraphAsymmErrors&
-Pad1D::PlotData(
-  RooAbsData&                   data,
-  const std::vector<RooCmdArg>& arglist
-  )
+Pad1D::PlotData( RooAbsData&                   data,
+                 const std::vector<RooCmdArg>& arglist )
 {
   const RooArgContainer args(
     arglist,
@@ -582,6 +596,7 @@ Pad1D::PlotData(
   return ans;
 }
 
+
 /**
  * @brief Helper method for generating the a TGraph representing a RooAbsData
  * plot.
@@ -589,7 +604,8 @@ Pad1D::PlotData(
  * This will detect the binning method specified by the various options (using
  * the present binning of the RooFrame variable otherwise), and in the case of
  * uniform binning, suppress the x axis error bars, as specified by the CMS
- * publication conventions. Additionally, Bins with zero entires would have their
+ * publication conventions. Additionally, Bins with zero entires would have
+ *their
  * y error bars suppressed.
  */
 TGraphAsymmErrors&
@@ -602,7 +618,7 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
   RooLinkedList oplist = args.MakeRooList();
 
   auto IsUniform
-    = [this]( const RooCmdArg& cmd ) -> bool {
+    = [this]( const RooCmdArg& cmd )->bool {
         // Double assignment will always be uniform
         if( cmd.getDouble( 0 ) != cmd.getDouble( 1 ) ){ return true;}
         // Getting plot variable bining scheme
@@ -613,7 +629,8 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
             return plotvar->getBinning( binname ).isUniform();
           }
         } else if( cmd.getObject( 0 ) ){
-          auto binobj = dynamic_cast<const RooAbsBinning*>( cmd.getObject( 0 ) );
+          auto binobj =
+            dynamic_cast<const RooAbsBinning*>( cmd.getObject( 0 ) );
           if( binobj  ){
             return binobj->isUniform();
           }
@@ -643,8 +660,10 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
   return ans;
 }
 
+
 /**
- * Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot object
+ * Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot
+ *object
  * and plotting the graphs onto the TPad. The supported options are:
  *
  * - *Any* RooCmdArg supported by the RooAbsData::plotOn function. These will
@@ -669,7 +688,8 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
  * RooFit::VisualizeError. The stock RooPlot generates are contour line for the
  * uncertainty range rather than a line with error, making styling of a PDF with
  * uncertainty rather tedious. This functions takes the generated TGraphs by the
- * RooPlot and recalculated a TGraph with uncertainty. The newly calculated graph
+ * RooPlot and recalculated a TGraph with uncertainty. The newly calculated
+ *graph
  * will be placed under the ownership of the Pad.
  */
 TGraph&
@@ -695,6 +715,7 @@ Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
   return ans;
 }
 
+
 /**
  * @brief Helper function for generating a TGraph representation of a RooAbsPdf
  * plot
@@ -715,8 +736,7 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
   // fail.
   auto CorrectVisError
     = [this]( const RooAbsPdf& pdf,
-              const usr::RooArgContainer& args ) -> RooCmdArg
-      {
+              const usr::RooArgContainer& args )->RooCmdArg {
         if( args.Has( "VisualizeError" ) ){
           auto& cmd = args.Get( "VisualizeError" );
           if( cmd.getSet( 0 ) ){
@@ -724,7 +744,7 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
             // return the original parameter
             return cmd;
           } else {
-            RooCmdArg ans( cmd );
+            RooCmdArg           ans( cmd );
             const RooFitResult& fit
               = *dynamic_cast<const RooFitResult*>( cmd.getObject( 0 ) );
             RooArgSet* cloneParams = pdf.getObservables( fit.floatParsFinal() );
@@ -737,8 +757,8 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
         }
       };
 
-  const RooCmdArg viscmd = CorrectVisError( pdf, args );
-  RooLinkedList roolist  = args.MakeRooList( {"VisualizeError"} );
+  const RooCmdArg viscmd  = CorrectVisError( pdf, args );
+  RooLinkedList   roolist = args.MakeRooList( {"VisualizeError"} );
 
   if( !args.Has( "VisualizeError" ) ){
     // Nothing special needs to be done for simple plotting.
@@ -763,7 +783,7 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
 
     // The new TGraphAsymmErrors to store the results.
     TGraphAsymmErrors& ans = MakeObj<TGraphAsymmErrors>( fiterr.size() );
-    unsigned i             = 0;// index for looping
+    unsigned           i   = 0;// index for looping
 
     for( const auto& fiterrval : fiterr ){
       const double x   = fiterrval.first;
@@ -778,6 +798,7 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
     return ans;
   }
 }
+
 
 // ------------------------------------------------------------------------------
 // Private Helper functions
@@ -797,11 +818,11 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
   RooPlot* test = pdf.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(
-      "Bad argument list or object, plotting failed" );
+            "Bad argument list or object, plotting failed" );
   }
 
   auto& graph = _frame.LastPlot<TGraph>();
-  graph.SetName( ( pdf.GetName() + RandomString( 6 ) ).c_str() );
+  graph.SetName( ( pdf.GetName()+RandomString( 6 ) ).c_str() );
 
   // Since this is a PDF and there is no weighting issue, we
   // enforce the fact that the graph should be positive definite.
@@ -815,6 +836,7 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
 
   return graph;
 }
+
 
 /**
  * @brief Helper function for generating RooAbsData plots onto a Pad.
@@ -831,15 +853,18 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
   RooPlot* test = data.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(
-      "Bad argument list or object, plotting failed" );
+            "Bad argument list or object, plotting failed" );
   }
   return _frame.LastPlot<TGraphAsymmErrors>();
 }
 
+
 /**
- * @brief Changing the stored _datamin, and _datamax variable according to object
+ * @brief Changing the stored _datamin, and _datamax variable according to
+ *object
  *
- * Moving to a private helper function to reduce verbosity in main implementation
+ * Moving to a private helper function to reduce verbosity in main
+ *implementation
  * function
  */
 void
@@ -875,6 +900,7 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
   AutoSetYRange();
 }
 
+
 void
 Pad1D::PlotCreatedAxisObject( TH1D& axisobj )
 {
@@ -885,6 +911,7 @@ Pad1D::PlotCreatedAxisObject( TH1D& axisobj )
   PlotObj( axisobj, "AXIS" );
   this->SetAxisFont();
 }
+
 
 void
 Pad1D::CreateAxisObject( const TH1D& oldhist, const RooArgContainer& args )
@@ -900,24 +927,30 @@ Pad1D::CreateAxisObject( const TF1& func, const RooArgContainer& args )
 {
   // If no axis are available. Generating a TH1 object for axis:
   TH1D& axishist = MakeObj<TH1D>(
-    ( genaxisname + RandomString( 10 ) ).c_str(),
+    ( genaxisname+RandomString( 10 ) ).c_str(),
     "",
-    10, func.GetXmin(), func.GetXmax() );
+    10,
+    func.GetXmin(),
+    func.GetXmax() );
   PlotCreatedAxisObject( axishist );
 }
+
 
 void
 Pad1D::CreateAxisObject( const TGraph& graph, const RooArgContainer& args )
 {
-  const double xmin = GetXmin( graph );
-  const double xmax = GetXmax( graph );
-  const double diff = args.GetInt( "ExtendXRange" ) ? xmax-xmin : 0;
-  TH1D& axishist    = MakeObj<TH1D>(
-    ( genaxisname + RandomString( 6 ) ).c_str(),
+  const double xmin     = GetXmin( graph );
+  const double xmax     = GetXmax( graph );
+  const double diff     = args.GetInt( "ExtendXRange" ) ? xmax-xmin : 0;
+  TH1D&        axishist = MakeObj<TH1D>(
+    ( genaxisname+RandomString( 6 ) ).c_str(),
     "",
-    10, xmin-0.1*diff, xmax+0.1*diff );
+    10,
+    xmin-0.1 * diff,
+    xmax+0.1 * diff );
   PlotCreatedAxisObject( axishist );
 }
+
 
 void
 Pad1D::CreateAxisObject( const TEfficiency& obj, const RooArgContainer& args )

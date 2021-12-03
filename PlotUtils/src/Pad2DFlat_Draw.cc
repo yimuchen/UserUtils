@@ -7,9 +7,11 @@
 
 #include <boost/format.hpp>
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Drawing CMS label
@@ -32,11 +34,11 @@ Pad2DFlat::DrawCMSLabel( const std::string& tag, const std::string& main )
   const float tmp     = FontSize();
   const float ymargin = 0.25 * Xaxis().GetTickLength();
   const float cursorx = GetLeftMargin();
-  const float cursory = 1 - GetTopMargin() + ymargin;
+  const float cursory = 1-GetTopMargin()+ymargin;
   _latex.SetTextSize( Font().large() );
 
   SetTextCursor( cursorx, cursory, font::bottom_left );
-  WriteLine( usr::fstr("#bf{%s} #it{%s}", main, tag ) );
+  WriteLine( usr::fstr( "#bf{%s} #it{%s}", main, tag ) );
   _latex.SetTextSize( tmp );
 }
 
@@ -53,12 +55,13 @@ void
 Pad2DFlat::DrawLuminosity( const std::string& x )
 {
   const float ymargin = 0.25 * Xaxis().GetTickLength();
-  const float cursorx = 1 - GetRightMargin();
-  const float cursory = 1 - GetTopMargin() + ymargin;
+  const float cursorx = 1-GetRightMargin();
+  const float cursory = 1-GetTopMargin()+ymargin;
 
   SetTextCursor( cursorx, cursory, font::bottom_right );
   WriteLine( x );
 }
+
 
 /**
  * @brief Drawing luminosity label.

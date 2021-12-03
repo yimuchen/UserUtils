@@ -10,9 +10,11 @@
 
 #include "TProfile.h"
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Getting the maximum y value of a histogram
@@ -31,11 +33,12 @@ GetYmax( const TH1D& hist )
                           hist.GetBinError( i );
     // Skipping over zero bins
     if( bincont == 0 ){continue; }
-    ans = std::max( ans, bincont + binerr );
+    ans = std::max( ans, bincont+binerr );
   }
 
   return ans;
 }
+
 
 /**
  * @brief Getting the minimum y value of a histogram
@@ -54,15 +57,16 @@ GetYmin( const TH1D& hist )
     if( bincont == 0 ){ continue; }
 
     // Usually the case for single entry bins
-    if( bincont - binerr == 0  ){
+    if( bincont-binerr == 0  ){
       ans = std::min( ans, 0.3 * bincont );
     } else {
-      ans = std::min( ans, bincont - 0.99 * binerr );
+      ans = std::min( ans, bincont-0.99 * binerr );
     }
   }
 
   return ans;
 }
+
 
 /**
  * @brief Get the maximum y value stored in the TGraph
@@ -76,12 +80,13 @@ GetYmax( const TGraph& x )
   double ans = -std::numeric_limits<double>::max();
 
   for( int i = 0; i < x.GetN(); ++i ){
-    const double bin = x.GetY()[i] + std::max( x.GetErrorYhigh( i ), 0.0 );
+    const double bin = x.GetY()[i]+std::max( x.GetErrorYhigh( i ), 0.0 );
     ans = std::max( ans, bin );
   }
 
   return ans;
 }
+
 
 /**
  * @brief Get the maximum y value stored in the TGraph
@@ -95,7 +100,7 @@ GetYmin( const TGraph& x )
   double ans = std::numeric_limits<double>::max();
 
   for( int i = 0; i < x.GetN(); ++i ){
-    const double bin = x.GetY()[i] - std::max( x.GetErrorYlow( i ), 0.0 );
+    const double bin = x.GetY()[i]-std::max( x.GetErrorYlow( i ), 0.0 );
     // In the case that the value is exactly zero, we are going to ignore this
     // value!
     if( bin == 0 ){ continue; }
@@ -104,6 +109,7 @@ GetYmin( const TGraph& x )
 
   return ans;
 }
+
 
 /**
  * @brief Get the minimmum x value of a graph.
@@ -116,13 +122,14 @@ GetXmin( const TGraph& x )
   double ans = std::numeric_limits<double>::max();
 
   for( int i = 0; i < x.GetN(); ++i ){
-    const double bin = x.GetX()[i] - std::max( x.GetErrorXlow( i ), 0.0 );
+    const double bin = x.GetX()[i]-std::max( x.GetErrorXlow( i ), 0.0 );
     if( bin == 0 ){ continue; }
     ans = std::min( ans, bin );
   }
 
   return ans;
 }
+
 
 /**
  * @brief Get the maximum x value of a graph.
@@ -135,12 +142,13 @@ GetXmax( const TGraph& x )
   double ans = -std::numeric_limits<double>::max();
 
   for( int i = 0; i < x.GetN(); ++i ){
-    const double bin = x.GetX()[i] + std::max( x.GetErrorXhigh( i ), 0.0 );
+    const double bin = x.GetX()[i]+std::max( x.GetErrorXhigh( i ), 0.0 );
     ans = std::max( ans, bin );
   }
 
   return ans;
 }
+
 
 /**
  * @brief Get the minimum y value of the TEfficiency object
@@ -158,12 +166,13 @@ GetYmin( const TEfficiency& x )
   for( unsigned i = 1; i <= nbins; ++i ){
     // Skipping over empty bins
     if( x.GetPassedHistogram()->GetBinContent( i ) == 0 ){ continue; }
-    const double bin = x.GetEfficiency( i ) - x.GetEfficiencyErrorLow( i );
+    const double bin = x.GetEfficiency( i )-x.GetEfficiencyErrorLow( i );
     ans = std::min( ans, bin );
   }
 
   return ans;
 }
+
 
 /**
  * @brief Get the maximum y value of the TEfficiency object.
@@ -181,16 +190,18 @@ GetYmax( const TEfficiency& x )
   for( unsigned i = 1; i <= nbins; ++i ){
     // Skipping over empty bins
     if( x.GetPassedHistogram()->GetBinContent( i ) == 0 ){ continue; }
-    const double bin = x.GetEfficiency( i ) + x.GetEfficiencyErrorUp( i );
+    const double bin = x.GetEfficiency( i )+x.GetEfficiencyErrorUp( i );
     ans = std::max( ans, bin );
   }
 
   return ans;
 }
 
+
 /**
  * @brief Getting the minimum y value of te THStack object.
- * @details Retuning the maximum bin value of a THStack object, the bin errors of
+ * @details Retuning the maximum bin value of a THStack object, the bin errors
+ *of
  * each histogram would *not* be taken into account. This functions assumes
  * *identical* binning of the internal histograms, though this might not be the
  * case. Use at your own risk.
@@ -215,6 +226,7 @@ GetYmax( const THStack& x )
 
   return ans;
 }
+
 
 /**
  * @brief Getting the minimum y value of a THStack object.

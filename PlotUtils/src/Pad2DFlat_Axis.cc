@@ -4,9 +4,11 @@
 #include "UserUtils/PlotUtils/Pad2DFlat.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Getting the object that is responsible for plotting the axis.
@@ -28,6 +30,7 @@ Pad2DFlat::GetAxisObject() const
 
   return nullptr;
 }
+
 
 /**
  * @brief common settings for setting the axis fonts
@@ -54,6 +57,7 @@ Pad2DFlat::SetAxisFont()
   Zaxis().SetTitleOffset( 1.5 );
 }
 
+
 #define AXISOBJ_ACCESS( ACTION, DEFAULT )                  \
   TObject* axisobj = GetAxisObject();                      \
   if( !axisobj ){                                          \
@@ -66,14 +70,14 @@ Pad2DFlat::SetAxisFont()
     return DEFAULT;                                        \
   }
 
-#define AXISOBJ_ADJUST( ACTION )                          \
-  TObject* axisobj = GetAxisObject();                     \
-  if( !axisobj ){                                         \
-    return;                                               \
-  } else if( axisobj->InheritsFrom( TH2::Class() ) ){     \
-    return dynamic_cast<TH1*>( axisobj )->ACTION;         \
+#define AXISOBJ_ADJUST( ACTION )                           \
+  TObject* axisobj = GetAxisObject();                      \
+  if( !axisobj ){                                          \
+    return;                                                \
+  } else if( axisobj->InheritsFrom( TH2::Class() ) ){      \
+    return dynamic_cast<TH1*>( axisobj )->ACTION;          \
   } else if( axisobj->InheritsFrom( TGraph2D::Class() ) ){ \
-    return dynamic_cast<TGraph*>( axisobj )->ACTION;      \
+    return dynamic_cast<TGraph*>( axisobj )->ACTION;       \
   }
 
 /**

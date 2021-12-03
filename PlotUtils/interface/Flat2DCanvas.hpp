@@ -9,9 +9,11 @@
 #include "UserUtils/PlotUtils/Pad2DFlat.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Canvas containing a single 2D pad
@@ -21,14 +23,10 @@ class Flat2DCanvas : public Canvas
 public:
   static length_t default_width;
   static length_t default_height;
-  static FontSet default_font;
-
-  Flat2DCanvas(
-    const length_t width  = default_width,
-    const length_t height = default_height,
-    const FontSet&        = default_font
-    );
-
+  static FontSet  default_font;
+  Flat2DCanvas( const length_t width  = default_width,
+                const length_t height = default_height,
+                const FontSet&        = default_font );
   virtual ~Flat2DCanvas ();
 
   /**
@@ -49,37 +47,46 @@ public:
    */
   template<typename ... Args>
   inline TH2D&
-  PlotHist( TH2D& x, Args... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH2D& x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
   template<typename ... Args>
   inline TH2D&
-  PlotHist( TH2D* x, Args... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH2D* x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
 
   template<typename ... Args>
   inline TGraph2D&
-  PlotFunc( TF2& x, Args... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF2& x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
   template<typename ... Args>
   inline TGraph2D&
-  PlotFunc( TF2* x, Args... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF2* x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
 
   template<typename ... Args>
   inline TGraph2D&
-  PlotGraph( TGraph2D& x, Args... args ){ return Pad().PlotGraph( x, args ... );}
+  PlotGraph( TGraph2D& x, Args ... args )
+  {
+    return Pad().PlotGraph( x, args ... );
+  }
   template<typename ... Args>
   inline TGraph2D&
-  PlotGraph( TGraph2D* x, Args... args ){ return Pad().PlotGraph( x, args ... );}
+  PlotGraph( TGraph2D* x, Args ... args )
+  {
+    return Pad().PlotGraph( x, args ... );
+  }
 
   template<typename ... Args>
   inline TGraph&
-  Plot1DGraph( TGraph& x, Args... args )
+  Plot1DGraph( TGraph& x, Args ... args )
   {
     return Pad().Plot1DGraph( x, args ... );
   }
+
+
   template<typename ... Args>
   inline TGraph&
-  Plot1DGraph( TGraph* x, Args... args )
+  Plot1DGraph( TGraph* x, Args ... args )
   {
     return Pad().Plot1DGraph( x, args ... );
   }
+
 
   /** @} */
 
@@ -100,12 +107,17 @@ public:
 
   /**
    * @{
-   * @brief passing through addition Pad2DFlat functions, using variadic template to future proof interface.
+   * @brief passing through addition Pad2DFlat functions, using variadic
+   *template to future proof interface.
    */
   template<typename ... Args>
   inline void DrawCMSLabel( Args ... args ){ Pad().DrawCMSLabel( args ... );}
   template<typename ... Args>
-  inline void DrawLuminosity( Args ... args ){ Pad().DrawLuminosity( args ... );}
+  inline void
+  DrawLuminosity( Args ... args )
+  {
+    Pad().DrawLuminosity( args ... );
+  }
   /** @} */
 #undef CANVAS2D_VOID_PASSTHROUGH
 

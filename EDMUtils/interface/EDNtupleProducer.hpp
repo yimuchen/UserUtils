@@ -20,10 +20,11 @@ public:
 
 protected:
   edm::Service<TFileService> fs;
-  TTree* tree;
+  TTree*                     tree;
 
-  std::map<std::string, std::unique_ptr<std::vector<float> > > _float_collection;
-  std::map<std::string, std::unique_ptr<std::vector<int> > > _int_collection;
+  std::map<std::string,
+           std::unique_ptr<std::vector<float> > >             _float_collection;
+  std::map<std::string, std::unique_ptr<std::vector<int> > >  _int_collection;
   std::map<std::string, std::unique_ptr<std::vector<bool> > > _bool_collection;
 
   template<typename>
@@ -35,10 +36,9 @@ protected:
   //
 
 private:
-  void analyze( const edm::Event&, const edm::EventSetup& ) final;
+  void         analyze( const edm::Event&, const edm::EventSetup& ) final;
   virtual void np_analyze( const edm::Event&, const edm::EventSetup& ) = 0;
-  void clear_collections();
+  void         clear_collections();
 };
-
 
 }// namespace usr

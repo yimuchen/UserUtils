@@ -7,7 +7,8 @@
 #include <string>
 #include <vector>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @defgroup rapidjson RapidJSON helper functions
@@ -17,7 +18,7 @@ namespace usr {
  */
 
 typedef rapidjson::Document JSONDocument;
-typedef rapidjson::Value    JSONMap;
+typedef rapidjson::Value JSONMap;
 
 extern JSONDocument FromJSONFile( const std::string& filename );
 extern JSONDocument FromJSONFiles( const std::vector<std::string>& filename );
@@ -73,7 +74,8 @@ extern std::vector<TYPE> JSONList( const JSONMap&     map,
 
 /**
  * @brief For an immediate list entry of a JSON map, return the entry as a
- * std::vector. If the entry doesn't exists, return a default value. If the entry
+ * std::vector. If the entry doesn't exists, return a default value. If the
+ *entry
  * exists but has issues casting to the request data type. Raise an exception.
  */
 template<typename TYPE>

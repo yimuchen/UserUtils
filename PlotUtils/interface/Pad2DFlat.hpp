@@ -25,9 +25,11 @@
 #include "TH2D.h"
 #include "TLegend.h"
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Specialized class for 2D data object representation in x-y plane
@@ -36,10 +38,13 @@ namespace plt {
 class Pad2DFlat : public PadBase
 {
 protected:
-  Pad2DFlat( Canvas* , const PadSize& );
-  Pad2DFlat( Canvas* , const PadSize&,
-             const double xmin, const double xmax,
-             const double ymin, const double ymax );
+  Pad2DFlat( Canvas*, const PadSize& );
+  Pad2DFlat( Canvas*,
+             const PadSize&,
+             const double xmin,
+             const double xmax,
+             const double ymin,
+             const double ymax );
 
   virtual void InitDraw();
   virtual void Finalize();
@@ -48,7 +53,7 @@ protected:
 
 public:
   virtual ~Pad2DFlat();
-  Pad2DFlat()                   = delete;
+  Pad2DFlat() = delete;
   // Pad2DFlat() {} // Needed for reflex should never be used by
   Pad2DFlat( const Pad2DFlat& ) = delete;
 
@@ -62,6 +67,8 @@ public:
   {
     return PlotHist( *x, list );
   }
+
+
   inline TH2D& PlotHist( TH2D& x ){ return PlotHist( x, {} );}
   inline TH2D& PlotHist( TH2D* x ){ return PlotHist( *x, {} );}
   template<typename ... Args>
@@ -70,12 +77,16 @@ public:
   {
     return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TH2D&
   PlotHist( TH2D* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotHist( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
   /** @} */
 
@@ -89,6 +100,8 @@ public:
   {
     return PlotFunc( *x, list );
   }
+
+
   inline TGraph2D& PlotFunc( TF2& x ){ return PlotFunc( x, {} );}
   inline TGraph2D& PlotFunc( TF2* x ){ return PlotFunc( *x, {} );}
   template<typename ... Args>
@@ -97,12 +110,16 @@ public:
   {
     return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TGraph2D&
   PlotFunc( TF2* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotFunc( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
   /** @} */
 
@@ -116,6 +133,8 @@ public:
   {
     return PlotGraph( *x, list );
   }
+
+
   inline TGraph2D& PlotGraph( TGraph2D& x ){ return PlotGraph( x, {} );}
   inline TGraph2D& PlotGraph( TGraph2D* x ){ return PlotGraph( *x, {} );}
   template<typename ... Args>
@@ -124,12 +143,16 @@ public:
   {
     return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TGraph2D&
   PlotGraph( TGraph2D* x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   /**
@@ -142,6 +165,8 @@ public:
   {
     return Plot1DGraph( *x, list );
   }
+
+
   inline TGraph& Plot1DGraph( TGraph& x ){ return Plot1DGraph( x, {} );}
   inline TGraph& Plot1DGraph( TGraph* x ){ return Plot1DGraph( *x, {} );}
   template<typename ... Args>
@@ -150,12 +175,16 @@ public:
   {
     return Plot1DGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   template<typename ... Args>
   inline TGraph&
   Plot1DGraph( TGraph* x, const RooCmdArg& arg1, Args ... args )
   {
     return Plot1DGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
+
   /** @} */
 
   TObject*     GetAxisObject() const;
@@ -188,16 +217,15 @@ public:
 
 private:
 
-  TLegend _legend;
+  TLegend  _legend;
   RooFrame _frame;
-  void init_legend();
-  void MakeLegend();
+  void     init_legend();
+  void     MakeLegend();
 };
 
 }/* plt */
 
 }/* usr */
-
 
 
 #endif

@@ -22,7 +22,8 @@
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
 namespace po = boost::program_options;
 namespace fs = std::experimental::filesystem;
@@ -49,14 +50,13 @@ public:
    */
   ArgumentExtender( const std::vector<std::string>& list )
   { _init( list ); }
-
   /**
    * @brief varidaic initialization for multiple json files.
    * @details see ArgumentExtender::_init() for more details.
    */
-  template<typename ... TS> ArgumentExtender( const std::string& first,
-                                              TS ...             others );
-
+  template<typename ... TS>
+  ArgumentExtender( const std::string& first,
+                    TS ... others );
   virtual ~ArgumentExtender ();
 
   ArgumentExtender& AddOptions( const po::options_description& optdesc );
@@ -127,10 +127,10 @@ public:
   struct ArgPathScheme
   {
     ArgPathScheme( const std::string& opt, const std::string fstring ) :
-      option( opt ),
+      option    ( opt ),
       pathstring( fstring ){}
     ArgPathScheme( const std::string& opt ) :
-      option( opt ),
+      option    ( opt ),
       pathstring( opt ){}
     std::string option;
     std::string pathstring;
@@ -177,11 +177,11 @@ protected:
   Args(){ return _argmap; }
 
 private:
-  JSONDocument _jsonmap;
+  JSONDocument            _jsonmap;
   po::options_description _optdesc;
-  po::variables_map _argmap;
+  po::variables_map       _argmap;
 
-  fs::path _prefix;
+  fs::path   _prefix;
   PathScheme _dirscheme;
   PathScheme _namescheme;
 
@@ -199,7 +199,6 @@ private:
 };
 
 
-
 /*-----------------------------------------------------------------------------
  *  Template implementation
    --------------------------------------------------------------------------*/
@@ -213,11 +212,13 @@ ArgumentExtender::Arg( const std::string& opt ) const
 {
   if( !CheckArg( opt ) ){
     throw std::invalid_argument(
-      usr::fstr( "Option [%s] was not provided as a program options, "
-        ", see --help output", opt ) );
+            usr::fstr( "Option [%s] was not provided as a program options, "
+                       ", see --help output",
+                       opt ) );
   }
   return _argmap[opt].as<T>();
 }
+
 
 template<typename T>
 T
@@ -228,13 +229,14 @@ template<typename T>
 std::vector<T>
 ArgumentExtender::ArgList( const std::string& opt ) const
 {
-  if( CheckArg( opt + "_list" ) ){
+  if( CheckArg( opt+"_list" ) ){
     const std::string txtfile = Arg<std::string>( opt+"_list" );
     return ListFromFile<T>( txtfile );
   } else if( !CheckArg( opt ) ){
     throw std::invalid_argument(
-      usr::fstr( "Option [%s] was not provided as a program options, "
-        ", see --help output", opt ) );
+            usr::fstr( "Option [%s] was not provided as a program options, "
+                       ", see --help output",
+                       opt ) );
   } else {
     return _argmap[opt].as<std::vector<T> >();
   }
@@ -245,8 +247,10 @@ ArgumentExtender::ArgList( const std::string& opt ) const
 
 namespace boost
 {
+
 namespace program_options
 {
+
 /**
  * @brief Template short hand for assigning a option with a default value
  */
@@ -256,6 +260,7 @@ defvalue( const T def )
 {
   return boost::program_options::value<T>()->default_value( def );
 }
+
 
 /**
  * @brief Template short had for assign a option to take multiple tokens.
@@ -267,6 +272,7 @@ multivalue()
   return boost::program_options::value<std::vector<T> >()->multitoken();
 }
 
+
 /**
  * @brief Template short hand to indicate an option is required.
  */
@@ -276,6 +282,7 @@ reqvalue()
 {
   return boost::program_options::value<T>()->required();
 }
+
 
 /**
  * @brief Template shorthand for assigning a option to take multiple tokes with
@@ -293,6 +300,7 @@ defmultivalue( const std::vector<T> def )
 }
 
 }/* program_options */
+
 }/* boost */
 
 #endif/* end of include guard: USERUTILS_COMMON_OPTSNAMER_HPP */

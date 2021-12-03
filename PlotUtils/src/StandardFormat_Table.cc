@@ -14,11 +14,14 @@
 #include "UserUtils/PlotUtils/StandardPlotFormat.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
-namespace fmt {
+namespace fmt
+{
 
 /**
  * @brief Generating a Latex table of all the simulated processes listed in the
@@ -33,11 +36,13 @@ namespace fmt {
  * - The effective luminosity of the process.
  *
  * The first processes printed would be all the signal samples, Next the
- * background processes are printing in the sequence that they appear in the JSON
+ * background processes are printing in the sequence that they appear in the
+ *JSON
  * file. A horizontal line will be placed between each of the background
  * processes and the signal samples.
  */
-void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
+void
+BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
 {
   static const std::string pre_column_format
     = "%%%ds & %%%ds & %%7s & %%10s & %%20s  \\\\\n";
@@ -46,11 +51,16 @@ void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
   auto MakeLine = []( const std::string& column_format,
                       const Process& process )->std::string {
                     return usr::fstr( column_format
-                                    , process.latex_name
-                                    , usr::fmt::decimal( process.cross_section )
-                                    , "(" + process.cross_section_source + ")"
-                                    , process.generator
-                                    , process.effective_luminosity );
+                                      ,
+                                      process.latex_name
+                                      ,
+                                      usr::fmt::decimal( process.cross_section )
+                                      ,
+                                      "("+process.cross_section_source+")"
+                                      ,
+                                      process.generator
+                                      ,
+                                      process.effective_luminosity );
                   };
 
   // Additional string processing
@@ -62,7 +72,8 @@ void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
       = usr::max( max_name_length, process.latex_name.length() );
     max_xsec_length
       = usr::max( max_xsec_length
-                , usr::fmt::decimal( process.cross_section ).str().length() );
+                  ,
+                  usr::fmt::decimal( process.cross_section ).str().length() );
   }
 
   for( const auto& group : background ){
@@ -71,13 +82,16 @@ void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
         = usr::max( max_name_length, process.latex_name.length() );
       max_xsec_length
         = usr::max( max_xsec_length
-                  , usr::fmt::decimal( process.cross_section ).str().length() );
+                    ,
+                    usr::fmt::decimal( process.cross_section ).str().length() );
     }
   }
 
   const std::string column_format = usr::fstr( pre_column_format
-                                             , max_name_length+1
-                                             , max_xsec_length+1 );
+                                               ,
+                                               max_name_length+1
+                                               ,
+                                               max_xsec_length+1 );
 
   // Generating the output
   stream << h_line << std::endl;
@@ -97,6 +111,7 @@ void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
   stream <<  h_line << std::endl;
 }
 
+
 /**
  * @brief Generating a simplied summary table of the simulated processes.
  *
@@ -110,10 +125,12 @@ void BatchRequest::GenerateSimulationTable( std::ostream& stream ) const
  *
  * In case that there are multiple cross section sources or generators, the
  * process with the maximum cross section will be used, followed by latex
- * `ldots`. Since simplified process listing is mainly for presentation purposes,
+ * `ldots`. Since simplified process listing is mainly for presentation
+ *purposes,
  * this should be fine.
  */
-void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
+void
+BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
 {
   static const std::string pre_column_format
     = "%%%ds & %%%ds & %%7s & %%12s  \\\\\n";
@@ -123,21 +140,25 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
     = []( const std::string& column_format,
           const Process& process )->std::string {
         return usr::fstr( column_format
-                        , process.latex_name
-                        , usr::fmt::decimal( process.cross_section )
-                        , "(" + process.cross_section_source + ")"
-                        , process.generator );
+                          ,
+                          process.latex_name
+                          ,
+                          usr::fmt::decimal( process.cross_section )
+                          ,
+                          "("+process.cross_section_source+")"
+                          ,
+                          process.generator );
       };
 
   auto MakeLineG
     = []( const std::string& column_format,
           const ProcessGroup& group )->std::string {
         usr::Measurement total_xsec( 0, 0, 0 );
-        double max_xsec = 0;
-        std::string xsource;
-        std::string xother = "";
-        std::string gen;
-        std::string gen_other = "";
+        double           max_xsec = 0;
+        std::string      xsource;
+        std::string      xother = "";
+        std::string      gen;
+        std::string      gen_other = "";
 
         for( const auto& process : group ){
           total_xsec += process.cross_section;
@@ -157,10 +178,14 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
         }
 
         return usr::fstr( column_format
-                        , group.latex_name
-                        , usr::fmt::decimal( total_xsec )
-                        , "(" + xsource + xother + ")"
-                        , gen + gen_other  );
+                          ,
+                          group.latex_name
+                          ,
+                          usr::fmt::decimal( total_xsec )
+                          ,
+                          "("+xsource+xother+")"
+                          ,
+                          gen+gen_other  );
       };
 
   // Additional string processing
@@ -172,7 +197,8 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
       = usr::max( max_name_length, process.latex_name.length() );
     max_xsec_length
       = usr::max( max_xsec_length
-                , usr::fmt::decimal( process.cross_section ).str().length() );
+                  ,
+                  usr::fmt::decimal( process.cross_section ).str().length() );
   }
 
   for( const auto& group : background ){
@@ -182,13 +208,16 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
     for( const auto& process : group ){
       max_xsec_length
         = usr::max( max_xsec_length
-                  , usr::fmt::decimal( process.cross_section ).str().length() );
+                    ,
+                    usr::fmt::decimal( process.cross_section ).str().length() );
     }
   }
 
   const std::string column_format = usr::fstr( pre_column_format
-                                             , max_name_length+1
-                                             , max_xsec_length+2 );
+                                               ,
+                                               max_name_length+1
+                                               ,
+                                               max_xsec_length+2 );
 
   // Generating the output
   stream << h_line << std::endl;
@@ -205,6 +234,7 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
   stream <<  h_line << std::endl;
 }
 
+
 /**
  * @brief Generating the data table.
  *
@@ -215,19 +245,22 @@ void BatchRequest::GenerateSimulationSummary( std::ostream& stream ) const
  *
  * This is a very basic table used for tallying up the simulation processes.
  */
-void BatchRequest::GenerateDataTable( std::ostream& stream ) const
+void
+BatchRequest::GenerateDataTable( std::ostream& stream ) const
 {
   static const std::string h_line = "\\hline";
 
   auto MakeLine
     = []( const Process& process )->std::string {
         return usr::fstr( "%50s & %8s--%8s & %s \\\\\n",
-          process.latex_name,
-          usr::fmt::base::decimal( process.run_range_min ).spacestr( "\\,," ),
-          usr::fmt::base::decimal( process.run_range_max ).spacestr( "\\,," ),
-          usr::fmt::base::decimal( process.effective_luminosity, 2 ) );
+                          process.latex_name,
+                          usr::fmt::base::decimal(
+                            process.run_range_min ).spacestr( "\\,," ),
+                          usr::fmt::base::decimal(
+                            process.run_range_max ).spacestr( "\\,," ),
+                          usr::fmt::base::decimal( process.effective_luminosity,
+                                                   2 ) );
       };
-
 
   stream << h_line << std::endl;
 

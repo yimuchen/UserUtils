@@ -9,9 +9,11 @@
 #include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
 #endif
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * @{
@@ -22,37 +24,37 @@ namespace plt  {
  */
 length_t Simple1DCanvas::default_width  = 0.9 * len::a4textwidth_default();
 length_t Simple1DCanvas::default_height = 0.9 * len::a4textwidth_default();
-FontSet  Simple1DCanvas::default_font = FontSet(11);
+FontSet  Simple1DCanvas::default_font   = FontSet( 11 );
 /** @} */
 
 /**
  * @brief Construct a Simple1DCanvas without a specific @ROOT{RooRealVar} to
  * define the x axis.
  */
-Simple1DCanvas::Simple1DCanvas(
-  const length_t width,
-  const length_t height,
-  const FontSet& fontset
-  ) : Canvas( width, height, fontset )
+Simple1DCanvas::Simple1DCanvas( const length_t width,
+                                const length_t height,
+                                const FontSet& fontset ) :
+  Canvas( width, height, fontset )
 {
   Add<Pad1D>( PadSize( 0, 0, 1, 1 ) );
   _init_margin();
 }
 
+
 /**
  * @brief Constructing a Simple1DCanvas with a specific @ROOT{RooRealVar} to
  * define the x axis.
  */
-Simple1DCanvas::Simple1DCanvas(
-  const RangeByVar& range,
-  const length_t    width,
-  const length_t    height,
-  const FontSet&    fontset
-  ) : Canvas( width, height, fontset )
+Simple1DCanvas::Simple1DCanvas( const RangeByVar& range,
+                                const length_t    width,
+                                const length_t    height,
+                                const FontSet&    fontset ) :
+  Canvas( width, height, fontset )
 {
   Add<Pad1D>( PadSize( 0, 0, 1, 1 ), range );
   _init_margin();
 }
+
 
 Simple1DCanvas::~Simple1DCanvas(){}
 
@@ -69,21 +71,19 @@ Simple1DCanvas::~Simple1DCanvas(){}
 void
 Simple1DCanvas::_init_margin()
 {
-  double x,xx,y,yy;
-  Pad().SetTopMargin(    1.5*Font().lineheight()/Height() );
-  Pad().SetLeftMargin(   3.5*Font().lineheight()/Width()  );
-  Pad().SetBottomMargin( 2.5*Font().lineheight()/Height() );
+  double x, xx, y, yy;
+  Pad().SetTopMargin(    1.5 * Font().lineheight() / Height() );
+  Pad().SetLeftMargin(   3.5 * Font().lineheight() / Width()  );
+  Pad().SetBottomMargin( 2.5 * Font().lineheight() / Height() );
   Pad().SetRightMargin( std::max(
-    ( 4.0*Font().lineheight()/Height() - ( 3.5*Font().lineheight()/Width() ) ),
-    ( 0.3*Font().lineheight()/Width() ) )
-    );
+                          ( 4.0 * Font().lineheight() / Height()
+                            -( 3.5 * Font().lineheight() / Width() ) ),
+                          ( 0.3 * Font().lineheight() / Width() ) ));
   Pad().TPad_().Update();
-  Pad().TPad_().GetRange(x,xx,y,yy);
+  Pad().TPad_().GetRange( x, xx, y, yy );
 
 }
-
 
 }/* plt  */
 
 }/* usr  */
-

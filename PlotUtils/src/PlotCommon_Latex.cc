@@ -17,9 +17,9 @@
 
 static const std::regex dec_regex( ".*(#[a-zA-Z]+\\{).*" );
 static const std::regex sym_regex( "#[a-zA-Z]+\\b" );
-static const double subratio       = 2./3.;
-static const double fraclineheight = 1./5.;
-static const double int_height     = 2.0;
+static const double     subratio       = 2. / 3.;
+static const double     fraclineheight = 1. / 5.;
+static const double     int_height     = 2.0;
 
 // Precalculated character width chart (relative to font size)
 static const std::map<char, double> char_width = {
@@ -46,29 +46,33 @@ static const std::map<char, double> char_width = {
   {'y', 0.45180723}, {'z', 0.45180723}
 };
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Better estimation of the actual width (in units 'em') of a Latex
  * string.
  *
- * @details This functions sums the width of most printable ASCII characters with
+ * @details This functions sums the width of most printable ASCII characters
+ *with
  * by a predefined table, as the Latex engine used in @(ROOT} has very minimal
  * kerning on the characeter sets. The table itself is generated using a ROOT
  * script, using a Helvetic font (so estimates for Times font might be off).
  * Special care is taken to remove decorators such as fractions, square-roots,
  * left-right braces, and sub/sup-scripts. Non-ASCII characters (greek symbols,
- * mathematical symbols... etc), are simply estimated to be a standard 'M' width.
+ * mathematical symbols... etc), are simply estimated to be a standard 'M'
+ *width.
  */
 double
 EstimateLatexWidth( const std::string& text )
 {
-  double ans = 0;
+  double      ans = 0;
   std::string un_text( text );
   std::smatch match;
-  size_t find = std::string::npos;
+  size_t      find = std::string::npos;
 
   // Dealing with fractions in text
   while( ( find = un_text.find( "#frac{" ) ) != std::string::npos ){
@@ -77,14 +81,14 @@ EstimateLatexWidth( const std::string& text )
     const size_t openbrace2  = NextOpenBrace( un_text, closebrace1 );
     const size_t closebrace2 = MatchBrace( un_text, openbrace2 );
 
-    const std::string numstr( un_text.begin() + openbrace1+1,
-                              un_text.begin() + closebrace1 );
-    const std::string denstr( un_text.begin() + openbrace2+1,
-                              un_text.begin() + closebrace2 );
+    const std::string numstr( un_text.begin()+openbrace1+1,
+                              un_text.begin()+closebrace1 );
+    const std::string denstr( un_text.begin()+openbrace2+1,
+                              un_text.begin()+closebrace2 );
     ans += std::max( EstimateLatexWidth( numstr ),
-      EstimateLatexWidth( denstr ) );
+                     EstimateLatexWidth( denstr ) );
 
-    un_text.erase( un_text.begin() + find, un_text.begin() + closebrace2+1 );
+    un_text.erase( un_text.begin()+find, un_text.begin()+closebrace2+1 );
   }
 
   // Dealing with square roots
@@ -92,8 +96,8 @@ EstimateLatexWidth( const std::string& text )
     const size_t openbrace  = NextOpenBrace( un_text, find );
     const size_t closebrace = MatchBrace( un_text, openbrace );
 
-    un_text.erase( un_text.begin() + closebrace );
-    un_text.erase( un_text.begin() + find, un_text.begin() + openbrace + 1 );
+    un_text.erase( un_text.begin()+closebrace );
+    un_text.erase( un_text.begin()+find, un_text.begin()+openbrace+1 );
     ans += 1;
   }
 
@@ -102,11 +106,11 @@ EstimateLatexWidth( const std::string& text )
     const size_t openbrace  = NextOpenBrace( un_text, find );
     const size_t closebrace = MatchBrace( un_text, openbrace );
 
-    const std::string suptext( un_text.begin() + openbrace+1,
-                               un_text.begin() + closebrace );
+    const std::string suptext( un_text.begin()+openbrace+1,
+                               un_text.begin()+closebrace );
 
     ans += 0.5 * EstimateLatexWidth( suptext );
-    un_text.erase( un_text.begin() + find, un_text.begin() + closebrace + 1 );
+    un_text.erase( un_text.begin()+find, un_text.begin()+closebrace+1 );
   }
 
   // Dealing with super scripts and sub_scripts
@@ -114,20 +118,20 @@ EstimateLatexWidth( const std::string& text )
     const size_t openbrace  = NextOpenBrace( un_text, find );
     const size_t closebrace = MatchBrace( un_text, openbrace );
 
-    const std::string subtext( un_text.begin() + openbrace+1,
-                               un_text.begin() + closebrace );
+    const std::string subtext( un_text.begin()+openbrace+1,
+                               un_text.begin()+closebrace );
 
     ans += 0.5 * EstimateLatexWidth( subtext );
-    un_text.erase( un_text.begin() + find, un_text.begin() + closebrace + 1 );
+    un_text.erase( un_text.begin()+find, un_text.begin()+closebrace+1 );
   }
 
   // Removing left right decorators
   while( ( find = un_text.find( "#left " ) ) != std::string::npos ){
-    un_text.erase( un_text.begin() + find, un_text.begin() + find + 6 );
+    un_text.erase( un_text.begin()+find, un_text.begin()+find+6 );
   }
 
   while( ( find = un_text.find( "#right " ) ) != std::string::npos ){
-    un_text.erase( un_text.begin() + find, un_text.begin() + find + 7 );
+    un_text.erase( un_text.begin()+find, un_text.begin()+find+7 );
   }
 
   // Regex for finding generic decorators
@@ -136,8 +140,8 @@ EstimateLatexWidth( const std::string& text )
     find = un_text.find( s );
     const size_t open  = NextOpenBrace( un_text, find );
     const size_t close = MatchBrace( un_text, open );
-    un_text.erase( un_text.begin() + close );
-    un_text.erase( un_text.begin() + find, un_text.begin() + find + s.length() );
+    un_text.erase( un_text.begin()+close );
+    un_text.erase( un_text.begin()+find, un_text.begin()+find+s.length() );
   }
 
   // Replacing all symbols with just EM space
@@ -157,12 +161,14 @@ EstimateLatexWidth( const std::string& text )
   return ans;
 }
 
+
 /**
  * @brief Estimate of the height of a Latex string in 'em' units.
  *
  * @details A line with no special characters is expected to be a line height of
  * ~1.08em (using the height ot the tallest regular character in ROOT: The
- * asterisk). A few processes are taken for fractions, for which we assume double
+ * asterisk). A few processes are taken for fractions, for which we assume
+ *double
  * line height with some margin. One-line decorators (subscripts, supscripts and
  * square roots, simply adds an offset. The only special character that will the
  * taken care of would be the integral character (`\int`), which we assume to be
@@ -171,9 +177,9 @@ EstimateLatexWidth( const std::string& text )
 double
 EstimateLatexHeight( const std::string& text )
 {
-  double ans = 1.08024691;// Maximum height of regular characters (*)
+  double      ans = 1.08024691;// Maximum height of regular characters (*)
   std::string un_text( text );
-  size_t find = std::string::npos;
+  size_t      find = std::string::npos;
 
   // Dealing with fractions in text
   while( ( find = un_text.find( "#frac{" ) ) != std::string::npos ){
@@ -183,21 +189,21 @@ EstimateLatexHeight( const std::string& text )
     const size_t closebrace2 = MatchBrace( un_text, openbrace2 );
 
     const std::string numstr( un_text.begin()+openbrace1+1,
-                              un_text.begin() + closebrace1 );
+                              un_text.begin()+closebrace1 );
     const std::string denstr( un_text.begin()+openbrace2+1,
-                              un_text.begin() + closebrace2 );
+                              un_text.begin()+closebrace2 );
     ans = std::max( ans,
-      EstimateLatexHeight( numstr )
-      + EstimateLatexHeight( denstr )
-      + fraclineheight );
+                    EstimateLatexHeight( numstr )
+                    +EstimateLatexHeight( denstr )
+                    +fraclineheight );
 
-    un_text.erase( un_text.begin() + find, un_text.begin() + closebrace2+1 );
+    un_text.erase( un_text.begin()+find, un_text.begin()+closebrace2+1 );
   }
 
   // Dealing with integer symbols
   while( ( find = un_text.find( "#int" ) ) != std::string::npos ){
     ans = std::max( ans, int_height );
-    un_text.erase( un_text.begin() + find, un_text.begin() + find + 4 );
+    un_text.erase( un_text.begin()+find, un_text.begin()+find+4 );
   }
 
   // Only dealing with this for now....

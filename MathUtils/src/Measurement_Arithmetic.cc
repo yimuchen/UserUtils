@@ -18,57 +18,72 @@
 
 using namespace std;
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief interface to the Single variable version of the MinosError() function.
  */
 Measurement
-MakeMinos(
-  const ROOT::Math::IGenFunction& nll,
-  const double                    min,
-  const double                    max,
-  const double                    confidencelevel )
+MakeMinos( const ROOT::Math::IGenFunction& nll,
+           const double                    min,
+           const double                    max,
+           const double                    confidencelevel )
 {
-  double central    = min + max / 2;
+  double central    = min+max / 2;
   double lowerbound = min;
   double upperbound = max;
 
-  usr::stat::MinosError( nll, central, lowerbound, upperbound, confidencelevel );
+  usr::stat::MinosError( nll,
+                         central,
+                         lowerbound,
+                         upperbound,
+                         confidencelevel );
   return Measurement( central, upperbound-central, central-lowerbound );
 }
+
 
 /**
  * @brief interface to the \f$R^{n}\rightarrow R\f$ version of the MinosError()
  *        function
  */
 Measurement
-MakeMinos(
-  const ROOT::Math::IMultiGenFunction& nllfunction,
-  const ROOT::Math::IMultiGenFunction& varfunction,
-  const double*                        initguess,
-  const double                         confidencelevel,
-  const double*                        upperguess,
-  const double*                        lowerguess )
+MakeMinos( const ROOT::Math::IMultiGenFunction& nllfunction,
+           const ROOT::Math::IMultiGenFunction& varfunction,
+           const double*                        initguess,
+           const double                         confidencelevel,
+           const double*                        upperguess,
+           const double*                        lowerguess )
 {
   double central;
   double upperbound;
   double lowerbound;
 
   usr::stat::MinosError( nllfunction
-                       , varfunction
-                       , initguess
-                       , central
-                       , lowerbound
-                       , upperbound
-                       , confidencelevel
-                       , upperguess
-                       , lowerguess );
+                         ,
+                         varfunction
+                         ,
+                         initguess
+                         ,
+                         central
+                         ,
+                         lowerbound
+                         ,
+                         upperbound
+                         ,
+                         confidencelevel
+                         ,
+                         upperguess
+                         ,
+                         lowerguess );
 
   return Measurement( central
-                    , fabs( upperbound-central )
-                    , fabs( central - lowerbound ) );
+                      ,
+                      fabs( upperbound-central )
+                      ,
+                      fabs( central-lowerbound ) );
 }
+
 
 /**
  * @brief Approximate @NLL function for a measurements of
@@ -94,7 +109,8 @@ MakeMinos(
  * - To avoid the singularity at \f$x=-1/A\f$, an exponential function would be
  *   used instead for the linear function for the denominator in the @NLL
  *   function when x is past half-way from the central value to the original
- *   singular point, such that the approximation would be extended to an infinite
+ *   singular point, such that the approximation would be extended to an
+ *infinite
  *   domain. The exponential function is designed such that the denominator and
  *   its derivative is continuous.
  */
@@ -103,20 +119,22 @@ double
 LinearVarianceNLL( const double x, const Measurement& m )
 {
   static const double maxrelerror = 10.;
-  static double (* AugmentedDenominator)( double, const double, const double )
+  static double       (* AugmentedDenominator)( double,
+                                                const double,
+                                                const double )
     = []( double x, const double up, const double lo )->double {
         static const double minprod = 1e-12;
 
         const double V = std::max( up * lo, minprod );
         const double A = ( up-lo ) / V;
 
-        double ans = V * ( 1 + x * A );
-        if( up > lo && A != 0 && x < ( -lo-1/A )/ 2 ){
-          const double s = ( -lo-1/A )/2;
-          const double b = A / ( 1+A*s );
-          const double B = V * ( 1+A*s ) / exp( b*s );
+        double ans = V * ( 1+x * A );
+        if( up > lo && A != 0 && x < ( -lo-1 / A ) / 2 ){
+          const double s = ( -lo-1 / A ) / 2;
+          const double b = A / ( 1+A * s );
+          const double B = V * ( 1+A * s ) / exp( b * s );
           ans = B * exp( b * x );
-        } else if( lo > up && A != 0 && x > ( up+1/A )/2 ){
+        } else if( lo > up && A != 0 && x > ( up+1 / A ) / 2 ){
           ans = AugmentedDenominator( -x, lo, up );
         }
         return ans;
@@ -129,12 +147,13 @@ LinearVarianceNLL( const double x, const Measurement& m )
   const double effupper = std::max( rawupper, rawlower / maxrelerror );
   const double efflower = std::max( rawlower, rawupper / maxrelerror );
 
-  const double num = ( x- central ) * ( x - central );
+  const double num = ( x-central ) * ( x-central );
   const double de  = AugmentedDenominator( x-central, effupper, efflower );
   const double ans = 0.5  * num / de;
 
   return ans;
 }
+
 
 /**
  * @brief given a list of measurements with uncertainties, return the effective
@@ -150,17 +169,16 @@ LinearVarianceNLL( const double x, const Measurement& m )
  * usr::LazyEvaluateUncorrelated method.
  */
 extern Measurement
-EvaluateUncorrelated(
-  const std::vector<Measurement>& m_list,
-  const ROOT::Math::IMultiGenFunction& varfunction,
-  const double confidencelevel,
-  double (* nll )( double, const Measurement& ) )
+EvaluateUncorrelated( const std::vector<Measurement>& m_list,
+                      const ROOT::Math::IMultiGenFunction& varfunction,
+                      const double confidencelevel,
+                      double (* nll )( double, const Measurement& ) )
 {
   auto masternll = [&m_list, nll]( const double* x )->double {
                      double ans = 0;
 
                      for( unsigned i = 0; i < m_list.size(); ++i ){
-                       ans = ans + nll( x[i], m_list.at( i ) );
+                       ans = ans+nll( x[i], m_list.at( i ) );
                      }
 
                      return ans;
@@ -170,7 +188,7 @@ EvaluateUncorrelated(
   std::vector<double> init;
   std::vector<double> upperguess;
   std::vector<double> lowerguess;
-  double diff_sqsum = 0;
+  double              diff_sqsum = 0;
 
   for( const auto& m : m_list ){
     init.push_back( m.CentralValue() );
@@ -178,8 +196,10 @@ EvaluateUncorrelated(
 
   for( unsigned i = 0; i < m_list.size(); ++i  ){
     const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                   , init.data(), i );
-    diff_sqsum += diff *diff;
+                                                     ,
+                                                     init.data(),
+                                                     i );
+    diff_sqsum += diff * diff;
   }
 
   diff_sqsum = std::sqrt( diff_sqsum );
@@ -188,24 +208,32 @@ EvaluateUncorrelated(
   // lower uncertainties based on the derivatives of the variable function.
   for( unsigned i = 0; i < m_list.size(); ++i ){
     const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                   , init.data(), i );
+                                                     ,
+                                                     init.data(),
+                                                     i );
     const double w = fabs( diff / diff_sqsum );
     if( diff > 0 ){
-      upperguess.push_back( init.at( i ) + w*m_list.at( i ).AbsUpperError() );
-      lowerguess.push_back( init.at( i ) - w*m_list.at( i ).AbsLowerError() );
+      upperguess.push_back( init.at( i )+w * m_list.at( i ).AbsUpperError() );
+      lowerguess.push_back( init.at( i )-w * m_list.at( i ).AbsLowerError() );
     } else {
-      upperguess.push_back( init.at( i ) - w*m_list.at( i ).AbsLowerError() );
-      lowerguess.push_back( init.at( i ) + w*m_list.at( i ).AbsUpperError() );
+      upperguess.push_back( init.at( i )-w * m_list.at( i ).AbsLowerError() );
+      lowerguess.push_back( init.at( i )+w * m_list.at( i ).AbsUpperError() );
     }
   }
 
   return MakeMinos( nllfunction
-                  , varfunction
-                  , init.data()
-                  , confidencelevel
-                  , upperguess.data()
-                  , lowerguess.data() );
+                    ,
+                    varfunction
+                    ,
+                    init.data()
+                    ,
+                    confidencelevel
+                    ,
+                    upperguess.data()
+                    ,
+                    lowerguess.data() );
 }
+
 
 /**
  * @brief given a list of measurements with uncertainties, return the effective
@@ -216,27 +244,30 @@ EvaluateUncorrelated(
  * individual measurements (by default using the LinearVarianceNLL() function).
  */
 Measurement
-SumUncorrelated(
-  const vector<Measurement>& m_list,
-  const double confidencelevel,
-  double (* nll )( double, const Measurement& ) )
+SumUncorrelated( const vector<Measurement>& m_list,
+                 const double confidencelevel,
+                 double (* nll )( double, const Measurement& ) )
 {
   const unsigned dim = m_list.size();
-  auto Sum = [dim]( const double* x ){
-               double ans = 0;
+  auto           Sum = [dim]( const double* x ){
+                         double ans = 0;
 
-               for( unsigned i = 0; i < dim; ++i ){
-                 ans += x[i];
-               }
+                         for( unsigned i = 0; i < dim; ++i ){
+                           ans += x[i];
+                         }
 
-               return ans;
-             };
+                         return ans;
+                       };
 
   return EvaluateUncorrelated( m_list
-                             , ROOT::Math::Functor( Sum, dim )
-                             , confidencelevel
-                             , nll );
+                               ,
+                               ROOT::Math::Functor( Sum, dim )
+                               ,
+                               confidencelevel
+                               ,
+                               nll );
 }
+
 
 /**
  * @brief given a list of measurements with uncertainties, return the effective
@@ -247,23 +278,22 @@ SumUncorrelated(
  * individual measurements (by default using the LinearVarianceNLL() function).
  */
 Measurement
-ProdUncorrelated(
-  const std::vector<Measurement>& m_list,
-  const double confidencelevel,
-  double (* nll )( double, const Measurement& ) )
+ProdUncorrelated( const std::vector<Measurement>& m_list,
+                  const double confidencelevel,
+                  double (* nll )( double, const Measurement& ) )
 {
   const unsigned dim = m_list.size();
-  auto Prod = [dim]( const double* x ){
-                double ans = 1;
+  auto           Prod = [dim]( const double* x ){
+                          double ans = 1;
 
-                for( unsigned i = 0; i < dim; ++i ){
-                  ans *= x[i];
-                }
+                          for( unsigned i = 0; i < dim; ++i ){
+                            ans *= x[i];
+                          }
 
-                return ans;
-              };
+                          return ans;
+                        };
 
-  double prod = 1.;
+  double              prod = 1.;
   vector<Measurement> normlist;
 
   for( const auto& p : m_list ){
@@ -271,11 +301,15 @@ ProdUncorrelated(
     normlist.push_back( p.NormParam() );
   }
 
-  return prod*EvaluateUncorrelated( normlist
-                                  , ROOT::Math::Functor( Prod, dim )
-                                  , confidencelevel
-                                  , nll );
+  return prod * EvaluateUncorrelated( normlist
+                                      ,
+                                      ROOT::Math::Functor( Prod, dim )
+                                      ,
+                                      confidencelevel
+                                      ,
+                                      nll );
 }
+
 
 /**
  * @brief Give a function of parameters, calculate the error propagation given a
@@ -314,14 +348,13 @@ ProdUncorrelated(
  *
  **/
 Measurement
-LazyEvaluateUncorrelated(
-  const std::vector<Measurement>&      paramlist,
-  const ROOT::Math::IMultiGenFunction& varfunction )
+LazyEvaluateUncorrelated( const std::vector<Measurement>&      paramlist,
+                          const ROOT::Math::IMultiGenFunction& varfunction )
 {
   std::vector<double> center;
   std::vector<double> upper;
   std::vector<double> lower;
-  double diff_sqsum = 0;
+  double              diff_sqsum = 0;
 
   for( const auto& p : paramlist ){
     center.push_back( p.CentralValue() );
@@ -329,23 +362,27 @@ LazyEvaluateUncorrelated(
 
   for( unsigned i = 0; i < paramlist.size(); ++i ){
     const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                   , center.data(), i );
-    diff_sqsum += diff *diff;
+                                                     ,
+                                                     center.data(),
+                                                     i );
+    diff_sqsum += diff * diff;
   }
 
   diff_sqsum = std::sqrt( diff_sqsum );
 
   for( unsigned i = 0; i < paramlist.size(); ++i ){
     const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                   , center.data(), i );
-    const double w = fabs( diff/diff_sqsum );
-    const auto& p  = paramlist.at( i );
+                                                     ,
+                                                     center.data(),
+                                                     i );
+    const double w = fabs( diff / diff_sqsum );
+    const auto&  p = paramlist.at( i );
     if( diff > 0 ){
-      upper.push_back( p.CentralValue() + w*p.AbsUpperError() );
-      lower.push_back( p.CentralValue() - w*p.AbsLowerError() );
+      upper.push_back( p.CentralValue()+w * p.AbsUpperError() );
+      lower.push_back( p.CentralValue()-w * p.AbsLowerError() );
     } else {
-      upper.push_back( p.CentralValue() - w*p.AbsLowerError() );
-      lower.push_back( p.CentralValue() + w*p.AbsUpperError() );
+      upper.push_back( p.CentralValue()-w * p.AbsLowerError() );
+      lower.push_back( p.CentralValue()+w * p.AbsUpperError() );
     }
   }
 

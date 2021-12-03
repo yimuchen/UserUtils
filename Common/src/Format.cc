@@ -19,11 +19,14 @@
 #include <regex>
 #include <string>
 
-namespace usr {
+namespace usr
+{
 
-namespace fmt {
+namespace fmt
+{
 
-namespace base {
+namespace base
+{
 
 /*-----------------------------------------------------------------------------
  *  Default settings control variables
@@ -62,8 +65,12 @@ const unsigned max_precision = 27;
 std::string
 decimal::str() const
 {
-  const unsigned op_precision = std::min( abs( _precision ), abs( max_precision ) );
-  std::string retstr          = usr::fstr( usr::fstr( "%%.%df", op_precision ), _input );
+  const unsigned op_precision = std::min( abs( _precision ),
+                                          abs(
+                                            max_precision ) );
+  std::string retstr = usr::fstr( usr::fstr( "%%.%df",
+                                             op_precision ),
+                                  _input );
 
   // stripping trailing zero after decimal point
   if( _precision < 0 && retstr.find( '.' ) != std::string::npos ){
@@ -74,7 +81,7 @@ decimal::str() const
   // Adding spacing string every _spacesep digits away from decimal point
   // Largest double is around e308
   if( _spacesep != 0 && _spacestr != "" ){
-    int space = ( ( (int)( retstr.length()/_spacesep ) ) + 1 ) * _spacesep;
+    int space = ( ( (int)( retstr.length() / _spacesep ) )+1 ) * _spacesep;
 
     while( space > 0 ){
       if( retstr.find( '.' ) != std::string::npos ){
@@ -105,6 +112,7 @@ scientific::scientific( const double x, const unsigned p )
   _exp  = ReduceToMant( _mant );
 }
 
+
 /**
  * @brief Generating string to represent double as string in scientific
  *  notations.
@@ -112,7 +120,8 @@ scientific::scientific( const double x, const unsigned p )
 std::string
 scientific::str() const
 {
-  const std::string base = decimal( _mant, _precision ).dupsetting( *this ).str();
+  const std::string base =
+    decimal( _mant, _precision ).dupsetting( *this ).str();
   // largest exponent should be around ~300
   // no need of additional formatting.
   const std::string ans

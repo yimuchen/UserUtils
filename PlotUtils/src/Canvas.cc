@@ -27,9 +27,11 @@
 
 static bool run_ghostscript( const std::vector<std::string>& args );
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * @brief Construct a new canvas with specific width height and font settings.
@@ -38,13 +40,11 @@ namespace plt  {
  * (pixels). For publication dimensions like inches and centimeters, see
  * the functions defined in [PlotUtilsConstants](@ref PlotUtilsConstants).
  */
-Canvas::Canvas(
-  const length_t width,
-  const length_t height,
-  const FontSet& fontset
-  ) :
+Canvas::Canvas( const length_t width,
+                const length_t height,
+                const FontSet& fontset ) :
   _fontset( fontset ),
-  _canvas( new TCanvas( RandomString( 12 ).c_str(), "", width, height ) )
+  _canvas ( new TCanvas( RandomString( 12 ).c_str(), "", width, height ) )
 {}
 
 /**
@@ -52,7 +52,8 @@ Canvas::Canvas(
  */
 Canvas::~Canvas()
 {
-  // We cannot explicitly delete the canvas directly when running this library in
+  // We cannot explicitly delete the canvas directly when running this library
+  // in
   // python, as PyROOT has ownership of the TCanvas instance, resulting in a
   // segmentation fault when the python session exits before explicitly deleting
   // the object python side (due to the black magic that is involved with how
@@ -66,6 +67,7 @@ Canvas::~Canvas()
     delete _canvas;// TCanvas::Delete cannot be used directly
   }
 }
+
 
 /**
  * @brief Common subroutines for before the Canvas object is saved.
@@ -88,6 +90,7 @@ Canvas::Finalize( const fs::path& finalpath )
   TCanvas_().Update();
 }
 
+
 /**
  * @brief PDF file saving with additional fixes
  *
@@ -101,9 +104,11 @@ Canvas::Finalize( const fs::path& finalpath )
  * /tmp directory and fixes the PDF file using ghostscript. Reference to the
  * ghostscript command can be found here:
  * - For fixing the rotation:
- *   http://tex.stackexchange.com/questions/66522/xelatex-rotating-my-figures-in-beamer:
+ * 
+ * http://tex.stackexchange.com/questions/66522/xelatex-rotating-my-figures-in-beamer:
  * - For detecting the Cropbox size:
- *   https://stackoverflow.com/questions/2943281/using-ghostscript-to-get-page-size
+ * 
+ * https://stackoverflow.com/questions/2943281/using-ghostscript-to-get-page-size
  *
  * @param filepath final path to store the PDF file. (Parent directory would be
  *                 automatically created if possible)
@@ -118,8 +123,8 @@ Canvas::SaveAsPDF( const fs::path& filepath )
 
   if( filepath.extension() != ".pdf" ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Warning! File extension is not .pdf. The file will be created but "
-      "external programs might not able to understand it" );
+                        "Warning! File extension is not .pdf. The file will be created but "
+                        "external programs might not able to understand it" );
   }
 
   // Fixing the rotation and margin issue
@@ -128,20 +133,20 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
-    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
+    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
     "-sstdout=/dev/null",                 // Supperssing error messages
     "-sDEVICE=pdfwrite",
     "-dPDFSETTINGS=/screen",
     "-dAutoRotatePages=/None",
     "-dUseCropBox",                       // Remove transparent margin
-    usr::fstr( "-sOutputFile=%s", tmp2path.string() ),
+    usr::fstr( "-sOutputFile=%s",         tmp2path.string() ),
     "-f",
     tmppath
   };
 
   if( !run_ghostscript( gs_fixrotate ) ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Error in starting ghostscript processes, saving as unaltered PDF file" );
+                        "Error in starting ghostscript processes, saving as unaltered PDF file" );
     fs::copy( tmppath, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmppath );
     return;
@@ -154,9 +159,9 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "gs",
     "-dNODISPLAY",
     "-dQUIET",
-    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
-    usr::fstr( "-sstdout=%s",              dimpath.string() ),
-    usr::fstr( "-sFileName=%s",            tmp2path.string() ),
+    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
+    usr::fstr( "-sstdout=%s",             dimpath.string() ),
+    usr::fstr( "-sFileName=%s",           tmp2path.string() ),
     "-c",
     "FileName (r) file "
     "runpdfbegin 1 1 pdfpagecount {"
@@ -166,7 +171,7 @@ Canvas::SaveAsPDF( const fs::path& filepath )
 
   if( !run_ghostscript( gs_getdim ) ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Cannot get PDF file dimensions, saving a unscaled version of the PDF." );
+                        "Cannot get PDF file dimensions, saving a unscaled version of the PDF." );
     fs::copy( tmp2path, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmp2path );
     fs::remove( dimpath );
@@ -175,13 +180,13 @@ Canvas::SaveAsPDF( const fs::path& filepath )
 
   // Redesigning the dimensions
   std::fstream dimstream( dimpath, std::ios::in );
-  float x1, y1, x2, y2;
+  float        x1, y1, x2, y2;
   dimstream >> x1 >> y1 >> x2 >> y2;
   dimstream.close();
   fs::remove( dimpath );
 
   const float scale
-    = std::max( (float)Width()/( x2-x1 ), (float)Height()/( y2-y1 ) );
+    = std::max( (float)Width() / ( x2-x1 ), (float)Height() / ( y2-y1 ) );
 
   const unsigned newwidth  = std::ceil( ( x2-x1 ) * scale );
   const unsigned newheight = std::ceil( ( y2-y1 ) * scale );
@@ -192,26 +197,27 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
-    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
+    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
     "-sDEVICE=pdfwrite",
-    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",   newwidth ),
-    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d",  newheight ),
+    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  newwidth ),
+    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", newheight ),
     "-dAutoRotatePages=/None",
     "-dFIXEDMEDIA",
     "-dPDFFitPage",
-    usr::fstr( "-sOutputFile=%s", filepath.string() ),
+    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
     "-f",                                 tmp2path
   };
 
   if( !run_ghostscript( gs_fixscale ) ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Error in running rescaling processes, saving as unscaled PDF file" );
+                        "Error in running rescaling processes, saving as unscaled PDF file" );
     fs::copy( tmp2path, filepath, fs::copy_options::overwrite_existing );
     fs::remove( tmp2path );
     return;
   }
   fs::remove( tmp2path );
 }
+
 
 /**
  * @brief High resolution PNG file saving
@@ -230,8 +236,8 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
 
   if( filepath.extension() != ".png" ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "File extension is not .png. The file will be created but external "
-      "programs might not able to understand it" );
+                        "File extension is not .png. The file will be created but external "
+                        "programs might not able to understand it" );
   }
 
   const fs::path tmppath = SaveTempPDF( filepath );
@@ -243,13 +249,13 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
-    usr::fstr( "-dNumRenderingThreads=%u", usr::NumOfThreads()/2 +1 ),
+    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
     "-sstdout=/dev/null",                 // suppressing all error
     "-sDEVICE=pngalpha",
-    usr::fstr( "-sOutputFile=%s",          filepath.string() ),
-    usr::fstr( "-r%d",                     dpi ),
-    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",   Width()*scale ),
-    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d",  Height()*scale ),
+    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
+    usr::fstr( "-r%d",                    dpi ),
+    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  Width() * scale ),
+    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", Height() * scale ),
     "-dAutoRotatePages=/None",            // Don't attempt to rotate
     "-dUseCropBox",                       // Trimming the PDF file
     "-f",
@@ -259,12 +265,13 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
     fs::remove( tmppath );
   } else {
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Ghostscript conversion failed, saving via in-built root function "
-      "(Display maybe bad!)" );
+                        "Ghostscript conversion failed, saving via in-built root function "
+                        "(Display maybe bad!)" );
     fs::remove( tmppath );
     TCanvas_().SaveAs( filepath.c_str() );
   }
 }
+
 
 /**
  * @brief Saving the canvas to the a .root file, under a certain name.
@@ -272,7 +279,8 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
  * Since the canvas is assigned a random name during construction, the name that
  * should be used to identify the canvas object in the root file has to be
  * explicitly specified during the save call. The .root file (and parent
- * directory) would be created if it doesn't already exits. If an object with the
+ * directory) would be created if it doesn't already exits. If an object with
+ *the
  * specified name already exists in the .root file, the object would be
  * overwritten.
  */
@@ -285,6 +293,7 @@ Canvas::SaveToROOT( const fs::path& filepath, const std::string& objname )
   my_file->Close();
   delete my_file;
 }
+
 
 /**
  * @brief Saving as CPP file.
@@ -299,14 +308,18 @@ Canvas::SaveAsCPP( const fs::path& filepath )
 {
   Finalize( filepath );
   const std::string tempfile
-    = usr::fstr( "/tmp/%s_%s.cxx", RandomString( 6 ), filepath.stem().string() );
+    = usr::fstr( "/tmp/%s_%s.cxx",
+                 RandomString( 6 ),
+                 filepath.stem().string() );
   TCanvas_().SaveAs( tempfile.c_str() );
   fs::copy( tempfile, filepath, fs::copy_options::overwrite_existing  );
   fs::remove( tempfile );
 }
 
+
 /**
- * @brief Saving a temporary PDF file in the from of "/tmp/XXXXXX_<filename>.pdf"
+ * @brief Saving a temporary PDF file in the from of
+ *"/tmp/XXXXXX_<filename>.pdf"
  *
  * The random string at the front of the file is to help avoid collisions when
  * runny multiple plotting scripts at the same time.
@@ -315,8 +328,8 @@ fs::path
 Canvas::SaveTempPDF( const fs::path& finalpath )
 {
   const std::string temppdf = usr::fstr( "/tmp/%s_%s.pdf",
-    usr::RandomString( 6 ),
-    finalpath.stem().string() );
+                                         usr::RandomString( 6 ),
+                                         finalpath.stem().string() );
   TCanvas_().SaveAs( temppdf.c_str() );
   return temppdf;
 }
@@ -343,11 +356,11 @@ Canvas::SaveTempPDF( const fs::path& finalpath )
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
-  void* gs_inst        = nullptr;
-  int gs_status        = 0;
-  int gs_status1       = 0;
-  int gs_argc          = args.size();
-  const char** gs_argv = new const char*[args.size()];
+  void*        gs_inst    = nullptr;
+  int          gs_status  = 0;
+  int          gs_status1 = 0;
+  int          gs_argc    = args.size();
+  const char** gs_argv    = new const char*[args.size()];
 
   for( unsigned i = 0; i < args.size(); ++i ){
     gs_argv[i] = args.at( i ).c_str();
@@ -366,8 +379,9 @@ run_ghostscript( const std::vector<std::string>& args )
     return false;
   }
 
-  gs_status = gsapi_init_with_args( gs_inst, gs_argc,
-    const_cast<char**>( gs_argv ) );
+  gs_status = gsapi_init_with_args( gs_inst,
+                                    gs_argc,
+                                    const_cast<char**>( gs_argv ) );
   gs_status1 = gsapi_exit( gs_inst );
   if( gs_status == 0 || gs_status1 == gs_error_Quit ){
     gs_status = gs_status1;
@@ -382,6 +396,7 @@ run_ghostscript( const std::vector<std::string>& args )
     return false;
   }
 }
+
 
 #else
 
@@ -399,6 +414,7 @@ has_ghostscript()
   }
 }
 
+
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
@@ -410,7 +426,7 @@ run_ghostscript( const std::vector<std::string>& args )
 
   for( const auto arg : args ){
     if( arg.find( ' ' ) != std::string::npos ){
-      cmd += "\"" + arg + "\"";
+      cmd += "\""+arg+"\"";
     } else {
       cmd += arg;
     }
@@ -419,17 +435,18 @@ run_ghostscript( const std::vector<std::string>& args )
 
   if( cmd.find_first_not_of( legalchar ) != std::string::npos ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      usr::fstr( "Command contains illegal character: [%c]",
-        cmd[ cmd.find_first_not_of( legalchar ) ] ) );
+                        usr::fstr( "Command contains illegal character: [%c]",
+                                   cmd[ cmd.find_first_not_of( legalchar ) ] ) );
     return false;
   } else if( !has_ghostscript() ){
     usr::log::PrintLog( usr::log::INTERNAL,
-      "Ghostscript is not available." );
+                        "Ghostscript is not available." );
     return false;
   } else {
     usr::GetCMDSTDOutput( cmd );
     return true;
   }
 }
+
 
 #endif

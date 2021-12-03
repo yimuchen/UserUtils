@@ -38,6 +38,7 @@ FitPDFToData( RooAbsPdf&                    pdf,
   return pdf.fitTo( data, roolist );
 }
 
+
 USERUTILS_COMMON_REGISTERCMD( MaxFitIteration );
 
 RooCmdArg MaxFitIteration( unsigned x )
@@ -55,7 +56,7 @@ ConvergeFitPDFToData( RooAbsPdf&                    pdf,
                       RooAbsData&                   data,
                       const std::vector<RooCmdArg>& cmdargs )
 {
-  RooFitResult* status = nullptr;
+  RooFitResult*              status = nullptr;
   const usr::RooArgContainer args(
     cmdargs, {// Explicitly adding options to reduce verbosity
       RooFit::Save(),
@@ -84,22 +85,29 @@ ConvergeFitPDFToData( RooAbsPdf&                    pdf,
   }
 }
 
+
 extern TH1D*
 TH1DFromRooData( RooAbsData&                   data,
                  const RooAbsRealLValue &      xvar,
                  const std::vector<RooCmdArg>& cmdargs )
 {
   const usr::RooArgContainer args( cmdargs );
-  RooLinkedList roolist = args.MakeRooList();
+  RooLinkedList              roolist = args.MakeRooList();
 
   TH1* rawhist = data.createHistogram( usr::RandomString( 6 ).c_str()
-                                     , xvar
-                                     , roolist );
+                                       ,
+                                       xvar
+                                       ,
+                                       roolist );
 
-  TH1D* hist = new TH1D( usr::RandomString( 6 ).c_str(), ""
-                       , rawhist->GetNbinsX()
-                       , rawhist->GetXaxis()->GetXmin()
-                       , rawhist->GetXaxis()->GetXmax() );
+  TH1D* hist = new TH1D( usr::RandomString( 6 ).c_str(),
+                         ""
+                         ,
+                         rawhist->GetNbinsX()
+                         ,
+                         rawhist->GetXaxis()->GetXmin()
+                         ,
+                         rawhist->GetXaxis()->GetXmax() );
 
   for( int i = 1; i <= hist->GetNcells(); ++i ){
     hist->SetBinContent( i, rawhist->GetBinContent( i ) );

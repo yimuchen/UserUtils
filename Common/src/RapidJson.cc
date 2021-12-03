@@ -10,13 +10,15 @@
 #include <sstream>
 #include <string>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @addtogroup rapidjson
  * @details
  *
- * [RapidJSON](https://rapidjson.org/) is a fast and robust json parsing library.
+ * [RapidJSON](https://rapidjson.org/) is a fast and robust json parsing
+ * library.
  * With a smaller footprint, faster parsing, and more concrete JSON specific
  * features than the JSON parser available in the boost library (see boost's
  * [`property
@@ -86,8 +88,8 @@ namespace usr {
 JSONDocument
 FromJSONFile( const std::string& filename )
 {
-  JSONDocument ans;
-  std::ifstream input( filename );
+  JSONDocument       ans;
+  std::ifstream      input( filename );
   std::ostringstream ss;
   ss << input.rdbuf();
 
@@ -95,12 +97,15 @@ FromJSONFile( const std::string& filename )
 
   if( !results ){
     throw std::invalid_argument(
-      usr::fstr( "Error parsing json file \"%s\" (%s)", filename
-               , rapidjson::GetParseErrorFunc( results.Code() ) ) );
+            usr::fstr( "Error parsing json file \"%s\" (%s)",
+                       filename
+                       ,
+                       rapidjson::GetParseErrorFunc( results.Code() ) ) );
   }
 
   return ans;
-};
+}
+
 
 /**
  * @brief Getting the joint JSON document from multiple inputs.
@@ -127,29 +132,31 @@ FromJSONFiles( const std::vector<std::string>& files )
 
     // After the merging, print the first to a string then have
     // RapidJson pare the string again to avoid assertion errors
-    rapidjson::StringBuffer buffer;
+    rapidjson::StringBuffer                    buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer( buffer );
     first.Accept( writer );
 
-    JSONDocument ans;
+    JSONDocument           ans;
     rapidjson::ParseResult results = ans.Parse( buffer.GetString() );
 
     if( !results ){
       throw std::invalid_argument(
-        usr::fstr( "Error Joining json files (%s)",
-          rapidjson::GetParseErrorFunc( results.Code() ) ) );
+              usr::fstr( "Error Joining json files (%s)",
+                         rapidjson::GetParseErrorFunc( results.Code() ) ) );
     }
 
     return ans;
   }
 }
 
+
 /**
  * @brief Merging of two json maps
  *
  * This follows the the answer given on StackOverflow (see reference below).
  * Essentially: for the latter JSON map: any leaf entry that matches a path with
- * the original JSON map will superced the original. If a leaf entry doesn't have
+ * the original JSON map will superced the original. If a leaf entry doesn't
+ * have
  * a corresponding entry in the original map, it is created. If two arrays have
  * the same path, the arrays will be concatinated together.
  *
@@ -216,14 +223,16 @@ ExceptJSONList( const JSONMap& map, const std::string& index )
 {
   if( !map.HasMember( index.c_str() ) ){
     throw std::invalid_argument(
-      usr::fstr( "No member with index [%s] found in json", index ) );
+            usr::fstr( "No member with index [%s] found in json", index ) );
   }
   if( !map[index.c_str()].IsArray() ){
     throw std::invalid_argument(
-      usr::fstr( "Member of index [%s] is invalid type (not an array)"
-               , index ) );
+            usr::fstr( "Member of index [%s] is invalid type (not an array)"
+                       ,
+                       index ) );
   }
 }
+
 
 /**
  * @brief Check that an immediate entry of a JSON map exists and is an object.
@@ -236,49 +245,53 @@ ExceptJSONObj( const JSONMap& map, const std::string& index )
 {
   if( !map.HasMember( index.c_str() ) ){
     throw std::invalid_argument(
-      usr::fstr( "No member with index [%s] found in json", index ) );
+            usr::fstr( "No member with index [%s] found in json", index ) );
   }
   if( !map[index.c_str()].IsObject() ){
     throw std::invalid_argument(
-      usr::fstr( "Member of index [%s] is invalid type (not an object)"
-               , index ) );
+            usr::fstr( "Member of index [%s] is invalid type (not an object)"
+                       ,
+                       index ) );
   }
 }
 
+
 // ------------------------------------------------------------------------------
-#define MAKE_CONCRETE_JSONENTRY( TYPE, IS_FUNCTION, GET_FUNCTION )             \
-  template<>                                                                   \
-  void                                                                         \
-  ExceptJSONEntry<TYPE>( const JSONMap& map, const std::string& index )        \
-  {                                                                            \
-    if( !map.HasMember( index.c_str() ) ){                                     \
-      throw std::invalid_argument(                                             \
-  usr::fstr( "No member with index [%s] found in json", index ) );             \
-    }                                                                          \
-    if( !map[index.c_str()].IS_FUNCTION() ){                                   \
-      throw std::invalid_argument(                                             \
-  usr::fstr( "Member with index [%s] is invalid type (expected %s)"            \
-           , index, #TYPE  ) );                                                \
-    }                                                                          \
-  }                                                                            \
-  template<>                                                                   \
-  TYPE                                                                         \
-  JSONEntry<TYPE>( const JSONMap& map, const std::string& index )              \
-  {                                                                            \
-    ExceptJSONEntry<TYPE>( map, index );                                       \
-    return map[index.c_str()].GET_FUNCTION();                                  \
-  }                                                                            \
-  template<>                                                                   \
-  TYPE                                                                         \
-  JSONEntry<TYPE>( const JSONMap& map,                                         \
-  const std::string& index,                                                    \
-  const TYPE& default_return )                                                 \
-  {                                                                            \
-    if( map.HasMember( index.c_str() ) ){                                      \
-      return JSONEntry<TYPE>( map, index );                                    \
-    } else {                                                                   \
-      return default_return;                                                   \
-    }                                                                          \
+#define MAKE_CONCRETE_JSONENTRY( TYPE, IS_FUNCTION, GET_FUNCTION )              \
+  template<>                                                                    \
+  void                                                                          \
+  ExceptJSONEntry<TYPE>( const JSONMap& map, const std::string& index )         \
+  {                                                                             \
+    if( !map.HasMember( index.c_str() ) ){                                      \
+      throw std::invalid_argument(                                              \
+              usr::fstr( "No member with index [%s] found in json", index ) );  \
+    }                                                                           \
+    if( !map[index.c_str()].IS_FUNCTION() ){                                    \
+      throw std::invalid_argument(                                              \
+              usr::fstr( "Member with index [%s] is invalid type (expected %s)" \
+                         ,                                                      \
+                         index,                                                 \
+                         #TYPE  ) );                                            \
+    }                                                                           \
+  }                                                                             \
+  template<>                                                                    \
+  TYPE                                                                          \
+  JSONEntry<TYPE>( const JSONMap& map, const std::string& index )               \
+  {                                                                             \
+    ExceptJSONEntry<TYPE>( map, index );                                        \
+    return map[index.c_str()].GET_FUNCTION();                                   \
+  }                                                                             \
+  template<>                                                                    \
+  TYPE                                                                          \
+  JSONEntry<TYPE>( const JSONMap& map,                                          \
+                   const std::string& index,                                    \
+                   const TYPE& default_return )                                 \
+  {                                                                             \
+    if( map.HasMember( index.c_str() ) ){                                       \
+      return JSONEntry<TYPE>( map, index );                                     \
+    } else {                                                                    \
+      return default_return;                                                    \
+    }                                                                           \
   }
 
 MAKE_CONCRETE_JSONENTRY( double,      IsNumber, GetDouble );
@@ -288,34 +301,36 @@ MAKE_CONCRETE_JSONENTRY( bool,        IsBool,   GetBool   );
 #undef MAKE_CONRETE_JSONENTRY
 
 
-
-#define MAKE_CONCRETE_JSONLIST( TYPE, IS_FUNCTION, GET_FUNCTION )              \
-  template<>                                                                   \
-  std::vector<TYPE>                                                            \
-  JSONList<TYPE>( const JSONMap& map, const std::string& index )               \
-  {                                                                            \
-    ExceptJSONList( map, index );                                              \
-    std::vector<TYPE> ans;                                                     \
-    for( const auto& val : map[index.c_str()].GetArray() ){                    \
-      if( !val.IS_FUNCTION() ){                                                \
-        throw std::invalid_argument( usr::fstr(                                \
-  "Member in array [%s] is invalid type (expected %s)"                         \
-                                              , index, #TYPE ).c_str() );      \
-      }                                                                        \
-      ans.push_back( val.GET_FUNCTION() );                                     \
-    }                                                                          \
-    return ans;                                                                \
-  }                                                                            \
-  template<>                                                                   \
-  std::vector<TYPE>                                                            \
-  JSONList<TYPE>( const JSONMap& map, const std::string& index,                \
-  const std::vector<TYPE>& default_return  )                                   \
-  {                                                                            \
-    if( map.HasMember( index.c_str() ) ){                                      \
-      return JSONList<TYPE>( map, index );                                     \
-    } else {                                                                   \
-      return default_return;                                                   \
-    }                                                                          \
+#define MAKE_CONCRETE_JSONLIST( TYPE, IS_FUNCTION, GET_FUNCTION )                           \
+  template<>                                                                                \
+  std::vector<TYPE>                                                                         \
+  JSONList<TYPE>( const JSONMap& map, const std::string& index )                            \
+  {                                                                                         \
+    ExceptJSONList( map, index );                                                           \
+    std::vector<TYPE> ans;                                                                  \
+    for( const auto& val : map[index.c_str()].GetArray() ){                                 \
+      if( !val.IS_FUNCTION() ){                                                             \
+        throw std::invalid_argument( usr::fstr(                                             \
+                                       "Member in array [%s] is invalid type (expected %s)" \
+                                       ,                                                    \
+                                       index,                                               \
+                                       #TYPE ).c_str() );                                   \
+      }                                                                                     \
+      ans.push_back( val.GET_FUNCTION() );                                                  \
+    }                                                                                       \
+    return ans;                                                                             \
+  }                                                                                         \
+  template<>                                                                                \
+  std::vector<TYPE>                                                                         \
+  JSONList<TYPE>( const JSONMap& map,                                                       \
+                  const std::string& index,                                                 \
+                  const std::vector<TYPE>& default_return  )                                \
+  {                                                                                         \
+    if( map.HasMember( index.c_str() ) ){                                                   \
+      return JSONList<TYPE>( map, index );                                                  \
+    } else {                                                                                \
+      return default_return;                                                                \
+    }                                                                                       \
   }
 
 

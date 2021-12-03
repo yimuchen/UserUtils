@@ -9,9 +9,11 @@
 #include <cmath>
 #include <string>
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * @defgroup PlotUtilsConstants PlotUtilsConstants
@@ -31,7 +33,8 @@ typedef unsigned length_t;
 /**
  * @brief length conversion functions and constants.
  */
-namespace len {
+namespace len
+{
 
 /**
  * @addtogroup PlotUtilsConstants
@@ -63,33 +66,33 @@ public:// static and user enums.
   enum face : short
   {
     helvetica = 40,
-    courier   = 80,
-    times     = 130
+    courier = 80,
+    times = 130
   };
 
   /** @brief enum interface for text alignment in @ROOT{TLatex} */
   enum align : short
   {
-    left          = 10,
-    hcenter       = 20,
-    right         = 30,
-    top           = 3,
-    vcenter       = 2,
-    bottom        = 1,
-    bottom_left   = 11,
+    left = 10,
+    hcenter = 20,
+    right = 30,
+    top = 3,
+    vcenter = 2,
+    bottom = 1,
+    bottom_left = 11,
     bottom_center = 21,
-    bottom_right  = 31,
-    center_left   = 12,
-    center        = 22,
-    center_right  = 32,
-    top_left      = 13,
-    top_center    = 23,
-    top_right     = 33
+    bottom_right = 31,
+    center_left = 12,
+    center = 22,
+    center_right = 32,
+    top_left = 13,
+    top_center = 23,
+    top_right = 33
   };
 
-  static float default_basesize;
+  static float      default_basesize;
   static font::face default_face;
-  static float default_lineheight;
+  static float      default_lineheight;
 
 public:
   font( float basesize   = default_basesize,
@@ -110,28 +113,35 @@ public:
   float huge() const;
 
 protected:
-  float _basesize;
+  float      _basesize;
   font::face _face;
-  float _lineheight;
+  float      _lineheight;
 };
 
 using align = font::align;// Align can be used in more places than just text.
 
 /** @brief Strings for a unified presentation of units in plots */
-namespace unit {
+namespace unit
+{
+
 extern const std::string GeV;
 extern const std::string GeVc;
 extern const std::string GeVcc;
+
 }/* unit */
 
 /** @brief String for unifed presentation of common captions text in plots */
-namespace cap  {
+namespace cap
+{
+
 extern const std::string prelim;
 extern const std::string sim;
+
 }/* cap  */
 
 /** @brief root style conversion functions  */
-namespace sty  {
+namespace sty
+{
 
 /**
  * @addtogroup PlotUtilsConstants

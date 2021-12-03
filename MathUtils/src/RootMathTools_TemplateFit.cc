@@ -20,7 +20,8 @@
 
 #include <cassert>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @class TemplateFit
@@ -39,11 +40,10 @@ namespace usr {
 TemplateFit::TemplateFit( const TH1*               target_,
                           const std::vector<TH1*>& constituents_,
                           const bool               normalize_target_ ) :
-  target( target_ ),
-  constituents( constituents_ ),
+  target          ( target_ ),
+  constituents    ( constituents_ ),
   normalize_target( normalize_target_ )
-{
-}
+{}
 
 
 double
@@ -70,7 +70,7 @@ TemplateFit::DoEval( const double* x ) const
     double valsum = 0;
 
     for( unsigned index = 0; index < constituents.size(); ++index ){
-      if( !normalize_target || index < constituents.size() -1  ){
+      if( !normalize_target || index < constituents.size()-1  ){
         diff += x[index] * constituents.at( index )->GetBinContent( bin )
                 / constituents.at( index )->Integral();
         valsum += x[index];
@@ -83,11 +83,11 @@ TemplateFit::DoEval( const double* x ) const
 
     // Calculating the different relative to the Poisson error
     if( diff > cen ){
-      diff = ( diff - cen )/ binerr.AbsUpperError();
+      diff = ( diff-cen ) / binerr.AbsUpperError();
     } else if( diff == cen ){
       diff = 0.0;
     } else {
-      diff = ( cen - diff ) / binerr.AbsLowerError();
+      diff = ( cen-diff ) / binerr.AbsLowerError();
     }
 
     // NAN error
@@ -102,6 +102,7 @@ TemplateFit::DoEval( const double* x ) const
   return chi2;
 }
 
+
 /**
  * @brief Helper function to initialize a ROOT::Math::Minimizer for fitting
  */
@@ -112,12 +113,12 @@ TemplateFit::InitMinimizer( ROOT::Math::Minimizer& minimizer ) const
 
   // Initializing the parameters
   const double integral = target->Integral();
-  const double init     = 1.0/constituents.size();
+  const double init     = 1.0 / constituents.size();
 
   // Setting initial value to a flat distribution among constituents
   for( unsigned i = 0; i < NDim(); ++i ){
-    const double val    = normalize_target ? init : integral*init;
-    const double step   = 0.01*val;
+    const double val    = normalize_target ? init : integral * init;
+    const double step   = 0.01 * val;
     const double minval = 0.0;// Assuming positive stacking.
     const double maxval = normalize_target ? 1.0 : integral;
     minimizer.SetVariable( i, "", val, step );
@@ -125,11 +126,13 @@ TemplateFit::InitMinimizer( ROOT::Math::Minimizer& minimizer ) const
   }
 }
 
+
 unsigned
 TemplateFit::NDim() const
 {
-  return normalize_target ? constituents.size() -1 : constituents.size();
+  return normalize_target ? constituents.size()-1 : constituents.size();
 }
+
 
 std::vector<Measurement>
 TemplateFit::SimpleFit( const TH1*               target,
@@ -137,7 +140,7 @@ TemplateFit::SimpleFit( const TH1*               target,
                         const bool               norm )
 {
   DefaultMinimizer minimizer;
-  TemplateFit fit( target, constituents, norm );
+  TemplateFit      fit( target, constituents, norm );
 
   fit.InitMinimizer( minimizer );
 
@@ -152,11 +155,11 @@ TemplateFit::SimpleFit( const TH1*               target,
   return ans;
 }
 
+
 ROOT::Math::IMultiGenFunction*
 TemplateFit::Clone() const
 {
   return new TemplateFit( *this );
 }
-
 
 }

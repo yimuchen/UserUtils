@@ -19,7 +19,8 @@
 #include "TH1D.h"
 #include "TMatrixD.h"
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief A nicer interface for initializing a TChain using std containers.
@@ -39,6 +40,7 @@ MakeTChain( const std::string&              title,
   return tree;
 }
 
+
 /**
  * @brief A nicer interface of making a TH1D using `std::vector`s
  */
@@ -47,8 +49,9 @@ MakeHist( const std::string&         name,
           const std::string&         title,
           const std::vector<double>& bins )
 {
-  return TH1D( name.c_str(), title.c_str(), bins.size() -1, bins.data() );
+  return TH1D( name.c_str(), title.c_str(), bins.size()-1, bins.data() );
 }
+
 
 std::string
 str( const TMatrixD& m, const unsigned format )
@@ -59,7 +62,7 @@ str( const TMatrixD& m, const unsigned format )
     for( int i = 0; i < m.GetNrows(); ++i ){
       for( int j = 0; j < m.GetNcols(); ++j ){
         ans += usr::fstr( "%10.8lf ", m( i, j ) );
-        if( j == m.GetNcols() - 1 && i != m.GetNrows() -1 ){
+        if( j == m.GetNcols()-1 && i != m.GetNrows()-1 ){
           ans += "\\\\\n";
         } else {
           ans += " & ";

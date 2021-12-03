@@ -11,7 +11,8 @@
 
 #include "TLorentzVector.h"
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @defgroup extendedvar Extended variables.
@@ -21,9 +22,12 @@ namespace usr {
  * @{
  */
 
-namespace mu { // muon functions, implemented in file MuonVar
+namespace mu   // muon functions, implemented in file MuonVar
+{
+
 extern double PfIso( const pat::Muon& );
 extern double TrackIso( const pat::Muon& );
+
 } /* mu */
 
 /**
@@ -45,6 +49,7 @@ AddLorentzVector( T& obj, const TLorentzVector& vec, const std::string& name )
   obj.addUserFloat( name+"e",   vec.Energy(), overwrite );
 }
 
+
 /**
  * @brief Checking if pat::object has all user floats required to construct
  *        custom variables.
@@ -63,6 +68,7 @@ HasLorentzVector( const T& obj, const std::string& name )
   }
 }
 
+
 /**
  * @brief Getting the internally stored lorentz vector.
  *
@@ -74,10 +80,10 @@ TLorentzVector
 GetLorentzVector( const T& obj, const std::string& name )
 {
   TLorentzVector ans;
-  double pt;
-  double eta;
-  double phi;
-  double e;
+  double         pt;
+  double         eta;
+  double         phi;
+  double         e;
   if( HasLorentzVector( obj, name ) ){
     pt  = obj.userFloat( name+"pt" );
     eta = obj.userFloat( name+"eta" );
@@ -92,6 +98,7 @@ GetLorentzVector( const T& obj, const std::string& name )
   ans.SetPtEtaPhiE( pt, eta, phi, e );
   return ans;
 }
+
 
 /** @} */
 

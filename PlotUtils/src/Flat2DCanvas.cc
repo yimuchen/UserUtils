@@ -4,9 +4,11 @@
 #include "UserUtils/PlotUtils/Flat2DCanvas.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @{
@@ -19,22 +21,22 @@ namespace plt {
  **/
 length_t Flat2DCanvas::default_width  = 1.0  * len::a4textwidth_default();
 length_t Flat2DCanvas::default_height = 0.65 * len::a4textwidth_default();
-FontSet Flat2DCanvas::default_font    = FontSet();
+FontSet  Flat2DCanvas::default_font   = FontSet();
 /** @} */
 
 
 /**
  * @brief Construct a Flat2DCanvas.
  */
-Flat2DCanvas::Flat2DCanvas(
-  const length_t width,
-  const length_t height,
-  const FontSet& fontset ) :
+Flat2DCanvas::Flat2DCanvas( const length_t width,
+                            const length_t height,
+                            const FontSet& fontset ) :
   Canvas( width, height, fontset )
 {
   Add<Pad2DFlat>( PadSize( 0, 0, 1, 1 ) );
   init_margin();
 }
+
 
 Flat2DCanvas::~Flat2DCanvas(){}
 
@@ -47,12 +49,11 @@ Flat2DCanvas::~Flat2DCanvas(){}
 void
 Flat2DCanvas::init_margin()
 {
-  Pad().SetTopMargin(    1.5*Font().lineheight()/Height() );
-  Pad().SetRightMargin(  5.5*Font().lineheight()/Width() );
-  Pad().SetBottomMargin( 2.5*Font().lineheight()/Height() );
+  Pad().SetTopMargin(    1.5 * Font().lineheight() / Height() );
+  Pad().SetRightMargin(  5.5 * Font().lineheight() / Width() );
+  Pad().SetBottomMargin( 2.5 * Font().lineheight() / Height() );
   Pad().SetLeftMargin(
-    1 - double(Height())/Width() - 1.5*Font().lineheight()/Width()
-    );
+    1-double(Height()) / Width()-1.5 * Font().lineheight() / Width());
 }
 
 }

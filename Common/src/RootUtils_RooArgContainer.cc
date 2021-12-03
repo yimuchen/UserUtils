@@ -13,7 +13,8 @@
 #include "UserUtils/Common/STLUtils/VectorUtils.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @class RooArgContainer
@@ -25,7 +26,8 @@ namespace usr {
  * The definition of a new command is:
  *
  * 1. Publicly inherited from a RooCmdArg instance.
- * 2. Contains the public static const string `CmdName` as the unique identifier.
+ * 2. Contains the public static const string `CmdName` as the unique
+ * identifier.
  *    - The `CmdName` must be used as the string identifier of the RooCmdArg
  *      parent instances.
  *    - The `CmdName` need to be registered via the `RegisterCmd` command. To
@@ -46,14 +48,15 @@ namespace usr {
 /**
  * @brief constructing out argument container from a std::vector.
  *
- * This is not directly a copy constructor, but add additional detection routines
+ * This is not directly a copy constructor, but add additional detection
+ * routines
  * so that the command names in arglist are unique. The second list is a list of
- * default argument to be added if the corresponding arguments don't exist in the
+ * default argument to be added if the corresponding arguments don't exist in
+ * the
  * `arglist` input (if not specified, no default arguments will be added.).
  */
-RooArgContainer::RooArgContainer(
-  const std::vector<RooCmdArg>& arglist,
-  const std::vector<RooCmdArg>& default_list )
+RooArgContainer::RooArgContainer( const std::vector<RooCmdArg>& arglist,
+                                  const std::vector<RooCmdArg>& default_list )
 {
   std::set<std::string> nameset;
 
@@ -70,6 +73,7 @@ RooArgContainer::RooArgContainer(
   }
 }
 
+
 /** @brief Nothing to do... */
 RooArgContainer::~RooArgContainer(){}
 
@@ -79,12 +83,14 @@ RooArgContainer::~RooArgContainer(){}
 bool
 RooArgContainer::Has( const std::string& name ) const
 {
-  auto iter = std::find_if( begin(), end(),
-    [&name]( const RooCmdArg& item ){
+  auto iter = std::find_if( begin(),
+                            end(),
+                            [&name]( const RooCmdArg& item ){
       return item.GetName() == name;
     } );
   return iter != end();
 }
+
 
 /**
  * @brief Returning the argument in the list with a given name.
@@ -94,12 +100,14 @@ RooArgContainer::Has( const std::string& name ) const
 const RooCmdArg&
 RooArgContainer::Get( const std::string& name ) const
 {
-  auto iter = std::find_if( begin(), end(),
-    [&name]( const RooCmdArg& item ){
+  auto iter = std::find_if( begin(),
+                            end(),
+                            [&name]( const RooCmdArg& item ){
       return item.GetName() == name;
     } );
   return *iter;
 }
+
 
 /**
  * @brief Function for checking if an argument already exists in a list of
@@ -111,12 +119,14 @@ bool
 RooArgContainer::CheckList( const std::vector<RooCmdArg>& arglist,
                             const std::string&            name )
 {
-  auto iter = std::find_if( arglist.begin(), arglist.end(),
-    [&name]( const RooCmdArg& item ){
+  auto iter = std::find_if( arglist.begin(),
+                            arglist.end(),
+                            [&name]( const RooCmdArg& item ){
       return item.GetName() == name;
     } );
   return iter != arglist.end();
 }
+
 
 /**
  * @brief Generating a RooLinked list object from our own container
@@ -142,6 +152,7 @@ RooArgContainer::MakeRooList( const std::vector<std::string>& exclude ) const
   return ans;
 }
 
+
 int
 RooArgContainer::GetInt( const std::string& name, const unsigned index  ) const
 {
@@ -149,12 +160,15 @@ RooArgContainer::GetInt( const std::string& name, const unsigned index  ) const
   return Get( name ).getInt( index );
 }
 
+
 double
-RooArgContainer::GetDouble( const std::string& name, const unsigned index ) const
+RooArgContainer::GetDouble( const std::string& name,
+                            const unsigned     index ) const
 {
   assert( index == 0 || index == 1 );
   return Get( name ).getDouble( index );
 }
+
 
 std::string
 RooArgContainer::GetStr( const std::string& name, const unsigned index  ) const
@@ -165,6 +179,7 @@ RooArgContainer::GetStr( const std::string& name, const unsigned index  ) const
          Get( name ).getString( 0 );
 }
 
+
 const TObject&
 RooArgContainer::GetObj( const std::string& name, const unsigned index  ) const
 {
@@ -173,12 +188,15 @@ RooArgContainer::GetObj( const std::string& name, const unsigned index  ) const
   return *Get( name ).getObject( index );
 }
 
+
 /**
  * @brief The list of custom commands that is used defined.
  *
  * Keeping track of custom defined commands is essential for generating the
- * RooLinkedList to pass on-to standard RooFit functions (fitTo, plotOn, etc.). A
- * static list is used to keep track of every new command declared by the package
+ * RooLinkedList to pass on-to standard RooFit functions (fitTo, plotOn, etc.).
+ * A
+ * static list is used to keep track of every new command declared by the
+ * package
  * and the user.
  */
 std::vector<std::string> RooArgContainer::CustomCommandList;

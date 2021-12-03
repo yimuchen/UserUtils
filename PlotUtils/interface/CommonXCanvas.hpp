@@ -16,17 +16,18 @@
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 class CommonXCanvas : public Canvas
 {
 public:
   static length_t default_width;
   static length_t default_height;
-  static FontSet default_font;
-
+  static FontSet  default_font;
   CommonXCanvas( const unsigned number_of_pads,
                  const length_t width  = default_width,
                  const length_t height = default_height,
@@ -36,7 +37,6 @@ public:
                  const length_t width  = default_width,
                  const length_t height = default_height,
                  const FontSet&        = default_font );
-
   ~CommonXCanvas();
 
 
@@ -50,68 +50,100 @@ public:
 
   /**
    * @{
-   * @brief passing through for Pad1D plotting function, The pad ID to plot on is
+   * @brief passing through for Pad1D plotting function, The pad ID to plot on
+   *is
    *        uses template argument to help keep a uniform interface.
    */
   template<unsigned pad_id, typename ...Args>
-  inline TH1D& PlotHist( TH1D& obj, Args... args ){
+  inline TH1D&
+  PlotHist( TH1D& obj, Args ... args )
+  {
     CheckPadAxis( &obj );
-    return Pad<pad_id>().PlotHist( obj, args... );
+    return Pad<pad_id>().PlotHist( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TH1D& PlotHist( TH1D* obj, Args... args ){
+  inline TH1D&
+  PlotHist( TH1D* obj, Args ... args )
+  {
     CheckPadAxis( obj );
-    return Pad<pad_id>().PlotHist( obj, args... );
+    return Pad<pad_id>().PlotHist( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraph& PlotGraph( TGraph& obj, Args ... args  ){
+  inline TGraph&
+  PlotGraph( TGraph& obj, Args ... args  )
+  {
     CheckPadAxis( &obj );
-    return Pad<pad_id>().PlotGraph( obj, args... );
+    return Pad<pad_id>().PlotGraph( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraph& PlotGraph( TGraph* obj, Args ... args  ){
+  inline TGraph&
+  PlotGraph( TGraph* obj, Args ... args  )
+  {
     CheckPadAxis( obj );
-    return Pad<pad_id>().PlotGraph( obj, args... );
+    return Pad<pad_id>().PlotGraph( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraph& PlotFunc( TF1& obj, Args ... args  ){
+  inline TGraph&
+  PlotFunc( TF1& obj, Args ... args  )
+  {
     CheckPadAxis( &obj );
-    return Pad<pad_id>().PlotFunc( obj, args... );
+    return Pad<pad_id>().PlotFunc( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraph& PlotFunc( TF1* obj, Args ... args  ){
+  inline TGraph&
+  PlotFunc( TF1* obj, Args ... args  )
+  {
     CheckPadAxis( obj );
-    return Pad<pad_id>().PlotFunc( obj, args... );
+    return Pad<pad_id>().PlotFunc( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraphAsymmErrors& PlotData( RooAbsData& obj, Args ... args  ){
+  inline TGraphAsymmErrors&
+  PlotData( RooAbsData& obj, Args ... args  )
+  {
     CheckPadAxis( &obj );
-    return Pad<pad_id>().PlotData( obj, args... );
+    return Pad<pad_id>().PlotData( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraphAsymmErrors& PlotData( RooAbsData* obj, Args ... args  ){
+  inline TGraphAsymmErrors&
+  PlotData( RooAbsData* obj, Args ... args  )
+  {
     CheckPadAxis( obj );
-    return Pad<pad_id>().PlotData( obj, args... );
+    return Pad<pad_id>().PlotData( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraph& PlotPdf( RooAbsPdf& obj, Args ... args  ){
+  inline TGraph&
+  PlotPdf( RooAbsPdf& obj, Args ... args  )
+  {
     CheckPadAxis( &obj );
-    return Pad<pad_id>().PlotPdf( obj, args... );
+    return Pad<pad_id>().PlotPdf( obj, args ... );
   }
 
+
   template<unsigned pad_id, typename ...Args>
-  inline TGraph& PlotPdf( RooAbsPdf* obj, Args ... args  ){
+  inline TGraph&
+  PlotPdf( RooAbsPdf* obj, Args ... args  )
+  {
     CheckPadAxis( obj );
-    return Pad<pad_id>().PlotPdf( obj, args... );
+    return Pad<pad_id>().PlotPdf( obj, args ... );
   }
+
+
   /** @} */
 
 
@@ -121,11 +153,9 @@ private:
   void _init_margin();
 };
 
-
 }
 
 }
-
 
 
 #endif

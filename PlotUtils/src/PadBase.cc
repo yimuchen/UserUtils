@@ -15,9 +15,11 @@
 
 #include "CmdSetAttr.hpp"
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * @brief Construction of the new pad object requires the new wrapper class
@@ -33,11 +35,12 @@ namespace plt  {
  */
 PadBase::PadBase( Canvas* c, const PadSize& size ) :
   _parentcanvas(  c ),
-  _pad( new TPad( ( "Pad" + RandomString( 12 ) ).c_str(), "",
-                  size.xmin, size.ymin, size.xmax, size.ymax ) )
+  _pad         ( new TPad( ( "Pad"+RandomString( 12 ) ).c_str(), "",
+                           size.xmin, size.ymin, size.xmax, size.ymax ) )
 {
   _pad->SetTicks( 1, 1 );
 }
+
 
 /**
  * Deleting the internal TPad object
@@ -45,7 +48,8 @@ PadBase::PadBase( Canvas* c, const PadSize& size ) :
 PadBase::~PadBase()
 {
   // The TPad here should only be declared directly associated with a TCanvas
-  // instance, in which case the ownership of the TPad instance is handled by the
+  // instance, in which case the ownership of the TPad instance is handled by
+  // the
   // ROOT memory manager instead of our class. Currently, I have NO solution to
   // have this behave properly.
   for( auto obj : _generated_objects ){
@@ -59,6 +63,7 @@ PadBase::~PadBase()
   }
 }
 
+
 /**
  * @brief Returning referece to parent canvas.
  *
@@ -71,6 +76,7 @@ PadBase::ParentCanvas() const
   return *( _parentcanvas );
 }
 
+
 /**
  * @brief Returning referece to parent canvas.
  *
@@ -82,6 +88,7 @@ PadBase::ParentCanvas()
 {
   return *( _parentcanvas );
 }
+
 
 /**
  * @brief Returning reference to the font settings stored in the parent canvas.
@@ -132,10 +139,10 @@ PadBase::LineHeight() const { return ParentCanvas().Font().lineheight(); }
  * @brief font settings relative to the pad dimensions.
  */
 float
-PadBase::RelTextHeight() const { return FontSize()/AbsHeight(); }
+PadBase::RelTextHeight() const { return FontSize() / AbsHeight(); }
 
 float
-PadBase::RelLineHeight() const { return LineHeight()/AbsHeight(); }
+PadBase::RelLineHeight() const { return LineHeight() / AbsHeight(); }
 /** @} */
 
 
@@ -149,15 +156,15 @@ PadBase::SetTextAlign( const font::align x )
   return *this;
 }
 
+
 /**
  * @brief Writing latex text at data point.
  */
 PadBase&
-PadBase::WriteAtData(
-  const double                  x,
-  const double                  y,
-  const std::string&            line,
-  const std::vector<RooCmdArg>& arglist )
+PadBase::WriteAtData( const double                  x,
+                      const double                  y,
+                      const std::string&            line,
+                      const std::vector<RooCmdArg>& arglist )
 {
   _pad->cd();// We will still need to cd to pad to get the correct dimensions.
 
@@ -175,6 +182,7 @@ PadBase::WriteAtData(
   PlotObj( newlatex, "" );
   return *this;
 }
+
 
 /**
  * @{
@@ -203,9 +211,11 @@ PadBase::WriteLine( const std::string&            line,
 
   const double fsize = args.GetDouble( "TextSize" );
   _latex_cursory -= std::max( double(RelLineHeight() * fsize / FontSize() ),
-    EstimateLatexHeight( line )* fsize /AbsHeight() );
+                              EstimateLatexHeight( line ) * fsize
+                              / AbsHeight() );
   return *this;
 }
+
 
 PadBase&
 PadBase::SetTextCursor( const double x, const double y, const font::align a )
@@ -214,6 +224,7 @@ PadBase::SetTextCursor( const double x, const double y, const font::align a )
   return SetTextCursor( x, y );
 }
 
+
 PadBase&
 PadBase::SetTextCursor( const double x, const double y )
 {
@@ -221,6 +232,8 @@ PadBase::SetTextCursor( const double x, const double y )
   _latex_cursory = y;
   return *this;
 }
+
+
 /** @} */
 
 /**
@@ -239,11 +252,13 @@ PadBase::PlotObj( TObject& obj, Option_t* opt )
   _pad->Update();
 }
 
+
 bool
 PadBase::HasObject( const TObject& obj ) const
 {
   return _pad->FindObject( obj.GetName() )  == &obj;
 }
+
 
 /**
  * @brief Moving a target object to before another object on the TPad
@@ -274,6 +289,7 @@ PadBase::InitDraw()
   _latex.SetTextAlign( font::top_left );
 }
 
+
 /**
  * @brief Additional steps to be performed by the pad before the canvas saving
  * functions are called.
@@ -282,8 +298,8 @@ PadBase::InitDraw()
  */
 void
 PadBase::Finalize()
-{
-}
+{}
+
 
 /**
  * @brief Allowing the Pad to claim ownership of some plot object.

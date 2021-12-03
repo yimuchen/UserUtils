@@ -22,11 +22,14 @@
 #include "TTree.h"
 #include <algorithm>
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
-namespace fmt {
+namespace fmt
+{
 
 /**
  * @brief Construct a new Batch Request object from a json file string
@@ -38,15 +41,18 @@ BatchRequest::BatchRequest( const std::string& filename )
   initialize( usr::FromJSONFile( filename ) );
 }
 
+
 BatchRequest::BatchRequest( const std::vector<std::string>& jsonfiles )
 {
   initialize( usr::FromJSONFiles( jsonfiles ) );
 }
 
+
 BatchRequest::BatchRequest( const usr::JSONMap& map )
 {
   initialize( map );
 }
+
 
 void
 BatchRequest::initialize( const usr::JSONMap& map )
@@ -102,11 +108,13 @@ BatchRequest::initialize( const usr::JSONMap& map )
 
 }
 
+
 /**
  * @class usr::plt::fmt::IOSetting
  * @details
  *
- * For the declaring common io settings, the following options are possible. None
+ * For the declaring common io settings, the following options are possible.
+ *None
  * of the entires are mandatory, all entries will default to an empty string if
  * not specified.
  *
@@ -117,7 +125,8 @@ BatchRequest::initialize( const usr::JSONMap& map )
  *   TFileServices in CMSSW.)
  * - output prefix: Output prefix to save generated plot files. Think specifying
  *   a path to where the outputs should be passed.
- * - output postfix: Output postfix for the plot files before the file extension.
+ * - output postfix: Output postfix for the plot files before the file
+ *extension.
  */
 IOSetting::IOSetting(){}
 
@@ -129,6 +138,7 @@ IOSetting::IOSetting( const usr::JSONMap& map )
   output_postfix = JSONEntry<std::string>( map, "output postfix", "" );
 }
 
+
 /**
  * @class usr::plt:fmt::Uncertainty
  * @details
@@ -137,21 +147,27 @@ IOSetting::IOSetting( const usr::JSONMap& map )
  * Upright entires would be mandatory.
  *
  * - name: The name of the uncertainty source, required as a unique tagger.
- * - *norm uncertainty*: For normalization only uncertainty, we can specify a how
- *   the obtain the scale  up and  scale down histograms using a usr::Measurement
+ * - *norm uncertainty*: For normalization only uncertainty, we can specify a
+ *how
+ *   the obtain the scale  up and  scale down histograms using a
+ *usr::Measurement
  *   declaration (an array like [1,0.025,0.026]), the relative uncertain will be
  *   used for scaling the central histogram up and down.
  * - *key name*: By default the uncertainty is assumed to be a shape like
  *   uncertainty, with uncertainty "up" and "down" shapes stored as shifted
- *   histograms. The effects of shape distortion is performed bin-by-bn using the
+ *   histograms. The effects of shape distortion is performed bin-by-bn using
+ *the
  *   histograms is done bin by bin. The key name is then used to specify which
  *   histograms in the same file should be used as the shifted templates. For
  *   each histogram request, the `histogram name + key name + "Up"` and
- *   `histogram name + key name + "Down"` will be taken as the shifted templates.
+ *   `histogram name + key name + "Down"` will be taken as the shifted
+ *templates.
  *   In case the templates are not found, the central template will be used
- *   (which is equivalent to saying this process is not affected by the specified
+ *   (which is equivalent to saying this process is not affected by the
+ *specified
  *   uncertainty). In the case that the key name is not specified, and the norm
- *   uncertainty is not specifed, the key name default to the "name" entry in the
+ *   uncertainty is not specifed, the key name default to the "name" entry in
+ *the
  *   decalration.
  *
  * A special uncertainty source should be noted here, and that is the "cross
@@ -164,8 +180,10 @@ Uncertainty::Uncertainty( const usr::JSONMap& map )
 {
   name             = JSONEntry<std::string>( map, "name" );
   key              = JSONEntry<std::string>( map, "key name", "" );
-  norm_uncertainty = JSONEntry<Measurement>( map, "norm uncertainty"
-                                           , Measurement( 1, 0, 0 ) );
+  norm_uncertainty = JSONEntry<Measurement>( map,
+                                             "norm uncertainty"
+                                             ,
+                                             Measurement( 1, 0, 0 ) );
   if( norm_uncertainty.CentralValue() == 1 &&
       norm_uncertainty.AbsUpperError() == 0 &&
       norm_uncertainty.AbsLowerError() == 0 &&
@@ -174,6 +192,7 @@ Uncertainty::Uncertainty( const usr::JSONMap& map )
     key = name;
   }
 }
+
 
 /**
  * @class usr::plt::fmt::HistRequest
@@ -207,6 +226,7 @@ HistRequest::HistRequest( const usr::JSONMap& map )
   type    = JSONEntry<std::string>( map, "type", "ratio" );
   logy    = JSONEntry<bool>( map, "logy", false );
 }
+
 
 /**
  * @class usr::plt::fmt::ProcessGroup
@@ -248,6 +268,7 @@ ProcessGroup::ProcessGroup( const usr::JSONMap& map,
   }
 }
 
+
 /**
  * @class usr::plt::fmt::Process
  * @details
@@ -257,31 +278,37 @@ ProcessGroup::ProcessGroup( const usr::JSONMap& map,
  *
  * - display: The string to display for the process in the plots. Access ROOT
  *   flavored latex string.
- * - file: The file containing the relevent histogram files. Notice that the path
+ * - file: The file containing the relevent histogram files. Notice that the
+ *path
  *   that will be open a process histogram file would have the prefix added in
  *   the "io settings" of the parent BatchProcess instance.
  * - "key prefix": Prefix string needed to add to histogram keys to get a
  *   relevent histogram. Helpful if a histogram file contains histograms for
  *   multiple processes.
- * - *latex*: The string to display for latex tables Notice that backslashed will
+ * - *latex*: The string to display for latex tables Notice that backslashed
+ *will
  *   need to be doubled up for "literal backslashed". If not specified, it will
  *   assume the same value of "display".
  * - *cross section*: The cross section with uncertainty of the processes in
  *   units of \f$\text{pb}\f$s. The declaration is done in the form of a array
- *   with at least one number and at most three numbers. The first is the central
+ *   with at least one number and at most three numbers. The first is the
+ *central
  *   value, with the latter two being the shift up and shift down uncertainties.
  *   Defaults to \f$1\pm0\text{pb}\f$.
  * - *generator*: The generator used for creating the process files. Default to
  *   an empty string.
- * - *cross section source*: How the cross section was calculated. Defaults to an
+ * - *cross section source*: How the cross section was calculated. Defaults to
+ *an
  *   empty string.
- * - *scale*: Additional factor to scale the process for presentation aesthetics.
+ * - *scale*: Additional factor to scale the process for presentation
+ *aesthetics.
  *   Default to 1.0.
  * - *luminosity*: The luminosity of the process (for data), or the effective
  *   luminosity of the unfiltered process (for simulated events), in units of
  *   \f$\text{pb}^{-1}\f$. For data processes, this must be present to allow for
  *   the calculation of the total luminosity. For simulated processes, if this
- *   entry is omitted, then the program will look for a TTree named "Count" and a
+ *   entry is omitted, then the program will look for a TTree named "Count" and
+ *a
  *   leaf named "OriginalCount" to get the total number of events in the
  *   unfiltered process, the effective luminosity is then calculated from the
  *   original count and the given cross section. If the TTree entry doesn't
@@ -302,16 +329,20 @@ Process::Process( const usr::JSONMap& map, const BatchRequest* ptr  )
   name                 = map["display"].GetString();
   latex_name           = JSONEntry<std::string>( map, "latex", name );
   generator            = JSONEntry<std::string>( map, "generator", "" );
-  cross_section_source = JSONEntry<std::string>( map, "cross section source"
-                                               , "" );
+  cross_section_source = JSONEntry<std::string>( map,
+                                                 "cross section source"
+                                                 ,
+                                                 "" );
 
   file                 = JSONEntry<std::string>( map, "file" );
   color                = JSONEntry<std::string>( map, "color", "blue" );
   key_prefix           = JSONEntry<std::string>( map, "key prefix", "" );
   scale                = JSONEntry<double>( map, "scale", 1.0 );
   effective_luminosity = JSONEntry<double>( map, "luminosity", 0.0 );
-  cross_section        = JSONEntry<Measurement>( map, "cross section"
-                                               , usr::Measurement( 1, 0, 0 ) );
+  cross_section        = JSONEntry<Measurement>( map,
+                                                 "cross section"
+                                                 ,
+                                                 usr::Measurement( 1, 0, 0 ) );
 
   // "run range"
   const auto run_range = JSONList<double>( map, "run range", {0, 0} );
@@ -325,6 +356,7 @@ Process::Process( const usr::JSONMap& map, const BatchRequest* ptr  )
   OpenFile();
 }
 
+
 /**
  * @brief Generating the key from a histogram request string
  *
@@ -334,8 +366,9 @@ Process::Process( const usr::JSONMap& map, const BatchRequest* ptr  )
 std::string
 Process::MakeKey( const std::string& key ) const
 {
-  return Parent().iosetting.key_prefix + key_prefix + key;
+  return Parent().iosetting.key_prefix+key_prefix+key;
 }
+
 
 /**
  * @brief Checking if the key corresponding to a histogram request exists.
@@ -347,6 +380,7 @@ Process::CheckKey( const std::string& key ) const
 {
   return _file->Get( MakeKey( key ).c_str() );
 }
+
 
 /**
  * @brief Getting a cloned copy of the histogram object of the histogram request
@@ -366,6 +400,7 @@ Process::GetClone( const std::string& key ) const
   return ans;
 }
 
+
 /**
  * @brief Getting a normalized copy of the histogram object of the histogram
  * request string.
@@ -381,6 +416,7 @@ Process::GetNormalizedClone( const std::string& key ) const
   ans->Scale( 1.0 / ans->Integral() );
   return ans;
 }
+
 
 /**
  * @brief Getting a correctly scaled copy of the histogram object of the
@@ -400,6 +436,7 @@ Process::GetScaledClone( const std::string& key, const double total ) const
   return ans;
 }
 
+
 /**
  * @brief Getting a clone of a 2D histogram of the histogram object of a
  * histogram request string.
@@ -416,6 +453,7 @@ Process::Get2DClone( const std::string& key ) const
   ans->SetDirectory( 0 );
   return ans;
 }
+
 
 /**
  * @brief Opening the histogram file of a process.
@@ -434,15 +472,15 @@ Process::OpenFile()
   gErrorIgnoreLevel = kError;
   _file
     = TFile::Open( ( Parent().iosetting.input_prefix+file ).c_str()
-                 , "READ" );
+                   ,
+                   "READ" );
   gErrorIgnoreLevel = root_error_level;
 
-
   if( effective_luminosity == 0.0 || effective_luminosity == 1.0 ){
-    auto DefaultLumi = [this](){
+    auto DefaultLumi = [this]( ){
                          usr::fout( "Warning! Effective luminosity is found for "
-                           "this process, defaulting the 1.0pb, If the "
-                           "normalization is wrong, fix this issue\n" );
+                                    "this process, defaulting the 1.0pb, If the "
+                                    "normalization is wrong, fix this issue\n" );
                          this->effective_luminosity = 1.0;
                        };
     if( _file == nullptr ){
@@ -461,16 +499,17 @@ Process::OpenFile()
 
     if( run_range_max != 0 || run_range_min != 0 ){
       usr::fout( "Warning! Run range should only be specified for data events! "
-        "Make sure you know what you are doing\n" );
+                 "Make sure you know what you are doing\n" );
     }
   } else {
     if( cross_section.CentralValue() != 1 || !cross_section_source.empty()
         || scale != 1 ){
       usr::fout( "Warning! Cross section and scaling options should only be used"
-        "for simulated events, make sure you know what you are doing\n" );
+                 "for simulated events, make sure you know what you are doing\n" );
     }
   }
 }
+
 
 /**
  * @brief Updating the stored io settings instance.
@@ -497,6 +536,7 @@ BatchRequest::UpdateInputPrefix( const std::string& x )
   }
 }
 
+
 /**
  * @brief Updating the stored io settings instance.
  *
@@ -506,6 +546,7 @@ BatchRequest::UpdateKeyPrefix( const std::string& x )
 {
   iosetting.key_prefix = x;
 }
+
 
 /**
  * @brief Updating the stored io settings instance.
@@ -517,6 +558,7 @@ BatchRequest::UpdateOutputPrefix( const std::string& x )
   iosetting.output_prefix = x;
 }
 
+
 /**
  * @brief Updating the stored io settings instance.
  *
@@ -527,7 +569,9 @@ BatchRequest::UpdateoutputPostfix( const std::string& x )
   iosetting.output_postfix = x;
 }
 
+
 // ** End of namespaces
+
 }
 
 }

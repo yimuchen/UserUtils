@@ -29,9 +29,11 @@
 #include <memory>
 #include <string>
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 // forward declaration of the classes
 class Canvas;
@@ -49,11 +51,10 @@ struct PadSize
   double ymin;
   double xmax;
   double ymax;
-  PadSize(
-    const double x_min = 0,
-    const double y_min = 0,
-    const double x_max = 1,
-    const double y_max = 1 ) :
+  PadSize( const double x_min = 0,
+           const double y_min = 0,
+           const double x_max = 1,
+           const double y_max = 1 ) :
     xmin( x_min ),
     ymin( y_min ),
     xmax( x_max ),
@@ -73,8 +74,7 @@ class PadBase
 public:
   virtual ~PadBase ();
   friend class Canvas;
-
-  PadBase()                 = delete;
+  PadBase() = delete;
   // PadBase(){}
   PadBase( const PadBase& ) = delete;
 
@@ -103,23 +103,32 @@ public:
   template<typename ... Args>
   inline PadBase&
   WriteLine( const std::string& str,
-             const RooCmdArg& arg1, Args ... args )
+             const RooCmdArg&   arg1,
+             Args ... args )
   { return WriteLine( str, usr::MakeVector<RooCmdArg>( arg1, args ... ) ); }
 
 
-  PadBase& WriteAtData( const double, const double, const std::string&,
+  PadBase& WriteAtData( const double,
+                        const double,
+                        const std::string&,
                         const std::vector<RooCmdArg>& );
   inline PadBase&
   WriteAtData( const double x, const double y, const std::string& str )
   { return WriteAtData( x, y, str, {} ); }
   template<typename ... Args>
   inline PadBase&
-  WriteAtData( const double x, const double y, const std::string& str,
-               const RooCmdArg& arg1, Args ... args )
+  WriteAtData( const double       x,
+               const double       y,
+               const std::string& str,
+               const RooCmdArg&   arg1,
+               Args ... args )
   {
-    return WriteAtData( x, y, str,
-      usr::MakeVector<RooCmdArg>( arg1, args ... ) );
+    return WriteAtData( x,
+                        y,
+                        str,
+                        usr::MakeVector<RooCmdArg>( arg1, args ... ) );
   }
+
 
   void PlotObj( TObject&, Option_t* = "" );
 
@@ -155,6 +164,7 @@ public:
     _generated_objects.emplace_back( new ObjType( args ... ) );
     return *dynamic_cast<ObjType*>( _generated_objects.back() );
   }
+
 
   void ClaimObject( TObject* );
 
@@ -193,10 +203,9 @@ public:
   Canvas&       ParentCanvas();
 
 
-
   // Access to the base object
   inline const TPad&
-               TPad_() const { return *( _pad ); }
+  TPad_() const { return *( _pad ); }
   inline TPad& TPad_()       { return *( _pad ); }
 
 protected:
@@ -209,7 +218,6 @@ protected:
   /** @brief coordinates to plot the next line of latex text, automatically
    *  updates when WriteLine() is called. */
   float _latex_cursory;
-
   PadBase( Canvas*, const PadSize& );
   const FontSet& Font() const;
   virtual void   InitDraw();
@@ -226,7 +234,7 @@ protected:
   GetListOfPrimitives() const { return _pad->GetListOfPrimitives(); }
 
   Canvas* _parentcanvas;
-  TPad* _pad;
+  TPad*   _pad;
 };
 
 /*-----------------------------------------------------------------------------
@@ -235,10 +243,9 @@ protected:
 class Canvas
 {
 public:
-  Canvas (
-    const length_t width,
-    const length_t height,
-    const FontSet& = FontSet() );
+  Canvas ( const length_t width,
+           const length_t height,
+           const FontSet& = FontSet() );
   virtual ~Canvas ();
 
   template<typename PadType, typename ... Args>
@@ -253,6 +260,7 @@ public:
     return *( dynamic_cast<PadType*>( _padlist.back().get() ) );
   }
 
+
   /**
    * Getting the reference to a pad owned by the canvas by index. Automatic
    * casting is also available.
@@ -264,12 +272,14 @@ public:
     return *( dynamic_cast<PadType*>( _padlist.at( i ).get() ) );
   }
 
+
   template<typename PadType = PadBase>
   const PadType&
   GetPad( const unsigned i ) const
   {
     return *( dynamic_cast<PadType*>( _padlist.at( i ).get() ) );
   }
+
 
   /**
    * @brief A more comprehensive interface to the canvas dimensions.
@@ -296,7 +306,7 @@ public:
 
 
   inline const TCanvas&
-                  TCanvas_() const { return *( _canvas ); }
+  TCanvas_() const { return *( _canvas ); }
   inline TCanvas& TCanvas_()       { return *( _canvas ); }
 
 protected:
@@ -320,7 +330,7 @@ protected:
    * overloaded.
    */
   std::vector<std::unique_ptr<PadBase> > _padlist;
-  TCanvas* _canvas;
+  TCanvas*                               _canvas;
 };
 
 }/* plt */

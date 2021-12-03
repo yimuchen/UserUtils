@@ -27,7 +27,8 @@
 namespace opt = boost::program_options;
 namespace fs  = std::experimental::filesystem;
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief Construction of the class property tree with a list of files.
@@ -51,7 +52,7 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
   for( const auto& member : _jsonmap.GetObject() ){
     const std::string optname = member.name.GetString();
     if( !member.value.IsObject() ){
-      std::cerr << "Bad format for option ["<< optname << "]" << std::endl;
+      std::cerr << "Bad format for option [" << optname << "]" << std::endl;
       throw std::invalid_argument( optname );
     }
 
@@ -60,7 +61,7 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
     for( const auto& submember : member.value.GetObject() ){
       const std::string optval = submember.name.GetString();
       if( !submember.value.IsObject() ){
-        std::cerr << "Bad format for option ["<< optname << "] "
+        std::cerr << "Bad format for option [" << optname << "] "
                   << "with value [" << optval << "]" << std::endl;
         throw std::invalid_argument( optval );
       }
@@ -74,7 +75,7 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
       std::sort( this_exttaglist.begin(), this_exttaglist.end() );
 
       if( this_exttaglist.size() == 0 ){
-        std::cerr << "No extended values for option ["<< optname << "] "
+        std::cerr << "No extended values for option [" << optname << "] "
                   << "with value [" << optval << "]" << std::endl;
         throw std::invalid_argument( optval );
       }
@@ -84,12 +85,11 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
         continue;
       }
 
-
       if( exttaglist.size() > this_exttaglist.size() ){
         for( const auto& tag : exttaglist ){
           if( !FindValue( this_exttaglist, tag ) ){
-            std::cerr << "Missing extended value [" << tag <<"] "
-                      << "for option ["<< optname << "] "
+            std::cerr << "Missing extended value [" << tag << "] "
+                      << "for option [" << optname << "] "
                       << "with value [" << optval << "]" << std::endl;
             throw std::invalid_argument( tag );
           }
@@ -97,8 +97,8 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
       } else if( exttaglist.size() < this_exttaglist.size() ){
         for( const auto& tag : this_exttaglist ){
           if( !FindValue( this_exttaglist, tag ) ){
-            std::cerr << "Missing extended value [" << tag <<"] "
-                      << "for option ["<< optname << "] "
+            std::cerr << "Missing extended value [" << tag << "] "
+                      << "for option [" << optname << "] "
                       << "with value [" << optval << "]" << std::endl;
             throw std::invalid_argument( tag );
           }
@@ -107,8 +107,8 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
         for( size_t i = 0; i < exttaglist.size(); ++i ){
           if( exttaglist.at( i ) != this_exttaglist.at( i ) ){
             const std::string misval = exttaglist.at( i );
-            std::cerr << "Undefined extended value [" << misval <<"] "
-                      << "for option ["<< optname << "] "
+            std::cerr << "Undefined extended value [" << misval << "] "
+                      << "for option [" << optname << "] "
                       << "with value [" << optval << "]" << std::endl;
             throw std::invalid_argument( misval );
           }
@@ -123,6 +123,7 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
     ( "help,h", "print help options and exit program" )
   ;
 }
+
 
 /**
  * @brief default destructor (nothing, relying on member auto cleaning)
@@ -144,11 +145,13 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
   return *this;
 }
 
+
 /**
  * @brief  Adding the options for verbose level adjustment
  *
  * Adding the commonly used option for adjusting the verbose level of the main
- * program. The user can also provide the default log level. Notice that the user
+ * program. The user can also provide the default log level. Notice that the
+ * user
  * will not need to set the Log level, that will the handled by the automatic
  * parsing options.
  */
@@ -157,17 +160,20 @@ ArgumentExtender::AddVerboseOpt( const unsigned level )
 {
   opt::options_description desc( "Logging verbose level adjustment" );
   desc.add_options()
-    ( "verbose,v", po::defvalue<int>( level ),
+    ( "verbose,v",
+    po::defvalue<int>( level ),
     usr::fstr( "Verbose level (int):\n%s\n%s\n%s\n%s\n%s\n",
-      usr::fstr( "%d UserUtils/Internal messages", usr::log::INTERNAL ),
-      usr::fstr( "%d debugging messages",          usr::log::DEBUG ),
-      usr::fstr( "%d process information",         usr::log::INFO ),
-      usr::fstr( "%d warning information",         usr::log::WARNING ),
-      usr::fstr( "%d error information",           usr::log::ERROR )
-      ).c_str() )
+               usr::fstr( "%d UserUtils/Internal messages",
+                          usr::log::INTERNAL ),
+               usr::fstr( "%d debugging messages",  usr::log::DEBUG ),
+               usr::fstr( "%d process information", usr::log::INFO ),
+               usr::fstr( "%d warning information", usr::log::WARNING ),
+               usr::fstr( "%d error information",
+                          usr::log::ERROR )).c_str() )
   ;
   return AddOptions( desc );
 }
+
 
 /**
  * @brief parsing the program input with the standard argc, argv interface.
@@ -181,9 +187,12 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
                                   ^ opt::command_line_style::allow_short;*/
 
   try {
-    opt::store( opt::parse_command_line( argc, argv, Description()
-      /*, parse_style*/ )
-              , Args() );
+    opt::store( opt::parse_command_line( argc,
+                                         argv,
+                                         Description()
+                                         /*, parse_style*/ )
+                ,
+                Args() );
     opt::notify( Args() );
   } catch( boost::exception& e ){
     std::cerr << "Error parsing command!" << std::endl
@@ -195,6 +204,7 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
 
   _check_parse_valid();
 }
+
 
 /**
  * @brief parsing the program input with an external config file interface.
@@ -207,7 +217,8 @@ ArgumentExtender::ParseFile( const std::string& argfile )
   try {
     std::ifstream f( argfile, std::ios::in );
     opt::store( opt::parse_config_file( f, Description() )
-              , Args() );
+                ,
+                Args() );
     opt::notify( Args() );
   } catch( boost::exception& e ){
     std::cerr << "Error parsing command!" << std::endl
@@ -219,6 +230,7 @@ ArgumentExtender::ParseFile( const std::string& argfile )
 
   _check_parse_valid();
 }
+
 
 /**
  * @brief Checking if the options are valid as in whether there are options
@@ -261,11 +273,14 @@ ArgumentExtender::_check_parse_valid()
     }
 
     std::vector<std::string> validoptionlist;
-    if( !member.value.GetObject().HasMember( Arg<std::string>( optname ).c_str() ) ){
+    if( !member.value.GetObject().HasMember( Arg<std::string>( optname ).c_str() ) )
+    {
       std::cerr
         << usr::fstr(
         "Extended values for options for [%s] with value [%s] is not defined!\n"
-                    , optname, Arg<std::string>( optname ) )
+        ,
+        optname,
+        Arg<std::string>( optname ) )
         << std::endl
         << "Available values: " << std::flush;
 
@@ -289,6 +304,7 @@ ArgumentExtender::_check_parse_valid()
   }
 }
 
+
 /**
  * @brief Printing help message of arguments and exit the program.
  */
@@ -299,6 +315,7 @@ ArgumentExtender::PrintHelpAndExit() const
   std::exit( EXIT_SUCCESS );
 }
 
+
 /**
  * @brief Checking if the user input exists for an option.
  * @details Should be called after the ParseOptions() method has been called.
@@ -308,6 +325,7 @@ ArgumentExtender::CheckArg( const std::string& opt ) const
 {
   return Args().count( opt ) || Args().count( "_list" );
 }
+
 
 /**
  * @brief Setting the file prefix for the file path generation
@@ -320,6 +338,7 @@ ArgumentExtender::SetFilePrefix( const fs::path pre )
   _prefix = pre;
 }
 
+
 /**
  * @brief Setting the directory naming scheme list
  *
@@ -331,6 +350,7 @@ ArgumentExtender::SetDirScheme( const PathScheme& newscheme )
   _dirscheme = newscheme;
 }
 
+
 /**
  * @brief Incrementally adding single directory name scheme to the final list
  */
@@ -339,6 +359,7 @@ ArgumentExtender::AddDirScheme( const ArgPathScheme& arg )
 {
   _dirscheme.push_back( arg );
 }
+
 
 /**
  * @brief Adding a list of directory naming scheme to the existing list.
@@ -353,6 +374,7 @@ ArgumentExtender::AddDirScheme( const PathScheme& newscheme )
   }
 }
 
+
 /**
  * @brief Setting the basename naming scheme list
  *
@@ -364,6 +386,7 @@ ArgumentExtender::SetNameScheme( const PathScheme& newscheme )
   _namescheme = newscheme;
 }
 
+
 /**
  * @brief Incrementally adding single basename name scheme to the final list
  */
@@ -372,6 +395,7 @@ ArgumentExtender::AddNameScheme( const ArgPathScheme& arg )
 {
   _namescheme.push_back( arg );
 }
+
 
 /**
  * @brief Adding a list of basename naming scheme to the existing list.
@@ -386,6 +410,7 @@ ArgumentExtender::AddNameScheme( const PathScheme& newscheme )
   }
 }
 
+
 /**
  * @brief Generating a path based of existing naming scheme in the class
  *
@@ -397,16 +422,16 @@ ArgumentExtender::AddNameScheme( const PathScheme& newscheme )
  * method `genPathString()`.
  */
 fs::path
-ArgumentExtender::MakeFile(
-  const std::string& nameprefix,
-  const std::string& ext ) const
+ArgumentExtender::MakeFile( const std::string& nameprefix,
+                            const std::string& ext ) const
 {
   fs::path ans = GetPathPrefix();
-  ans /= ( nameprefix + GetPathPostfix() );
-  ans += "." + ext;
+  ans /= ( nameprefix+GetPathPostfix() );
+  ans += "."+ext;
 
   return ans;
 }
+
 
 fs::path
 ArgumentExtender::MakePDFFile( const std::string& x ) const
@@ -414,11 +439,13 @@ ArgumentExtender::MakePDFFile( const std::string& x ) const
   return MakeFile( x, "pdf" );
 }
 
+
 fs::path
 ArgumentExtender::MakePNGFile( const std::string& x ) const
 {
   return MakeFile( x, "png" );
 }
+
 
 fs::path
 ArgumentExtender::MakeTXTFile( const std::string& x ) const
@@ -426,11 +453,13 @@ ArgumentExtender::MakeTXTFile( const std::string& x ) const
   return MakeFile( x, "txt" );
 }
 
+
 fs::path
 ArgumentExtender::MakeTEXFile( const std::string& x ) const
 {
   return MakeFile( x, "tex" );
 }
+
 
 std::string
 ArgumentExtender::GetPathPrefix() const
@@ -444,6 +473,7 @@ ArgumentExtender::GetPathPrefix() const
   return dirname.string();
 }
 
+
 std::string
 ArgumentExtender::GetPathPostfix() const
 {
@@ -452,25 +482,30 @@ ArgumentExtender::GetPathPostfix() const
   for( const auto& x : _namescheme ){
     const std::string str = genPathString( x );
     if( str != "" ){
-      ans += "_" + genPathString( x );
+      ans += "_"+genPathString( x );
     }
   }
 
   return ans;
 }
 
+
 /**
  * @brief Generating the string for a single option input.
  *
- * For the given scheme of { option, prefixstring }, the function will return the
- * string: prefixstring + option_input_as_string. Some substitutions will be name
+ * For the given scheme of { option, prefixstring }, the function will return
+ * the
+ * string: prefixstring + option_input_as_string. Some substitutions will be
+ * name
  * to make the output more friendly to command lines:
  *
  * 1. Decimal points will be replaced with 'p'
  * 2. Spaces (for list multitoken arguments) will be replaced with '-'
  * 3. If the option doesn't have a input (a.k.a. The option is just a boolean
- *    flag), the the option_input_as_string is would be "On/Off" depending on the
- *    flag. If prefixstring if empty, then the return string would be "option" or
+ *    flag), the the option_input_as_string is would be "On/Off" depending on
+ * the
+ *    flag. If prefixstring if empty, then the return string would be "option"
+ * or
  *    ""  depending on the options.
  */
 std::string
@@ -492,6 +527,7 @@ ArgumentExtender::genPathString( const ArgPathScheme& x ) const
   return inputstring;
 }
 
+
 std::string
 ArgumentExtender::genPathString_Boolean( const ArgPathScheme& x ) const
 {
@@ -500,9 +536,10 @@ ArgumentExtender::genPathString_Boolean( const ArgPathScheme& x ) const
   if( x.pathstring == "" ){
     return flag ? x.option : "";
   } else {
-    return x.pathstring + std::string( flag ? "On" : "Off" );
+    return x.pathstring+std::string( flag ? "On" : "Off" );
   }
 }
+
 
 std::string
 ArgumentExtender::genPathString_List( const ArgPathScheme& x ) const
@@ -513,26 +550,27 @@ ArgumentExtender::genPathString_List( const ArgPathScheme& x ) const
 
   if( Args()[x.option].value().type() == typeid( std::vector<std::string> ) ){
     for( const auto& in : ArgList<std::string>( x.option ) ){
-      ans += in + '-';
+      ans += in+'-';
     }
 
-    ans.erase( ans.end() - 1 );
+    ans.erase( ans.end()-1 );
   } else if( Args()[x.option].value().type() == typeid( std::vector<int> ) ){
     for( const auto& in : ArgList<int>( x.option ) ){
-      ans += std::to_string( in ) + '-';
+      ans += std::to_string( in )+'-';
     }
 
-    ans.erase( ans.end() - 1 );
+    ans.erase( ans.end()-1 );
   } else if( Args()[x.option].value().type() == typeid( std::vector<double> ) ){
     for( const auto in : ArgList<double>( x.option ) ){
-      ans += usr::fmt::base::decimal( in ).str() + '-';
+      ans += usr::fmt::base::decimal( in ).str()+'-';
     }
 
-    ans.erase( ans.end() - 1 );
+    ans.erase( ans.end()-1 );
   }
 
-  return x.pathstring + ans;
+  return x.pathstring+ans;
 }
+
 
 std::string
 ArgumentExtender::genPathString_Single( const ArgPathScheme& x ) const
@@ -549,18 +587,20 @@ ArgumentExtender::genPathString_Single( const ArgPathScheme& x ) const
     ans = usr::fmt::base::decimal( Arg<double>( x.option ) ).str();
   }
 
-  return x.pathstring + ans;
+  return x.pathstring+ans;
 }
 
 
 /**
- * @brief Checking if a certain options is a bool flag option (i.e. declared with
+ * @brief Checking if a certain options is a bool flag option (i.e. declared
+ * with
  *        no semantic information)
  *
  * Options declare with no semantic information (i.e. no
  * boost::program_options::value<std::string>()] and the like), are typically
  * used as boolean flags. The function will return if a certain options is
- * declared as such, using the semantic->mix_token and max_token method (both are
+ * declared as such, using the semantic->mix_token and max_token method (both
+ * are
  * zero if it is)
  *
  * In the case that the option doesn't exist in the class instance, false is
@@ -576,6 +616,7 @@ ArgumentExtender::IsBooleanFlag( const std::string& x ) const
   return description->semantic()->min_tokens() == 0 &&
          description->semantic()->max_tokens() == 0;
 }
+
 
 /**
  * @brief Checking if a certain options takes in multiple inputs.
@@ -601,7 +642,5 @@ ArgumentExtender::IsMultiToken( const std::string& x ) const
  * @brief Specialization for getting a list of string from a file.
  */
 // template<>
-
-
 
 }/* usr */

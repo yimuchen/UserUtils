@@ -11,9 +11,11 @@
 #include "CmdSetAttr.hpp"
 #include "TLegendEntry.h"
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * Plotting a two dimensional histogram support the following options:
@@ -79,7 +81,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
     PlotObj( hist, "SCAT SAME" );
     break;
   case plot2df_dummy:
-    PlotObj( hist, ( args.GetStr( "Plot2DF" ) + " SAME" ).c_str() );
+    PlotObj( hist, ( args.GetStr( "Plot2DF" )+" SAME" ).c_str() );
     break;
 
   default:
@@ -89,7 +91,9 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
 
   if( args.Has( "EntryText" ) ){
     _legend.AddEntry( &hist
-                    , args.Get( "EntryText" ).getString( 0 ), legopt.c_str() );
+                      ,
+                      args.Get( "EntryText" ).getString( 0 ),
+                      legopt.c_str() );
   }
 
   SetLineAttr( hist, args );
@@ -98,6 +102,7 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
 
   return hist;
 }
+
 
 /**
  * Plotting a two dimensional graph support the following options:
@@ -132,10 +137,14 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
 
   if( !GetAxisObject() ){
     auto& axishist = MakeObj<TH2D>(
-      ( "axishist" + RandomString( 12 ) ).c_str(), "",
-      10, graph.GetXminE(), graph.GetXmaxE(),
-      10, graph.GetYminE(), graph.GetYmaxE()
-      );
+      ( "axishist"+RandomString( 12 ) ).c_str(),
+      "",
+      10,
+      graph.GetXminE(),
+      graph.GetXmaxE(),
+      10,
+      graph.GetYminE(),
+      graph.GetYmaxE());
     axishist.SetStats( 0 );
     PadBase::PlotObj( axishist, "AXIS" );
     SetAxisFont();
@@ -166,7 +175,9 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
 
   if( args.Has( "EntryText" ) ){
     _legend.AddEntry( &graph
-                    , args.Get( "EntryText" ).getString( 0 ), legopt.c_str() );
+                      ,
+                      args.Get( "EntryText" ).getString( 0 ),
+                      legopt.c_str() );
   }
 
   SetLineAttr( graph, args );
@@ -175,6 +186,7 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
 
   return graph;
 }
+
 
 /**
  * Plotting of a 2 dimensional graph is done by generating a TGraph2D object via
@@ -190,8 +202,8 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
   const double xmax = func.GetXmax();
   const double ymin = func.GetYmin();
   const double ymax = func.GetYmax();
-  const double dx   = ( xmax-xmin )/sep;
-  const double dy   = ( ymax-ymin )/sep;
+  const double dx   = ( xmax-xmin ) / sep;
+  const double dy   = ( ymax-ymin ) / sep;
 
   std::vector<double> x;
   std::vector<double> y;
@@ -199,19 +211,22 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
 
   for( unsigned i = 0; i < sep; ++i ){
     for( unsigned j = 0; j < sep; ++j ){
-      x.push_back( xmin + ( i + 0.5 ) * dx );
-      y.push_back( ymin + ( j + 0.5 ) * dy );
+      x.push_back( xmin+( i+0.5 ) * dx );
+      y.push_back( ymin+( j+0.5 ) * dy );
       z.push_back( func.Eval( x.back(), y.back() ) );
     }
   }
 
   TGraph2D& graph = MakeObj<TGraph2D>( x.size(),
-    x.data(), y.data(), z.data() );
+                                       x.data(),
+                                       y.data(),
+                                       z.data() );
 
   graph.SetName( usr::RandomString( 12 ).c_str() );
 
   return PlotGraph( graph, arglist );
 }
+
 
 /**
  * Plotting a regular 1D graph object (TGraph as oppose to TGraph2D) object
@@ -251,7 +266,9 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
 
   if( args.Has( "EntryText" ) ){
     _legend.AddEntry( &graph
-                    , args.Get( "EntryText" ).getString( 0 ), legopt.c_str() );
+                      ,
+                      args.Get( "EntryText" ).getString( 0 ),
+                      legopt.c_str() );
   }
 
   SetLineAttr( graph, args );
@@ -260,6 +277,7 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
 
   return graph;
 }
+
 
 /**
  * In 2D plotting, we are assuming the important stuff is being plotted first:
@@ -276,15 +294,16 @@ Pad2DFlat::MakeLegend()
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
   TPad_().cd();
   float width  = 0;
-  float height = 1.2*LineHeight() * _legend.GetListOfPrimitives()->GetEntries();
+  float height = 1.2 * LineHeight()
+                 * _legend.GetListOfPrimitives()->GetEntries();
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
-    const char* label = ( (TLegendEntry*)obj )->GetLabel();
-    TLatex* textmp    = new TLatex( 0, 0, label );
+    const char* label  = ( (TLegendEntry*)obj )->GetLabel();
+    TLatex*     textmp = new TLatex( 0, 0, label );
     textmp->SetTextFont( FontFace() );
     textmp->SetTextSize( FontSize() );
     width = std::max( int(width),
-      int(1.3 *textmp->GetXsize() * AbsWidth() + 5) );
+                      int(1.3 * textmp->GetXsize() * AbsWidth()+5) );
     delete textmp;
   }
 
@@ -292,9 +311,9 @@ Pad2DFlat::MakeLegend()
   width += 1.0 * LineHeight();// Reserving space for legend icon boxes.
 
   const float xmin = 0.5 * float(LineHeight() ) / AbsWidth();
-  const float ymax = 1   - GetTopMargin();
-  const float xmax = GetLeftMargin() - 5*float(LineHeight() ) / AbsWidth();
-  const float ymin = ymax - height/ AbsHeight();
+  const float ymax = 1-GetTopMargin();
+  const float xmax = GetLeftMargin()-5 * float(LineHeight() ) / AbsWidth();
+  const float ymin = ymax-height / AbsHeight();
   _legend.SetX1NDC( xmin );
   _legend.SetX2NDC( xmax );
   _legend.SetY1NDC( ymin );

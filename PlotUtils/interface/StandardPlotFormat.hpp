@@ -22,11 +22,14 @@
 
 #include <memory>
 
-namespace usr {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
-namespace fmt {
+namespace fmt
+{
 
 /**
  * @addtogroup StandardizedPlot
@@ -51,24 +54,24 @@ public:
   friend ProcessGroup;
   friend BatchRequest;
 
-  std::string name;
-  std::string latex_name;
-  std::string generator;
-  std::string cross_section_source;
+  std::string      name;
+  std::string      latex_name;
+  std::string      generator;
+  std::string      cross_section_source;
   usr::Measurement cross_section;
-  std::string file;
-  std::string color;
-  std::string key_prefix;
-  double scale;
-  double effective_luminosity;
-  unsigned run_range_min;
-  unsigned run_range_max;
-  float transparency;
+  std::string      file;
+  std::string      color;
+  std::string      key_prefix;
+  double           scale;
+  double           effective_luminosity;
+  unsigned         run_range_min;
+  unsigned         run_range_max;
+  float            transparency;
 
 private:
   Process( const usr::JSONMap& map, const BatchRequest* parent );
 
-  TFile* _file;
+  TFile*              _file;
   const BatchRequest* parent;
 
   void OpenFile();
@@ -97,7 +100,7 @@ public:
   std::string name;
   std::string latex_name;
   std::string color;
-  bool is_data;
+  bool        is_data;
 
 private:
   ProcessGroup();
@@ -118,7 +121,7 @@ public:
   std::string yaxis;
   std::string filekey;
   std::string type;
-  bool logy;
+  bool        logy;
 
 private:
   HistRequest( const usr::JSONMap& map );
@@ -133,8 +136,8 @@ class Uncertainty
 public:
   friend BatchRequest;
 
-  std::string name;
-  std::string key;
+  std::string      name;
+  std::string      key;
   usr::Measurement norm_uncertainty;
 
 private:
@@ -166,12 +169,11 @@ private:
 class BatchRequest
 {
 public:
-  std::vector<HistRequest> histlist;
+  std::vector<HistRequest>  histlist;
   std::vector<ProcessGroup> background;
-  ProcessGroup data;
-  std::vector<Process> signallist;
-  std::vector<Uncertainty> uncertainties;
-
+  ProcessGroup              data;
+  std::vector<Process>      signallist;
+  std::vector<Uncertainty>  uncertainties;
   BatchRequest( const std::string& jsonfile );
   BatchRequest( const std::vector<std::string>& jsonfiles );
   BatchRequest( const usr::JSONMap& map );
@@ -196,9 +198,9 @@ private:
 
   // Temporary variables for generating plots:
   std::vector<std::unique_ptr<TH1D> > _background_stack;
-  std::unique_ptr<TH1D> _background_stat;
-  std::unique_ptr<TH1D> _background_sys;
-  std::unique_ptr<TH1D> _data_hist;
+  std::unique_ptr<TH1D>               _background_stat;
+  std::unique_ptr<TH1D>               _background_sys;
+  std::unique_ptr<TH1D>               _data_hist;
 
   double _total_luminosity;
 
@@ -209,13 +211,11 @@ private:
 
 /** @} */
 
-
 }// fmt
 
 }// plt
 
 }// usr
-
 
 
 #endif

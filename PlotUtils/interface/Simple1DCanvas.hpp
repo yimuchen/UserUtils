@@ -14,30 +14,25 @@
 #include "UserUtils/PlotUtils/Pad1D.hpp"
 #endif
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 class Simple1DCanvas : public Canvas
 {
 public:
   static length_t default_width;
   static length_t default_height;
-  static FontSet default_font;
-
-  Simple1DCanvas(
-    const RangeByVar&,
-    const length_t width  = default_width,
-    const length_t height = default_height,
-    const FontSet&        = default_font
-    );
-
-  Simple1DCanvas(
-    const length_t width  = default_width,
-    const length_t height = default_height,
-    const FontSet&        = default_font
-    );
-
+  static FontSet  default_font;
+  Simple1DCanvas( const RangeByVar&,
+                  const length_t width  = default_width,
+                  const length_t height = default_height,
+                  const FontSet&        = default_font );
+  Simple1DCanvas( const length_t width  = default_width,
+                  const length_t height = default_height,
+                  const FontSet&        = default_font );
   virtual ~Simple1DCanvas ();
 
   /**
@@ -56,45 +51,63 @@ public:
    */
   template<typename ... Args>
   inline TH1D&
-  PlotHist( TH1D& x, Args... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH1D& x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
   template<typename ... Args>
   inline TH1D&
-  PlotHist( TH1D* x, Args... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH1D* x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
 
   template<typename ... Args>
   inline TGraph&
-  PlotFunc( TF1& x, Args... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF1& x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
   template<typename ... Args>
   inline TGraph&
-  PlotFunc( TF1* x, Args... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF1* x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
 
   template<typename ... Args>
   inline TGraph&
-  PlotGraph( TGraph& x, Args... args ){ return Pad().PlotGraph( x, args ... ); }
+  PlotGraph( TGraph& x, Args ... args )
+  {
+    return Pad().PlotGraph( x, args ... );
+  }
   template<typename ... Args>
   inline TGraph&
-  PlotGraph( TGraph* x, Args... args ){ return Pad().PlotGraph( x, args ... ); }
+  PlotGraph( TGraph* x, Args ... args )
+  {
+    return Pad().PlotGraph( x, args ... );
+  }
 
   template<typename ... Args>
   inline TEfficiency&
-  PlotEff( TEfficiency& x, Args... args ){ return Pad().PlotEff( x, args ... ); }
+  PlotEff( TEfficiency& x, Args ... args )
+  {
+    return Pad().PlotEff( x, args ... );
+  }
   template<typename ... Args>
   inline TEfficiency&
-  PlotEff( TEfficiency* x, Args... args ){ return Pad().PlotEff( x, args ... ); }
+  PlotEff( TEfficiency* x, Args ... args )
+  {
+    return Pad().PlotEff( x, args ... );
+  }
 
   template<typename ... Args>
   inline TGraphAsymmErrors&
-  PlotData( RooAbsData& x, Args... args ){ return Pad().PlotData( x, args ... );}
+  PlotData( RooAbsData& x, Args ... args )
+  {
+    return Pad().PlotData( x, args ... );
+  }
   template<typename ... Args>
   inline TGraphAsymmErrors&
-  PlotData( RooAbsData* x, Args... args ){ return Pad().PlotData( x, args ... );}
+  PlotData( RooAbsData* x, Args ... args )
+  {
+    return Pad().PlotData( x, args ... );
+  }
 
   template<typename ... Args>
   inline TGraph&
-  PlotPdf( RooAbsPdf& x, Args... args ){ return Pad().PlotPdf( x, args ... );}
+  PlotPdf( RooAbsPdf& x, Args ... args ){ return Pad().PlotPdf( x, args ... );}
   template<typename ... Args>
   inline TGraph&
-  PlotPdf( RooAbsPdf* x, Args... args ){ return Pad().PlotPdf( x, args ... );}
+  PlotPdf( RooAbsPdf* x, Args ... args ){ return Pad().PlotPdf( x, args ... );}
   /** @} */
 
   /**
@@ -103,20 +116,36 @@ public:
    * future proof interface.
    */
   template<typename ... Args>
-  inline void DrawCMSLabel( Args... args ){ Pad().DrawCMSLabel( args ... ); }
+  inline void DrawCMSLabel( Args ... args ){ Pad().DrawCMSLabel( args ... ); }
   template<typename ... Args>
-  inline void DrawLuminosity( Args... args ){ Pad().DrawLuminosity( args ... ); }
+  inline void
+  DrawLuminosity( Args ... args )
+  {
+    Pad().DrawLuminosity( args ... );
+  }
   template<typename ... Args>
-  inline TLine& DrawHLine( Args... args ){ return Pad().DrawHLine( args ... ); }
+  inline TLine&
+  DrawHLine( Args ... args )
+  {
+    return Pad().DrawHLine( args ... );
+  }
   template<typename ... Args>
-  inline TLine& DrawVLine( Args... args ){ return Pad().DrawVLine( args ... ); }
+  inline TLine&
+  DrawVLine( Args ... args )
+  {
+    return Pad().DrawVLine( args ... );
+  }
   template<typename ... Args>
-  inline void SetLogy( Args... args ){ Pad().SetLogy( args ... ); }
+  inline void SetLogy( Args ... args ){ Pad().SetLogy( args ... ); }
   template<typename ... Args>
-  inline PadBase& WriteLine( Args... args ){ return Pad().WriteLine( args ... );}
+  inline PadBase&
+  WriteLine( Args ... args )
+  {
+    return Pad().WriteLine( args ... );
+  }
 
   template<typename ... Args>
-  inline void SetHistAxisTitles( Args... args )
+  inline void SetHistAxisTitles( Args ... args )
   { Pad().SetHistAxisTitles( args ... ); }
   /** @} */
 

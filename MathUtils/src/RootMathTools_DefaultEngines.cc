@@ -14,7 +14,8 @@
 
 #include <cmath>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief pseudo machine epsilon to initialize iterations for next to boundary
@@ -38,6 +39,7 @@ DefaultMinimizer::DefaultMinimizer() :
   SetPrintLevel( -1000 );// Suppressing all outputs
 }
 
+
 usr::Measurement
 DefaultMinimizer::GetParamAsMeasurement( const unsigned index )
 {
@@ -48,6 +50,7 @@ DefaultMinimizer::GetParamAsMeasurement( const unsigned index )
   return usr::Measurement( cen, up, -lo );
 }
 
+
 // ------------------------------------------------------------------------------
 
 DefaultSolver1D::DefaultSolver1D() :
@@ -55,8 +58,8 @@ DefaultSolver1D::DefaultSolver1D() :
 {}
 
 unsigned DefaultSolver1D::default_max_iteration = 1e6;
-double DefaultSolver1D::default_abs_tolerance   = 1e-8;
-double DefaultSolver1D::default_rel_tolerance   = 1e-10;
+double   DefaultSolver1D::default_abs_tolerance = 1e-8;
+double   DefaultSolver1D::default_rel_tolerance = 1e-10;
 
 double
 DefaultSolver1D::SolveF( const ROOT::Math::IGenFunction& f,
@@ -65,10 +68,13 @@ DefaultSolver1D::SolveF( const ROOT::Math::IGenFunction& f,
 {
   SetFunction( f, xlow, xup );
   Solve( (int)default_max_iteration
-       ,  default_abs_tolerance
-       ,  default_rel_tolerance );
+         ,
+         default_abs_tolerance
+         ,
+         default_rel_tolerance );
   return Root();// Returning the root regardless of consituent;
 }
+
 
 double
 DefaultSolver1D::SolveForY( const ROOT::Math::IGenFunction& f,
@@ -78,18 +84,22 @@ DefaultSolver1D::SolveForY( const ROOT::Math::IGenFunction& f,
 {
   // Lambda function is the easiest way to express an augmented f.
   auto shifted_f = [&f, y]( const double x ){
-                     return f( x ) - y;
+                     return f( x )-y;
                    };
 
   ROOT::Math::Functor1D new_func( shifted_f );
 
   SetFunction( new_func, xlow, xup );
   Solve( (int)default_max_iteration
-       , default_abs_tolerance
-       , default_rel_tolerance );
+         ,
+         default_abs_tolerance
+         ,
+         default_rel_tolerance );
 
   return Root();
 }
+
+
 // ------------------------------------------------------------------------------
 
 DefaultMinimizer1D::DefaultMinimizer1D() :
@@ -97,8 +107,8 @@ DefaultMinimizer1D::DefaultMinimizer1D() :
 {}
 
 unsigned DefaultMinimizer1D::default_max_iteration = 1e6;
-double DefaultMinimizer1D::default_abs_tolerance   = 1e-8;
-double DefaultMinimizer1D::default_rel_tolerance   = 1e-10;
+double   DefaultMinimizer1D::default_abs_tolerance = 1e-8;
+double   DefaultMinimizer1D::default_rel_tolerance = 1e-10;
 
 void
 DefaultMinimizer1D::Minimize( const ROOT::Math::IGenFunction& f,
@@ -107,9 +117,12 @@ DefaultMinimizer1D::Minimize( const ROOT::Math::IGenFunction& f,
 {
   SetFunction( f, xlow, xup );
   ROOT::Math::BrentMinimizer1D::Minimize( (int)default_max_iteration
-                                        ,  default_abs_tolerance
-                                        ,  default_rel_tolerance );
+                                          ,
+                                          default_abs_tolerance
+                                          ,
+                                          default_rel_tolerance );
 }
+
 
 // ------------------------------------------------------------------------------
 
@@ -118,8 +131,7 @@ DefaultSolverND::DefaultSolverND() :
   ROOT::Math::GSLMultiRootFinder( ROOT::Math::GSLMultiRootFinder::kHybridS  )
 {
   SetPrintLevel( 0 );// Suppress all outputs by default
-  gErrorIgnoreLevel = kBreak ;
+  gErrorIgnoreLevel = kBreak;
 }
-
 
 }/*usr*/

@@ -2,19 +2,22 @@
 
 #include <stack>
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief Setting the alls the `target` instances in a TList object to be placed
  * before the first instance of `before` in the TList.
  *
  * This function is required since the public member functions of TList doesn't
- * allow easy manipulation of the accompanied options string. If `before` doesn't
+ * allow easy manipulation of the accompanied options string. If `before`
+ * doesn't
  * exist in the TList, the function will do nothing and return false. Otherwise
  * the function will return true, regardless of whether anything about the TList
  * is actually changed by the function or not.
  *
- * The implementation of the function is basically dumping all contents after the
+ * The implementation of the function is basically dumping all contents after
+ * the
  * first `before` instance into a stack, appended the required `target`
  * instances, and reinserting all of the other instances.
  */
@@ -25,7 +28,7 @@ MoveObjectToBefore( TList&         list,
 {
   struct objopt
   {
-    TObject*    obj;
+    TObject* obj;
     std::string opt;
   };
 

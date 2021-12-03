@@ -19,7 +19,8 @@
  * @defgroup triggermatching Trigger Matching
  * @details
  * @details
- * Main reference could be found in the documentation of [general trigger objects
+ * Main reference could be found in the documentation of [general trigger
+ *objects
  * use](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2016#Trigger).
  *
  * In general, you will need provide :
@@ -30,7 +31,8 @@
  * - The trigger bits in the EDM file (should be under the input tag
  *   "TriggerResults::HLT" or similar).
  * - Trigger paths and filter label. For paths, please consult your physics
- *   analysis group for recommendations. For the filter label of objects within a
+ *   analysis group for recommendations. For the filter label of objects within
+ *a
  *   trigger, please consult the [trigger
  *   database](https://cmsweb.cern.ch/confdb/) (warning! This website is
  *   notoriously slow!), or get the trigger configuration via the
@@ -38,7 +40,8 @@
  *   command](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGlobalHLT).
  */
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @brief Check if a reco::Candidate object has any matching trigger objects
@@ -50,14 +53,12 @@ namespace usr {
  * trigger objects, consider using the other functions.
  */
 bool
-HasTriggerMatch(
-  const reco::Candidate&                        recoobj,
-  const pat::TriggerObjectStandAloneCollection& trgobjlist,
-  const std::string&                            reqtrigger,
-  const std::string&                            reqfilter,
-  const edm::TriggerNames&                      trgnames,
-  const double                                  mindelta_r
-  )
+HasTriggerMatch( const reco::Candidate&                        recoobj,
+                 const pat::TriggerObjectStandAloneCollection& trgobjlist,
+                 const std::string&                            reqtrigger,
+                 const std::string&                            reqfilter,
+                 const edm::TriggerNames&                      trgnames,
+                 const double                                  mindelta_r )
 {
   auto match = MatchTrgObj(
     recoobj,
@@ -69,6 +70,7 @@ HasTriggerMatch(
   return match != trgobjlist.end();
 }
 
+
 /**
  * @brief Returning the four momentum of the first matched trigger object.
  *
@@ -76,14 +78,12 @@ HasTriggerMatch(
  * (0,0,0,0) four momentum.
  */
 TLorentzVector
-TriggerMatchP4(
-  const reco::Candidate&                        recoobj,
-  const pat::TriggerObjectStandAloneCollection& trgobjlist,
-  const std::string&                            reqtrigger,
-  const std::string&                            reqfilter,
-  const edm::TriggerNames&                      trgnames,
-  const double                                  mindelta_r
-  )
+TriggerMatchP4( const reco::Candidate&                        recoobj,
+                const pat::TriggerObjectStandAloneCollection& trgobjlist,
+                const std::string&                            reqtrigger,
+                const std::string&                            reqfilter,
+                const edm::TriggerNames&                      trgnames,
+                const double                                  mindelta_r )
 {
   auto match = MatchTrgObj(
     recoobj,
@@ -94,13 +94,17 @@ TriggerMatchP4(
     mindelta_r );
   if( match != trgobjlist.end() ){
     return TLorentzVector( match->px()
-                         , match->py()
-                         , match->pz()
-                         , match->energy() );
+                           ,
+                           match->py()
+                           ,
+                           match->pz()
+                           ,
+                           match->energy() );
   } else {
     return TLorentzVector( 0, 0, 0, 0 );
   }
 }
+
 
 /**
  * @brief Check if a reco::Candidate object has any matching trigger objects
@@ -114,16 +118,16 @@ TriggerMatchP4(
  * function.
  */
 pat::TriggerObjectStandAloneCollection::const_iterator
-MatchTrgObj(
-  const reco::Candidate&                        recoobj,
-  const pat::TriggerObjectStandAloneCollection& trgobjlist,
-  const std::string&                            reqtrigger,
-  const std::string&                            reqfilter,
-  const edm::TriggerNames&                      trgnames,
-  const double                                  mindelta_r
-  )
+MatchTrgObj( const reco::Candidate&                        recoobj,
+             const pat::TriggerObjectStandAloneCollection& trgobjlist,
+             const std::string&                            reqtrigger,
+             const std::string&                            reqfilter,
+             const edm::TriggerNames&                      trgnames,
+             const double                                  mindelta_r )
 {
-  for( auto objiter = trgobjlist.begin(); objiter != trgobjlist.end(); ++objiter ){
+  for( auto objiter = trgobjlist.begin();
+       objiter != trgobjlist.end();
+       ++objiter ){
     auto obj = *objiter;// making duplicate
     obj.unpackPathNames( trgnames );
 
@@ -136,6 +140,7 @@ MatchTrgObj(
   return trgobjlist.end();
 }
 
+
 /**
  * @brief Given a trigger object, check if it has trigger paths and
  *       trigger filters matching the input.
@@ -147,11 +152,9 @@ MatchTrgObj(
  * function return true.
  */
 bool
-TrigObjMatchPathFilter(
-  const pat::TriggerObjectStandAlone& obj,
-  const std::string&                  path,
-  const std::string&                  filter
-  )
+TrigObjMatchPathFilter( const pat::TriggerObjectStandAlone& obj,
+                        const std::string&                  path,
+                        const std::string&                  filter )
 {
   bool hasmatchpath   = false;
   bool hasmatchfilter = false;

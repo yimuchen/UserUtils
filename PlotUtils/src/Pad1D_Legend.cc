@@ -13,9 +13,11 @@
 
 #include <boost/algorithm/string.hpp>
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt  {
+namespace plt
+{
 
 /**
  * @brief Legend creation with consistent font settings. Plotting immediate to
@@ -50,12 +52,11 @@ Pad1D::_init_legend()
  * @param plotopt  Options used for plotting histogram.
  */
 void
-Pad1D::AddLegendEntry(
-  TH1D&            hist,
-  const RooCmdArg& entryopt,
-  const RooCmdArg& plotopt )
+Pad1D::AddLegendEntry( TH1D&            hist,
+                       const RooCmdArg& entryopt,
+                       const RooCmdArg& plotopt )
 {
-  const int popt    = plotopt.getInt( 0 );
+  const int  popt   = plotopt.getInt( 0 );
   const bool varbin = hist.GetXaxis()->IsVariableBinSize();
 
   const std::string legopt =
@@ -77,7 +78,9 @@ Pad1D::AddLegendEntry(
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
     auto entry = new TLegendEntry( &hist
-                                 , entryopt.getString( 0 ), legopt.c_str() );
+                                   ,
+                                   entryopt.getString( 0 ),
+                                   legopt.c_str() );
     if( entryopt.getInt( 0 ) ){
       _legend.GetListOfPrimitives()->AddLast( entry );
     } else {
@@ -85,6 +88,7 @@ Pad1D::AddLegendEntry(
     }
   }
 }
+
 
 /**
  * @ brief adding legend entry for graph object.
@@ -106,20 +110,19 @@ Pad1D::AddLegendEntry(
  * @param plotopt  plotting options used for graph object.
  */
 void
-Pad1D::AddLegendEntry(
-  TGraph&          graph,
-  const RooCmdArg& entryopt,
-  const RooCmdArg& plotopt )
+Pad1D::AddLegendEntry( TGraph&          graph,
+                       const RooCmdArg& entryopt,
+                       const RooCmdArg& plotopt )
 {
   const int plottype = plotopt.getInt( 0 );
-  double x_width     = 0;
-  double y_width     = 0;
+  double    x_width  = 0;
+  double    y_width  = 0;
 
   for( int i = 0; i < graph.GetN() && plottype == plottype::scatter; ++i ){
     x_width = std::max( x_width,
-      graph.GetErrorXlow( i ) + graph.GetErrorXhigh( i ) );
+                        graph.GetErrorXlow( i )+graph.GetErrorXhigh( i ) );
     y_width = std::max( y_width,
-      graph.GetErrorYlow( i ) + graph.GetErrorYhigh( i ) );
+                        graph.GetErrorYlow( i )+graph.GetErrorYhigh( i ) );
 
     // Early exit if both are not zero.
     if( x_width != 0 && y_width != 0 ){ break; }
@@ -134,7 +137,7 @@ Pad1D::AddLegendEntry(
   const std::string legopt =
     plottype == plottype::simplefunc ? "L" :
     plottype == plottype::fittedfunc ? "LF" :
-    plottype == plottype::scatter    ? "P" + erropt :
+    plottype == plottype::scatter    ? "P"+erropt :
     plotopt.getString( 0 )           ? "PLFE" :
     "";
 
@@ -146,7 +149,9 @@ Pad1D::AddLegendEntry(
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
     auto entry = new TLegendEntry( &graph
-                                 , entryopt.getString( 0 ), legopt.c_str() );
+                                   ,
+                                   entryopt.getString( 0 ),
+                                   legopt.c_str() );
     if( entryopt.getInt( 0 ) ){
       _legend.GetListOfPrimitives()->AddLast( entry );
     } else {
@@ -154,6 +159,7 @@ Pad1D::AddLegendEntry(
     }
   }
 }
+
 
 /**
  * @brief adding legend entry for TEfficiency object.
@@ -172,10 +178,9 @@ Pad1D::AddLegendEntry(
  * @param plotopt  plotting options used for graph object.
  */
 void
-Pad1D::AddLegendEntry(
-  TEfficiency&     eff,
-  const RooCmdArg& entryopt,
-  const RooCmdArg& plotopt )
+Pad1D::AddLegendEntry( TEfficiency&     eff,
+                       const RooCmdArg& entryopt,
+                       const RooCmdArg& plotopt )
 {
   const int plottype = plotopt.getInt( 0 );
 
@@ -194,7 +199,9 @@ Pad1D::AddLegendEntry(
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
     auto entry = new TLegendEntry( &eff
-                                 , entryopt.getString( 0 ), legopt.c_str() );
+                                   ,
+                                   entryopt.getString( 0 ),
+                                   legopt.c_str() );
     if( entryopt.getInt( 0 ) ){
       _legend.GetListOfPrimitives()->AddLast( entry );
     } else {
@@ -202,6 +209,7 @@ Pad1D::AddLegendEntry(
     }
   }
 }
+
 
 /**
  * @brief Explicitly adding a TObject into the legend stack. Used for the
@@ -212,16 +220,17 @@ Pad1D::AddLegendEntry(
  * end of the Legend entries.
  */
 void
-Pad1D::AddLegendEntry(
-  TObject&           obj,
-  const std::string& title,
-  const std::string& attr )
+Pad1D::AddLegendEntry( TObject&           obj,
+                       const std::string& title,
+                       const std::string& attr )
 {
   _legend.AddEntry( &obj, title.c_str(), attr.c_str() );
 }
 
+
 /**
- * Generating the TLegend object. One can assign a new position in the frame (one
+ * Generating the TLegend object. One can assign a new position in the frame
+ *(one
  * of 9, in the left--center--right, top--center--bottom system) is required.
  */
 void
@@ -246,24 +255,24 @@ Pad1D::FinalizeLegend( const align newposition )
                              * FontSize() / AbsHeight();
     // Gussing width based on character count alone
     width   = std::max( estwidth, width );
-    height += std::max( 1.1* estheight, 1.4*RelLineHeight() );
+    height += std::max( 1.1 * estheight, 1.4 * RelLineHeight() );
   }
 
   width *= 1.1;// Relieving spacing a little
-  width += 1.3*LineHeight() / AbsWidth();// Space for legend icon.
+  width += 1.3 * LineHeight() / AbsWidth();// Space for legend icon.
 
   // Computing alignment coordinates
   const short halign = 10 * ( _legendposition / 10 );
   const short valign = _legendposition % 10;
 
   const float xmin = halign == align::left     ? InnerTextLeft() :
-                     halign == align::hcenter  ? InnerTextHCenter() - width /2 :
-                     InnerTextRight() - width;
+                     halign == align::hcenter  ? InnerTextHCenter()-width / 2 :
+                     InnerTextRight()-width;
   const float ymin = valign == align::bottom   ? InnerTextBottom() :
-                     valign == align::vcenter  ? InnerTextVCenter() - height /2 :
-                     InnerTextTop() - height;
-  const float xmax = xmin + width;
-  const float ymax = ymin + height;
+                     valign == align::vcenter  ? InnerTextVCenter()-height / 2 :
+                     InnerTextTop()-height;
+  const float xmax = xmin+width;
+  const float ymax = ymin+height;
 
   _legend.SetX1NDC( xmin );
   _legend.SetX2NDC( xmax );

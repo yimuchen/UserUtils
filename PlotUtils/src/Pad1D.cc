@@ -14,9 +14,11 @@
 #include "TGaxis.h"
 #include <limits>
 
-namespace usr  {
+namespace usr
+{
 
-namespace plt {
+namespace plt
+{
 
 /**
  * @brief Constructing a Pad1D using a @ROOT{RooRealVar}
@@ -25,12 +27,12 @@ namespace plt {
  * capable for generating plotting objects for RooFit data objects.
  */
 Pad1D::Pad1D( Canvas* c, const PadSize& size, const RangeByVar& range ) :
-  PadBase( c, size ),
-  _frame( range ),
-  _workingstack( nullptr ),
-  _datamax( 0 ),
-  _datamin( 0.3 ),
-  _prevrangetype( rangetype::aut ),
+  PadBase        ( c, size ),
+  _frame         ( range ),
+  _workingstack  ( nullptr ),
+  _datamax       ( 0 ),
+  _datamin       ( 0.3 ),
+  _prevrangetype ( rangetype::aut ),
   _legendposition( align::top_right )
 {
   // Common setup for pads
@@ -38,22 +40,27 @@ Pad1D::Pad1D( Canvas* c, const PadSize& size, const RangeByVar& range ) :
   _pad->SetTicks( 1, 1 );
 }
 
+
 /**
  * @brief Construct a Pad1D with a limit x range.
  */
-Pad1D::Pad1D( Canvas* c, const PadSize& size
-            , const double min, const double max ) :
-  PadBase( c, size ),
-  _frame( min, max ),
-  _workingstack( nullptr ),
-  _datamax( 0 ),
-  _datamin( 0.3 ),
-  _prevrangetype( rangetype::aut ),
+Pad1D::Pad1D( Canvas*        c,
+              const PadSize& size
+              ,
+              const double   min,
+              const double   max ) :
+  PadBase        ( c, size ),
+  _frame         ( min, max ),
+  _workingstack  ( nullptr ),
+  _datamax       ( 0 ),
+  _datamin       ( 0.3 ),
+  _prevrangetype ( rangetype::aut ),
   _legendposition( align::top_right )
 {
   // Common setup for pads
   _pad->SetTicks( 1, 1 );
 }
+
 
 /**
  * @brief Construct a Pad1D with only dimension specifications
@@ -63,16 +70,17 @@ Pad1D::Pad1D( Canvas* c, const PadSize& size
  * first into the Pad. So take care of plotting order if that is an issue..
  */
 Pad1D::Pad1D( Canvas* c, const PadSize& size ) :
-  PadBase( c, size ),
-  _workingstack( nullptr ),
-  _datamax( 0 ),
-  _datamin( 0.3 ),
-  _prevrangetype( rangetype::aut ),
+  PadBase        ( c, size ),
+  _workingstack  ( nullptr ),
+  _datamax       ( 0 ),
+  _datamin       ( 0.3 ),
+  _prevrangetype ( rangetype::aut ),
   _legendposition( align::top_right )
 {
   // Common setup for pads
   _pad->SetTicks( 1, 1 );
 }
+
 
 /**
  * @brief Additional routines after pad spawning
@@ -104,6 +112,7 @@ Pad1D::InitDraw()
   }
 }
 
+
 /**
  * @brief additional steps before canvas saving.
  *
@@ -121,6 +130,7 @@ Pad1D::Finalize()
   FixVLines();
   _pad->RedrawAxis();
 }
+
 
 /**
  * Since all ownership is handled by _frame, do additional deletion class is
@@ -145,6 +155,7 @@ Pad1D::SetLogy( int flag )
   AutoSetYRange();
 }
 
+
 /**
  * @brief Simple passthrough function
  */
@@ -159,6 +170,7 @@ Pad1D::SetLogx( int flag )
   }
 }
 
+
 /**
  * @brief Checking if the data in the plot objects are positive definite.
  *
@@ -171,6 +183,7 @@ Pad1D::CheckLogy() const
 {
   return GetDataMin() > 0;
 }
+
 
 bool
 Pad1D::CheckLogx() const

@@ -1,6 +1,7 @@
 #include "UserUtils/EDMUtils/interface/EDHistogramAnalyzer.hpp"
 
-namespace usr {
+namespace usr
+{
 
 EDHistogramAnalyzer::EDHistogramAnalyzer( const edm::ParameterSet& config  ) :
   PluginAlias( config )
@@ -8,8 +9,8 @@ EDHistogramAnalyzer::EDHistogramAnalyzer( const edm::ParameterSet& config  ) :
   usesResource( "TFileService" );
 }
 
+
 EDHistogramAnalyzer::~EDHistogramAnalyzer()
-{
-}
+{}
 
 }
