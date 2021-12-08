@@ -39,12 +39,10 @@ sgn( TYPE val )
  * @brief New template function to preceed std::max
  *
  * This function aims to solve the issue of concrete type mixing (double/int
- * comparisons..etc). Notice that the return type would follow that of the first
- * entry, so for example, when attempting update the maximum value from a list
- * of
- * numbers, it would be safer to do something like `x = usr::max(x, newval )`,
- * to
- * avoid conversion errors being propagated.
+ * comparisons..etc). Notice that the return type would follow that of the
+ * first entry, so for example, when attempting update the maximum value from a
+ * list of numbers, it would be safer to do something like `x = usr::max(x,
+ * newval )`, to avoid conversion errors being propagated.
  */
 template<typename T1, typename T2>
 inline T1
@@ -60,12 +58,10 @@ max( T1 left, T2 right )
  * @brief New template function to preceed std::min
  *
  * This function aims to solve the issue of concrete type mixing (double/int
- * comparisons..etc). Notice that the return type would follow that of the first
- * entry, so for example, when attempting update the maximum value from a list
- * of
- * numbers, it would be safer to do something like `x = usr::max(x, newval )`,
- * to
- * avoid conversion errors being propagated.
+ * comparisons..etc). Notice that the return type would follow that of the
+ * first entry, so for example, when attempting update the maximum value from a
+ * list of numbers, it would be safer to do something like `x = usr::max(x,
+ * newval )`, to avoid conversion errors being propagated.
  */
 template<typename T1, typename T2>
 inline T1
