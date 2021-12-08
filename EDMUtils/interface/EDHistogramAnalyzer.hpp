@@ -39,6 +39,20 @@ protected:
   }
 
 
+  inline bool
+  HasHist( const std::string& x )
+  {
+    return _histmap.count( x );
+  }
+
+
+  inline bool
+  HasHist2D( const std::string & x )
+  {
+    return _hist2dmap.count( x );
+  }
+
+
   inline TH1D&
   Hist( const std::string& x )
   {
