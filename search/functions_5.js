@@ -5,7 +5,7 @@ var searchData=
   ['entrytext_2',['EntryText',['../group__PlotUtilsArgument.html#ga6721d2b81cb3b497507256a5f21453ef',1,'usr::plt']]],
   ['estimatelatexheight_3',['EstimateLatexHeight',['../group__PlotUtilsHelper.html#ga18ff0d7d670dd97d4d0d743e2825e70f',1,'usr::plt']]],
   ['estimatelatexwidth_4',['EstimateLatexWidth',['../group__PlotUtilsHelper.html#gac70d4a3111178c88eb424764694df2f2',1,'usr::plt']]],
-  ['evaluateuncorrelated_5',['EvaluateUncorrelated',['../group__StatUtils.html#ga6d8a3c63a031c39e8a5be34717a69d8f',1,'usr']]],
+  ['evaluateuncorrelated_5',['EvaluateUncorrelated',['../group__StatUtils.html#ga6af2e5965b0ff6574ae7df259f899398',1,'usr']]],
   ['exceptjsonentry_6',['ExceptJSONEntry',['../group__rapidjson.html#ga3b934087632479bc9b8cceaf0a48f177',1,'usr']]],
   ['exceptjsonentry_3c_20measurement_20_3e_7',['ExceptJSONEntry&lt; Measurement &gt;',['../MathUtils_2interface_2Measurement_2Format_8hpp.html#ae58a3cdd3917523622b93976cff79dc0',1,'usr']]],
   ['exceptjsonlist_8',['ExceptJSONList',['../group__rapidjson.html#gabee156176f28c2312845f29f0bce08c4',1,'usr']]],
