@@ -31,7 +31,6 @@ namespace fs = std::experimental::filesystem;
 class ArgumentExtender
 {
 public:
-
   /**
    *@ brief Initialization without additional json file
    */
@@ -55,13 +54,12 @@ public:
    * @details see ArgumentExtender::_init() for more details.
    */
   template<typename ... TS>
-  ArgumentExtender( const std::string& first,
-                    TS ... others );
+  ArgumentExtender( const std::string& first, TS ... others );
   virtual ~ArgumentExtender ();
 
   ArgumentExtender& AddOptions( const po::options_description& optdesc );
   ArgumentExtender& AddVerboseOpt( const unsigned level = usr::log::WARNING );
-  void              ParseOptions( int argc, char** argv );
+  void              ParseOptions( int argc, char**argv );
   void              ParseFile( const std::string& file );
   bool              CheckArg( const std::string& opt ) const;
 
@@ -155,6 +153,7 @@ public:
   fs::path MakePNGFile( const std::string& ) const;
   fs::path MakeTXTFile( const std::string& ) const;
   fs::path MakeTEXFile( const std::string& ) const;
+
   /** @} */
 
   std::string GetPathPrefix() const;
@@ -163,18 +162,14 @@ public:
   void PrintHelpAndExit() const;
 
 protected:
-
   /** @brief Mutable access to internal property tree instance. */
-  inline JSONMap&
-  NameMap(){ return _jsonmap; }
+  inline JSONMap&NameMap(){ return _jsonmap; }
 
   /** @brief Mutable access to internal options description instance. */
-  inline po::options_description&
-  Description(){ return _optdesc; }
+  inline po::options_description&Description(){ return _optdesc; }
 
   /** @brief Mutable access to internal argument value map instance. */
-  inline po::variables_map&
-  Args(){ return _argmap; }
+  inline po::variables_map&Args(){ return _argmap; }
 
 private:
   JSONDocument            _jsonmap;
@@ -223,7 +218,12 @@ ArgumentExtender::Arg( const std::string& opt ) const
 template<typename T>
 T
 ArgumentExtender::ArgOpt( const std::string& opt, const T& val ) const
-{ return CheckArg( opt ) ? Arg<T>( opt ) : val; }
+{
+  return CheckArg( opt ) ?
+         Arg<T>( opt ) :
+         val;
+}
+
 
 template<typename T>
 std::vector<T>

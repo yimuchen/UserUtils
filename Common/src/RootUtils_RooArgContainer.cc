@@ -84,8 +84,7 @@ bool
 RooArgContainer::Has( const std::string& name ) const
 {
   auto iter = std::find_if( begin(),
-                            end(),
-                            [&name]( const RooCmdArg& item ){
+                            end(), [&name]( const RooCmdArg& item ){
       return item.GetName() == name;
     } );
   return iter != end();
@@ -101,8 +100,7 @@ const RooCmdArg&
 RooArgContainer::Get( const std::string& name ) const
 {
   auto iter = std::find_if( begin(),
-                            end(),
-                            [&name]( const RooCmdArg& item ){
+                            end(), [&name]( const RooCmdArg& item ){
       return item.GetName() == name;
     } );
   return *iter;
@@ -120,8 +118,7 @@ RooArgContainer::CheckList( const std::vector<RooCmdArg>& arglist,
                             const std::string&            name )
 {
   auto iter = std::find_if( arglist.begin(),
-                            arglist.end(),
-                            [&name]( const RooCmdArg& item ){
+                            arglist.end(), [&name]( const RooCmdArg& item ){
       return item.GetName() == name;
     } );
   return iter != arglist.end();
@@ -141,7 +138,8 @@ RooArgContainer::MakeRooList( const std::vector<std::string>& exclude ) const
 
   for( const auto& arg : *this ){
     // Ignoring custom arguments
-    if( usr::FindValue( CustomCommandList, std::string( arg.GetName() ) ) ||
+    if( usr::FindValue( CustomCommandList,
+                        std::string( arg.GetName() ) ) ||
         usr::FindValue( exclude, std::string( arg.GetName() ) ) ){
       continue;
     }
@@ -175,7 +173,8 @@ RooArgContainer::GetStr( const std::string& name, const unsigned index  ) const
 {
   assert( index == 0 || index == 1 );
 
-  return Get( name ).getString( 0 ) == 0 ? "" :
+  return Get( name ).getString( 0 ) == 0 ?
+         "" :
          Get( name ).getString( 0 );
 }
 

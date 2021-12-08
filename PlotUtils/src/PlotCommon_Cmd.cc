@@ -32,6 +32,7 @@ namespace plt
  * @{
  * @addtogroup PlotUtilsArgument
  */
+
 // ---------------------------------------------------------------------------//
 
 
@@ -39,7 +40,7 @@ namespace plt
  * @brief Request that the plotted object be placed underneath the target object
  **/
 RooCmdArg
-PlotUnder( const TObject* obj )
+PlotUnder( const TObject*obj )
 {
   return RooCmdArg( "PlotUnder",
                     0,
@@ -55,11 +56,11 @@ PlotUnder( const TObject* obj )
 USERUTILS_COMMON_REGISTERCMD( PlotUnder );
 
 // ---------------------------------------------------------------------------//
+
 /**
  * @brief define track y via enum
  */
-RooCmdArg
-TrackY( const int i )
+RooCmdArg TrackY( const int i )
 { return RooCmdArg( "TrackY", i ); }
 
 USERUTILS_COMMON_REGISTERCMD( TrackY );
@@ -84,8 +85,7 @@ RooCmdArg PlotType( const int i ){ return RooCmdArg( "PlotType", i ); }
 RooCmdArg
 PlotType( const std::string& opt )
 {
-  return RooCmdArg( "PlotType"
-                    ,
+  return RooCmdArg( "PlotType",
                     usr::plt::plottype_dummy,
                     0,
                     0,
@@ -104,8 +104,7 @@ RooCmdArg Plot2DF( const int i ){ return RooCmdArg( "Plot2DF", i ); }
 /**
  * @brief defining plot type via ROOT draw strings
  */
-RooCmdArg
-Plot2DF( const std::string& opt )
+RooCmdArg Plot2DF( const std::string& opt )
 { return RooCmdArg( "Plot2DF", plot2df_dummy, 0, 0, 0, opt.c_str() );}
 
 USERUTILS_COMMON_REGISTERCMD( Plot2DF );
@@ -172,6 +171,7 @@ RooCmdArg LineWidth( const short width )
 USERUTILS_COMMON_REGISTERCMD( LineWidth );
 
 // ---------------------------------------------------------------------------//
+
 /**
  * @brief Defining Fill color via color index and alpha value
  */
@@ -189,6 +189,7 @@ RooCmdArg FillStyle( const short style )
 USERUTILS_COMMON_REGISTERCMD( FillStyle );
 
 // ---------------------------------------------------------------------------//
+
 /**
  * @brief Defining Marker color via color index and alpha value
  */
@@ -199,7 +200,7 @@ USERUTILS_COMMON_REGISTERCMD( MarkerColor );
 
 /**
  * @brief Defining marker style via the style index (see namespace
- *usr::plt::sty)
+ * usr::plt::sty)
  */
 RooCmdArg MarkerStyle( const short style )
 { return RooFit::MarkerStyle( style ); }
@@ -222,6 +223,7 @@ RooCmdArg ScaleY( const double s )
 USERUTILS_COMMON_REGISTERCMD( ScaleY );
 
 // ---------------------------------------------------------------------------//
+
 /**
  * @brief Switch for presenting fit uncertainty in fit.
  */
@@ -240,7 +242,7 @@ VisualizeError( const TFitResult& fit, const double z )
 
 
 RooCmdArg
-VisualizeError( const TFitResult* fit, const double z )
+VisualizeError( const TFitResult*fit, const double z )
 {
   return RooCmdArg( "VisualizeError",
                     0,

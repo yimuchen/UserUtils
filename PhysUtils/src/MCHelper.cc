@@ -37,16 +37,15 @@ ParticleParser::ParticleParser( bool( *x )( const reco::Candidate* ) ) :
   _single( x ),
   _double( nullptr ){}
 
-ParticleParser::ParticleParser( bool( *y )( const reco::Candidate*
-                                            ,
+ParticleParser::ParticleParser( bool( *y )( const reco::Candidate*,
                                             const reco::Candidate* ) ) :
   _single( nullptr ),
   _double( y )
 {}
 
 bool
-ParticleParser::operator()( const reco::Candidate* x,
-                            const reco::Candidate* y ) const
+ParticleParser::operator()( const reco::Candidate*x,
+                            const reco::Candidate*y ) const
 {
   if( _single != nullptr ){ return _single( x ); } else {
     return _double( x, y );
@@ -67,14 +66,14 @@ ParticleParser::is_null() const
  * type.
  */
 bool
-IsSMQuark( const reco::Candidate* x )
+IsSMQuark( const reco::Candidate*x )
 {
   return abs( x->pdgId() ) <= 6;
 }
 
 
 bool
-IsSMHadron( const reco::Candidate* x )
+IsSMHadron( const reco::Candidate*x )
 {
   // Not accurate but close enough for 99.9% of use cases
   return abs( x->pdgId() ) >  100 && abs( x->pdgId() ) < 100000;
@@ -82,7 +81,7 @@ IsSMHadron( const reco::Candidate* x )
 
 
 bool
-IsSMHiggs( const reco::Candidate* x )
+IsSMHiggs( const reco::Candidate*x )
 {
   // Not accurate but close enough for 99.9% of use cases
   return abs( x->pdgId() ) == HIGGS_BOSON_ID;
@@ -90,7 +89,7 @@ IsSMHiggs( const reco::Candidate* x )
 
 
 bool
-IsSMGluon( const reco::Candidate* x )
+IsSMGluon( const reco::Candidate*x )
 {
   return abs( x->pdgId() ) == GLUON_ID;
 }
@@ -102,11 +101,11 @@ IsSMGluon( const reco::Candidate* x )
  * @brief Has daughter particle that matches a certain criteria
  *
  * The input ParticleParser object can take up to two inputs. The first being
- *the
+ * the
  * daughter particle, the second being the main reference particle.
  */
 bool
-HasDaughter( const reco::Candidate* x, const ParticleParser& is_target )
+HasDaughter( const reco::Candidate*x, const ParticleParser& is_target )
 {
   for( unsigned i = 0; i < x->numberOfDaughters(); ++i ){
     if( is_target( x->daughter( i ), x ) ){
@@ -122,11 +121,11 @@ HasDaughter( const reco::Candidate* x, const ParticleParser& is_target )
  * @brief Has mother particle that matches a certain criteria
  *
  * The input ParticleParser object can take up to two inputs. The first being
- *the
+ * the
  * mother particle, the second being the main reference particle.
  */
 bool
-HasMother( const reco::Candidate* x, const ParticleParser& is_target )
+HasMother( const reco::Candidate*x, const ParticleParser& is_target )
 {
   for( unsigned i = 0; i < x->numberOfMothers(); ++i ){
     if( is_target( x->mother( i ), x ) ){
@@ -149,7 +148,7 @@ HasMother( const reco::Candidate* x, const ParticleParser& is_target )
  * If both are satisfied, the function returns true, false otherwise.
  */
 bool
-HasCorrectiveParent( const reco::Candidate* x )
+HasCorrectiveParent( const reco::Candidate*x )
 {
   bool is_close  = false;
   bool is_unique = false;
@@ -177,7 +176,7 @@ HasCorrectiveParent( const reco::Candidate* x )
 
 
 bool
-HasCorrectiveChildren( const reco::Candidate* x )
+HasCorrectiveChildren( const reco::Candidate*x )
 {
   bool is_close  = false;
   bool is_unique = false;
@@ -211,7 +210,7 @@ HasCorrectiveChildren( const reco::Candidate* x )
  * BFS order.
  */
 bool
-Any( const reco::Candidate* x )
+Any( const reco::Candidate*x )
 {
   return true;
 }
@@ -221,7 +220,7 @@ Any( const reco::Candidate* x )
  * @brief Function required for no-termination condition in topology crawling.
  */
 bool
-NoTermination( const reco::Candidate* x )
+NoTermination( const reco::Candidate*x )
 {
   return false;
 }
@@ -267,18 +266,19 @@ FindAll( const std::vector<reco::GenParticle>& genlist,
  * current particle in the BFS interation and the starting particle.
  */
 static std::vector<const reco::Candidate*>
-RunBFS( const reco::Candidate* x,
-        const ParticleParser&  is_target,
-        const ParticleParser&  is_terminate,
-        void (*                push )( std::queue<const reco::Candidate*>&,
-                                       const reco::Candidate* ) )
+RunBFS( const reco::Candidate*x,
+        const ParticleParser& is_target,
+        const ParticleParser& is_terminate,
+        void (*               push )(
+          std::queue<const reco::Candidate*>&,
+          const reco::Candidate* ) )
 {
   std::vector<const reco::Candidate*> ans;
   std::queue<const reco::Candidate*>  bfs_queue;
   bfs_queue.push( x );
 
   while( !bfs_queue.empty() ){
-    const reco::Candidate* temp = bfs_queue.front();
+    const reco::Candidate*temp = bfs_queue.front();
     bfs_queue.pop();
 
     if( is_target( temp, x ) && !usr::FindValue( ans, temp ) ){
@@ -311,26 +311,27 @@ RunBFS( const reco::Candidate* x,
  * particle if found in the decay chain.
  *
  * To save on time, the user can also provide a function to indicate that the
- *BFS
+ * BFS
  * termination criteria. If the particle visited by the BFS algorithm matches
- *the
+ * the
  * critera, then the particles daughters will not be added to BFS queue. In case
  * non is provided, the termination function will be the same as the target
  * function. so that as soon a particle if found as the target, the BFS search
  * will be terminated.
  */
 std::vector<const reco::Candidate*>
-FindDecendants(  const reco::Candidate* x,
-                 const ParticleParser&  is_target,
-                 const ParticleParser&  is_terminate  )
+FindDecendants(  const reco::Candidate*x,
+                 const ParticleParser& is_target,
+                 const ParticleParser& is_terminate  )
 {
-  const ParticleParser& term =
-    is_terminate.is_null() ? is_target : is_terminate;
+  const ParticleParser& term = is_terminate.is_null() ?
+                               is_target :
+                               is_terminate;
   return RunBFS( x,
                  is_target,
                  term,
                  []( std::queue<const reco::Candidate*>& q,
-                     const reco::Candidate* m ){
+                     const reco::Candidate*m ){
         for( unsigned i = 0; i < m->numberOfDaughters(); ++i ){
           q.push( m->daughter( i ) );
         }
@@ -354,26 +355,27 @@ FindDecendants(  const reco::Candidate* x,
  * particle if found in the decay chain.
  *
  * To save on time, the user can also provide a function to indicate that the
- *BFS
+ * BFS
  * termination criteria. If the particle visited by the BFS algorithm matches
- *the
+ * the
  * critera, then the particles mothers will not be added to BFS queue. In case
  * non is provided, the termination function will be the same as the target
  * function. so that as soon a particle if found as the target, the BFS search
  * will be terminated.
  */
 std::vector<const reco::Candidate*>
-FindAncestors( const reco::Candidate* x,
-               const ParticleParser&  is_target,
-               const ParticleParser&  is_terminate  )
+FindAncestors( const reco::Candidate*x,
+               const ParticleParser& is_target,
+               const ParticleParser& is_terminate  )
 {
-  const ParticleParser& term =
-    is_terminate.is_null() ? is_target : is_terminate;
+  const ParticleParser& term = is_terminate.is_null() ?
+                               is_target :
+                               is_terminate;
   return RunBFS( x,
                  is_target,
                  term,
                  []( std::queue<const reco::Candidate*>& q,
-                     const reco::Candidate* m ){
+                     const reco::Candidate*m ){
         for( unsigned i = 0; i < m->numberOfMothers(); ++i ){
           q.push( m->mother( i ) );
         }
@@ -387,19 +389,19 @@ FindAncestors( const reco::Candidate* x,
  * The particle in the radiative correction chain should only have two daughter
  * particles : The corrected particle and the radiated particle if exited. If
  * more daughter particles exists, then it is doing something non-trivial, and
- *we
+ * we
  * will not consider this part of the chain.
  */
 const reco::Candidate*
-GetLastInChain( const reco::Candidate* x )
+GetLastInChain( const reco::Candidate*x )
 {
-  ParticleParser is_last( []( const reco::Candidate* temp,
-                              const reco::Candidate* root ){
+  ParticleParser is_last( []( const reco::Candidate*temp,
+                              const reco::Candidate*root ){
                           return ( temp->pdgId() == root->pdgId() ) &&
                                  !HasCorrectiveChildren( temp );
         } );
-  ParticleParser is_end( []( const reco::Candidate* temp,
-                             const reco::Candidate* root ){
+  ParticleParser is_end( []( const reco::Candidate*temp,
+                             const reco::Candidate*root ){
                          return ( temp->pdgId() !=  root->pdgId() ) ||
                                 !HasCorrectiveChildren( temp );
         } );
@@ -418,10 +420,10 @@ GetLastInChain( const reco::Candidate* x )
  * @brief Get the First particle in the radiative correction chain
  *
  * Tracing the parent until it doesn't have a parent having the same particle
- *ID.
+ * ID.
  */
 const reco::Candidate*
-GetFirstInChain( const reco::Candidate* x )
+GetFirstInChain( const reco::Candidate*x )
 {
   for( unsigned i = 0; i < x->numberOfMothers(); ++i ){
     if( x->mother( i )->pdgId() == x->pdgId() ){
@@ -441,7 +443,7 @@ GetFirstInChain( const reco::Candidate* x )
  * list.
  *
  * Note that the decay topology in the hadronization phase isn't guaranteed to
- *be
+ * be
  * a tree topology. There are topologies like: \f$x\rightarrow ddgg\rightarrow
  * pp\pi\pi\f$, where the all \f$ddgg\f$ are technically the parents of the
  * \f$pp\pi\pi\f$ particles in the final state from the hadronization process,
@@ -453,7 +455,7 @@ GetFirstInChain( const reco::Candidate* x )
  * what this function will do is that the function will first check for the
  * non-single parent particles if the exists, the function will rerun the
  * function with the parent particles replacing the non-single parent particle
- *as
+ * as
  * the input.
  *
  * The Least Common Ancestor Algorithm for the tree-like topology uses the hash
@@ -497,7 +499,7 @@ GetLeastCommonAncestor( const reco::Candidate*                    root,
   std::map<const reco::Candidate*, unsigned> ancestor_map;
 
   for( unsigned i = 0; i < list.size(); ++i ){
-    const reco::Candidate* p = list.at( i );
+    const reco::Candidate*p = list.at( i );
 
     while( p->numberOfMothers() == 1 && p != root ){// Parent pointer traversal
       if( ancestor_map.count( p ) ){
@@ -510,8 +512,8 @@ GetLeastCommonAncestor( const reco::Candidate*                    root,
     }
   }
 
-  const reco::Candidate* ans  = (const reco::Candidate*)( ~0llu );
-  unsigned               nref = 0;
+  const reco::Candidate*ans  = (const reco::Candidate*)( ~0llu );
+  unsigned              nref = 0;
 
   for( const auto p : ancestor_map ){
     if( p.second > nref ){
@@ -532,7 +534,7 @@ GetLeastCommonAncestor( const reco::Candidate*                    root,
  * @brief Get the Gen-Level Vertex position from the list of gen particles
  *
  * Notice that the particle assuming the incoming protons are always the first
- *in
+ * in
  * the list. In the case that these assertions fail, the point return will have
  * all three coordinates set to -100
  */
@@ -545,6 +547,7 @@ GetGenVertex( const std::vector<reco::GenParticle>& genlist )
   if( genlist.front().status() != 4 ){ return default_ans; }
 
   const auto part = genlist.front().daughter( 0 );
+
   // Getting the first daughter particle
 
   if( !part ){ return default_ans; }
@@ -558,13 +561,13 @@ GetGenVertex( const std::vector<reco::GenParticle>& genlist )
  * Using a BFS algorithm to find the closest ancestor
  */
 const reco::Candidate*
-FindAncestor( const reco::Candidate* x, int pdgid )
+FindAncestor( const reco::Candidate*x, int pdgid )
 {
   std::queue<const reco::Candidate*> bfs_queue;
   bfs_queue.push( x );
 
   while( !bfs_queue.empty() ){
-    const reco::Candidate* temp = bfs_queue.front();
+    const reco::Candidate*temp = bfs_queue.front();
     bfs_queue.pop();
     if( temp->pdgId() == pdgid ){
       return temp;

@@ -138,10 +138,10 @@ MinosError( const ROOT::Math::IGenFunction& nllfunction,
  * The `initguess` is mandatory for initializing the parameter guessing, while
  * the `central`, `min`, `max` parameters are no longer used for initializing or
  * bracketing, just for storing the return result. The use can provide an
- *initial
+ * initial
  * guess for parameter inputs that will yield the higher or lower edges if
  * needed, otherwise the guess is simply stepping the minimum value by a value
- *of
+ * of
  * 0.01.
  */
 extern int
@@ -194,14 +194,11 @@ MinosError( const ROOT::Math::IMultiGenFunction& nllfunction,
   std::vector<ROOT::Math::Functor> functor_list;
 
   for( size_t i = 0; i < dim; ++i ){
-    auto div = [&nllfunction, &varfunction, i, dim]
-               ( const double* x )->double {
-                 const double nlldiv = ROOT::Math::Derivator::Eval( nllfunction
-                                                                    ,
+    auto div = [&nllfunction, &varfunction, i, dim]( const double*x )->double {
+                 const double nlldiv = ROOT::Math::Derivator::Eval( nllfunction,
                                                                     x,
                                                                     i );
-                 const double vardiv = ROOT::Math::Derivator::Eval( varfunction
-                                                                    ,
+                 const double vardiv = ROOT::Math::Derivator::Eval( varfunction,
                                                                     x,
                                                                     i );
                  return nlldiv-x[dim] * vardiv;
@@ -210,8 +207,7 @@ MinosError( const ROOT::Math::IMultiGenFunction& nllfunction,
     solver.AddFunction( functor_list.back() );
   }
 
-  auto nll_check = [&nllfunction, targetnll]
-                   ( const double* x )->double {
+  auto nll_check = [&nllfunction, targetnll]( const double*x )->double {
                      return nllfunction( x )-targetnll;
                    };
   functor_list.push_back( ROOT::Math::Functor( nll_check, dim+1 ) );
@@ -221,7 +217,8 @@ MinosError( const ROOT::Math::IMultiGenFunction& nllfunction,
   std::vector<double> guess;
 
   for( size_t i = 0; i < dim; ++i ){
-    guess.push_back( upperguess ? upperguess[i] :
+    guess.push_back( upperguess ?
+                     upperguess[i] :
                      minimizer.X()[i]+defaultstep );
   }
 
@@ -236,7 +233,9 @@ MinosError( const ROOT::Math::IMultiGenFunction& nllfunction,
   for( size_t i = 0; i < dim; ++i ){
     const double best = minimizer.X()[i];
     const double diff = solver.X()[i]-best;
-    guess.push_back( lowerguess ? lowerguess[i] :  ( best-diff * 0.01 ) );
+    guess.push_back( lowerguess ?
+                     lowerguess[i] :
+                     ( best-diff * 0.01 ) );
   }
 
   guess.push_back( -solver.X()[dim] );// New lambda is the negative for first
@@ -264,12 +263,12 @@ GaussianNLL::DoEval( const double x ) const
 
 /**
  * @brief ROOT::Math compatible interface for the @NLL of a binomial
- *measurement.
+ * measurement.
  */
 double
 BinomialNLL::DoEval( const double x ) const
 {
-  return -passed* log( x )-( total-passed ) * log( 1-x );
+  return -passed*log( x )-( total-passed ) * log( 1-x );
 }
 
 

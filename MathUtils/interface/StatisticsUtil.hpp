@@ -55,8 +55,8 @@ extern int MinosError( const ROOT::Math::IMultiGenFunction& nllfunction,
                        double&                              min,
                        double&                              max,
                        const double                         confidencelevel = onesigma_level,
-                       const double*                        upperguess      = nullptr,
-                       const double*                        lowerguess      = nullptr );
+                       const double*                        upperguess = nullptr,
+                       const double*                        lowerguess = nullptr );
 
 /*-----------------------------------------------------------------------------
  *  Providing common distributions NLL fucntions in standard ROOT::Math formats
@@ -96,8 +96,6 @@ public:
     passed( passed_ ),
     total ( total_ )
   {}
-
-
 };
 
 /** @} */

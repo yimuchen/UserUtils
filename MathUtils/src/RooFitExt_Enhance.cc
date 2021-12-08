@@ -27,12 +27,9 @@ FitPDFToData( RooAbsPdf&                    pdf,
               RooAbsData&                   data,
               const std::vector<RooCmdArg>& cmdargs )
 {
-  const usr::RooArgContainer args(
-    cmdargs, {// Explicitly adding options to reduce verbosity
-      RooFit::Verbose( false ),
-      RooFit::PrintLevel( -100 ),
-      RooFit::Warnings( false ),
-      RooFit::PrintEvalErrors( -100 )  } );
+  const usr::RooArgContainer args( cmdargs, {// Explicitly adding options to reduce verbosity
+      RooFit::Verbose( false ), RooFit::PrintLevel( -100 ),
+      RooFit::Warnings( false ), RooFit::PrintEvalErrors( -100 )  } );
   RooLinkedList roolist = args.MakeRooList();
 
   return pdf.fitTo( data, roolist );
@@ -57,10 +54,8 @@ ConvergeFitPDFToData( RooAbsPdf&                    pdf,
                       const std::vector<RooCmdArg>& cmdargs )
 {
   RooFitResult*              status = nullptr;
-  const usr::RooArgContainer args(
-    cmdargs, {// Explicitly adding options to reduce verbosity
-      RooFit::Save(),
-      MaxFitIteration( 10 )// Default to at most 10
+  const usr::RooArgContainer args( cmdargs, {// Explicitly adding options to reduce verbosity
+      RooFit::Save(), MaxFitIteration( 10 )// Default to at most 10
     } );
   const usr::RooArgContainer og_args( cmdargs );
 
@@ -94,20 +89,15 @@ TH1DFromRooData( RooAbsData&                   data,
   const usr::RooArgContainer args( cmdargs );
   RooLinkedList              roolist = args.MakeRooList();
 
-  TH1* rawhist = data.createHistogram( usr::RandomString( 6 ).c_str()
-                                       ,
-                                       xvar
-                                       ,
-                                       roolist );
+  TH1*rawhist = data.createHistogram( usr::RandomString( 6 ).c_str(),
+                                      xvar,
+                                      roolist );
 
-  TH1D* hist = new TH1D( usr::RandomString( 6 ).c_str(),
-                         ""
-                         ,
-                         rawhist->GetNbinsX()
-                         ,
-                         rawhist->GetXaxis()->GetXmin()
-                         ,
-                         rawhist->GetXaxis()->GetXmax() );
+  TH1D*hist = new TH1D( usr::RandomString( 6 ).c_str(),
+                        "",
+                        rawhist->GetNbinsX(),
+                        rawhist->GetXaxis()->GetXmin(),
+                        rawhist->GetXaxis()->GetXmax() );
 
   for( int i = 1; i <= hist->GetNcells(); ++i ){
     hist->SetBinContent( i, rawhist->GetBinContent( i ) );

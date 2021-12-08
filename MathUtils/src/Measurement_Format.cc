@@ -73,7 +73,7 @@ decimal::decimal( const RooRealVar& input, const int p ) :
 /**
  * @brief Construct using a RooRealVar status.
  */
-decimal::decimal( const RooRealVar* input, const int p ) :
+decimal::decimal( const RooRealVar*input, const int p ) :
   _central( input->getVal() ),
   _upper  ( fabs( input->getErrorHi() ) ),
   _lower  ( fabs( input->getErrorLo() ) )
@@ -209,7 +209,7 @@ scientific::scientific( const RooRealVar& input, const int p ) :
 /**
  * @brief Construct using a RooRealVar instance
  */
-scientific::scientific( const RooRealVar* input, const int p ) :
+scientific::scientific( const RooRealVar*input, const int p ) :
   _central( input->getVal() ),
   _upper  ( fabs( input->getErrorHi() ) ),
   _lower  ( fabs( input->getErrorLo() ) ),
@@ -236,17 +236,17 @@ scientific::str() const
   const std::string cen  = base::decimal( _central ).dupsetting( *this ).str();
   const std::string up   = base::decimal( _upper ).dupsetting( *this ).str();
   const std::string lo   = decimal( _lower ).dupsetting( *this ).str();
-  const std::string base =
-    ( up == lo && _upper == 0 ) ? cen :
-    ( up == lo )                ? usr::fstr( "%s\\pm%s", cen, up ) :
-    usr::fstr( "%s^{+%s}_{-%s}", cen, up, lo );
+  const std::string base = ( up == lo && _upper == 0 ) ?
+                           cen :
+                           ( up == lo )                ?
+                           usr::fstr( "%s\\pm%s", cen, up ) :
+                           usr::fstr( "%s^{+%s}_{-%s}", cen, up, lo );
 
-  const std::string ans =
-    ( _exp == 0 )               ? base :
-    ( up == lo && _upper != 0 ) ? usr::fstr( "(%s)\\times10^{%d}",
-                                             base,
-                                             _exp ) :
-    usr::fstr( "%s\\times10^{%d}", base, _exp );
+  const std::string ans = ( _exp == 0 )               ?
+                          base :
+                          ( up == lo && _upper != 0 ) ?
+                          usr::fstr( "(%s)\\times10^{%d}", base, _exp ) :
+                          usr::fstr( "%s\\times10^{%d}", base, _exp );
 
   return ans;
 }
@@ -344,8 +344,7 @@ scientific::SetPrecision()
  */
 template<>
 void
-ExceptJSONEntry<Measurement>( const JSONMap&     map,
-                              const std::string& index )
+ExceptJSONEntry<Measurement>( const JSONMap& map, const std::string& index )
 {
   ExceptJSONList( map, index );
 }
@@ -353,8 +352,7 @@ ExceptJSONEntry<Measurement>( const JSONMap&     map,
 
 template<>
 Measurement
-JSONEntry<Measurement>( const JSONMap&     map,
-                        const std::string& index )
+JSONEntry<Measurement>( const JSONMap& map, const std::string& index )
 {
   const auto array = JSONList<double>( map, index );
   if( array.size() == 0 ){

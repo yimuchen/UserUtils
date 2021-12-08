@@ -59,7 +59,7 @@ Pad2DFlat::SetAxisFont()
 
 
 #define AXISOBJ_ACCESS( ACTION, DEFAULT )                  \
-  TObject* axisobj = GetAxisObject();                      \
+  TObject*axisobj = GetAxisObject();                       \
   if( !axisobj ){                                          \
     return DEFAULT;                                        \
   } else if( axisobj->InheritsFrom( TH2::Class() ) ){      \
@@ -71,7 +71,7 @@ Pad2DFlat::SetAxisFont()
   }
 
 #define AXISOBJ_ADJUST( ACTION )                           \
-  TObject* axisobj = GetAxisObject();                      \
+  TObject*axisobj = GetAxisObject();                       \
   if( !axisobj ){                                          \
     return;                                                \
   } else if( axisobj->InheritsFrom( TH2::Class() ) ){      \
@@ -95,20 +95,18 @@ Pad2DFlat::GetYaxis() const { AXISOBJ_ACCESS( GetYaxis(), nullptr ); }
 
 TAxis*
 Pad2DFlat::GetZaxis() const { AXISOBJ_ACCESS( GetZaxis(), nullptr ); }
+
 /** @} */
 
 /**
  * @{
  * @brief   reference interface for getting axis (No null pointer handling)
  */
-TAxis&
-Pad2DFlat::Xaxis(){ return *GetXaxis(); }
+TAxis&Pad2DFlat::Xaxis(){ return *GetXaxis(); }
 
-TAxis&
-Pad2DFlat::Yaxis(){ return *GetYaxis(); }
+TAxis&Pad2DFlat::Yaxis(){ return *GetYaxis(); }
 
-TAxis&
-Pad2DFlat::Zaxis(){ return *GetZaxis(); }
+TAxis&Pad2DFlat::Zaxis(){ return *GetZaxis(); }
 
 const TAxis&
 Pad2DFlat::Xaxis() const { return *GetXaxis(); }
@@ -118,6 +116,7 @@ Pad2DFlat::Yaxis() const { return *GetYaxis(); }
 
 const TAxis&
 Pad2DFlat::Zaxis() const { return *GetZaxis(); }
+
 /** @} */
 
 }

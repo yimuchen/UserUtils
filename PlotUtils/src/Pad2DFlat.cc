@@ -18,7 +18,7 @@ namespace usr
 namespace plt
 {
 
-Pad2DFlat::Pad2DFlat( Canvas* c, const PadSize& padsize ) :
+Pad2DFlat::Pad2DFlat( Canvas*c, const PadSize& padsize ) :
   PadBase( c, padsize )
 {
   init_legend();
@@ -63,6 +63,7 @@ Pad2DFlat::InitDraw()
 
   // Drawing the frame histogram for defining axis
   PadBase::PlotObj( _frame.AxisHist(), "AXIS" );
+
   // Setting up the name and title of RooPlot:
   SetAxisFont();
 }

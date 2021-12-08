@@ -50,6 +50,7 @@ extern length_t a4paperwidth();
 extern length_t a4paperheight();
 extern length_t a4textwidth_default();
 extern length_t a4textheight_default();
+
 /** @} */
 
 }/* len */
@@ -60,34 +61,22 @@ extern length_t a4textheight_default();
  */
 class font
 {
-public:// static and user enums.
+public:
+  // static and user enums.
 
   /** @brief enum interface for defined fonts. */
   enum face : short
   {
-    helvetica = 40,
-    courier = 80,
-    times = 130
+    helvetica = 40, courier = 80, times = 130
   };
 
   /** @brief enum interface for text alignment in @ROOT{TLatex} */
   enum align : short
   {
-    left = 10,
-    hcenter = 20,
-    right = 30,
-    top = 3,
-    vcenter = 2,
-    bottom = 1,
-    bottom_left = 11,
-    bottom_center = 21,
-    bottom_right = 31,
-    center_left = 12,
-    center = 22,
-    center_right = 32,
-    top_left = 13,
-    top_center = 23,
-    top_right = 33
+    left = 10, hcenter = 20, right = 30, top = 3, vcenter = 2, bottom = 1,
+    bottom_left = 11, bottom_center = 21, bottom_right = 31,
+    center_left = 12, center = 22, center_right = 32, top_left = 13,
+    top_center = 23, top_right = 33
   };
 
   static float      default_basesize;
@@ -149,8 +138,7 @@ namespace sty
  */
 
 // Marker styles
-inline float
-mkrpixels( const int x ){ return x / 8; }
+inline float mkrpixels( const int x ){ return x / 8; }
 
 extern const short marker( const std::string& x );
 extern const short mkrcircle;
@@ -362,6 +350,7 @@ extern const int lightgray;
 extern const int gray;
 extern const int bzgreen;
 extern const int bzyellow;
+
 /** @} */
 
 }// col

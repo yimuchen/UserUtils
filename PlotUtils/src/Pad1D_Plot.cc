@@ -91,11 +91,8 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
 
   // Getting the flags
   const RooArgContainer args( arglist, {
-        PlotType( hist ),
-        TrackY( tracky::max ),
-        FillColor( 0, 0 ),
-        MarkerStyle( sty::mkrcircle ),
-        MarkerSize( 0.05 )
+        PlotType( hist ), TrackY( tracky::max ), FillColor( 0, 0 ),
+        MarkerStyle( sty::mkrcircle ), MarkerSize( 0.05 )
       } );
 
   if( !GetAxisObject() ){
@@ -109,7 +106,7 @@ Pad1D::PlotHist( TH1D& obj, const std::vector<RooCmdArg>& arglist )
   // weighted histograms, only the non-weighted ones.
 
   // Removing the poly marker from TSpectrum search function
-  TObject* polymarker = obj.GetListOfFunctions()->FindObject( "TPolyMarker" );
+  TObject*polymarker = obj.GetListOfFunctions()->FindObject( "TPolyMarker" );
   obj.GetListOfFunctions()->RecursiveRemove( polymarker );
 
   // Forcing fit functions to not be drawn
@@ -201,7 +198,7 @@ TH1D&
 Pad1D::PlotProfile( TProfile& obj, const std::vector<RooCmdArg>& args )
 {
   // Generating new profile objects
-  TH1D* _newhist = obj.ProjectionX( usr::RandomString( 6 ).c_str(), "E" );
+  TH1D*_newhist = obj.ProjectionX( usr::RandomString( 6 ).c_str(), "E" );
   ClaimObject( _newhist );
   return PlotHist( _newhist, args );
 }
@@ -244,8 +241,7 @@ Pad1D::PlotEff( TEfficiency& obj, const std::vector<RooCmdArg>& arglist )
 {
   // Getting the flags
   const RooArgContainer args( arglist, {
-        PlotType( scatter ),
-        TrackY( tracky::both ),
+        PlotType( scatter ), TrackY( tracky::both ),
         FillColor( usr::plt::col::cyan )
       } );
 
@@ -347,14 +343,11 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
   }
 
   // Getting the flags
-  const RooArgContainer args( arglist,
-      {
-        PlotType( simplefunc ),
-        !GetAxisObject() ? TrackY( tracky::both ) : TrackY( tracky::none ),
-        FillColor( usr::plt::col::white, 0 ),
-        MarkerStyle( sty::mkrcircle ),
-        MarkerSize( 0.05 ),
-        ExtendXRange( true )
+  const RooArgContainer args( arglist, {
+        PlotType( simplefunc ), !GetAxisObject() ?
+        TrackY( tracky::both ) :
+        TrackY( tracky::none ), FillColor( usr::plt::col::white, 0 ),
+        MarkerStyle( sty::mkrcircle ), MarkerSize( 0.05 ), ExtendXRange( true )
       } );
 
   // If no axis are available. Generating a TH1 object for axis:
@@ -425,15 +418,13 @@ Pad1D::PlotGraph( TGraph& obj, const std::vector<RooCmdArg>& arglist )
 TGraph&
 Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args(
-    arglist,
-      {
+  const RooArgContainer args( arglist, {
         PlotType(// Inserting default plotting style
           RooArgContainer::CheckList( arglist, "VisualizeError" ) ?
-          fittedfunc : simplefunc ),
-        RooFit::Precision( 1e-3 )
+          fittedfunc :
+          simplefunc ), RooFit::Precision( 1e-3 )
       }
-    );
+                              );
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
@@ -484,8 +475,8 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     graph.SetName( graphname.c_str() );
     return graph;
   } else {
-    const TFitResult& fit
-      = dynamic_cast<const TFitResult&>( args.GetObj( "VisualizeError" ) );
+    const TFitResult& fit =
+      dynamic_cast<const TFitResult&>( args.GetObj( "VisualizeError" ) );
     const double zval = args.GetDouble( "VisualizeError" );
 
     const std::vector<double> bestfit_param = fit.Parameters();
@@ -563,7 +554,7 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
  * generated graph if an equal binning is used for the data set and the
  * RooFit::XErrorSize is not specified. This is to align the plotting style
  * conventions within the CMS collaboration. Another change to the graphs is
- *that
+ * that
  * the y uncertainties in the zero bins are suppressed, again, to align with the
  * plotting style conventions.
  *
@@ -572,16 +563,12 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
  * destroyed when the Pad1D goes out of scope.
  */
 TGraphAsymmErrors&
-Pad1D::PlotData( RooAbsData&                   data,
-                 const std::vector<RooCmdArg>& arglist )
+Pad1D::PlotData( RooAbsData& data, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args(
-    arglist,
-      {
-        PlotType( scatter ),
-        TrackY( tracky::max )
+  const RooArgContainer args( arglist, {
+        PlotType( scatter ), TrackY( tracky::max )
       }
-    );
+                              );
 
   TGraphAsymmErrors& ans = MakeDataGraph( data, args );
 
@@ -605,38 +592,40 @@ Pad1D::PlotData( RooAbsData&                   data,
  * the present binning of the RooFrame variable otherwise), and in the case of
  * uniform binning, suppress the x axis error bars, as specified by the CMS
  * publication conventions. Additionally, Bins with zero entires would have
- *their
+ * their
  * y error bars suppressed.
  */
 TGraphAsymmErrors&
-Pad1D::MakeDataGraph( RooAbsData&            data,
-                      const RooArgContainer& args )
+Pad1D::MakeDataGraph( RooAbsData& data, const RooArgContainer& args )
 {
   // RooCmdArg for suppressing the X errors in the final graph
   static const RooCmdArg suppressxerror = RooFit::XErrorSize( 0 );
+
   // Generating the requirements for actual RooFit PlotOn calls
   RooLinkedList oplist = args.MakeRooList();
 
-  auto IsUniform
-    = [this]( const RooCmdArg& cmd )->bool {
-        // Double assignment will always be uniform
-        if( cmd.getDouble( 0 ) != cmd.getDouble( 1 ) ){ return true;}
-        // Getting plot variable bining scheme
-        if( cmd.getString( 0 ) ){
-          const auto binname = cmd.getString( 0 );
-          const auto plotvar = this->_frame.getPlotVar();
-          if( plotvar->hasBinning( binname ) ){
-            return plotvar->getBinning( binname ).isUniform();
-          }
-        } else if( cmd.getObject( 0 ) ){
-          auto binobj =
-            dynamic_cast<const RooAbsBinning*>( cmd.getObject( 0 ) );
-          if( binobj  ){
-            return binobj->isUniform();
-          }
-        }
-        return true;// Returning true by default
-      };
+  auto IsUniform = [this]( const RooCmdArg& cmd )->bool {
+                     // Double assignment will always be uniform
+                     if( cmd.getDouble( 0 ) != cmd.getDouble( 1 ) ){
+                       return true;
+                     }
+
+                     // Getting plot variable bining scheme
+                     if( cmd.getString( 0 ) ){
+                       const auto binname = cmd.getString( 0 );
+                       const auto plotvar = this->_frame.getPlotVar();
+                       if( plotvar->hasBinning( binname ) ){
+                         return plotvar->getBinning( binname ).isUniform();
+                       }
+                     } else if( cmd.getObject( 0 ) ){
+                       auto binobj =
+                         dynamic_cast<const RooAbsBinning*>( cmd.getObject( 0 ) );
+                       if( binobj  ){
+                         return binobj->isUniform();
+                       }
+                     }
+                     return true;// Returning true by default
+                   };
 
   // Option for suppressing x error bars
   if( !args.Has( "Binning" ) ){
@@ -663,7 +652,7 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
 
 /**
  * Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot
- *object
+ * object
  * and plotting the graphs onto the TPad. The supported options are:
  *
  * - *Any* RooCmdArg supported by the RooAbsData::plotOn function. These will
@@ -689,17 +678,17 @@ Pad1D::MakeDataGraph( RooAbsData&            data,
  * uncertainty range rather than a line with error, making styling of a PDF with
  * uncertainty rather tedious. This functions takes the generated TGraphs by the
  * RooPlot and recalculated a TGraph with uncertainty. The newly calculated
- *graph
+ * graph
  * will be placed under the ownership of the Pad.
  */
 TGraph&
 Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist,
-      {// Defining default arguments
+  const RooArgContainer args( arglist, {// Defining default arguments
         TrackY( tracky::max ),// Default track y: only top
         RooArgContainer::CheckList( arglist, "VisualizeError" ) ?
-        PlotType( fittedfunc ) : PlotType( simplefunc )// default plot style.
+        PlotType( fittedfunc ) :
+        PlotType( simplefunc )                         // default plot style.
       }
                               );
   TGraph& ans = MakePdfGraph( pdf, arglist );
@@ -734,28 +723,29 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
   // RooArgSet containing all the floating variables directly in the
   // VisualizeError instance. Otherwise the generation of the error band might
   // fail.
-  auto CorrectVisError
-    = [this]( const RooAbsPdf& pdf,
-              const usr::RooArgContainer& args )->RooCmdArg {
-        if( args.Has( "VisualizeError" ) ){
-          auto& cmd = args.Get( "VisualizeError" );
-          if( cmd.getSet( 0 ) ){
-            // If Visualized Parameter set is already specified, then simply
-            // return the original parameter
-            return cmd;
-          } else {
-            RooCmdArg           ans( cmd );
-            const RooFitResult& fit
-              = *dynamic_cast<const RooFitResult*>( cmd.getObject( 0 ) );
-            RooArgSet* cloneParams = pdf.getObservables( fit.floatParsFinal() );
-            ans.setSet( 0, *cloneParams );
-            this->ClaimObject( cloneParams );
-            return ans;
-          }
+  auto CorrectVisError =
+    [this]( const RooAbsPdf& pdf,
+            const usr::RooArgContainer& args )->RooCmdArg {
+      if( args.Has( "VisualizeError" ) ){
+        auto& cmd = args.Get( "VisualizeError" );
+        if( cmd.getSet( 0 ) ){
+          // If Visualized Parameter set is already specified, then simply
+          // return the original parameter
+          return cmd;
         } else {
-          return RooCmdArg::none();
+          RooCmdArg           ans( cmd );
+          const RooFitResult& fit =
+            *dynamic_cast<const RooFitResult*>( cmd.getObject( 0 ) );
+          RooArgSet*cloneParams =
+            pdf.getObservables( fit.floatParsFinal() );
+          ans.setSet( 0, *cloneParams );
+          this->ClaimObject( cloneParams );
+          return ans;
         }
-      };
+      } else {
+        return RooCmdArg::none();
+      }
+    };
 
   const RooCmdArg viscmd  = CorrectVisError( pdf, args );
   RooLinkedList   roolist = args.MakeRooList( {"VisualizeError"} );
@@ -815,7 +805,7 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
   // Suppressing plotting messages
   RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
 
-  RooPlot* test = pdf.plotOn( &_frame, arglist );
+  RooPlot*test = pdf.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(
             "Bad argument list or object, plotting failed" );
@@ -850,7 +840,7 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
   RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
 
   // Generating plotting information
-  RooPlot* test = data.plotOn( &_frame, arglist );
+  RooPlot*test = data.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(
             "Bad argument list or object, plotting failed" );
@@ -861,10 +851,10 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
 
 /**
  * @brief Changing the stored _datamin, and _datamax variable according to
- *object
+ * object
  *
  * Moving to a private helper function to reduce verbosity in main
- *implementation
+ * implementation
  * function
  */
 void
@@ -872,29 +862,29 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
 {
   // Perfroming the axis range setting
   if( tracky == tracky::min || tracky == tracky::both ){
-    const double obj_min =
-      obj.InheritsFrom( TH1D::Class() ) ?
-      GetYmin( &dynamic_cast<const TH1D&>( obj ) ) :
-      obj.InheritsFrom( TGraph::Class() ) ?
-      GetYmin( &dynamic_cast<const TGraph&>( obj ) ) :
-      obj.InheritsFrom( THStack::Class() ) ?
-      GetYmin( &dynamic_cast<const THStack&>( obj ) ) :
-      obj.InheritsFrom( TEfficiency::Class() ) ?
-      GetYmin( &dynamic_cast<const TEfficiency&>( obj ) ) :
-      0;
-    _datamin = obj_min == 0 ? _datamin : std::min( _datamin, obj_min );
+    const double obj_min = obj.InheritsFrom( TH1D::Class() ) ?
+                           GetYmin( &dynamic_cast<const TH1D&>( obj ) ) :
+                           obj.InheritsFrom( TGraph::Class() ) ?
+                           GetYmin( &dynamic_cast<const TGraph&>( obj ) ) :
+                           obj.InheritsFrom( THStack::Class() ) ?
+                           GetYmin( &dynamic_cast<const THStack&>( obj ) ) :
+                           obj.InheritsFrom( TEfficiency::Class() ) ?
+                           GetYmin( &dynamic_cast<const TEfficiency&>( obj ) ) :
+                           0;
+    _datamin = obj_min == 0 ?
+               _datamin :
+               std::min( _datamin, obj_min );
   }
   if( tracky == tracky::max || tracky == tracky::both ){
-    const double obj_max =
-      obj.InheritsFrom( TH1D::Class() ) ?
-      GetYmax( &dynamic_cast<const TH1D&>( obj ) ) :
-      obj.InheritsFrom( TGraph::Class() ) ?
-      GetYmax( &dynamic_cast<const TGraph&>( obj ) ) :
-      obj.InheritsFrom( THStack::Class() ) ?
-      GetYmax( &dynamic_cast<const THStack&>( obj ) ) :
-      obj.InheritsFrom( TEfficiency::Class() ) ?
-      GetYmax( &dynamic_cast<const TEfficiency&>( obj ) ) :
-      0;
+    const double obj_max = obj.InheritsFrom( TH1D::Class() ) ?
+                           GetYmax( &dynamic_cast<const TH1D&>( obj ) ) :
+                           obj.InheritsFrom( TGraph::Class() ) ?
+                           GetYmax( &dynamic_cast<const TGraph&>( obj ) ) :
+                           obj.InheritsFrom( THStack::Class() ) ?
+                           GetYmax( &dynamic_cast<const THStack&>( obj ) ) :
+                           obj.InheritsFrom( TEfficiency::Class() ) ?
+                           GetYmax( &dynamic_cast<const TEfficiency&>( obj ) ) :
+                           0;
     _datamax = std::max( _datamax, obj_max );
   }
   AutoSetYRange();
@@ -939,10 +929,12 @@ Pad1D::CreateAxisObject( const TF1& func, const RooArgContainer& args )
 void
 Pad1D::CreateAxisObject( const TGraph& graph, const RooArgContainer& args )
 {
-  const double xmin     = GetXmin( graph );
-  const double xmax     = GetXmax( graph );
-  const double diff     = args.GetInt( "ExtendXRange" ) ? xmax-xmin : 0;
-  TH1D&        axishist = MakeObj<TH1D>(
+  const double xmin = GetXmin( graph );
+  const double xmax = GetXmax( graph );
+  const double diff = args.GetInt( "ExtendXRange" ) ?
+                      xmax-xmin :
+                      0;
+  TH1D& axishist = MakeObj<TH1D>(
     ( genaxisname+RandomString( 6 ) ).c_str(),
     "",
     10,

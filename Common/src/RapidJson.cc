@@ -98,8 +98,7 @@ FromJSONFile( const std::string& filename )
   if( !results ){
     throw std::invalid_argument(
             usr::fstr( "Error parsing json file \"%s\" (%s)",
-                       filename
-                       ,
+                       filename,
                        rapidjson::GetParseErrorFunc( results.Code() ) ) );
   }
 
@@ -227,8 +226,7 @@ ExceptJSONList( const JSONMap& map, const std::string& index )
   }
   if( !map[index.c_str()].IsArray() ){
     throw std::invalid_argument(
-            usr::fstr( "Member of index [%s] is invalid type (not an array)"
-                       ,
+            usr::fstr( "Member of index [%s] is invalid type (not an array)",
                        index ) );
   }
 }
@@ -249,8 +247,7 @@ ExceptJSONObj( const JSONMap& map, const std::string& index )
   }
   if( !map[index.c_str()].IsObject() ){
     throw std::invalid_argument(
-            usr::fstr( "Member of index [%s] is invalid type (not an object)"
-                       ,
+            usr::fstr( "Member of index [%s] is invalid type (not an object)",
                        index ) );
   }
 }

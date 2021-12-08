@@ -33,10 +33,10 @@ namespace plt
  * The name used to constructed the pad would be a random string to avoid name
  * collision.
  */
-PadBase::PadBase( Canvas* c, const PadSize& size ) :
+PadBase::PadBase( Canvas*c, const PadSize& size ) :
   _parentcanvas(  c ),
-  _pad         ( new TPad( ( "Pad"+RandomString( 12 ) ).c_str(), "",
-                           size.xmin, size.ymin, size.xmax, size.ymax ) )
+  _pad         ( new TPad( ( "Pad"+RandomString( 12 ) ).c_str(), "", size.xmin,
+                           size.ymin, size.xmax, size.ymax ) )
 {
   _pad->SetTicks( 1, 1 );
 }
@@ -94,8 +94,7 @@ PadBase::ParentCanvas()
  * @brief Returning reference to the font settings stored in the parent canvas.
  */
 const FontSet&
-PadBase::Font() const
-{ return ParentCanvas().Font(); }
+PadBase::Font() const { return ParentCanvas().Font(); }
 
 /**
  * @{
@@ -106,6 +105,7 @@ PadBase::RelWidth() const { return _pad->GetWNDC(); }
 
 double
 PadBase::RelHeight() const { return _pad->GetHNDC(); }
+
 /** @} */
 
 /**
@@ -117,6 +117,7 @@ PadBase::AbsWidth() const { return ParentCanvas().Width() * RelWidth(); }
 
 double
 PadBase::AbsHeight() const { return ParentCanvas().Height() * RelHeight(); }
+
 /** @} */
 
 
@@ -132,6 +133,7 @@ PadBase::FontFace() const { return ParentCanvas().Font().fontface(); }
 
 float
 PadBase::LineHeight() const { return ParentCanvas().Font().lineheight(); }
+
 /** @} */
 
 /**
@@ -143,6 +145,7 @@ PadBase::RelTextHeight() const { return FontSize() / AbsHeight(); }
 
 float
 PadBase::RelLineHeight() const { return LineHeight() / AbsHeight(); }
+
 /** @} */
 
 
@@ -168,10 +171,8 @@ PadBase::WriteAtData( const double                  x,
 {
   _pad->cd();// We will still need to cd to pad to get the correct dimensions.
 
-  const RooArgContainer args( arglist,
-      {
-        TextColor( usr::plt::col::black ),
-        TextSize( FontSize() ),
+  const RooArgContainer args( arglist, {
+        TextColor( usr::plt::col::black ), TextSize( FontSize() ),
         TextAngle( 0.0 )
       } );
 
@@ -196,8 +197,7 @@ PadBase::WriteLine( const std::string&            line,
 {
   _pad->cd();
 
-  const RooArgContainer args( arglist,
-      {// Defining default arguments
+  const RooArgContainer args( arglist, {// Defining default arguments
         TextColor( usr::plt::col::black ),// Black text
         TextSize( FontSize() ),// Canvas font settings,
         TextAngle( 0.0 )
@@ -210,9 +210,10 @@ PadBase::WriteLine( const std::string&            line,
   PlotObj( newlatex, "" );
 
   const double fsize = args.GetDouble( "TextSize" );
-  _latex_cursory -= std::max( double(RelLineHeight() * fsize / FontSize() ),
-                              EstimateLatexHeight( line ) * fsize
-                              / AbsHeight() );
+  _latex_cursory -= std::max(
+    double(RelLineHeight() * fsize / FontSize() ),
+    EstimateLatexHeight(
+      line ) * fsize / AbsHeight() );
   return *this;
 }
 
@@ -245,7 +246,7 @@ PadBase::SetTextCursor( const double x, const double y )
  * to be protected to only be used by child classes for plot specialization.
  */
 void
-PadBase::PlotObj( TObject& obj, Option_t* opt )
+PadBase::PlotObj( TObject& obj, Option_t*opt )
 {
   _pad->cd();
   obj.Draw( opt );
@@ -296,8 +297,7 @@ PadBase::InitDraw()
  *
  * Leaving blank for base class.
  */
-void
-PadBase::Finalize()
+void PadBase::Finalize()
 {}
 
 
@@ -307,7 +307,7 @@ PadBase::Finalize()
  * Mainly for internal use.
  */
 void
-PadBase::ClaimObject( TObject* obj )
+PadBase::ClaimObject( TObject*obj )
 {
   _generated_objects.emplace_back( obj );
 }

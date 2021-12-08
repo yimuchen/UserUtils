@@ -26,7 +26,7 @@ namespace plt
  * @details This will make the Pad1D instance properly spawn the _frame that is
  * capable for generating plotting objects for RooFit data objects.
  */
-Pad1D::Pad1D( Canvas* c, const PadSize& size, const RangeByVar& range ) :
+Pad1D::Pad1D( Canvas*c, const PadSize& size, const RangeByVar& range ) :
   PadBase        ( c, size ),
   _frame         ( range ),
   _workingstack  ( nullptr ),
@@ -45,8 +45,7 @@ Pad1D::Pad1D( Canvas* c, const PadSize& size, const RangeByVar& range ) :
  * @brief Construct a Pad1D with a limit x range.
  */
 Pad1D::Pad1D( Canvas*        c,
-              const PadSize& size
-              ,
+              const PadSize& size,
               const double   min,
               const double   max ) :
   PadBase        ( c, size ),
@@ -69,7 +68,7 @@ Pad1D::Pad1D( Canvas*        c,
  * Note that the axis range would be determined by the object that is plotted
  * first into the Pad. So take care of plotting order if that is an issue..
  */
-Pad1D::Pad1D( Canvas* c, const PadSize& size ) :
+Pad1D::Pad1D( Canvas*c, const PadSize& size ) :
   PadBase        ( c, size ),
   _workingstack  ( nullptr ),
   _datamax       ( 0 ),
@@ -94,6 +93,7 @@ Pad1D::InitDraw()
   PadBase::InitDraw();
 
   _init_legend();
+
   // Setting axis digits
   TGaxis::SetMaxDigits( 4 );
 
@@ -102,6 +102,7 @@ Pad1D::InitDraw()
 
   // Drawing the frame histogram for defining axis
   PadBase::PlotObj( _frame.AxisHist(), "AXIS" );
+
   // Setting up the name and title of RooPlot:
   SetAxisFont();
 
@@ -148,8 +149,10 @@ Pad1D::SetLogy( int flag )
 {
   _pad->SetLogy( flag );
   if( flag && !CheckLogy() ){
-    std::cerr << "[PAD1D] Data-objects y-values in Pad1D is not "
-      "positive definite. Plot may break!" << std::endl;
+    std::cerr <<
+        "[PAD1D] Data-objects y-values in Pad1D is not "
+        "positive definite. Plot may break!" << std::endl;
+
     // _pad->TPad_().SetLogy( 0 );
   }
   AutoSetYRange();
@@ -164,8 +167,9 @@ Pad1D::SetLogx( int flag )
 {
   _pad->SetLogx( flag );
   if( flag && !CheckLogx() ){
-    std::cerr << "[PAD1D] Data-objects x-values in Pad1D is not "
-      "positive definite. Unsetting the log option." << std::endl;
+    std::cerr <<
+        "[PAD1D] Data-objects x-values in Pad1D is not "
+        "positive definite. Unsetting the log option." << std::endl;
     _pad->SetLogx( 0 );
   }
 }

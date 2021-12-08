@@ -65,8 +65,7 @@ GlobLocalStr( const std::string& x )
   std::vector<std::string> ans( orig.size() );
   std::transform( orig.begin(),
                   orig.end(),
-                  ans.begin(),
-                  []( const fs::path& x )->std::string {
+                  ans.begin(), []( const fs::path& x )->std::string {
       return x.string();
     } );
   return ans;
@@ -83,9 +82,8 @@ GlobLocalStr( const std::string& x )
 std::string
 RandomString( const unsigned n )
 {
-  static const std::string alphanum = "0123456789"
-                                      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                      "abcdefghijklmnopqrstuvwxyz";
+  static const std::string alphanum =
+    "0123456789" "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz";
 
   std::string ans = "";
 
@@ -185,9 +183,12 @@ MatchBrace( const std::string& x, const unsigned open_brace )
   unsigned counter = 1;
 
   const char addcount = x.at( open_brace );
-  const char mincount = addcount == '(' ? ')' :
-                        addcount == '{' ? '}' :
-                        addcount == '[' ? ']' :
+  const char mincount = addcount == '(' ?
+                        ')' :
+                        addcount == '{' ?
+                        '}' :
+                        addcount == '[' ?
+                        ']' :
                         ')';
 
   while( counter > 0 && ++ans < x.length() ){

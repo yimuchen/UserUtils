@@ -105,7 +105,6 @@ BatchRequest::initialize( const usr::JSONMap& map )
       uncertainties.push_back( Uncertainty( unc_map ) );
     }
   }
-
 }
 
 
@@ -114,7 +113,7 @@ BatchRequest::initialize( const usr::JSONMap& map )
  * @details
  *
  * For the declaring common io settings, the following options are possible.
- *None
+ * None
  * of the entires are mandatory, all entries will default to an empty string if
  * not specified.
  *
@@ -126,7 +125,7 @@ BatchRequest::initialize( const usr::JSONMap& map )
  * - output prefix: Output prefix to save generated plot files. Think specifying
  *   a path to where the outputs should be passed.
  * - output postfix: Output postfix for the plot files before the file
- *extension.
+ * extension.
  */
 IOSetting::IOSetting(){}
 
@@ -148,26 +147,26 @@ IOSetting::IOSetting( const usr::JSONMap& map )
  *
  * - name: The name of the uncertainty source, required as a unique tagger.
  * - *norm uncertainty*: For normalization only uncertainty, we can specify a
- *how
+ * how
  *   the obtain the scale  up and  scale down histograms using a
- *usr::Measurement
+ * usr::Measurement
  *   declaration (an array like [1,0.025,0.026]), the relative uncertain will be
  *   used for scaling the central histogram up and down.
  * - *key name*: By default the uncertainty is assumed to be a shape like
  *   uncertainty, with uncertainty "up" and "down" shapes stored as shifted
  *   histograms. The effects of shape distortion is performed bin-by-bn using
- *the
+ * the
  *   histograms is done bin by bin. The key name is then used to specify which
  *   histograms in the same file should be used as the shifted templates. For
  *   each histogram request, the `histogram name + key name + "Up"` and
  *   `histogram name + key name + "Down"` will be taken as the shifted
- *templates.
+ * templates.
  *   In case the templates are not found, the central template will be used
  *   (which is equivalent to saying this process is not affected by the
- *specified
+ * specified
  *   uncertainty). In the case that the key name is not specified, and the norm
  *   uncertainty is not specifed, the key name default to the "name" entry in
- *the
+ * the
  *   decalration.
  *
  * A special uncertainty source should be noted here, and that is the "cross
@@ -181,13 +180,14 @@ Uncertainty::Uncertainty( const usr::JSONMap& map )
   name             = JSONEntry<std::string>( map, "name" );
   key              = JSONEntry<std::string>( map, "key name", "" );
   norm_uncertainty = JSONEntry<Measurement>( map,
-                                             "norm uncertainty"
-                                             ,
-                                             Measurement( 1, 0, 0 ) );
+                                             "norm uncertainty",
+                                             Measurement(
+                                               1,
+                                               0,
+                                               0 ) );
   if( norm_uncertainty.CentralValue() == 1 &&
       norm_uncertainty.AbsUpperError() == 0 &&
-      norm_uncertainty.AbsLowerError() == 0 &&
-      name != "Cross Section" &&
+      norm_uncertainty.AbsLowerError() == 0 && name != "Cross Section" &&
       key == "" ){
     key = name;
   }
@@ -254,8 +254,7 @@ ProcessGroup::ProcessGroup(){}
 /**
  * @brief Construction only possible through parent BatchProcess instance.
  */
-ProcessGroup::ProcessGroup( const usr::JSONMap& map,
-                            const BatchRequest* ptr )
+ProcessGroup::ProcessGroup( const usr::JSONMap& map, const BatchRequest*ptr )
 {
   name       = JSONEntry<std::string>( map, "display" );
   latex_name = JSONEntry<std::string>( map, "latex",  name );
@@ -279,36 +278,36 @@ ProcessGroup::ProcessGroup( const usr::JSONMap& map,
  * - display: The string to display for the process in the plots. Access ROOT
  *   flavored latex string.
  * - file: The file containing the relevent histogram files. Notice that the
- *path
+ * path
  *   that will be open a process histogram file would have the prefix added in
  *   the "io settings" of the parent BatchProcess instance.
  * - "key prefix": Prefix string needed to add to histogram keys to get a
  *   relevent histogram. Helpful if a histogram file contains histograms for
  *   multiple processes.
  * - *latex*: The string to display for latex tables Notice that backslashed
- *will
+ * will
  *   need to be doubled up for "literal backslashed". If not specified, it will
  *   assume the same value of "display".
  * - *cross section*: The cross section with uncertainty of the processes in
  *   units of \f$\text{pb}\f$s. The declaration is done in the form of a array
  *   with at least one number and at most three numbers. The first is the
- *central
+ * central
  *   value, with the latter two being the shift up and shift down uncertainties.
  *   Defaults to \f$1\pm0\text{pb}\f$.
  * - *generator*: The generator used for creating the process files. Default to
  *   an empty string.
  * - *cross section source*: How the cross section was calculated. Defaults to
- *an
+ * an
  *   empty string.
  * - *scale*: Additional factor to scale the process for presentation
- *aesthetics.
+ * aesthetics.
  *   Default to 1.0.
  * - *luminosity*: The luminosity of the process (for data), or the effective
  *   luminosity of the unfiltered process (for simulated events), in units of
  *   \f$\text{pb}^{-1}\f$. For data processes, this must be present to allow for
  *   the calculation of the total luminosity. For simulated processes, if this
  *   entry is omitted, then the program will look for a TTree named "Count" and
- *a
+ * a
  *   leaf named "OriginalCount" to get the total number of events in the
  *   unfiltered process, the effective luminosity is then calculated from the
  *   original count and the given cross section. If the TTree entry doesn't
@@ -324,15 +323,13 @@ ProcessGroup::ProcessGroup( const usr::JSONMap& map,
 /**
  * @brief Construnction only possible through parent BatchProcess instance.
  */
-Process::Process( const usr::JSONMap& map, const BatchRequest* ptr  )
+Process::Process( const usr::JSONMap& map, const BatchRequest*ptr  )
 {
   name                 = map["display"].GetString();
   latex_name           = JSONEntry<std::string>( map, "latex", name );
   generator            = JSONEntry<std::string>( map, "generator", "" );
-  cross_section_source = JSONEntry<std::string>( map,
-                                                 "cross section source"
-                                                 ,
-                                                 "" );
+  cross_section_source =
+    JSONEntry<std::string>( map, "cross section source", "" );
 
   file                 = JSONEntry<std::string>( map, "file" );
   color                = JSONEntry<std::string>( map, "color", "blue" );
@@ -340,14 +337,20 @@ Process::Process( const usr::JSONMap& map, const BatchRequest* ptr  )
   scale                = JSONEntry<double>( map, "scale", 1.0 );
   effective_luminosity = JSONEntry<double>( map, "luminosity", 0.0 );
   cross_section        = JSONEntry<Measurement>( map,
-                                                 "cross section"
-                                                 ,
-                                                 usr::Measurement( 1, 0, 0 ) );
+                                                 "cross section",
+                                                 usr::Measurement(
+                                                   1,
+                                                   0,
+                                                   0 ) );
 
   // "run range"
   const auto run_range = JSONList<double>( map, "run range", {0, 0} );
-  run_range_min = run_range.size() == 2 ? run_range[0] : 0;
-  run_range_max = run_range.size() == 2 ? run_range[1] : 0;
+  run_range_min = run_range.size() == 2 ?
+                  run_range[0] :
+                  0;
+  run_range_max = run_range.size() == 2 ?
+                  run_range[1] :
+                  0;
 
   transparency = usr::JSONEntry<double>( map, "transparency", 1.0 );
   _file        = nullptr;
@@ -394,8 +397,8 @@ TH1D*
 Process::GetClone( const std::string& key ) const
 {
   _file->cd( 0 );
-  TH1D* ans = dynamic_cast<TH1D*>(
-    _file->Get( MakeKey( key ).c_str() )->Clone() );
+  TH1D*ans =
+    dynamic_cast<TH1D*>( _file->Get( MakeKey( key ).c_str() )->Clone() );
   ans->SetDirectory( 0 );
   return ans;
 }
@@ -412,7 +415,7 @@ Process::GetClone( const std::string& key ) const
 TH1D*
 Process::GetNormalizedClone( const std::string& key ) const
 {
-  TH1D* ans = GetClone( key );
+  TH1D*ans = GetClone( key );
   ans->Scale( 1.0 / ans->Integral() );
   return ans;
 }
@@ -429,7 +432,7 @@ Process::GetNormalizedClone( const std::string& key ) const
 TH1D*
 Process::GetScaledClone( const std::string& key, const double total ) const
 {
-  TH1D* ans = GetClone( key );
+  TH1D*ans = GetClone( key );
   ans->Scale( total / effective_luminosity );
   ans->Scale( scale );
 
@@ -448,8 +451,8 @@ TH2D*
 Process::Get2DClone( const std::string& key ) const
 {
   _file->cd( 0 );
-  TH2D* ans = dynamic_cast<TH2D*>(
-    _file->Get( MakeKey( key ).c_str() )->Clone() );
+  TH2D*ans =
+    dynamic_cast<TH2D*>( _file->Get( MakeKey( key ).c_str() )->Clone() );
   ans->SetDirectory( 0 );
   return ans;
 }
@@ -470,24 +473,23 @@ Process::OpenFile()
 
   // Suppressing function printing error for missing file.
   gErrorIgnoreLevel = kError;
-  _file
-    = TFile::Open( ( Parent().iosetting.input_prefix+file ).c_str()
-                   ,
-                   "READ" );
+  _file             = TFile::Open(
+    ( Parent().iosetting.input_prefix+file ).c_str(),
+    "READ" );
   gErrorIgnoreLevel = root_error_level;
 
   if( effective_luminosity == 0.0 || effective_luminosity == 1.0 ){
     auto DefaultLumi = [this]( ){
-                         usr::fout( "Warning! Effective luminosity is found for "
-                                    "this process, defaulting the 1.0pb, If the "
-                                    "normalization is wrong, fix this issue\n" );
+                         usr::fout(
+                           "Warning! Effective luminosity is found for " "this process, defaulting the 1.0pb, If the "
+                           "normalization is wrong, fix this issue\n" );
                          this->effective_luminosity = 1.0;
                        };
     if( _file == nullptr ){
       DefaultLumi();
       return;
     }
-    TTree* lumi_tree = (TTree*)_file->Get( "Count" );
+    TTree*lumi_tree = (TTree*)_file->Get( "Count" );
     if( lumi_tree == nullptr ){
       DefaultLumi();
       return;
@@ -498,14 +500,16 @@ Process::OpenFile()
     effective_luminosity = original_events / cross_section.CentralValue();
 
     if( run_range_max != 0 || run_range_min != 0 ){
-      usr::fout( "Warning! Run range should only be specified for data events! "
-                 "Make sure you know what you are doing\n" );
+      usr::fout(
+        "Warning! Run range should only be specified for data events! "
+        "Make sure you know what you are doing\n" );
     }
   } else {
     if( cross_section.CentralValue() != 1 || !cross_section_source.empty()
         || scale != 1 ){
-      usr::fout( "Warning! Cross section and scaling options should only be used"
-                 "for simulated events, make sure you know what you are doing\n" );
+      usr::fout(
+        "Warning! Cross section and scaling options should only be used"
+        "for simulated events, make sure you know what you are doing\n" );
     }
   }
 }

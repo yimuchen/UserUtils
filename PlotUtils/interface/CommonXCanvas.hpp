@@ -51,7 +51,7 @@ public:
   /**
    * @{
    * @brief passing through for Pad1D plotting function, The pad ID to plot on
-   *is
+   * is
    *        uses template argument to help keep a uniform interface.
    */
   template<unsigned pad_id, typename ...Args>
@@ -65,7 +65,7 @@ public:
 
   template<unsigned pad_id, typename ...Args>
   inline TH1D&
-  PlotHist( TH1D* obj, Args ... args )
+  PlotHist( TH1D*obj, Args ... args )
   {
     CheckPadAxis( obj );
     return Pad<pad_id>().PlotHist( obj, args ... );
@@ -83,7 +83,7 @@ public:
 
   template<unsigned pad_id, typename ...Args>
   inline TGraph&
-  PlotGraph( TGraph* obj, Args ... args  )
+  PlotGraph( TGraph*obj, Args ... args  )
   {
     CheckPadAxis( obj );
     return Pad<pad_id>().PlotGraph( obj, args ... );
@@ -101,7 +101,7 @@ public:
 
   template<unsigned pad_id, typename ...Args>
   inline TGraph&
-  PlotFunc( TF1* obj, Args ... args  )
+  PlotFunc( TF1*obj, Args ... args  )
   {
     CheckPadAxis( obj );
     return Pad<pad_id>().PlotFunc( obj, args ... );
@@ -119,7 +119,7 @@ public:
 
   template<unsigned pad_id, typename ...Args>
   inline TGraphAsymmErrors&
-  PlotData( RooAbsData* obj, Args ... args  )
+  PlotData( RooAbsData*obj, Args ... args  )
   {
     CheckPadAxis( obj );
     return Pad<pad_id>().PlotData( obj, args ... );
@@ -137,7 +137,7 @@ public:
 
   template<unsigned pad_id, typename ...Args>
   inline TGraph&
-  PlotPdf( RooAbsPdf* obj, Args ... args  )
+  PlotPdf( RooAbsPdf*obj, Args ... args  )
   {
     CheckPadAxis( obj );
     return Pad<pad_id>().PlotPdf( obj, args ... );
@@ -145,7 +145,6 @@ public:
 
 
   /** @} */
-
 
 private:
   void CheckPadAxis( const TObject* );

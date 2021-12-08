@@ -36,15 +36,18 @@ namespace plt
 TH2D&
 Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist,
-                              { Plot2DF( plot2df::heat )  } );
+  const RooArgContainer args( arglist, { Plot2DF( plot2df::heat )  } );
 
   const int opt = args.GetInt( "Plot2DF" );
 
-  const std::string legopt = opt == plot2df::heat ? "" :
-                             opt == plot2df::heatcont ? "L" :
-                             opt == plot2df::cont ? "L" :
-                             opt == plot2df::density ? "PF"  :
+  const std::string legopt = opt == plot2df::heat ?
+                             "" :
+                             opt == plot2df::heatcont ?
+                             "L" :
+                             opt == plot2df::cont ?
+                             "L" :
+                             opt == plot2df::density ?
+                             "PF"  :
                              "PFLE";
 
   for( const auto&& func : *( hist.GetListOfFunctions() ) ){
@@ -90,9 +93,9 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
   }
 
   if( args.Has( "EntryText" ) ){
-    _legend.AddEntry( &hist
-                      ,
-                      args.Get( "EntryText" ).getString( 0 ),
+    _legend.AddEntry( &hist,
+                      args.Get( "EntryText" ).getString(
+                        0 ),
                       legopt.c_str() );
   }
 
@@ -124,15 +127,18 @@ Pad2DFlat::PlotHist( TH2D& hist, const std::vector<RooCmdArg>& arglist )
 TGraph2D&
 Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist,
-                              { Plot2DF( plot2df::heat )  } );
+  const RooArgContainer args( arglist, { Plot2DF( plot2df::heat )  } );
 
   const int opt = args.GetInt( "Plot2DF" );
 
-  const std::string legopt = opt == plot2df::heat ? "" :
-                             opt == plot2df::heatcont ? "L" :
-                             opt == plot2df::cont ? "L" :
-                             opt == plot2df::box ? "F" :
+  const std::string legopt = opt == plot2df::heat ?
+                             "" :
+                             opt == plot2df::heatcont ?
+                             "L" :
+                             opt == plot2df::cont ?
+                             "L" :
+                             opt == plot2df::box ?
+                             "F" :
                              "PFLE";
 
   if( !GetAxisObject() ){
@@ -174,9 +180,9 @@ Pad2DFlat::PlotGraph( TGraph2D& graph, const std::vector<RooCmdArg>& arglist )
   }
 
   if( args.Has( "EntryText" ) ){
-    _legend.AddEntry( &graph
-                      ,
-                      args.Get( "EntryText" ).getString( 0 ),
+    _legend.AddEntry( &graph,
+                      args.Get( "EntryText" ).getString(
+                        0 ),
                       legopt.c_str() );
   }
 
@@ -217,10 +223,7 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
     }
   }
 
-  TGraph2D& graph = MakeObj<TGraph2D>( x.size(),
-                                       x.data(),
-                                       y.data(),
-                                       z.data() );
+  TGraph2D& graph = MakeObj<TGraph2D>( x.size(), x.data(), y.data(), z.data() );
 
   graph.SetName( usr::RandomString( 12 ).c_str() );
 
@@ -240,8 +243,7 @@ Pad2DFlat::PlotFunc( TF2& func, const std::vector<RooCmdArg>& arglist )
 TGraph&
 Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
 {
-  const RooArgContainer args( arglist,
-                              {PlotType( plottype::scatter ) } );
+  const RooArgContainer args( arglist, {PlotType( plottype::scatter ) } );
 
   const int opt = args.GetInt( "PlotType" );
 
@@ -265,9 +267,9 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   graph.GetHistogram()->SetMinimum( usr::plt::GetYmin( graph ) );
 
   if( args.Has( "EntryText" ) ){
-    _legend.AddEntry( &graph
-                      ,
-                      args.Get( "EntryText" ).getString( 0 ),
+    _legend.AddEntry( &graph,
+                      args.Get( "EntryText" ).getString(
+                        0 ),
                       legopt.c_str() );
   }
 
@@ -298,12 +300,12 @@ Pad2DFlat::MakeLegend()
                  * _legend.GetListOfPrimitives()->GetEntries();
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
-    const char* label  = ( (TLegendEntry*)obj )->GetLabel();
-    TLatex*     textmp = new TLatex( 0, 0, label );
+    const char*label  = ( (TLegendEntry*)obj )->GetLabel();
+    TLatex*    textmp = new TLatex( 0, 0, label );
     textmp->SetTextFont( FontFace() );
     textmp->SetTextSize( FontSize() );
-    width = std::max( int(width),
-                      int(1.3 * textmp->GetXsize() * AbsWidth()+5) );
+    width =
+      std::max( int(width), int(1.3 * textmp->GetXsize() * AbsWidth()+5) );
     delete textmp;
   }
 

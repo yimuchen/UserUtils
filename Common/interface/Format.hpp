@@ -41,20 +41,17 @@ public:
   /**
    * @brief number of digits to display after the decimal point.
    */
-  inline format&
-  precision( int x ){ _precision = x; return *this; }
+  inline format&precision( int x ){ _precision = x; return *this; }
 
   /**
    * @brief string to add between digit seperations.
    */
-  inline format&
-  spacestr( const std::string& x ){ _spacestr = x; return *this; }
+  inline format&spacestr( const std::string& x ){ _spacestr = x; return *this; }
 
   /**
    * @brief number of digits between seperator string.
    */
-  inline format&
-  spacesep( unsigned x ){ _spacesep = x; return *this; }
+  inline format&spacesep( unsigned x ){ _spacesep = x; return *this; }
 
 
   format& operator=( const format& ) = default;// Member-wise copy
@@ -62,8 +59,7 @@ public:
   /**
    * @brief duplicating all settings to reference format.
    */
-  inline format&
-  dupsetting( const format& x ){ *this = x; return *this;}
+  inline format&dupsetting( const format& x ){ *this = x; return *this;}
 
 
   /**
@@ -111,16 +107,14 @@ operator<<( std::ostream& os, const format& x )
 class decimal : public format
 {
 public:
-  decimal( const double input,
-           const int    p = -precision_default ) :
+  decimal( const double input, const int p = -precision_default ) :
     _input( input )
   {
     precision( p );
   }
 
 
-  virtual
-  ~decimal (){}
+  virtual ~decimal (){}
 
   virtual std::string str() const;
 
@@ -135,8 +129,7 @@ class scientific : public format
 {
 public:
   scientific( const double input, const unsigned p );
-  virtual
-  ~scientific  (){}
+  virtual ~scientific  (){}
 
   virtual std::string str() const;
 

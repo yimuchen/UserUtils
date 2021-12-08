@@ -23,36 +23,38 @@ void RunStandard( usr::plt::fmt::BatchRequest& batch,
 void RunTable( usr::plt::fmt::BatchRequest& batch,
                const usr::ArgumentExtender& args );
 
-typedef void (* RunBatch)( usr::plt::fmt::BatchRequest&,
-                           const usr::ArgumentExtender& );
+typedef void (*RunBatch)( usr::plt::fmt::BatchRequest&,
+                          const usr::ArgumentExtender& );
 
-std::map<std::string, RunBatch> MakeCommandMap();
+std::map<std::string, RunBatch>       MakeCommandMap();
 const std::map<std::string, RunBatch> CommandMap = MakeCommandMap();
 
 
 int
-main( int argc, char* argv[] )
+main( int argc, char*argv[] )
 {
-  usr::po::options_description desc_common(
-    usr::fstr(
-      "Running a standard plotting sequence interactively, Basic usage require "
-      "first two arguments being the plotting command "
-      "[compare/compare2d/standard/table] "
-      "and the plot settings json files. So something like:\n"
-      ">> %s  standard my_plots.json my_samples.json\n", argv[0] ) );
+  usr::po::options_description desc_common( usr::fstr(
+                                              "Running a standard plotting sequence interactively, Basic usage require "
+                                              "first two arguments being the plotting command "
+                                              "[compare/compare2d/standard/table] "
+                                              "and the plot settings json files. So something like:\n"
+                                              ">> %s  standard my_plots.json my_samples.json\n",
+                                              argv[0] ) );
 
   usr::po::options_description desc_io(
     "Input output options. This will override the io settings sections in the "
     "input json file." );
 
   desc_io.add_options()
-    ( "fileprefix", usr::po::value<std::string>(),
+    ( "fileprefix",
+    usr::po::value<std::string>(),
     "File prefix to be used for histogram files" )
-    ( "keyprefix", usr::po::value<std::string>(),
+    ( "keyprefix",
+    usr::po::value<std::string>(),
     "Common key prefix to be used for obtaining the histogram objects" )
-    ( "outputprefix", usr::po::value<std::string>(),
-    "Prefix for output files" )
-    ( "outputpostfix", usr::po::value<std::string>(),
+    ( "outputprefix", usr::po::value<std::string>(), "Prefix for output files" )
+    ( "outputpostfix",
+    usr::po::value<std::string>(),
     "Post fix for output files (before the extension)" )
   ;
 
@@ -71,7 +73,7 @@ main( int argc, char* argv[] )
 
   // Getting the json file list
   std::vector<std::string> json_files;
-  int first_option;
+  int                      first_option;
 
   for( first_option = 2; first_option < argc; ++first_option ){
     if( argv[first_option][0] == '-' ){
@@ -80,7 +82,6 @@ main( int argc, char* argv[] )
       json_files.push_back( argv[first_option] );
     }
   }
-
 
   // Parsing command latter options if exists
   // Keeping the last command since argc cannot be 0
@@ -96,9 +97,9 @@ main( int argc, char* argv[] )
   return 0;
 }
 
+
 std::string
-ParsePlotCommand( const std::string&           str,
-                  const usr::ArgumentExtender& args )
+ParsePlotCommand( const std::string& str, const usr::ArgumentExtender& args )
 {
   const std::string ans = usr::ToLower( str );
   if( CommandMap.count( ans ) ){
@@ -109,12 +110,13 @@ ParsePlotCommand( const std::string&           str,
   }
 }
 
+
 std::string
-ParseJsonFile( const std::string&           str,
-               const usr::ArgumentExtender& args )
+ParseJsonFile( const std::string& str, const usr::ArgumentExtender& args )
 {
   return str;
 }
+
 
 std::map<std::string, RunBatch>
 MakeCommandMap()
@@ -150,6 +152,7 @@ RunComparison( usr::plt::fmt::BatchRequest& batch,
   batch.GenerateSampleComparePlot();
 }
 
+
 void
 RunComparison2D( usr::plt::fmt::BatchRequest& batch,
                  const usr::ArgumentExtender& args )
@@ -169,6 +172,7 @@ RunComparison2D( usr::plt::fmt::BatchRequest& batch,
   batch.Generate2DComaprePlot();
 }
 
+
 void
 RunStandard( usr::plt::fmt::BatchRequest& batch,
              const usr::ArgumentExtender& args  )
@@ -187,6 +191,8 @@ RunStandard( usr::plt::fmt::BatchRequest& batch,
   }
   batch.GeneratePlots();
 }
+
+
 void
 RunTable( usr::plt::fmt::BatchRequest& batch,
           const usr::ArgumentExtender& args )

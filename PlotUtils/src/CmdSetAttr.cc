@@ -12,8 +12,7 @@ inline int   Col( const RooCmdArg& x )  { return x.getInt( 0 ); }
 inline float Alpha( const RooCmdArg& x ){ return x.getDouble( 0 ); }
 
 extern void
-SetTextAttr( TAttText&                   obj,
-             const usr::RooArgContainer& args )
+SetTextAttr( TAttText& obj, const usr::RooArgContainer& args )
 {
   if( args.Has( "TextColor" ) ){
     const auto cmd = args.Get( "TextColor" );
@@ -35,8 +34,7 @@ SetTextAttr( TAttText&                   obj,
 
 
 extern void
-SetLineAttr( TAttLine&                   obj,
-             const usr::RooArgContainer& args  )
+SetLineAttr( TAttLine& obj, const usr::RooArgContainer& args  )
 {
   if( args.Has( "LineColor" ) ){
     const auto cmd = args.Get( "LineColor" );
@@ -54,8 +52,7 @@ SetLineAttr( TAttLine&                   obj,
 
 
 extern void
-SetFillAttr( TAttFill&                   obj,
-             const usr::RooArgContainer& args  )
+SetFillAttr( TAttFill& obj, const usr::RooArgContainer& args  )
 {
   if( args.Has( "FillColor" ) ){
     const auto cmd = args.Get( "FillColor" );
@@ -69,8 +66,7 @@ SetFillAttr( TAttFill&                   obj,
 
 
 extern void
-SetMarkAttr( TAttMarker&                 obj,
-             const usr::RooArgContainer& args  )
+SetMarkAttr( TAttMarker& obj, const usr::RooArgContainer& args  )
 {
   if( args.Has( "MarkerColor" ) ){
     const auto cmd = args.Get( "MarkerColor" );
@@ -88,8 +84,7 @@ SetMarkAttr( TAttMarker&                 obj,
 
 
 extern void
-CopyTextAttrTo( const TAttText& source,
-                TAttText&       target )
+CopyTextAttrTo( const TAttText& source, TAttText&       target )
 {
   target.SetTextColor( source.GetTextColor() ); // alpha handled
   target.SetTextSize( source.GetTextSize() );
@@ -99,8 +94,7 @@ CopyTextAttrTo( const TAttText& source,
 
 
 extern void
-CopyLineAttrTo( const TAttLine& source,
-                TAttLine&       target )
+CopyLineAttrTo( const TAttLine& source, TAttLine&       target )
 {
   target.SetLineColor( source.GetLineColor() );// alpha already handled
   target.SetLineStyle( source.GetLineStyle() );
@@ -109,8 +103,7 @@ CopyLineAttrTo( const TAttLine& source,
 
 
 extern void
-CopyFillAttrTo( const TAttFill& source,
-                TAttFill&       target )
+CopyFillAttrTo( const TAttFill& source, TAttFill&       target )
 {
   target.SetFillColor( source.GetFillColor() ); // alpha handled
   target.SetFillStyle( source.GetFillStyle() );
@@ -118,8 +111,7 @@ CopyFillAttrTo( const TAttFill& source,
 
 
 extern void
-CopyMarkAttrTo( const TAttMarker& source,
-                TAttMarker&       target )
+CopyMarkAttrTo( const TAttMarker& source, TAttMarker&       target )
 {
   target.SetMarkerColor( source.GetMarkerColor() ); // alpha handled
   target.SetMarkerStyle( source.GetMarkerStyle() );

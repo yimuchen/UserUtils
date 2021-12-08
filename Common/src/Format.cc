@@ -68,9 +68,7 @@ decimal::str() const
   const unsigned op_precision = std::min( abs( _precision ),
                                           abs(
                                             max_precision ) );
-  std::string retstr = usr::fstr( usr::fstr( "%%.%df",
-                                             op_precision ),
-                                  _input );
+  std::string retstr = usr::fstr( usr::fstr( "%%.%df", op_precision ), _input );
 
   // stripping trailing zero after decimal point
   if( _precision < 0 && retstr.find( '.' ) != std::string::npos ){
@@ -122,10 +120,12 @@ scientific::str() const
 {
   const std::string base =
     decimal( _mant, _precision ).dupsetting( *this ).str();
+
   // largest exponent should be around ~300
   // no need of additional formatting.
-  const std::string ans
-    = ( _exp == 0 ) ?  base : usr::fstr( "%s \\times 10^{%d}", base, _exp );
+  const std::string ans = ( _exp == 0 ) ?
+                          base :
+                          usr::fstr( "%s \\times 10^{%d}", base, _exp );
   return ans;
 }
 

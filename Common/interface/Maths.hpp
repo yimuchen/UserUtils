@@ -41,16 +41,18 @@ sgn( TYPE val )
  * This function aims to solve the issue of concrete type mixing (double/int
  * comparisons..etc). Notice that the return type would follow that of the first
  * entry, so for example, when attempting update the maximum value from a list
- *of
+ * of
  * numbers, it would be safer to do something like `x = usr::max(x, newval )`,
- *to
+ * to
  * avoid conversion errors being propagated.
  */
 template<typename T1, typename T2>
 inline T1
 max( T1 left, T2 right )
 {
-  return left > right ? left : right;
+  return left > right ?
+         left :
+         right;
 }
 
 
@@ -60,16 +62,18 @@ max( T1 left, T2 right )
  * This function aims to solve the issue of concrete type mixing (double/int
  * comparisons..etc). Notice that the return type would follow that of the first
  * entry, so for example, when attempting update the maximum value from a list
- *of
+ * of
  * numbers, it would be safer to do something like `x = usr::max(x, newval )`,
- *to
+ * to
  * avoid conversion errors being propagated.
  */
 template<typename T1, typename T2>
 inline T1
 min( T1 left, T2 right )
 {
-  return left < right ? left : right;
+  return left < right ?
+         left :
+         right;
 }
 
 

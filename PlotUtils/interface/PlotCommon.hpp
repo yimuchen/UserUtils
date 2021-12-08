@@ -46,8 +46,7 @@ public:
   /**
    * @brief returning the internal histogram object used for axis plotting.
    */
-  inline TH1*
-  AxisHistPtr(){ return RooPlot::_hist; }
+  inline TH1*AxisHistPtr(){ return RooPlot::_hist; }
 
   /**
    * @brief returning the internal histogram object used for axis plotting.
@@ -59,8 +58,7 @@ public:
    * @brief returning reference to internal histogram object used for axis
    * plotting (no null protection)
    */
-  inline TH1&
-  AxisHist(){ return *AxisHistPtr(); }
+  inline TH1&AxisHist(){ return *AxisHistPtr(); }
 
   /**
    * @brief returning reference to internal histogram object used for axis
@@ -74,8 +72,7 @@ public:
    * child class of TGraph, casting will fail if wrong type is passed.
    */
   template<typename ObjType>
-  ObjType&
-  LastPlot()
+  ObjType&LastPlot()
   { return *( dynamic_cast<ObjType*>( getObject( numItems()-1 ) ) ); }
 };
 
@@ -84,7 +81,7 @@ public:
  */
 struct RangeByVar
 {
-  const RooRealVar* var;
+  const RooRealVar*var;
   double xmin;
   double xmax;
   int nbin;
@@ -92,10 +89,10 @@ struct RangeByVar
               const double      _xmin = find_default,
               const double      _xmax = find_default,
               const int         _nbin = -1 );
-  RangeByVar( const RooRealVar* _var,
-              const double      _xmin = find_default,
-              const double      _xmax = find_default,
-              const int         _nbin = -1 );
+  RangeByVar( const RooRealVar*_var,
+              const double     _xmin = find_default,
+              const double     _xmax = find_default,
+              const int        _nbin = -1 );
 
 private:
   static const double find_default;
@@ -108,7 +105,7 @@ private:
  */
 
 
-RooCmdArg PlotUnder( const TObject* x );
+RooCmdArg PlotUnder( const TObject*x );
 inline RooCmdArg PlotUnder( const TObject& x ){ return PlotUnder( &x ); }
 
 /**
@@ -203,6 +200,7 @@ VisualizeError( const RooFitResult& fit, Args ... args )
 RooCmdArg ExtrapolateInRatio( const int flag = true );
 
 RooCmdArg ExtendXRange( const bool flat = true );
+
 /**  @} */
 
 /**
@@ -212,27 +210,27 @@ RooCmdArg ExtendXRange( const bool flat = true );
 
 extern double GetYmax( const TH1D& );
 extern double GetYmin( const TH1D& );
-inline double GetYmax( const TH1D* x ){ return GetYmax( *x ); }
-inline double GetYmin( const TH1D* x ){ return GetYmin( *x ); }
+inline double GetYmax( const TH1D*x ){ return GetYmax( *x ); }
+inline double GetYmin( const TH1D*x ){ return GetYmin( *x ); }
 
 extern double GetYmax( const TGraph& );
 extern double GetYmin( const TGraph& );
 extern double GetXmax( const TGraph& );
 extern double GetXmin( const TGraph& );
-inline double GetYmax( const TGraph* x ){ return GetYmax( *x ); }
-inline double GetYmin( const TGraph* x ){ return GetYmin( *x ); }
-inline double GetXmax( const TGraph* x ){ return GetXmax( *x ); }
-inline double GetXmin( const TGraph* x ){ return GetXmin( *x ); }
+inline double GetYmax( const TGraph*x ){ return GetYmax( *x ); }
+inline double GetYmin( const TGraph*x ){ return GetYmin( *x ); }
+inline double GetXmax( const TGraph*x ){ return GetXmax( *x ); }
+inline double GetXmin( const TGraph*x ){ return GetXmin( *x ); }
 
 extern double GetYmax( const TEfficiency& );
 extern double GetYmin( const TEfficiency& );
-inline double GetYmax( const TEfficiency* x ){ return GetYmax( *x ); }
-inline double GetYmin( const TEfficiency* x ){ return GetYmin( *x ); }
+inline double GetYmax( const TEfficiency*x ){ return GetYmax( *x ); }
+inline double GetYmin( const TEfficiency*x ){ return GetYmin( *x ); }
 
 extern double GetYmin( const THStack& );
 extern double GetYmax( const THStack& );
-inline double GetYmin( const THStack* x ){ return GetYmin( *x ); }
-inline double GetYmax( const THStack* x ){ return GetYmax( *x ); }
+inline double GetYmin( const THStack*x ){ return GetYmin( *x ); }
+inline double GetYmax( const THStack*x ){ return GetYmax( *x ); }
 
 extern double EstimateLatexWidth( const std::string& text );
 extern double EstimateLatexHeight( const std::string& text );

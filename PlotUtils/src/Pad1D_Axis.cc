@@ -35,7 +35,7 @@ static double unfound = std::numeric_limits<double>::quiet_NaN();
  * on the TPad that is either a TH1 or a TGraph. The code for iterating through
  * the objects in the pad is copied from the
  * [TPad::RedrawAxis()](https://root.cern.ch/doc/master/TPad_8cxx_source.html#l05243)
- *code.
+ * code.
  */
 TObject*
 Pad1D::GetAxisObject() const
@@ -75,7 +75,7 @@ Pad1D::SetAxisFont()
 
 
 #define AXISOBJ_ACCESS( ACTION, DEFAULT )                 \
-  TObject* axisobj = GetAxisObject();                     \
+  TObject*axisobj = GetAxisObject();                      \
   if( !axisobj ){                                         \
     return DEFAULT;                                       \
   } else if( axisobj->InheritsFrom( TH1::Class() ) ){     \
@@ -89,7 +89,7 @@ Pad1D::SetAxisFont()
   }
 
 #define AXISOBJ_ADJUST( ACTION )                          \
-  TObject* axisobj = GetAxisObject();                     \
+  TObject*axisobj = GetAxisObject();                      \
   if( !axisobj ){                                         \
     return;                                               \
   } else if( axisobj->InheritsFrom( TH1::Class() ) ){     \
@@ -113,23 +113,23 @@ Pad1D::GetXaxis() const { AXISOBJ_ACCESS( GetXaxis(), nullptr ); }
 
 TAxis*
 Pad1D::GetYaxis() const { AXISOBJ_ACCESS( GetYaxis(), nullptr ); }
+
 /** @} */
 
 /**
  * @{
  * @brief   reference interface for getting axis (No null pointer handling)
  */
-TAxis&
-Pad1D::Xaxis(){ return *GetXaxis(); }
+TAxis&Pad1D::Xaxis(){ return *GetXaxis(); }
 
-TAxis&
-Pad1D::Yaxis(){ return *GetYaxis(); }
+TAxis&Pad1D::Yaxis(){ return *GetYaxis(); }
 
 const TAxis&
 Pad1D::Xaxis() const { return *GetXaxis(); }
 
 const TAxis&
 Pad1D::Yaxis() const { return *GetYaxis(); }
+
 /** @} */
 
 
@@ -145,6 +145,7 @@ Pad1D::GetXaxisMin() const { return Xaxis().GetXmin(); }
 
 double
 Pad1D::GetXaxisMax() const { return Xaxis().GetXmax(); }
+
 /** @} */
 
 /**
@@ -161,6 +162,7 @@ Pad1D::GetYaxisMax() const { AXISOBJ_ACCESS( GetMaximum(), unfound ); }
 
 double
 Pad1D::GetYaxisMin() const { AXISOBJ_ACCESS( GetMinimum(), unfound ); }
+
 /** @} */
 
 /**
@@ -170,11 +172,10 @@ Pad1D::GetYaxisMin() const { AXISOBJ_ACCESS( GetMinimum(), unfound ); }
  * Again, setting the y axis limit should call the SetMaximum() function of the
  * object used for drawing the Y axis.
  */
-void
-Pad1D::SetYaxisMax( const double x ){ AXISOBJ_ADJUST( SetMaximum( x ) ); }
+void Pad1D::SetYaxisMax( const double x ){ AXISOBJ_ADJUST( SetMaximum( x ) ); }
 
-void
-Pad1D::SetYaxisMin( const double x ){ AXISOBJ_ADJUST( SetMinimum( x ) ); }
+void Pad1D::SetYaxisMin( const double x ){ AXISOBJ_ADJUST( SetMinimum( x ) ); }
+
 /** @} */
 
 
@@ -189,6 +190,7 @@ Pad1D::GetDataMax() const { return _datamax; }
 
 double
 Pad1D::GetDataMin() const { return _datamin; }
+
 /** @} */
 
 /**
@@ -197,11 +199,10 @@ Pad1D::GetDataMin() const { return _datamin; }
  *
  * Directly returning the double stored by the class.
  */
-void
-Pad1D::SetDataMax( const double x ){ _datamax = x; }
+void Pad1D::SetDataMax( const double x ){ _datamax = x; }
 
-void
-Pad1D::SetDataMin( const double x ){ _datamin = x; }
+void Pad1D::SetDataMin( const double x ){ _datamin = x; }
+
 /** @} */
 
 
@@ -232,10 +233,11 @@ Pad1D::SetDataMin( const double x ){ _datamin = x; }
 void
 Pad1D::AutoSetYRange( const rangetype type )
 {
-  rangetype optype =
-    type != rangetype::aut ? type :
-    _prevrangetype != rangetype::aut ? _prevrangetype :
-    rangetype::aut;
+  rangetype optype = type != rangetype::aut ?
+                     type :
+                     _prevrangetype != rangetype::aut ?
+                     _prevrangetype :
+                     rangetype::aut;
 
   if( optype == rangetype::aut ){
     if( !GetListOfPrimitives() ){
@@ -244,9 +246,8 @@ Pad1D::AutoSetYRange( const rangetype type )
 
     for( const auto&& obj : *GetListOfPrimitives() ){
       if( ( obj->InheritsFrom( TH1::Class() )
-            && ( (TH1*)obj )->GetXaxis() != _frame.GetXaxis() )
-          || ( obj->InheritsFrom( THStack::Class() ) )
-          ){
+            && ( (TH1*)obj )->GetXaxis() != _frame.GetXaxis() ) ||
+          ( obj->InheritsFrom( THStack::Class() ) )){
         optype = rangetype::hist;
         break;
       } else if( obj->InheritsFrom( TGraph::Class() ) ){
@@ -288,8 +289,10 @@ Pad1D::AutoSetYRangeHist()
     SetYaxisMax( _datamin+diff * 1.25 );
     SetYaxisMin( _datamin * 0.9 );
   } else {
-    const double opmin = _datamin <= 0 ? 1e-6 : _datamin * 0.9;
-    const double diff  = std::log10( _datamax / opmin );
+    const double opmin = _datamin <= 0 ?
+                         1e-6 :
+                         _datamin * 0.9;
+    const double diff = std::log10( _datamax / opmin );
     SetYaxisMax( opmin * std::pow( 10, diff * 1.5 ) );
     SetYaxisMin( opmin );
   }
@@ -312,10 +315,13 @@ Pad1D::AutoSetYRangeGraph()
     SetYaxisMax( _datamin+diff * 1.2 );
     SetYaxisMin( _datamax-diff * 1.1 );
   } else {
-    const double opmin = _datamin <= 0 ? 1e-6 : _datamin;
-    const double diff  = std::log10( _datamax / opmin );
+    const double opmin = _datamin <= 0 ?
+                         1e-6 :
+                         _datamin;
+    const double diff = std::log10( _datamax / opmin );
     SetYaxisMax( opmin * std::pow( 10, diff * 1.2 ) );
     SetYaxisMin( _datamax / std::pow( 10, diff * 1.1 ) );
+
     // Minium value is a little smaller
   }
 }
@@ -335,6 +341,7 @@ void
 Pad1D::AutoSetYRangeRatio()
 {
   const double diff = std::min( std::max( _datamax-1, 1-_datamin ), 1.1 );
+
   // rounding to the closest .1 to avoid weird axis tick labels
   const double opdiff = std::ceil( diff * 10 ) / 10.;
   SetYaxisMax( 1+opdiff * 1.05 );
@@ -356,6 +363,7 @@ void
 Pad1D::AutoSetYRangePull()
 {
   const double diff = std::min( std::max( _datamax, -_datamin ), 5.0 );
+
   // rounding to the closest .1 to avoid weird axis tick labels
   const double opdiff = std::ceil( diff * 10 ) / 10.;
   SetYaxisMax( 1+opdiff * 1.1 );
@@ -376,8 +384,9 @@ Pad1D::SetAxisTitle( TAxis&             axis,
                      const std::string& title,
                      const std::string& unit )
 {
-  const std::string optitle =
-    unit == "" ? title : title+" ["+boost::trim_copy( unit )+"]";
+  const std::string optitle = unit == "" ?
+                              title :
+                              title+" ["+boost::trim_copy( unit )+"]";
 
   axis.SetTitle( optitle.c_str() );
 }
@@ -408,24 +417,29 @@ Pad1D::SetHistAxisTitles( const std::string& title,
     log::PrintLog( log::ERROR, "ERROR! Axis object not created" );
     return;
   }
+
   // X axis is straight forwards
   SetAxisTitle( Xaxis(), title, unit );
 
   // Yaxis part is a bit more complicated
-  const std::string binwidthstr
-    = forcebinwidth != autobinwidth ? forcebinwidth :
-      usr::fmt::base::decimal( Xaxis().GetBinWidth( 0 ), -2 );
+  const std::string binwidthstr = forcebinwidth != autobinwidth ?
+                                  forcebinwidth :
+                                  usr::fmt::base::decimal( Xaxis().GetBinWidth(
+                                                             0 ),
+                                                           -2 );
 
   // At most 2 digits after decimal point, stripping trailing zeros
-  const std::string den
-    = binwidthstr == "1" && unit == "" ? "" :
-      usr::fstr( "[ %s %s ]", binwidthstr, unit );
+  const std::string den = binwidthstr == "1" && unit == "" ?
+                          "" :
+                          usr::fstr( "[ %s %s ]", binwidthstr, unit );
 
-  const std::string ytitle_string
-    = Xaxis().IsVariableBinSize()       ? ytitle :
-      forcebinwidth == forcevarbinwidth ? ytitle :
-      den == ""                         ? ytitle :
-      usr::fstr( "%s / %s", ytitle, den );
+  const std::string ytitle_string = Xaxis().IsVariableBinSize()       ?
+                                    ytitle :
+                                    forcebinwidth == forcevarbinwidth ?
+                                    ytitle :
+                                    den == ""                         ?
+                                    ytitle :
+                                    usr::fstr( "%s / %s", ytitle, den );
 
   SetAxisTitle( Yaxis(), ytitle_string );
 }

@@ -176,6 +176,7 @@ extern const int lightgrey            = TColor::GetColor( "#D3D3D3" );
 extern const int gainsboro            = TColor::GetColor( "#DCDCDC" );
 extern const int whitesmoke           = TColor::GetColor( "#F5F5F5" );
 extern const int white                = TColor::GetColor( "#FFFFFF" );
+
 /** @}*/
 
 // Standard colors for Brazillean flag plot
@@ -192,7 +193,7 @@ static int color_from_name( const std::string& x );
  * hex code for a color with a leading '#' (ex. "#FF00AA", or "#587").
  *
  * In the case that the input string is a color name and a corresponding
- *variable
+ * variable
  * is defined as global variable name in the Constants.hpp file, It would return
  * the same value as the global variable. For example:
  *
@@ -252,7 +253,8 @@ color_from_name( const std::string& x )
   const std::string op_string = StripToNaming( x );
 
 #define STRINGIFY( COLOR_STRING ) \
-  op_string == #COLOR_STRING ? COLOR_STRING :
+  op_string == #COLOR_STRING ?    \
+  COLOR_STRING :
 
   return STRINGIFY( white               )
          STRINGIFY( maroon              )

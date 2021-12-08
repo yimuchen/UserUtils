@@ -38,8 +38,7 @@ public:
   /**
    * @brief Returning reference to the created Pad1D.
    */
-  inline Pad1D&
-  Pad(){ return GetPad<Pad1D>( 0 ); }
+  inline Pad1D&Pad(){ return GetPad<Pad1D>( 0 ); }
   inline const Pad1D&
   Pad() const { return GetPad<Pad1D>( 0 ); }
 
@@ -51,17 +50,29 @@ public:
    */
   template<typename ... Args>
   inline TH1D&
-  PlotHist( TH1D& x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH1D& x, Args ... args )
+  {
+    return Pad().PlotHist( x, args ... );
+  }
   template<typename ... Args>
   inline TH1D&
-  PlotHist( TH1D* x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH1D*x, Args ... args )
+  {
+    return Pad().PlotHist( x, args ... );
+  }
 
   template<typename ... Args>
   inline TGraph&
-  PlotFunc( TF1& x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF1& x, Args ... args )
+  {
+    return Pad().PlotFunc( x, args ... );
+  }
   template<typename ... Args>
   inline TGraph&
-  PlotFunc( TF1* x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF1*x, Args ... args )
+  {
+    return Pad().PlotFunc( x, args ... );
+  }
 
   template<typename ... Args>
   inline TGraph&
@@ -69,12 +80,15 @@ public:
   {
     return Pad().PlotGraph( x, args ... );
   }
+
+
   template<typename ... Args>
   inline TGraph&
-  PlotGraph( TGraph* x, Args ... args )
+  PlotGraph( TGraph*x, Args ... args )
   {
     return Pad().PlotGraph( x, args ... );
   }
+
 
   template<typename ... Args>
   inline TEfficiency&
@@ -82,12 +96,15 @@ public:
   {
     return Pad().PlotEff( x, args ... );
   }
+
+
   template<typename ... Args>
   inline TEfficiency&
-  PlotEff( TEfficiency* x, Args ... args )
+  PlotEff( TEfficiency*x, Args ... args )
   {
     return Pad().PlotEff( x, args ... );
   }
+
 
   template<typename ... Args>
   inline TGraphAsymmErrors&
@@ -95,19 +112,29 @@ public:
   {
     return Pad().PlotData( x, args ... );
   }
+
+
   template<typename ... Args>
   inline TGraphAsymmErrors&
-  PlotData( RooAbsData* x, Args ... args )
+  PlotData( RooAbsData*x, Args ... args )
   {
     return Pad().PlotData( x, args ... );
   }
 
+
   template<typename ... Args>
   inline TGraph&
-  PlotPdf( RooAbsPdf& x, Args ... args ){ return Pad().PlotPdf( x, args ... );}
+  PlotPdf( RooAbsPdf& x, Args ... args )
+  {
+    return Pad().PlotPdf( x, args ... );
+  }
   template<typename ... Args>
   inline TGraph&
-  PlotPdf( RooAbsPdf* x, Args ... args ){ return Pad().PlotPdf( x, args ... );}
+  PlotPdf( RooAbsPdf*x, Args ... args )
+  {
+    return Pad().PlotPdf( x, args ... );
+  }
+
   /** @} */
 
   /**
@@ -123,18 +150,24 @@ public:
   {
     Pad().DrawLuminosity( args ... );
   }
+
+
   template<typename ... Args>
   inline TLine&
   DrawHLine( Args ... args )
   {
     return Pad().DrawHLine( args ... );
   }
+
+
   template<typename ... Args>
   inline TLine&
   DrawVLine( Args ... args )
   {
     return Pad().DrawVLine( args ... );
   }
+
+
   template<typename ... Args>
   inline void SetLogy( Args ... args ){ Pad().SetLogy( args ... ); }
   template<typename ... Args>
@@ -144,9 +177,11 @@ public:
     return Pad().WriteLine( args ... );
   }
 
+
   template<typename ... Args>
   inline void SetHistAxisTitles( Args ... args )
   { Pad().SetHistAxisTitles( args ... ); }
+
   /** @} */
 
   /**
@@ -159,6 +194,7 @@ public:
   Xaxis() const { return Pad().Xaxis(); }
   inline const TAxis&
   Yaxis() const { return Pad().Yaxis(); }
+
   /** @} */
 
 protected:

@@ -21,5 +21,4 @@ TransientVertexP4( const TransientVertex& vertex )
   }
 
   return ans;
-
 }

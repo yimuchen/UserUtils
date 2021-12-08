@@ -35,16 +35,11 @@ namespace Efficiency
  * extreme case of all pass and all fail.
  */
 Measurement
-Minos( const double passed,
-       const double total,
-       const double confidencelevel )
+Minos( const double passed, const double total, const double confidencelevel )
 {
-  return MakeMinos( usr::stat::BinomialNLL( passed, total )
-                    ,
-                    usr::eff_machine_epsilon
-                    ,
-                    1-usr::eff_machine_epsilon
-                    ,
+  return MakeMinos( usr::stat::BinomialNLL( passed, total ),
+                    usr::eff_machine_epsilon,
+                    1-usr::eff_machine_epsilon,
                     confidencelevel  );
 }
 
@@ -99,19 +94,13 @@ ClopperPearson( const double passed,
                 const double confidencelevel )
 {
   const double central = passed / total;
-  const double err_up  = TEfficiency::ClopperPearson( total
-                                                      ,
-                                                      passed
-                                                      ,
-                                                      confidencelevel
-                                                      ,
+  const double err_up  = TEfficiency::ClopperPearson( total,
+                                                      passed,
+                                                      confidencelevel,
                                                       true )-central;
-  const double err_down = central-TEfficiency::ClopperPearson( total
-                                                               ,
-                                                               passed
-                                                               ,
-                                                               confidencelevel
-                                                               ,
+  const double err_down = central-TEfficiency::ClopperPearson( total,
+                                                               passed,
+                                                               confidencelevel,
                                                                false );
   return Measurement( central, err_up, err_down );
 }
@@ -128,9 +117,7 @@ ClopperPearson( const double passed,
  * Suffers from excessive under coverage in extreme values of \f$\epsilon\f$
  */
 Measurement
-Lazy( const double passed,
-      const double total,
-      const double confidencelevel )
+Lazy( const double passed, const double total, const double confidencelevel )
 {
   const double sigmainterval = usr::stat::GetSigmaInterval( confidencelevel );
   const double central       = passed / total;
@@ -157,12 +144,9 @@ Minos( const double obs, const double confidencelevel )
     return Measurement( 0, 0, 0 );
   }
 
-  return MakeMinos( usr::stat::PoissonNLL( obs )
-                    ,
-                    usr::eff_machine_epsilon
-                    ,
-                    obs+obs * obs+1
-                    ,
+  return MakeMinos( usr::stat::PoissonNLL( obs ),
+                    usr::eff_machine_epsilon,
+                    obs+obs * obs+1,
                     confidencelevel );
 }
 
@@ -172,8 +156,7 @@ Minos( const double obs, const double confidencelevel )
  * @ingroup StatUtils
  */
 Measurement
-Lazy( const double obs,
-      const double confidencelevel )
+Lazy( const double obs, const double confidencelevel )
 {
   const double sigmainterval = usr::stat::GetSigmaInterval( confidencelevel );
   const double error         = std::sqrt( obs );
@@ -183,7 +166,7 @@ Lazy( const double obs,
 
 /**
  * @brief Least undercoverage Interval as recommended by CMS Statistics
- *committee
+ * committee
  * @ingroup StatUtils
  *
  * The Complete algorithm can be found here:
@@ -195,7 +178,8 @@ Measurement
 CMSStatCom( const double obs, const double confidencelevel )
 {
   const double alpha = 1-confidencelevel;
-  const double lower = ( obs == 0.0 ) ?  0.0 :
+  const double lower = ( obs == 0.0 ) ?
+                       0.0 :
                        ( ROOT::Math::gamma_quantile( alpha / 2, obs, 1. ) );
   const double upper = ROOT::Math::gamma_quantile_c( alpha / 2, obs+1, 1 );
 

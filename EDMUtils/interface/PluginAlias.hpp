@@ -36,18 +36,15 @@ template<typename EDMPLUGIN>
 class PluginAlias : public EDMPLUGIN
 {
 public:
-
   /**
    * Like all EDM plugins, this requires a parameterset to initialize. A
    * reference to the parameterset is stored for less verbose parsing.
    */
   PluginAlias( const edm::ParameterSet& config ) :
     _config( config ){}
-  virtual
-  ~PluginAlias(){}
+  virtual ~PluginAlias(){}
 
 protected:
-
   /**
    * @brief template class for getting the EdmToken from the initializer
    *        configuration parameter set.
@@ -81,16 +78,15 @@ protected:
    * @brief getting a clone of an object described in a file. See static
    *        function for full documentation.
    */
-  inline TObject*
-  GetFileObj( const std::string& filetag, const std::string objtag )
+  inline TObject*GetFileObj( const std::string& filetag,
+                             const std::string  objtag )
   { return GetFileObj( _config, filetag, objtag ); }
 
   /**
    * @brief getting the full path to a file. See static function for full
    *        documentation.
    */
-  inline std::string
-  GetFilePath( const std::string& filetag )
+  inline std::string GetFilePath( const std::string& filetag )
   { return GetFilePath( _config, filetag ); }
 
   /**
@@ -107,7 +103,7 @@ protected:
 
   /**
    * @brief Given a file path in the form of an EDM::FileInPath, and a object
-   *key
+   * key
    *        as a parameter set string.
    *
    * This function return a clone to the object stored in a file for analysis
@@ -122,11 +118,11 @@ protected:
     const std::string objname  = config.getParameter<std::string>( objtag );
     TFile*            file     = TFile::Open( filename.c_str() );
     TObject*          ans      = file->Get( objname.c_str() )->Clone();
+
     // ans->SetDirectory(0); // Detach object from parent directory.
     file->Close();
     return ans;
   }
-
 
 private:
   const edm::ParameterSet& _config;

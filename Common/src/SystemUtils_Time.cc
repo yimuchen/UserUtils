@@ -77,8 +77,9 @@ CurrentTime( const std::string& fmt )
 {
   static const unsigned MAXBUFFER = 80;
   time_t                rawtime;
-  struct tm*            timeinfo;
-  char                  buffer[MAXBUFFER];
+
+  struct tm*timeinfo;
+  char      buffer[MAXBUFFER];
   time( &rawtime );
   timeinfo = localtime( &rawtime );
   strftime( buffer, MAXBUFFER, fmt.c_str(), timeinfo );

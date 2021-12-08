@@ -77,8 +77,7 @@ Pad1D::InnerTextVCenter() const
  * Also returns a reference to the line generated.
  */
 TLine&
-Pad1D::DrawHLine( const double&                 y,
-                  const std::vector<RooCmdArg>& arglist  )
+Pad1D::DrawHLine( const double& y, const std::vector<RooCmdArg>& arglist  )
 {
   RooArgContainer args( arglist );
   TLine&          line = MakeObj<TLine>( GetXaxisMin(), y, GetXaxisMax(), y );
@@ -96,8 +95,7 @@ Pad1D::DrawHLine( const double&                 y,
  * Also return a reference to the line generated.
  */
 TLine&
-Pad1D::DrawVLine( const double&                 x,
-                  const std::vector<RooCmdArg>& arglist )
+Pad1D::DrawVLine( const double& x, const std::vector<RooCmdArg>& arglist )
 {
   RooArgContainer args( arglist );
   TLine&          line = MakeObj<TLine>(

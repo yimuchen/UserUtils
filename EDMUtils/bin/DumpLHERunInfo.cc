@@ -23,9 +23,9 @@
 using namespace std;
 
 int
-main( int argc, char* argv[] )
+main( int argc, char*argv[] )
 {
-  fwlite::Run run( TFile::Open( argv[1] ) );
+  fwlite::Run                       run( TFile::Open( argv[1] ) );
   fwlite::Handle<LHERunInfoProduct> lhehandle;
 
   lhehandle.getByLabel( run, "externalLHEProducer" );

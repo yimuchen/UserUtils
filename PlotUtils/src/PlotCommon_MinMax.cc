@@ -28,9 +28,12 @@ GetYmax( const TH1D& hist )
 
   for( int i = 1; i <= hist.GetNbinsX(); ++i ){
     const double bincont = hist.GetBinContent( i );
+
     // Special case for TProfile... (not sure why yet)
-    const double binerr = hist.InheritsFrom( TProfile::Class() ) ? 0 :
+    const double binerr = hist.InheritsFrom( TProfile::Class() ) ?
+                          0 :
                           hist.GetBinError( i );
+
     // Skipping over zero bins
     if( bincont == 0 ){continue; }
     ans = std::max( ans, bincont+binerr );
@@ -53,6 +56,7 @@ GetYmin( const TH1D& hist )
   for( int i = 1; i <= hist.GetNbinsX(); ++i ){
     const double bincont = hist.GetBinContent( i );
     const double binerr  = hist.GetBinError( i );
+
     // Skipping over Zero bins
     if( bincont == 0 ){ continue; }
 
@@ -101,6 +105,7 @@ GetYmin( const TGraph& x )
 
   for( int i = 0; i < x.GetN(); ++i ){
     const double bin = x.GetY()[i]-std::max( x.GetErrorYlow( i ), 0.0 );
+
     // In the case that the value is exactly zero, we are going to ignore this
     // value!
     if( bin == 0 ){ continue; }
@@ -201,7 +206,7 @@ GetYmax( const TEfficiency& x )
 /**
  * @brief Getting the minimum y value of te THStack object.
  * @details Retuning the maximum bin value of a THStack object, the bin errors
- *of
+ * of
  * each histogram would *not* be taken into account. This functions assumes
  * *identical* binning of the internal histograms, though this might not be the
  * case. Use at your own risk.
@@ -212,7 +217,7 @@ GetYmax( const THStack& x )
   double ans = 0.3;
   if( x.GetNhists() == 0 ){ return ans; }
 
-  TH1* first = (TH1*)x.GetHists()->At( 0 );
+  TH1*first = (TH1*)x.GetHists()->At( 0 );
 
   for( int i = 1; i <= first->GetNbinsX(); ++i ){
     double sum = 0;
@@ -240,7 +245,7 @@ GetYmin( const THStack& x )
   double ans = 0.3;
   if( x.GetNhists() == 0 ){ return ans; }
 
-  TH1* first = (TH1*)x.GetHists()->At( 0 );
+  TH1*first = (TH1*)x.GetHists()->At( 0 );
 
   for( int i = 1; i <= first->GetNbinsX(); ++i ){
     double sum = 0;

@@ -23,8 +23,7 @@ namespace usr
 /**
  * @brief returning path to the CMSSW/src directory.
  */
-fs::path
-cmssw_src(){ return GetEnv( "CMSSW_BASE" )+"/src/";  }
+fs::path cmssw_src(){ return GetEnv( "CMSSW_BASE" )+"/src/";  }
 
 /**
  * @brief returning path to a main package directory.
@@ -79,9 +78,8 @@ GlobLocal( const std::string& query )
   glob_t glob_result;
   glob( query.c_str(), GLOB_TILDE, NULL, &glob_result );
 
-  std::vector<fs::path> ans(
-    glob_result.gl_pathv,
-    glob_result.gl_pathv+glob_result.gl_pathc );
+  std::vector<fs::path> ans( glob_result.gl_pathv,
+                             glob_result.gl_pathv+glob_result.gl_pathc );
   globfree( &glob_result );
 
   return ans;

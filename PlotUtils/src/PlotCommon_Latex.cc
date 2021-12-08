@@ -57,14 +57,14 @@ namespace plt
  * string.
  *
  * @details This functions sums the width of most printable ASCII characters
- *with
+ * with
  * by a predefined table, as the Latex engine used in @(ROOT} has very minimal
  * kerning on the characeter sets. The table itself is generated using a ROOT
  * script, using a Helvetic font (so estimates for Times font might be off).
  * Special care is taken to remove decorators such as fractions, square-roots,
  * left-right braces, and sub/sup-scripts. Non-ASCII characters (greek symbols,
  * mathematical symbols... etc), are simply estimated to be a standard 'M'
- *width.
+ * width.
  */
 double
 EstimateLatexWidth( const std::string& text )
@@ -85,8 +85,8 @@ EstimateLatexWidth( const std::string& text )
                               un_text.begin()+closebrace1 );
     const std::string denstr( un_text.begin()+openbrace2+1,
                               un_text.begin()+closebrace2 );
-    ans += std::max( EstimateLatexWidth( numstr ),
-                     EstimateLatexWidth( denstr ) );
+    ans +=
+      std::max( EstimateLatexWidth( numstr ), EstimateLatexWidth( denstr ) );
 
     un_text.erase( un_text.begin()+find, un_text.begin()+closebrace2+1 );
   }
@@ -168,7 +168,7 @@ EstimateLatexWidth( const std::string& text )
  * @details A line with no special characters is expected to be a line height of
  * ~1.08em (using the height ot the tallest regular character in ROOT: The
  * asterisk). A few processes are taken for fractions, for which we assume
- *double
+ * double
  * line height with some margin. One-line decorators (subscripts, supscripts and
  * square roots, simply adds an offset. The only special character that will the
  * taken care of would be the integral character (`\int`), which we assume to be

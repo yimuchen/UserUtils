@@ -69,10 +69,10 @@ public:
   float            transparency;
 
 private:
-  Process( const usr::JSONMap& map, const BatchRequest* parent );
+  Process( const usr::JSONMap& map, const BatchRequest*parent );
 
-  TFile*              _file;
-  const BatchRequest* parent;
+  TFile*             _file;
+  const BatchRequest*parent;
 
   void OpenFile();
   inline const BatchRequest&
@@ -104,7 +104,7 @@ public:
 
 private:
   ProcessGroup();
-  ProcessGroup( const usr::JSONMap& map, const BatchRequest* parent );
+  ProcessGroup( const usr::JSONMap& map, const BatchRequest*parent );
 };
 
 /**

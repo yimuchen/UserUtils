@@ -47,7 +47,7 @@ TemplateFit::TemplateFit( const TH1*               target_,
 
 
 double
-TemplateFit::DoEval( const double* x ) const
+TemplateFit::DoEval( const double*x ) const
 {
   double chi2 = 0;
 
@@ -58,7 +58,10 @@ TemplateFit::DoEval( const double* x ) const
                        target->GetBinContent( bin );
 
     const double eff_num = usr::GetEffectiveEvents( *target, bin );
-    const double scale   = eff_num == 0 ? 1.0 : ( cen / eff_num );
+    const double scale   = eff_num == 0 ?
+                           1.0 :
+                           ( cen / eff_num );
+
     // Avoid scaling by NAN
 
     const usr::Measurement binerr = usr::Poisson::CMSStatCom( eff_num )
@@ -117,10 +120,14 @@ TemplateFit::InitMinimizer( ROOT::Math::Minimizer& minimizer ) const
 
   // Setting initial value to a flat distribution among constituents
   for( unsigned i = 0; i < NDim(); ++i ){
-    const double val    = normalize_target ? init : integral * init;
+    const double val = normalize_target ?
+                       init :
+                       integral * init;
     const double step   = 0.01 * val;
     const double minval = 0.0;// Assuming positive stacking.
-    const double maxval = normalize_target ? 1.0 : integral;
+    const double maxval = normalize_target ?
+                          1.0 :
+                          integral;
     minimizer.SetVariable( i, "", val, step );
     minimizer.SetVariableLimits( i, minval, maxval );
   }
@@ -130,7 +137,9 @@ TemplateFit::InitMinimizer( ROOT::Math::Minimizer& minimizer ) const
 unsigned
 TemplateFit::NDim() const
 {
-  return normalize_target ? constituents.size()-1 : constituents.size();
+  return normalize_target ?
+         constituents.size()-1 :
+         constituents.size();
 }
 
 

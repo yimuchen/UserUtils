@@ -29,7 +29,7 @@ namespace usr
  * @ingroup MathUtils
  * @details
  * For some strange reason, there doesn't exist the [Kolmogorov--Smirnov
- *test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
+ * test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test)
  * routines doesn't exit for RooFit objects. The functions provides includes
  * the test for both data--model comparison and data--data comparison, with
  * up to 2 variable range cut for regional and side-band goodness-of-fit tests.
@@ -67,6 +67,7 @@ extern double KSProbAlt( RooDataSet&      set1,
                          RooRealVar&      var,
                          const RooCmdArg& cut1 = RooCmdArg::none(),
                          const RooCmdArg& cut2 = RooCmdArg::none());
+
 /* @} */
 
 /**
@@ -95,9 +96,12 @@ FitPDFToData( RooAbsPdf& pdf, RooAbsData& data )
   return FitPDFToData( pdf, data, {} );
 }
 
+
 template<typename ... Args>
 inline RooFitResult*
-FitPDFToData( RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1,
+FitPDFToData( RooAbsPdf&        pdf,
+              RooAbsData&       data,
+              const RooCmdArg & arg1,
               Args ... args )
 {
   return FitPDFToData( pdf, data, MakeVector<RooCmdArg>( arg1, args ... ) );
@@ -127,12 +131,15 @@ ConvergeFitPDFToData( RooAbsPdf& pdf, RooAbsData& data )
 
 template<typename ... Args>
 inline RooFitResult*
-ConvergeFitPDFToData( RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1,
+ConvergeFitPDFToData( RooAbsPdf&        pdf,
+                      RooAbsData&       data,
+                      const RooCmdArg & arg1,
                       Args ... args )
 {
   return ConvergeFitPDFToData( pdf,
                                data,
-                               MakeVector<RooCmdArg>( arg1, args ... ) );
+                               MakeVector<RooCmdArg>( arg1,
+                                                      args ... ) );
 }
 
 
@@ -143,15 +150,14 @@ ConvergeFitPDFToData( RooAbsPdf& pdf, RooAbsData& data, const RooCmdArg & arg1,
 /**
  * @{
  * @brief Converting RooAbsData to a TH1D (standard for plotting in this
- *library)
+ * library)
  */
 TH1D* TH1DFromRooData( RooAbsData&,
                        const RooAbsRealLValue&,
                        const std::vector<RooCmdArg>& );
 
 inline TH1D*
-TH1DFromRooData( RooAbsData&             data,
-                 const RooAbsRealLValue& xvar  )
+TH1DFromRooData( RooAbsData& data, const RooAbsRealLValue& xvar  )
 {
   return TH1DFromRooData( data, xvar, {} );
 }

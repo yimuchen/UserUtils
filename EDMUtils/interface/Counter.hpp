@@ -18,7 +18,7 @@ namespace usr
  * @details
  * This class is essentially the same as the
  *[`edm::MergeableCounter`](http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_10_1_7/doc/html/dd/d00/structedm_1_1MergeableCounter.html)
- *class except with doubles
+ * class except with doubles
  * instead of integer values.
  */
 class Counter
@@ -26,8 +26,7 @@ class Counter
 public:
   Counter();
   Counter( const double );
-  virtual
-  ~Counter();
+  virtual ~Counter();
 
   bool mergeProduct( const Counter& nextCounter );
 

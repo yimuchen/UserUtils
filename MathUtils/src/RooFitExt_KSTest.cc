@@ -46,8 +46,7 @@ struct SimplifiedData
   double sumsq;           /**< @brief Sum of squared weights */
   std::vector<Evt> dataset;
 
-  inline static bool
-  Compare( const Evt& x, const Evt& y )
+  inline static bool Compare( const Evt& x, const Evt& y )
   { return x.first < y.first; }
 
   double EffectiveNum() const;
@@ -105,10 +104,8 @@ struct SimplifiedCDF
   double operator()( const double x );
   double rawval( const double x );
 
-  inline double
-  min( unsigned x ){ return rangelist.at( x ).first; }
-  inline double
-  max( unsigned x ){ return rangelist.at( x ).second; }
+  inline double min( unsigned x ){ return rangelist.at( x ).first; }
+  inline double max( unsigned x ){ return rangelist.at( x ).second; }
   SimplifiedCDF( RooAbsPdf&       pdf,
                  RooRealVar&      x,
                  const RooCmdArg& cut1,
@@ -219,15 +216,14 @@ KSDistance( RooDataSet&      set1,
         evt2++;
       }
     }
-    maxdist = TMath::Max( maxdist,
-                          fabs( ( empcdf1 / sim1.sum )
-                                -( empcdf2 / sim2.sum ) ) );
+    maxdist =
+      TMath::Max( maxdist,
+                  fabs( ( empcdf1 / sim1.sum )-( empcdf2 / sim2.sum ) ) );
   }
 
   const double num1 = std::max( sim1.EffectiveNum(), sim2.EffectiveNum() );
   const double num2 = std::min( sim1.EffectiveNum(), sim2.EffectiveNum() );
   return maxdist * sqrt( ( num1 / ( num1+num2 ) ) * num2 );
-
 }
 
 
@@ -252,8 +248,8 @@ KSProb( RooDataSet&      set1,
  * @brief An alternative, effective p-value of the KS test for two data set.
  * @details the alternative calculation is described in
    [this](
-    *https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test)
-    *page.
+ * https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test#Two-sample_Kolmogorov%E2%80%93Smirnov_test)
+ * page.
    Hard limiting the calculation output to 1 for a more "sane" output value
  */
 double
@@ -280,8 +276,8 @@ SimplifiedData::SimplifiedData( RooDataSet&      data,
   sum  ( 0 ),
   sumsq( 0 )
 {
-  RooDataSet* op_set  = 0;
-  RooDataSet* tmp_set = 0;
+  RooDataSet*op_set  = 0;
+  RooDataSet*tmp_set = 0;
   if( !CheckCutCmd( cut1, x ) && !CheckCutCmd( cut2, x ) ){
     op_set = (RooDataSet*)( data.reduce( RooFit::SelectVars( x ) ));
   } else if( CheckCutCmd( cut1, x ) && !CheckCutCmd( cut2, x ) ){

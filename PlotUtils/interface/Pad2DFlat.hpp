@@ -63,14 +63,14 @@ public:
    */
   TH2D& PlotHist( TH2D&, const std::vector<RooCmdArg>& );
   inline TH2D&
-  PlotHist( TH2D* x, const std::vector<RooCmdArg>& list )
+  PlotHist( TH2D*x, const std::vector<RooCmdArg>& list )
   {
     return PlotHist( *x, list );
   }
 
 
   inline TH2D& PlotHist( TH2D& x ){ return PlotHist( x, {} );}
-  inline TH2D& PlotHist( TH2D* x ){ return PlotHist( *x, {} );}
+  inline TH2D& PlotHist( TH2D*x ){ return PlotHist( *x, {} );}
   template<typename ... Args>
   inline TH2D&
   PlotHist( TH2D& x, const RooCmdArg& arg1, Args ... args )
@@ -81,13 +81,14 @@ public:
 
   template<typename ... Args>
   inline TH2D&
-  PlotHist( TH2D* x, const RooCmdArg& arg1, Args ... args )
+  PlotHist( TH2D*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotHist( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
 
 
   // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
+
   /** @} */
 
   /**
@@ -96,14 +97,14 @@ public:
    */
   TGraph2D& PlotFunc( TF2&, const std::vector<RooCmdArg>& );
   inline TGraph2D&
-  PlotFunc( TF2* x, const std::vector<RooCmdArg>& list )
+  PlotFunc( TF2*x, const std::vector<RooCmdArg>& list )
   {
     return PlotFunc( *x, list );
   }
 
 
   inline TGraph2D& PlotFunc( TF2& x ){ return PlotFunc( x, {} );}
-  inline TGraph2D& PlotFunc( TF2* x ){ return PlotFunc( *x, {} );}
+  inline TGraph2D& PlotFunc( TF2*x ){ return PlotFunc( *x, {} );}
   template<typename ... Args>
   inline TGraph2D&
   PlotFunc( TF2& x, const RooCmdArg& arg1, Args ... args )
@@ -114,13 +115,14 @@ public:
 
   template<typename ... Args>
   inline TGraph2D&
-  PlotFunc( TF2* x, const RooCmdArg& arg1, Args ... args )
+  PlotFunc( TF2*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotFunc( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
 
 
   // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
+
   /** @} */
 
   /**
@@ -129,14 +131,14 @@ public:
    */
   TGraph2D& PlotGraph( TGraph2D&, const std::vector<RooCmdArg>& );
   inline TGraph2D&
-  PlotGraph( TGraph2D* x, const std::vector<RooCmdArg>& list )
+  PlotGraph( TGraph2D*x, const std::vector<RooCmdArg>& list )
   {
     return PlotGraph( *x, list );
   }
 
 
   inline TGraph2D& PlotGraph( TGraph2D& x ){ return PlotGraph( x, {} );}
-  inline TGraph2D& PlotGraph( TGraph2D* x ){ return PlotGraph( *x, {} );}
+  inline TGraph2D& PlotGraph( TGraph2D*x ){ return PlotGraph( *x, {} );}
   template<typename ... Args>
   inline TGraph2D&
   PlotGraph( TGraph2D& x, const RooCmdArg& arg1, Args ... args )
@@ -147,7 +149,7 @@ public:
 
   template<typename ... Args>
   inline TGraph2D&
-  PlotGraph( TGraph2D* x, const RooCmdArg& arg1, Args ... args )
+  PlotGraph( TGraph2D*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -161,14 +163,14 @@ public:
    */
   TGraph& Plot1DGraph( TGraph&, const std::vector<RooCmdArg>& );
   inline TGraph&
-  Plot1DGraph( TGraph* x, const std::vector<RooCmdArg>& list )
+  Plot1DGraph( TGraph*x, const std::vector<RooCmdArg>& list )
   {
     return Plot1DGraph( *x, list );
   }
 
 
   inline TGraph& Plot1DGraph( TGraph& x ){ return Plot1DGraph( x, {} );}
-  inline TGraph& Plot1DGraph( TGraph* x ){ return Plot1DGraph( *x, {} );}
+  inline TGraph& Plot1DGraph( TGraph*x ){ return Plot1DGraph( *x, {} );}
   template<typename ... Args>
   inline TGraph&
   Plot1DGraph( TGraph& x, const RooCmdArg& arg1, Args ... args )
@@ -179,7 +181,7 @@ public:
 
   template<typename ... Args>
   inline TGraph&
-  Plot1DGraph( TGraph* x, const RooCmdArg& arg1, Args ... args )
+  Plot1DGraph( TGraph*x, const RooCmdArg& arg1, Args ... args )
   {
     return Plot1DGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -216,7 +218,6 @@ public:
   inline void SetLogz( int x = 1  ){ TPad_().SetLogz( x ); }
 
 private:
-
   TLegend  _legend;
   RooFrame _frame;
   void     init_legend();

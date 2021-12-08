@@ -28,11 +28,9 @@ extern bool MergeJSON( JSONMap&                     first,
                        JSONMap&                     second,
                        JSONDocument::AllocatorType& allocator );
 
-extern void ExceptJSONList( const JSONMap&     map,
-                            const std::string& index );
+extern void ExceptJSONList( const JSONMap& map, const std::string& index );
 
-extern void ExceptJSONObj( const JSONMap&     map,
-                           const std::string& index );
+extern void ExceptJSONObj( const JSONMap& map, const std::string& index );
 
 
 /**
@@ -41,8 +39,7 @@ extern void ExceptJSONObj( const JSONMap&     map,
  * met.
  */
 template<typename TYPE>
-extern void ExceptJSONEntry( const JSONMap&     map,
-                             const std::string& index );
+extern void ExceptJSONEntry( const JSONMap& map, const std::string& index );
 
 /**
  * @brief For an immedidate entry of a JSON map, if the entry exists and is of
@@ -75,7 +72,7 @@ extern std::vector<TYPE> JSONList( const JSONMap&     map,
 /**
  * @brief For an immediate list entry of a JSON map, return the entry as a
  * std::vector. If the entry doesn't exists, return a default value. If the
- *entry
+ * entry
  * exists but has issues casting to the request data type. Raise an exception.
  */
 template<typename TYPE>

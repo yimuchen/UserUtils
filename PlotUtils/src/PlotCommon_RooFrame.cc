@@ -19,8 +19,7 @@ namespace plt
  * would know to generate a corresponding RooPlot instance for RooFit plot
  * object generation.
  */
-const double RangeByVar::find_default
-  = std::numeric_limits<double>::lowest();
+const double RangeByVar::find_default = std::numeric_limits<double>::lowest();
 
 /**
  * @brief Define a range using the @ROOT{RooRealVar} reference.
@@ -33,13 +32,19 @@ RangeByVar::RangeByVar( const RooRealVar& _var,
                         const int         _nbin ) :
   var( &_var )
 {
-  xmin = _xmin == find_default ? var->getMin() :
-         _xmin > _xmax         ? var->getMin() :
+  xmin = _xmin == find_default ?
+         var->getMin() :
+         _xmin > _xmax         ?
+         var->getMin() :
          _xmin;
-  xmax = _xmax == find_default ? var->getMax() :
-         _xmin < _xmax         ? var->getMax() :
+  xmax = _xmax == find_default ?
+         var->getMax() :
+         _xmin < _xmax         ?
+         var->getMax() :
          _xmax;
-  nbin = _nbin < 0 ? var->getBins() : _nbin;
+  nbin = _nbin < 0 ?
+         var->getBins() :
+         _nbin;
 }
 
 
@@ -48,19 +53,25 @@ RangeByVar::RangeByVar( const RooRealVar& _var,
  *
  * Could defined x range and number of bins to use for the x axis.
  */
-RangeByVar::RangeByVar( const RooRealVar* _var,
-                        const double      _xmin,
-                        const double      _xmax,
-                        const int         _nbin ) :
+RangeByVar::RangeByVar( const RooRealVar*_var,
+                        const double     _xmin,
+                        const double     _xmax,
+                        const int        _nbin ) :
   var( _var )
 {
-  xmin = _xmin == find_default ? var->getMin() :
-         _xmin > _xmax         ? var->getMin() :
+  xmin = _xmin == find_default ?
+         var->getMin() :
+         _xmin > _xmax         ?
+         var->getMin() :
          _xmin;
-  xmax = _xmax == find_default ? var->getMax() :
-         _xmin > _xmax         ? var->getMax() :
+  xmax = _xmax == find_default ?
+         var->getMax() :
+         _xmin > _xmax         ?
+         var->getMax() :
          _xmax;
-  nbin = _nbin < 0 ? var->getBins() : _nbin;
+  nbin = _nbin < 0 ?
+         var->getBins() :
+         _nbin;
 }
 
 
@@ -79,8 +90,8 @@ RangeByVar::RangeByVar( const RooRealVar* _var,
  * collision
  */
 RooFrame::RooFrame( const RangeByVar& range ) :
-  RooPlot( RandomString( 12 ).c_str(), "",
-           *range.var, range.xmin, range.xmax, range.nbin )
+  RooPlot( RandomString(
+             12 ).c_str(), "", *range.var, range.xmin, range.xmax, range.nbin )
 {}
 
 

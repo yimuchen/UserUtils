@@ -29,7 +29,7 @@ TChain*
 MakeTChain( const std::string&              title,
             const std::vector<std::string>& inputfiles )
 {
-  TChain* tree = new TChain( title.c_str() );
+  TChain*tree = new TChain( title.c_str() );
 
   for( const auto& file : inputfiles ){
     if( !file.empty() ){

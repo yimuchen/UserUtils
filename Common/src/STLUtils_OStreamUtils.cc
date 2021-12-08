@@ -114,7 +114,9 @@ PrintLog( const short        level,
           const std::string& line,
           const std::string& header )
 {
-  const std::string msg = header.size() > 0 ? header+" "+line : line;
+  const std::string msg = header.size() > 0 ?
+                          header+" "+line :
+                          line;
   if( level >= __global_log_level ){
     if( header.size() > 0 ){
       std::cerr << header << " " << line << std::endl;

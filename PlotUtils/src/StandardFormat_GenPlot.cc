@@ -41,7 +41,7 @@ namespace fmt
  *
  * The generation of the Background objects (stack, and uncertainty histograms)
  * are handled in the BatchRequest::GenerateBackgroundObjects method. Handling
- *of
+ * of
  * the plotting sequences are defined in the BatchReqest::PlotOnPad method. This
  * method handles the additional sequences such as the distinction between the
  * data/background comparison functions, and the histogram request loop.
@@ -64,32 +64,23 @@ BatchRequest::GeneratePlots()
 
       if( histrequest.type == "pull" ){
         c.PlotPull( _data_hist.get(),
-                    _background_sys.get()
-                    ,
+                    _background_sys.get(),
                     usr::plt::PlotType( usr::plt::scatter ) );
-        c.BottomPad().SetHistAxisTitles( histrequest.xaxis
-                                         ,
-                                         histrequest.units
-                                         ,
+        c.BottomPad().SetHistAxisTitles( histrequest.xaxis,
+                                         histrequest.units,
                                          histrequest.yaxis  );
         c.BottomPad().Yaxis().SetTitle( "#frac{Data - Bkg.}{Bkg. unc}" );
       } else {
         c.PlotScale( _background_sys.get(),
-                     _background_stat.get()
-                     ,
-                     usr::plt::PlotType( usr::plt::histerr )
-                     ,
-                     usr::plt::FillColor( usr::plt::col::gray )
-                     ,
+                     _background_stat.get(),
+                     usr::plt::PlotType( usr::plt::histerr ),
+                     usr::plt::FillColor( usr::plt::col::gray ),
                      usr::plt::FillStyle( usr::plt::sty::fillsolid ) );
         c.PlotScale( _data_hist.get(),
-                     _background_stat.get()
-                     ,
+                     _background_stat.get(),
                      usr::plt::PlotType( usr::plt::scatter ) );
-        c.BottomPad().SetHistAxisTitles( histrequest.xaxis
-                                         ,
-                                         histrequest.units
-                                         ,
+        c.BottomPad().SetHistAxisTitles( histrequest.xaxis,
+                                         histrequest.units,
                                          histrequest.yaxis  );
         c.BottomPad().Yaxis().SetTitle( "Data/Bkg." );
       }
@@ -114,28 +105,24 @@ BatchRequest::GenerateSampleComparePlot()
       const auto& process = signallist.at( i );
       if( !process.CheckKey( histrequest.filekey ) ){
         usr::fout(
-          "Warning! Objects for plot [%s] in process [%s] is not found!\n"
-          "\t File: %s\n"
-          "\t Key:  %s\n"
-          "The plot would not be plotted\n",
+          "Warning! Objects for plot [%s] in process [%s] is not found!\n" "\t File: %s\n" "\t Key:  %s\n" "The plot would not be plotted\n",
           histrequest.name,
           process.name,
           process.file,
           process.MakeKey( histrequest.filekey ));
         continue;
       }
-      auto x = c.PlotHist( process.GetScaledClone( histrequest.filekey, 1.0 ),
+      auto x = c.PlotHist( process.GetScaledClone( histrequest.filekey,
+                                                   1.0 ),
                            usr::plt::PlotType( usr::plt::hist ),
                            usr::plt::TrackY( usr::plt::tracky::both ),
-                           usr::plt::LineColor( usr::plt::col::color( process.
-                                                                      color ) ),
+                           usr::plt::LineColor( usr::plt::col::color(
+                                                  process.color ) ),
                            usr::plt::EntryText( process.name ) );
     }
 
-    c.Pad().SetHistAxisTitles( histrequest.xaxis
-                               ,
-                               histrequest.units
-                               ,
+    c.Pad().SetHistAxisTitles( histrequest.xaxis,
+                               histrequest.units,
                                histrequest.yaxis );
 
     c.Pad().SetLogy( histrequest.logy );
@@ -151,7 +138,7 @@ BatchRequest::GenerateSampleComparePlot()
  *
  * Each signal samples will have their 2D histogram plotted as a scatter plot.
  * Again, the samples are plotted in reverse order to ensure that the item
- *listed
+ * listed
  * first will also appear on top and first in the histogram.
  */
 void
@@ -165,10 +152,7 @@ BatchRequest::Generate2DComaprePlot()
 
       if( !process.CheckKey( histrequest.filekey ) ){
         usr::fout(
-          "Warning! Objects for plot [%s] in process [%s] is not found!\n"
-          "\t File: %s\n"
-          "\t Key:  %s\n"
-          "The plot would not be plotted\n",
+          "Warning! Objects for plot [%s] in process [%s] is not found!\n" "\t File: %s\n" "\t Key:  %s\n" "The plot would not be plotted\n",
           histrequest.name,
           process.name,
           process.file,
@@ -204,7 +188,7 @@ BatchRequest::Generate2DComaprePlot()
  * The background is plotted first, followed by the background uncertainties,
  * then the signal samples, then the data. Plotting of the standard luminosity
  * labels and the CMS label in the upper left corner of the pad is also
- *performed
+ * performed
  * at this stage, as well as the naming of the axis titles.
  */
 void
@@ -217,46 +201,62 @@ BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
     const auto stack_hist = _background_stack.at( i ).get();
 
     pad.PlotHist( stack_hist,
-                  usr::plt::PlotType( usr::plt::histstack ),
-                  usr::plt::FillColor( usr::plt::col::color( group.color ) ),
-                  usr::plt::FillStyle( usr::plt::sty::fillsolid ),
-                  usr::plt::LineColor( usr::plt::col::color( group.color ) ),
+                  usr::plt::PlotType(
+                    usr::plt::histstack ),
+                  usr::plt::FillColor( usr::plt::col::color(
+                                         group.color ) ),
+                  usr::plt::FillStyle(
+                    usr::plt::sty::fillsolid ),
+                  usr::plt::LineColor( usr::plt::col::color(
+                                         group.color ) ),
                   usr::plt::EntryText( group.name ) );
   }
 
   if( _background_stat ){
     pad.PlotHist( _background_sys.get(),
-                  usr::plt::PlotType( usr::plt::histerr ),
-                  usr::plt::FillColor( usr::plt::col::gray, 0.5 ),
-                  usr::plt::FillStyle( usr::plt::sty::fillsolid ),
+                  usr::plt::PlotType(
+                    usr::plt::histerr ),
+                  usr::plt::FillColor( usr::plt::col::gray,
+                                       0.5 ),
+                  usr::plt::FillStyle(
+                    usr::plt::sty::fillsolid ),
                   usr::plt::LineColor( usr::plt::col::gray, 0.5 ),
-                  usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-                  usr::plt::MarkerSize( 0.0 ),
+                  usr::plt::MarkerStyle(
+                    usr::plt::sty::mkrcircle ),
+                  usr::plt::MarkerSize(
+                    0.0 ),
                   usr::plt::EntryText( "Bkg. unc (sys.)", true ) );
   }
 
   pad.PlotHist( _background_stat.get(),
-                usr::plt::PlotType( usr::plt::histerr ),
-                usr::plt::FillColor( usr::plt::col::slategray, 0.5 ),
+                usr::plt::PlotType(
+                  usr::plt::histerr ),
+                usr::plt::FillColor( usr::plt::col::slategray,
+                                     0.5 ),
                 usr::plt::FillStyle( usr::plt::sty::filldotdense ),
-                usr::plt::LineColor( usr::plt::col::slategray, 0.5 ),
+                usr::plt::LineColor( usr::plt::col::slategray,
+                                     0.5 ),
                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
                 usr::plt::MarkerSize( 0.0 ),
                 usr::plt::EntryText( "Bkg. unc (stat.)", true ) );
 
   for( const auto& signal : signallist ){
-    pad.PlotHist( signal.GetScaledClone( histrequest.filekey
-                                         ,
+    pad.PlotHist( signal.GetScaledClone( histrequest.filekey,
                                          _total_luminosity * signal.scale ),
-                  usr::plt::PlotType( usr::plt::hist ),
-                  usr::plt::LineColor( usr::plt::col::color( signal.color ) ),
+                  usr::plt::PlotType(
+                    usr::plt::hist ),
+                  usr::plt::LineColor( usr::plt::col::color(
+                                         signal.color ) ),
                   usr::plt::EntryText( signal.name ) );
   }
 
   pad.PlotHist( _data_hist.get(),
-                usr::plt::PlotType( usr::plt::scatter ),
-                usr::plt::MarkerSize( 0.2 ),
-                usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                usr::plt::PlotType(
+                  usr::plt::scatter ),
+                usr::plt::MarkerSize(
+                  0.2 ),
+                usr::plt::MarkerStyle(
+                  usr::plt::sty::mkrcircle ),
                 usr::plt::MarkerColor( usr::plt::col::black ),
                 usr::plt::LineColor( usr::plt::col::black ),
                 usr::plt::EntryText( data.name ) );
@@ -264,10 +264,8 @@ BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
   pad.DrawLuminosity( _total_luminosity / 1000 );
   pad.DrawCMSLabel( "Preliminary" );
 
-  pad.SetHistAxisTitles( histrequest.xaxis
-                         ,
-                         histrequest.units
-                         ,
+  pad.SetHistAxisTitles( histrequest.xaxis,
+                         histrequest.units,
                          histrequest.yaxis );
 
   pad.SetLogy( histrequest.logy );
@@ -281,7 +279,7 @@ BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
  * - The THStack for different color display
  * - A histogram for displaying the statistical uncertainty.
  * - A histogram for displaying the total systematic uncertainties (listed in
- *the
+ * the
  *   "uncertainties" of the BatchReqest).
  *
  * The THStack and the statistical uncertainty histograms are simple: simply
@@ -293,7 +291,7 @@ BatchRequest::PlotOnPad( const HistRequest& histrequest, Pad1D& pad )
  * For the histogram displaying the systematic, 2 templates are generated from
  * the uncertainty source templates summed over all process, which essentially
  * assumes that the uncertainties between each processes for the same
- *uncertainty
+ * uncertainty
  * source is 100% correlated. For each uncertainty source, the contribution to
  * the uncertainty per bin is then calculated as if each uncertainty is
  * uncorrelated (using the methods defined for the `usr::Measurement` class).
@@ -324,17 +322,16 @@ BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
 
     for( const auto& process : group ){
       if( !process.CheckKey( filekey ) ){
-        usr::fout( "Histogram [%s] with object name for process [%s] doesn't "
-                   "exists! Background normalization might be broken\n",
-                   hist.name,
-                   hist.filekey,
-                   process.name );
+        usr::fout(
+          "Histogram [%s] with object name for process [%s] doesn't " "exists! Background normalization might be broken\n",
+          hist.name,
+          hist.filekey,
+          process.name );
         continue;
       }
-      TH1D* central = process.GetScaledClone( filekey
-                                              ,
-                                              _total_luminosity
-                                              * process.scale );
+      TH1D*central = process.GetScaledClone( filekey,
+                                             _total_luminosity
+                                             * process.scale );
       if( _background_stack.back() == nullptr ){
         _background_stack.back().reset( central );
       } else {
@@ -366,20 +363,22 @@ BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
           unc_histlist[2 * i]->Add( xsec_up_hist.get() );
           unc_histlist[2 * i+1]->Add( xsec_lo_hist.get() );
         } else {
-          const std::string unc_up_key
-            = process.CheckKey( filekey+unc.key+"Up" ) ?
-              filekey+unc.key+"Up" : filekey;
-          const std::string unc_lo_key
-            = process.CheckKey( filekey+unc.key+"Down" )  ?
-              filekey+unc.key+"Down" : filekey;
-          std::unique_ptr<TH1D> unc_up_hist(
-            process.GetScaledClone( unc_up_key
-                                    ,
-                                    _total_luminosity * process.scale  ) );
-          std::unique_ptr<TH1D> unc_lo_hist(
-            process.GetScaledClone( unc_lo_key
-                                    ,
-                                    _total_luminosity * process.scale ) );
+          const std::string unc_up_key =
+            process.CheckKey( filekey+unc.key+"Up" ) ?
+            filekey+unc.key+"Up" :
+            filekey;
+          const std::string unc_lo_key = process.CheckKey(
+            filekey+unc.key+"Down" )  ?
+                                         filekey+unc.key+"Down" :
+                                         filekey;
+          std::unique_ptr<TH1D> unc_up_hist( process.GetScaledClone( unc_up_key,
+                                                                     _total_luminosity
+                                                                     * process.
+                                                                     scale  ) );
+          std::unique_ptr<TH1D> unc_lo_hist( process.GetScaledClone( unc_lo_key,
+                                                                     _total_luminosity
+                                                                     * process.
+                                                                     scale ) );
           unc_histlist[2 * i]->Add( unc_up_hist.get() );
           unc_histlist[2 * i+1]->Add( unc_lo_hist.get() );
         }
@@ -408,8 +407,8 @@ BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
     const double cen_binval = _background_stat->GetBinContent( bin );
 
     for( unsigned i = 0; i < uncertainties.size(); ++i  ){
-      const TH1D* unc_up_hist = unc_histlist.at( 2 * i ).get();
-      const TH1D* unc_lo_hist = unc_histlist.at( 2 * i+1 ).get();
+      const TH1D*unc_up_hist = unc_histlist.at( 2 * i ).get();
+      const TH1D*unc_lo_hist = unc_histlist.at( 2 * i+1 ).get();
 
       const double upval = unc_up_hist->GetBinContent( bin );
       const double loval = unc_lo_hist->GetBinContent( bin );
@@ -442,7 +441,7 @@ BatchRequest::GenerateBackgroundObjects( const HistRequest& hist )
  * @brief Making the data histogram
  *
  * All data histograms should be unweighted, so we are getting a simple
- *histogram
+ * histogram
  * sum. The only adjustment we need is to set the histogram uncertainties to the
  * committee recommend asymmetric uncertainty type (TH1:kPoisson)
  */

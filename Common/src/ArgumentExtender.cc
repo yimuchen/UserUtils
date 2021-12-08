@@ -61,8 +61,8 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
     for( const auto& submember : member.value.GetObject() ){
       const std::string optval = submember.name.GetString();
       if( !submember.value.IsObject() ){
-        std::cerr << "Bad format for option [" << optname << "] "
-                  << "with value [" << optval << "]" << std::endl;
+        std::cerr << "Bad format for option [" << optname << "] " <<
+          "with value [" << optval << "]" << std::endl;
         throw std::invalid_argument( optval );
       }
 
@@ -75,8 +75,8 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
       std::sort( this_exttaglist.begin(), this_exttaglist.end() );
 
       if( this_exttaglist.size() == 0 ){
-        std::cerr << "No extended values for option [" << optname << "] "
-                  << "with value [" << optval << "]" << std::endl;
+        std::cerr << "No extended values for option [" << optname << "] " <<
+          "with value [" << optval << "]" << std::endl;
         throw std::invalid_argument( optval );
       }
 
@@ -88,18 +88,18 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
       if( exttaglist.size() > this_exttaglist.size() ){
         for( const auto& tag : exttaglist ){
           if( !FindValue( this_exttaglist, tag ) ){
-            std::cerr << "Missing extended value [" << tag << "] "
-                      << "for option [" << optname << "] "
-                      << "with value [" << optval << "]" << std::endl;
+            std::cerr << "Missing extended value [" << tag << "] " <<
+              "for option [" << optname << "] " << "with value [" << optval <<
+              "]" << std::endl;
             throw std::invalid_argument( tag );
           }
         }
       } else if( exttaglist.size() < this_exttaglist.size() ){
         for( const auto& tag : this_exttaglist ){
           if( !FindValue( this_exttaglist, tag ) ){
-            std::cerr << "Missing extended value [" << tag << "] "
-                      << "for option [" << optname << "] "
-                      << "with value [" << optval << "]" << std::endl;
+            std::cerr << "Missing extended value [" << tag << "] " <<
+              "for option [" << optname << "] " << "with value [" << optval <<
+              "]" << std::endl;
             throw std::invalid_argument( tag );
           }
         }
@@ -107,14 +107,13 @@ ArgumentExtender::_init( const std::vector<std::string>& filelist )
         for( size_t i = 0; i < exttaglist.size(); ++i ){
           if( exttaglist.at( i ) != this_exttaglist.at( i ) ){
             const std::string misval = exttaglist.at( i );
-            std::cerr << "Undefined extended value [" << misval << "] "
-                      << "for option [" << optname << "] "
-                      << "with value [" << optval << "]" << std::endl;
+            std::cerr << "Undefined extended value [" << misval << "] " <<
+              "for option [" << optname << "] " << "with value [" << optval <<
+              "]" << std::endl;
             throw std::invalid_argument( misval );
           }
         }
       }
-
     }
   }
 
@@ -168,8 +167,7 @@ ArgumentExtender::AddVerboseOpt( const unsigned level )
                usr::fstr( "%d debugging messages",  usr::log::DEBUG ),
                usr::fstr( "%d process information", usr::log::INFO ),
                usr::fstr( "%d warning information", usr::log::WARNING ),
-               usr::fstr( "%d error information",
-                          usr::log::ERROR )).c_str() )
+               usr::fstr( "%d error information", usr::log::ERROR )).c_str() )
   ;
   return AddOptions( desc );
 }
@@ -181,7 +179,7 @@ ArgumentExtender::AddVerboseOpt( const unsigned level )
  * See the function _check_parse_valid for additional parsing.
  */
 void
-ArgumentExtender::ParseOptions( int argc, char** argv )
+ArgumentExtender::ParseOptions( int argc, char**argv )
 {
   /*static const auto parse_style = opt::command_line_style::unix_style
                                   ^ opt::command_line_style::allow_short;*/
@@ -190,13 +188,13 @@ ArgumentExtender::ParseOptions( int argc, char** argv )
     opt::store( opt::parse_command_line( argc,
                                          argv,
                                          Description()
-                                         /*, parse_style*/ )
-                ,
+
+                                         /*, parse_style*/ ),
                 Args() );
     opt::notify( Args() );
   } catch( boost::exception& e ){
-    std::cerr << "Error parsing command!" << std::endl
-              << boost::diagnostic_information( e )
+    std::cerr << "Error parsing command!" << std::endl <<
+      boost::diagnostic_information( e )
               << Description()
               << std::endl;
     throw;// Continue throwing exception
@@ -216,13 +214,12 @@ ArgumentExtender::ParseFile( const std::string& argfile )
 {
   try {
     std::ifstream f( argfile, std::ios::in );
-    opt::store( opt::parse_config_file( f, Description() )
-                ,
+    opt::store( opt::parse_config_file( f, Description() ),
                 Args() );
     opt::notify( Args() );
   } catch( boost::exception& e ){
-    std::cerr << "Error parsing command!" << std::endl
-              << boost::diagnostic_information( e )
+    std::cerr << "Error parsing command!" << std::endl <<
+      boost::diagnostic_information( e )
               << Description()
               << std::endl;
     throw;// Continue throwing exception
@@ -260,14 +257,14 @@ ArgumentExtender::_check_parse_valid()
     try {
       Description().find( optname, true );
     } catch( boost::exception& e ){
-      std::cerr << "Options [" << optname << "] defined in file"
-                << "does not have description defined!" << std::endl;
+      std::cerr << "Options [" << optname << "] defined in file" <<
+        "does not have description defined!" << std::endl;
       throw;
     }
 
     if( !CheckArg( optname ) ){
-      std::cerr << "Missing options for [" << optname << "]" << std::endl
-                << Description()
+      std::cerr << "Missing options for [" << optname << "]" << std::endl <<
+        Description()
                 << std::endl;
       BOOST_THROW_EXCEPTION( po::required_option( optname ) );
     }
@@ -275,14 +272,11 @@ ArgumentExtender::_check_parse_valid()
     std::vector<std::string> validoptionlist;
     if( !member.value.GetObject().HasMember( Arg<std::string>( optname ).c_str() ) )
     {
-      std::cerr
-        << usr::fstr(
-        "Extended values for options for [%s] with value [%s] is not defined!\n"
-        ,
+      std::cerr << usr::fstr(
+        "Extended values for options for [%s] with value [%s] is not defined!\n",
         optname,
         Arg<std::string>( optname ) )
-        << std::endl
-        << "Available values: " << std::flush;
+                << std::endl << "Available values: " << std::flush;
 
       for( const auto& submember : member.value.GetObject() ){
         const std::string optvalue = submember.name.GetString();
@@ -534,9 +528,13 @@ ArgumentExtender::genPathString_Boolean( const ArgPathScheme& x ) const
   const bool flag = CheckArg( x.option );
 
   if( x.pathstring == "" ){
-    return flag ? x.option : "";
+    return flag ?
+           x.option :
+           "";
   } else {
-    return x.pathstring+std::string( flag ? "On" : "Off" );
+    return x.pathstring+std::string( flag ?
+                                     "On" :
+                                     "Off" );
   }
 }
 
@@ -641,6 +639,7 @@ ArgumentExtender::IsMultiToken( const std::string& x ) const
 /**
  * @brief Specialization for getting a list of string from a file.
  */
+
 // template<>
 
 }/* usr */

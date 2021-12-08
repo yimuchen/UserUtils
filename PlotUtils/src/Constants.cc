@@ -26,7 +26,7 @@ namespace plt
  * conversion of pixels into printable formats using the old standard of 72 DPI.
  *
  * Here we provide functions for convert from printing units (inches, mm...
- *etc),
+ * etc),
  * to the standard ROOT length units, as well as commonly used dimension in
  * CMS documents.
  */
@@ -39,44 +39,37 @@ extern const float    INCH_TO_CM = 2.54;
 /**
  * @brief Convert inches to standard ROOT size.
  */
-extern length_t
-inch( const float x ){ return std::round( ROOT_DPI * x ); }
+extern length_t inch( const float x ){ return std::round( ROOT_DPI * x ); }
 
 /**
  * @brief Convert centimeters to standard ROOT size.
  */
-extern length_t
-cm( const float x ){ return inch( x / INCH_TO_CM ); }
+extern length_t cm( const float x ){ return inch( x / INCH_TO_CM ); }
 
 /**
  * @brief Conver millimeters to standard ROOT size.
  */
-extern length_t
-mm( const float x ){ return cm( x / 10 ); }
+extern length_t mm( const float x ){ return cm( x / 10 ); }
 
 /**
  * @brief A4 Paper is 210mm wide.
  */
-extern length_t
-a4paperwidth(){ return mm( 210 ); }
+extern length_t a4paperwidth(){ return mm( 210 ); }
 
 /**
  * @brief A4 paper is 297mm tall.
  */
-extern length_t
-a4paperheight(){ return mm( 297 ); }
+extern length_t a4paperheight(){ return mm( 297 ); }
 
 /**
  * @brief Width of text area defined in CMS TDR is 160mm.
  */
-extern length_t
-a4textwidth_default(){ return mm( 160 ); }
+extern length_t a4textwidth_default(){ return mm( 160 ); }
 
 /**
  * @brief Height of text area defined in CMS TDR is 235mm.
  */
-extern length_t
-a4textheight_default(){ return mm( 235 ); }
+extern length_t a4textheight_default(){ return mm( 235 ); }
 
 }/* len */
 
@@ -106,9 +99,7 @@ float font::default_lineheight = 1.2;
  * @param face       The type-face of the font to use.
  * @param lineheight The lineheight **multiplier** to use.
  */
-font::font( float basesize,
-            face  face,
-            float lineheight ) :
+font::font( float basesize, face face, float lineheight ) :
   _basesize  ( basesize ),
   _face      ( face ),
   _lineheight( em( lineheight ) )
@@ -162,56 +153,67 @@ static const float scaletable[7][4] = {
 
 enum e_size : short
 {
-  e_tiny,
-  e_footnote,
-  e_small,
-  e_large,
-  e_llarge,
-  e_lllarge,
-  e_huge
+  e_tiny, e_footnote, e_small, e_large, e_llarge, e_lllarge, e_huge
 };
 
 static unsigned
 getcol( const float x )
 {
-  return x == 10 ? 0 :
-         x == 11 ? 1 :
-         x == 12 ? 2 :
+  return x == 10 ?
+         0 :
+         x == 11 ?
+         1 :
+         x == 12 ?
+         2 :
          3;
 }
 
 
 /** @{
  * @brief conversion to LateX [in-build font
- *sizes](https://en.wikibooks.org/wiki/LaTeX/Fonts#Built-in_sizes)
+ * sizes](https://en.wikibooks.org/wiki/LaTeX/Fonts#Built-in_sizes)
  */
 float
 font::tiny() const
-{ return _basesize * scaletable[e_tiny][getcol( _basesize )]; }
+{
+  return _basesize * scaletable[e_tiny][getcol( _basesize )];
+}
 
 float
 font::footnote() const
-{ return _basesize * scaletable[e_footnote][getcol( _basesize )]; }
+{
+  return _basesize * scaletable[e_footnote][getcol( _basesize )];
+}
 
 float
 font::small() const
-{ return _basesize * scaletable[e_small][getcol( _basesize )]; }
+{
+  return _basesize * scaletable[e_small][getcol( _basesize )];
+}
 
 float
 font::large() const
-{ return _basesize * scaletable[e_large][getcol( _basesize )]; }
+{
+  return _basesize * scaletable[e_large][getcol( _basesize )];
+}
 
 float
 font::Large() const
-{ return _basesize * scaletable[e_llarge][getcol( _basesize )]; }
+{
+  return _basesize * scaletable[e_llarge][getcol( _basesize )];
+}
 
 float
 font::LARGE() const
-{ return _basesize * scaletable[e_lllarge][getcol( _basesize )]; }
+{
+  return _basesize * scaletable[e_lllarge][getcol( _basesize )];
+}
 
 float
 font::huge() const
-{ return _basesize * scaletable[e_huge][getcol( _basesize )]; }
+{
+  return _basesize * scaletable[e_huge][getcol( _basesize )];
+}
 
 /** @} */
 
@@ -243,7 +245,7 @@ const std::string sim    = "Simulation";
  * @details  Probably one of the worst offenders of magic-number usage in @ROOT:
  * that of the styling variables. Unless you have memorised the contents of the
  * documentation, you would probably have no idea what someone else code is
- *doing
+ * doing
  * to stylise the plots.
  */
 namespace sty
@@ -262,6 +264,7 @@ const short fillhashdense    = fillhash( 1, angle1( 45 ), angle2( 45 ) );
 const short fillhashsparse   = fillhash( 5, angle1( 45 ), angle2( 45 ) );
 const short fillhashforward  = fillhash( 2, angle1( 60 ), angle2( -1 ) );
 const short fillhashbackward = fillhash( 2, angle1( -1 ), angle2( 120 ) );
+
 /** @} */
 
 /**
@@ -275,7 +278,8 @@ fill( const std::string& x )
   const std::string op_string = StripToNaming( x );
 
 #define STRINGIFY( x ) \
-  op_string == #x ? fill ## x :
+  op_string == #x ?    \
+  fill ## x :
 
   return STRINGIFY( none )
          STRINGIFY( solid )
@@ -307,8 +311,7 @@ fill( const std::string& x )
  * @return          the value corresponding to the angle code.
  */
 const short
-fillhash( unsigned short distance,
-          unsigned short angle1,
+fillhash( unsigned short distance, unsigned short angle1,
           unsigned short angle2 )
 {
   distance = std::max( distance, (unsigned short)1 );
@@ -329,14 +332,22 @@ fillhash( unsigned short distance,
 const short
 distmm( const float x )
 {
-  return x < usr::plt::len::mm( 0.84375 ) ? 1 :
-         x < usr::plt::len::mm( 1.53125 ) ? 2 :
-         x < usr::plt::len::mm( 2.21875 ) ? 3 :
-         x < usr::plt::len::mm( 2.90625 ) ? 4 :
-         x < usr::plt::len::mm( 3.59375 ) ? 5 :
-         x < usr::plt::len::mm( 4.28125 ) ? 6 :
-         x < usr::plt::len::mm( 4.96875 ) ? 7 :
-         x < usr::plt::len::mm( 5.65625 ) ? 8 :
+  return x < usr::plt::len::mm( 0.84375 ) ?
+         1 :
+         x < usr::plt::len::mm( 1.53125 ) ?
+         2 :
+         x < usr::plt::len::mm( 2.21875 ) ?
+         3 :
+         x < usr::plt::len::mm( 2.90625 ) ?
+         4 :
+         x < usr::plt::len::mm( 3.59375 ) ?
+         5 :
+         x < usr::plt::len::mm( 4.28125 ) ?
+         6 :
+         x < usr::plt::len::mm( 4.96875 ) ?
+         7 :
+         x < usr::plt::len::mm( 5.65625 ) ?
+         8 :
          9;
 }
 
@@ -350,16 +361,26 @@ distmm( const float x )
 const short
 angle1( const float x )
 {
-  return x < 0    ? anglenone :
-         x < 5    ? 0 :
-         x < 15   ? 1 :
-         x < 25   ? 2 :
-         x < 37.5 ? 3 :
-         x < 52.5 ? 4 :
-         x < 65   ? 6 :
-         x < 75   ? 7 :
-         x < 85   ? 8 :
-         x <= 90  ? 9 :
+  return x < 0    ?
+         anglenone :
+         x < 5    ?
+         0 :
+         x < 15   ?
+         1 :
+         x < 25   ?
+         2 :
+         x < 37.5 ?
+         3 :
+         x < 52.5 ?
+         4 :
+         x < 65   ?
+         6 :
+         x < 75   ?
+         7 :
+         x < 85   ?
+         8 :
+         x <= 90  ?
+         9 :
          anglenone;
 }
 
@@ -373,16 +394,26 @@ angle1( const float x )
 const short
 angle2( const float x )
 {
-  return x > 180   ? anglenone :
-         x > 175   ? 0 :
-         x > 165   ? 1 :
-         x > 155   ? 2 :
-         x > 142.5 ? 3 :
-         x > 127.5 ? 4 :
-         x > 115   ? 6 :
-         x > 105   ? 7 :
-         x > 95    ? 8 :
-         x >= 90   ? 9 :
+  return x > 180   ?
+         anglenone :
+         x > 175   ?
+         0 :
+         x > 165   ?
+         1 :
+         x > 155   ?
+         2 :
+         x > 142.5 ?
+         3 :
+         x > 127.5 ?
+         4 :
+         x > 115   ?
+         6 :
+         x > 105   ?
+         7 :
+         x > 95    ?
+         8 :
+         x >= 90   ?
+         9 :
          anglenone;
 }
 
@@ -399,6 +430,7 @@ const short lindotted    = 2;
 const short lindensedot  = 3;
 const short lindashed    = 9;
 const short linshortdash = 7;
+
 /** @} */
 
 /**
@@ -412,7 +444,8 @@ line( const std::string& x )
 {
   const std::string op = StripToNaming( x );
 #define STRINGIFY( x ) \
-  op == #x ? lin ## x :
+  op == #x ?           \
+  lin ## x :
 
   return STRINGIFY( solid     )
          STRINGIFY( dotted    )
@@ -443,6 +476,7 @@ extern const short mkropentriangledown = 32;
 extern const short mkropendiamond      = 27;
 extern const short mkropencross        = 28;
 extern const short mkropenstar         = 30;
+
 /** @} */
 
 /**
@@ -456,7 +490,8 @@ marker( const std::string x )
 {
   const std::string op = StripToNaming( x );
 #define STRINGIFY( x ) \
-  op == #x ? mkr ## x :
+  op == #x ?           \
+  mkr ## x :
 
   return STRINGIFY( circle           )
          STRINGIFY( square           )

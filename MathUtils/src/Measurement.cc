@@ -44,15 +44,15 @@ Measurement::Measurement( const double c,
   _error_down   ( error_down )
 {
   if( _error_up < 0 ){
-    cerr << "Warning! Upper error is small than zero! Assuming flipped sign: "
-         << c << " " << error_up << " " << error_down
-         << endl;
+    cerr <<
+      "Warning! Upper error is small than zero! Assuming flipped sign: " << c <<
+      " " << error_up << " " << error_down << endl;
     _error_up = -_error_up;
   }
   if( _error_down < 0 ){
-    cerr << "Warning! Lower error is small than zero! Assuming flipped sign: "
-         << c << " " << error_up << " " << error_down
-         << endl;
+    cerr <<
+      "Warning! Lower error is small than zero! Assuming flipped sign: " << c <<
+      " " << error_up << " " << error_down << endl;
     _error_down = -_error_down;
   }
 }
@@ -98,9 +98,7 @@ Measurement::operator=( const Measurement& x )
 Measurement
 Measurement::NormParam() const
 {
-  return Measurement( 1,
-                      RelUpperError(),
-                      RelLowerError());
+  return Measurement( 1, RelUpperError(), RelLowerError());
 }
 
 
@@ -167,9 +165,7 @@ Measurement::operator-( const Measurement& x ) const
   } else if( this->AbsUpperError() == 0 && this->AbsLowerError() == 0 ){
     return x-this->CentralValue();
   } else {
-    Measurement tmp( -x.CentralValue(),
-                     x.AbsLowerError(),
-                     x.AbsUpperError() );
+    Measurement tmp( -x.CentralValue(), x.AbsLowerError(), x.AbsUpperError() );
     return Sum( *this, tmp );
   }
 }

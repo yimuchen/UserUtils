@@ -25,6 +25,7 @@ namespace plt
 length_t Simple1DCanvas::default_width  = 0.9 * len::a4textwidth_default();
 length_t Simple1DCanvas::default_height = 0.9 * len::a4textwidth_default();
 FontSet  Simple1DCanvas::default_font   = FontSet( 11 );
+
 /** @} */
 
 /**
@@ -81,7 +82,6 @@ Simple1DCanvas::_init_margin()
                           ( 0.3 * Font().lineheight() / Width() ) ));
   Pad().TPad_().Update();
   Pad().TPad_().GetRange( x, xx, y, yy );
-
 }
 
 }/* plt  */

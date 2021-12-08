@@ -20,7 +20,7 @@
  * @details
  * @details
  * Main reference could be found in the documentation of [general trigger
- *objects
+ * objects
  * use](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2016#Trigger).
  *
  * In general, you will need provide :
@@ -32,7 +32,7 @@
  *   "TriggerResults::HLT" or similar).
  * - Trigger paths and filter label. For paths, please consult your physics
  *   analysis group for recommendations. For the filter label of objects within
- *a
+ * a
  *   trigger, please consult the [trigger
  *   database](https://cmsweb.cern.ch/confdb/) (warning! This website is
  *   notoriously slow!), or get the trigger configuration via the
@@ -93,12 +93,9 @@ TriggerMatchP4( const reco::Candidate&                        recoobj,
     trgnames,
     mindelta_r );
   if( match != trgobjlist.end() ){
-    return TLorentzVector( match->px()
-                           ,
-                           match->py()
-                           ,
-                           match->pz()
-                           ,
+    return TLorentzVector( match->px(),
+                           match->py(),
+                           match->pz(),
                            match->energy() );
   } else {
     return TLorentzVector( 0, 0, 0, 0 );

@@ -59,7 +59,7 @@ Intersect( const double p1x,
  * @brief Performing a Cholesky decomposing of a covariance matrix from fit
  *
  * In the case that the input matrix is not positive definite, this function
- *will
+ * will
  * a diagonal matrix that is just the square root of the diagonal components of
  * the original covariance matrix. The function is essentially the
  * [TDecompChol::Decompose](https://root.cern.ch/doc/master/classTDecompChol.html#af14df10a3c766330cb93063161ecedc0)
@@ -87,7 +87,9 @@ DecompCorvariance( const TMatrixDSym& m )
         const unsigned offset = i * n;
 
         for( unsigned j = 0; j < n; ++j ){
-          ans_ptr[i+offset] = i != j ? 0 : TMath::Sqrt( m[i][j] );
+          ans_ptr[i+offset] = i != j ?
+                              0 :
+                              TMath::Sqrt( m[i][j] );
         }
       }
 
@@ -127,7 +129,7 @@ DecompCorvariance( const TMatrixDSym& m )
  * histogram.
  *
  * The official recipe for computing the effective number of events for a list
- *of
+ * of
  * (non-negative) weighted events is typically:
  *
  * \f[
@@ -146,7 +148,7 @@ DecompCorvariance( const TMatrixDSym& m )
  * \f]
  *
  * Effectively, ROOT treats the bin as having effectively \[N_{eff}\] events,
- *and
+ * and
  * scale the uncertainty according to the sum of weight to have an identical
  * relative uncertainty.
  *
@@ -172,7 +174,7 @@ GetEffectiveEvents( const TH1& hist, const int bin )
  * @brief Pointer interface of GetEffectiveEvents function.
  */
 extern double
-GetEffectiveEvents( const TH1* hist, const int bin )
+GetEffectiveEvents( const TH1*hist, const int bin )
 {
   return GetEffectiveEvents( *hist, bin );
 }

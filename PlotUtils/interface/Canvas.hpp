@@ -95,16 +95,13 @@ public:
   PadBase& SetTextCursor( const double, const double, const font::align );
   PadBase& SetTextAlign( const font::align );
 
-  PadBase& WriteLine( const std::string&,
-                      const std::vector<RooCmdArg>& );
-  inline PadBase&
-  WriteLine( const std::string& str )
+  PadBase& WriteLine( const std::string&, const std::vector<RooCmdArg>& );
+  inline PadBase&WriteLine( const std::string& str )
   { return WriteLine( str, {} ); }
   template<typename ... Args>
-  inline PadBase&
-  WriteLine( const std::string& str,
-             const RooCmdArg&   arg1,
-             Args ... args )
+  inline PadBase&WriteLine( const std::string& str,
+                            const RooCmdArg&   arg1,
+                            Args ... args )
   { return WriteLine( str, usr::MakeVector<RooCmdArg>( arg1, args ... ) ); }
 
 
@@ -112,8 +109,9 @@ public:
                         const double,
                         const std::string&,
                         const std::vector<RooCmdArg>& );
-  inline PadBase&
-  WriteAtData( const double x, const double y, const std::string& str )
+  inline PadBase&WriteAtData( const double       x,
+                              const double       y,
+                              const std::string& str )
   { return WriteAtData( x, y, str, {} ); }
   template<typename ... Args>
   inline PadBase&
@@ -133,20 +131,17 @@ public:
   void PlotObj( TObject&, Option_t* = "" );
 
   /** @brief pointer interface to PlotObj */
-  inline void
-  PlotObj( TObject* obj, Option_t* opt = "" ){ PlotObj( *obj, opt ); }
+  inline void PlotObj( TObject*obj, Option_t*opt = "" ){ PlotObj( *obj, opt ); }
 
-  inline void
-  PlotObject( TObject* obj, const std::string& opt = "" )
+  inline void PlotObject( TObject*obj, const std::string& opt = "" )
   { PlotObject( obj, opt.c_str() ); }
 
-  inline void
-  PlotObject( TObject& obj, const std::string& opt = "" )
+  inline void PlotObject( TObject& obj, const std::string& opt = "" )
   { PlotObject( obj, opt.c_str() ); }
 
   bool HasObject( const TObject& ) const;
   inline bool
-  HasObject( const TObject* obj ) const { return HasObject( *obj ); }
+  HasObject( const TObject*obj ) const { return HasObject( *obj ); }
 
   /**
    * Making a Root object under the ownership of the RooPlot object.
@@ -188,6 +183,7 @@ public:
   inline void SetLeftMargin( const float x )  {  _pad->SetLeftMargin( x ); }
   inline void SetRightMargin( const float x ) {  _pad->SetRightMargin( x ); }
   inline void SetBottomMargin( const float x ){  _pad->SetBottomMargin( x ); }
+
   /** @} */
 
 
@@ -209,12 +205,12 @@ public:
   inline TPad& TPad_()       { return *( _pad ); }
 
 protected:
-
   /** @brief Latex object used for text writing */
   TLatex _latex;
 
   /** @brief coordinates to plot the next line of latex text */
   float _latex_cursorx;
+
   /** @brief coordinates to plot the next line of latex text, automatically
    *  updates when WriteLine() is called. */
   float _latex_cursory;
@@ -233,8 +229,8 @@ protected:
   inline TList*
   GetListOfPrimitives() const { return _pad->GetListOfPrimitives(); }
 
-  Canvas* _parentcanvas;
-  TPad*   _pad;
+  Canvas*_parentcanvas;
+  TPad*  _pad;
 };
 
 /*-----------------------------------------------------------------------------
@@ -301,8 +297,7 @@ public:
   void SaveAsCPP( const fs::path& );
   void SaveToROOT( const fs::path&, const std::string& name );
 
-  inline void
-  Clear(){ TCanvas_().Clear(); }
+  inline void Clear(){ TCanvas_().Clear(); }
 
 
   inline const TCanvas&

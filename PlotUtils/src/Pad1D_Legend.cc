@@ -59,26 +59,30 @@ Pad1D::AddLegendEntry( TH1D&            hist,
   const int  popt   = plotopt.getInt( 0 );
   const bool varbin = hist.GetXaxis()->IsVariableBinSize();
 
-  const std::string legopt =
-    ( popt == plottype::hist               ) ? "LF"   :
-    ( popt == plottype::histerr            ) ? "F"    :
-    ( popt == plottype::histstack          ) ? "F"    :
-    ( popt == plottype::histnewstack       ) ? "F"    :
-    ( popt == plottype::scatter && varbin  ) ? "PLE"  :
-    ( popt == plottype::scatter && !varbin ) ? "PE"   :
-    ( plotopt.getString( 0 ) ) ? "PLFE" :
-    "";
+  const std::string legopt = ( popt == plottype::hist               ) ?
+                             "LF"   :
+                             ( popt == plottype::histerr            ) ?
+                             "F"    :
+                             ( popt == plottype::histstack          ) ?
+                             "F"    :
+                             ( popt == plottype::histnewstack       ) ?
+                             "F"    :
+                             ( popt == plottype::scatter && varbin  ) ?
+                             "PLE"  :
+                             ( popt == plottype::scatter && !varbin ) ?
+                             "PE"   :
+                             ( plotopt.getString( 0 ) ) ?
+                             "PLFE" :
+                             "";
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
     _legend.AddEntry( &hist, entryopt.getString( 0 ), legopt.c_str() );
-
   } else {
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &hist
-                                   ,
+    auto entry = new TLegendEntry( &hist,
                                    entryopt.getString( 0 ),
                                    legopt.c_str() );
     if( entryopt.getInt( 0 ) ){
@@ -120,26 +124,33 @@ Pad1D::AddLegendEntry( TGraph&          graph,
 
   for( int i = 0; i < graph.GetN() && plottype == plottype::scatter; ++i ){
     x_width = std::max( x_width,
-                        graph.GetErrorXlow( i )+graph.GetErrorXhigh( i ) );
+                        graph.GetErrorXlow( i )+graph.GetErrorXhigh(
+                          i ) );
     y_width = std::max( y_width,
-                        graph.GetErrorYlow( i )+graph.GetErrorYhigh( i ) );
+                        graph.GetErrorYlow( i )+graph.GetErrorYhigh(
+                          i ) );
 
     // Early exit if both are not zero.
     if( x_width != 0 && y_width != 0 ){ break; }
   }
 
-  const std::string erropt =
-    x_width != 0 && y_width != 0 ? "LE" :
-    x_width == 0 && y_width != 0 ? "E" :
-    x_width != 0 && y_width == 0 ? "L" :
-    "";
+  const std::string erropt = x_width != 0 && y_width != 0 ?
+                             "LE" :
+                             x_width == 0 && y_width != 0 ?
+                             "E" :
+                             x_width != 0 && y_width == 0 ?
+                             "L" :
+                             "";
 
-  const std::string legopt =
-    plottype == plottype::simplefunc ? "L" :
-    plottype == plottype::fittedfunc ? "LF" :
-    plottype == plottype::scatter    ? "P"+erropt :
-    plotopt.getString( 0 )           ? "PLFE" :
-    "";
+  const std::string legopt = plottype == plottype::simplefunc ?
+                             "L" :
+                             plottype == plottype::fittedfunc ?
+                             "LF" :
+                             plottype == plottype::scatter    ?
+                             "P"+erropt :
+                             plotopt.getString( 0 )           ?
+                             "PLFE" :
+                             "";
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
@@ -148,8 +159,7 @@ Pad1D::AddLegendEntry( TGraph&          graph,
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &graph
-                                   ,
+    auto entry = new TLegendEntry( &graph,
                                    entryopt.getString( 0 ),
                                    legopt.c_str() );
     if( entryopt.getInt( 0 ) ){
@@ -184,12 +194,15 @@ Pad1D::AddLegendEntry( TEfficiency&     eff,
 {
   const int plottype = plotopt.getInt( 0 );
 
-  const std::string legopt =
-    plottype == plottype::scatter ? "PL"   :
-    plottype == plottype::hist    ? "F"    :
-    plottype == plottype::histerr ? "F"    :
-    plotopt.getString( 0 )        ? "PLFE" :
-    "";
+  const std::string legopt = plottype == plottype::scatter ?
+                             "PL"   :
+                             plottype == plottype::hist    ?
+                             "F"    :
+                             plottype == plottype::histerr ?
+                             "F"    :
+                             plotopt.getString( 0 )        ?
+                             "PLFE" :
+                             "";
 
   if( !_legend.GetListOfPrimitives() ){
     // If legend is empty, Add directly to the legend object.
@@ -198,10 +211,8 @@ Pad1D::AddLegendEntry( TEfficiency&     eff,
     // If Legend is not empty manually adding entry to the front of the list.
     // Note that legend automatically claims ownership of generated TLegend
     // entries, so there is no need to use the MakeObject call.
-    auto entry = new TLegendEntry( &eff
-                                   ,
-                                   entryopt.getString( 0 ),
-                                   legopt.c_str() );
+    auto entry =
+      new TLegendEntry( &eff, entryopt.getString( 0 ), legopt.c_str() );
     if( entryopt.getInt( 0 ) ){
       _legend.GetListOfPrimitives()->AddLast( entry );
     } else {
@@ -237,6 +248,7 @@ void
 Pad1D::FinalizeLegend( const align newposition )
 {
   _legendposition = newposition;
+
   // Early exit if Legend wasn't requested
   if( !_legend.GetListOfPrimitives() ){ return; }
   if( !_legend.GetListOfPrimitives()->GetEntries() ){ return; }
@@ -248,11 +260,13 @@ Pad1D::FinalizeLegend( const align newposition )
 
   for( const auto&& obj : *_legend.GetListOfPrimitives() ){
     auto entry = dynamic_cast<TLegendEntry*>( obj );
+
     // This should be absolute coordinates
     const double estwidth = EstimateLatexWidth( entry->GetLabel() )
                             * FontSize() / AbsWidth();
     const double estheight = EstimateLatexHeight( entry->GetLabel() )
                              * FontSize() / AbsHeight();
+
     // Gussing width based on character count alone
     width   = std::max( estwidth, width );
     height += std::max( 1.1 * estheight, 1.4 * RelLineHeight() );
@@ -265,11 +279,15 @@ Pad1D::FinalizeLegend( const align newposition )
   const short halign = 10 * ( _legendposition / 10 );
   const short valign = _legendposition % 10;
 
-  const float xmin = halign == align::left     ? InnerTextLeft() :
-                     halign == align::hcenter  ? InnerTextHCenter()-width / 2 :
+  const float xmin = halign == align::left     ?
+                     InnerTextLeft() :
+                     halign == align::hcenter  ?
+                     InnerTextHCenter()-width / 2 :
                      InnerTextRight()-width;
-  const float ymin = valign == align::bottom   ? InnerTextBottom() :
-                     valign == align::vcenter  ? InnerTextVCenter()-height / 2 :
+  const float ymin = valign == align::bottom   ?
+                     InnerTextBottom() :
+                     valign == align::vcenter  ?
+                     InnerTextVCenter()-height / 2 :
                      InnerTextTop()-height;
   const float xmax = xmin+width;
   const float ymax = ymin+height;

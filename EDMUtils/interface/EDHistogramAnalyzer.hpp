@@ -65,8 +65,6 @@ protected:
   {
     return *( _hist2dmap[x] );
   }
-
-
 };
 
 }// namespace usr

@@ -22,18 +22,17 @@ namespace usr
  * instances, and reinserting all of the other instances.
  */
 bool
-MoveObjectToBefore( TList&         list,
-                    const TObject& target,
-                    const TObject& before )
+MoveObjectToBefore( TList& list, const TObject& target, const TObject& before )
 {
+
   struct objopt
   {
-    TObject* obj;
+    TObject*obj;
     std::string opt;
   };
 
   // Finding the link to where the targets should be moved.
-  TObjLink* beforelink = list.FirstLink();
+  TObjLink*beforelink = list.FirstLink();
 
   while( beforelink && beforelink->GetObject() != &before ){
     beforelink = beforelink->Next();
@@ -46,7 +45,7 @@ MoveObjectToBefore( TList&         list,
   std::stack<objopt> otherlinks;
   std::stack<objopt> targetlinks;
 
-  TObjLink* link = list.LastLink();
+  TObjLink*link = list.LastLink();
 
   while( link != beforelink ){
     const objopt temp = { link->GetObject(), link->GetOption() };
@@ -76,7 +75,6 @@ MoveObjectToBefore( TList&         list,
   }
 
   return true;
-
 }
 
 } /* namespace usr */

@@ -32,8 +32,7 @@ public:
   /**
    * @brief Returning reference to the underlying Pad2DFlat instance
    */
-  inline Pad2DFlat&
-  Pad(){ return GetPad<Pad2DFlat>( 0 ); }
+  inline Pad2DFlat&Pad(){ return GetPad<Pad2DFlat>( 0 ); }
 
   inline const Pad2DFlat&
   Pad() const { return GetPad<Pad2DFlat>( 0 ); }
@@ -47,17 +46,29 @@ public:
    */
   template<typename ... Args>
   inline TH2D&
-  PlotHist( TH2D& x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH2D& x, Args ... args )
+  {
+    return Pad().PlotHist( x, args ... );
+  }
   template<typename ... Args>
   inline TH2D&
-  PlotHist( TH2D* x, Args ... args ){ return Pad().PlotHist( x, args ... ); }
+  PlotHist( TH2D*x, Args ... args )
+  {
+    return Pad().PlotHist( x, args ... );
+  }
 
   template<typename ... Args>
   inline TGraph2D&
-  PlotFunc( TF2& x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF2& x, Args ... args )
+  {
+    return Pad().PlotFunc( x, args ... );
+  }
   template<typename ... Args>
   inline TGraph2D&
-  PlotFunc( TF2* x, Args ... args ){ return Pad().PlotFunc( x, args ... ); }
+  PlotFunc( TF2*x, Args ... args )
+  {
+    return Pad().PlotFunc( x, args ... );
+  }
 
   template<typename ... Args>
   inline TGraph2D&
@@ -65,12 +76,15 @@ public:
   {
     return Pad().PlotGraph( x, args ... );
   }
+
+
   template<typename ... Args>
   inline TGraph2D&
-  PlotGraph( TGraph2D* x, Args ... args )
+  PlotGraph( TGraph2D*x, Args ... args )
   {
     return Pad().PlotGraph( x, args ... );
   }
+
 
   template<typename ... Args>
   inline TGraph&
@@ -82,7 +96,7 @@ public:
 
   template<typename ... Args>
   inline TGraph&
-  Plot1DGraph( TGraph* x, Args ... args )
+  Plot1DGraph( TGraph*x, Args ... args )
   {
     return Pad().Plot1DGraph( x, args ... );
   }
@@ -103,12 +117,13 @@ public:
   Yaxis() const { return Pad().Yaxis(); }
   inline const TAxis&
   Zaxis() const { return Pad().Zaxis(); }
+
   /** @} */
 
   /**
    * @{
    * @brief passing through addition Pad2DFlat functions, using variadic
-   *template to future proof interface.
+   * template to future proof interface.
    */
   template<typename ... Args>
   inline void DrawCMSLabel( Args ... args ){ Pad().DrawCMSLabel( args ... );}
@@ -118,15 +133,14 @@ public:
   {
     Pad().DrawLuminosity( args ... );
   }
+
+
   /** @} */
 #undef CANVAS2D_VOID_PASSTHROUGH
 
-  inline void
-  SetLogx( int x = 1  ){ Pad().SetLogx( x ); }
-  inline void
-  SetLogy( int x = 1  ){ Pad().SetLogy( x ); }
-  inline void
-  SetLogz( int x = 1  ){ Pad().SetLogz( x ); }
+  inline void SetLogx( int x = 1  ){ Pad().SetLogx( x ); }
+  inline void SetLogy( int x = 1  ){ Pad().SetLogy( x ); }
+  inline void SetLogz( int x = 1  ){ Pad().SetLogz( x ); }
 
 protected:
   void init_margin();

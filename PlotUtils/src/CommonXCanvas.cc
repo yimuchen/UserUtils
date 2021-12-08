@@ -81,8 +81,8 @@ CommonXCanvas::_init_margin()
       frame_top_offset+i * pad_height+sgn( i ) * 0.5 * pad_space );
 
     Pad( i ).SetBottomMargin(
-      frame_bottom_offset+( npads-i-1 ) * pad_height
-      +sgn( i ) *  0.5 * pad_space );
+      frame_bottom_offset+( npads-i-1 ) * pad_height+sgn( i ) *  0.5
+      * pad_space );
 
     Pad( i ).TPad_().SetFillColorAlpha( kWhite, 0 );
   }
@@ -90,7 +90,7 @@ CommonXCanvas::_init_margin()
 
 
 void
-CommonXCanvas::CheckPadAxis( const TObject* obj )
+CommonXCanvas::CheckPadAxis( const TObject*obj )
 {
   if( FirsTPad_().GetAxisObject() ){
     return;
@@ -98,7 +98,7 @@ CommonXCanvas::CheckPadAxis( const TObject* obj )
   if( obj->InheritsFrom( TH1::Class() ) ){
 
     for( unsigned i = 0; i < _padlist.size(); ++i ){
-      TH1* axisobj = (TH1*)obj->Clone();
+      TH1*axisobj = (TH1*)obj->Clone();
       axisobj->Reset();
       axisobj->SetStats( 0 );
       axisobj->SetTitle( "" );
@@ -112,7 +112,7 @@ CommonXCanvas::CheckPadAxis( const TObject* obj )
       }
     }
   } else if( obj->InheritsFrom( TGraph::Class() ) ){
-    const TGraph* graph = dynamic_cast<const TGraph*>( obj );
+    const TGraph*graph = dynamic_cast<const TGraph*>( obj );
     for( unsigned i = 0; i < _padlist.size(); ++i ){
       auto& axishist = Pad( i ).MakeObj<TH1D>(
         ( "CommonXaxis"+RandomString( 6 ) ).c_str(),
@@ -129,7 +129,7 @@ CommonXCanvas::CheckPadAxis( const TObject* obj )
       }
     }
   } else if( obj->InheritsFrom( TF1::Class() ) ){
-    const TF1* func = dynamic_cast<const TF1*>( obj );
+    const TF1*func = dynamic_cast<const TF1*>( obj );
     for( unsigned i = 0; i < _padlist.size(); ++i ){
       auto& axishist = Pad( i ).MakeObj<TH1D>(
         ( "CommonXaxis"+RandomString( 6 ) ).c_str(),

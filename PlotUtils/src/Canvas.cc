@@ -104,10 +104,10 @@ Canvas::Finalize( const fs::path& finalpath )
  * /tmp directory and fixes the PDF file using ghostscript. Reference to the
  * ghostscript command can be found here:
  * - For fixing the rotation:
- * 
+ *
  * http://tex.stackexchange.com/questions/66522/xelatex-rotating-my-figures-in-beamer:
  * - For detecting the Cropbox size:
- * 
+ *
  * https://stackoverflow.com/questions/2943281/using-ghostscript-to-get-page-size
  *
  * @param filepath final path to store the PDF file. (Parent directory would be
@@ -133,16 +133,18 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "-dNOPAUSE",
     "-dQUIET",
     "-dBATCH",
-    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
+    usr::fstr( "-dNumRenderingThreads=%u",
+               usr::NumOfThreads() / 2
+               +1 ),
     "-sstdout=/dev/null",                 // Supperssing error messages
     "-sDEVICE=pdfwrite",
     "-dPDFSETTINGS=/screen",
     "-dAutoRotatePages=/None",
     "-dUseCropBox",                       // Remove transparent margin
-    usr::fstr( "-sOutputFile=%s",         tmp2path.string() ),
+    usr::fstr( "-sOutputFile=%s",
+               tmp2path.string() ),
     "-f",
-    tmppath
-  };
+    tmppath};
 
   if( !run_ghostscript( gs_fixrotate ) ){
     usr::log::PrintLog( usr::log::INTERNAL,
@@ -159,15 +161,17 @@ Canvas::SaveAsPDF( const fs::path& filepath )
     "gs",
     "-dNODISPLAY",
     "-dQUIET",
-    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
-    usr::fstr( "-sstdout=%s",             dimpath.string() ),
-    usr::fstr( "-sFileName=%s",           tmp2path.string() ),
+    usr::fstr( "-dNumRenderingThreads=%u",
+               usr::NumOfThreads() / 2
+               +1 ),
+    usr::fstr( "-sstdout=%s",
+               dimpath.string() ),
+    usr::fstr( "-sFileName=%s",
+               tmp2path.string() ),
     "-c",
-    "FileName (r) file "
-    "runpdfbegin 1 1 pdfpagecount {"
+    "FileName (r) file " "runpdfbegin 1 1 pdfpagecount {"
     "  pdfgetpage /MediaBox get {=print ( ) print"
-    "} forall (\n) print} for quit"
-  };
+    "} forall (\n) print} for quit"};
 
   if( !run_ghostscript( gs_getdim ) ){
     usr::log::PrintLog( usr::log::INTERNAL,
@@ -185,28 +189,26 @@ Canvas::SaveAsPDF( const fs::path& filepath )
   dimstream.close();
   fs::remove( dimpath );
 
-  const float scale
-    = std::max( (float)Width() / ( x2-x1 ), (float)Height() / ( y2-y1 ) );
+  const float scale =
+    std::max( (float)Width() / ( x2-x1 ), (float)Height() / ( y2-y1 ) );
 
   const unsigned newwidth  = std::ceil( ( x2-x1 ) * scale );
   const unsigned newheight = std::ceil( ( y2-y1 ) * scale );
 
   // Command for rescaling the PDF file.
   const std::vector<std::string> gs_fixscale = {
-    "gs",
-    "-dNOPAUSE",
-    "-dQUIET",
-    "-dBATCH",
-    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
-    "-sDEVICE=pdfwrite",
-    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  newwidth ),
-    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", newheight ),
-    "-dAutoRotatePages=/None",
-    "-dFIXEDMEDIA",
-    "-dPDFFitPage",
-    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
-    "-f",                                 tmp2path
-  };
+    "gs",                                               "-dNOPAUSE",
+    "-dQUIET",                                          "-dBATCH", usr::fstr(
+      "-dNumRenderingThreads=%u",
+      usr::NumOfThreads() / 2+1 ),
+    "-sDEVICE=pdfwrite",                                usr::fstr(
+      "-dDEVICEWIDTHPOINTS=%d",                         newwidth ),
+    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d",               newheight ),
+    "-dAutoRotatePages=/None",                          "-dFIXEDMEDIA",
+    "-dPDFFitPage",                                     usr::fstr(
+      "-sOutputFile=%s",
+      filepath.string() ),                              "-f",
+    tmp2path};
 
   if( !run_ghostscript( gs_fixscale ) ){
     usr::log::PrintLog( usr::log::INTERNAL,
@@ -245,21 +247,25 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
   const double scale = (double)len::ROOT_DPI / dpi;
 
   const std::vector<std::string> gs_png = {
-    "gs",
-    "-dNOPAUSE",
+    "gs",                         "-dNOPAUSE",
     "-dQUIET",
-    "-dBATCH",
-    usr::fstr( "-dNumRenderingThreads=%u",usr::NumOfThreads() / 2+1 ),
+    "-dBATCH",                    usr::fstr(
+      "-dNumRenderingThreads=%u",
+      usr::NumOfThreads() / 2
+      +1 ),
     "-sstdout=/dev/null",                 // suppressing all error
-    "-sDEVICE=pngalpha",
-    usr::fstr( "-sOutputFile=%s",         filepath.string() ),
-    usr::fstr( "-r%d",                    dpi ),
-    usr::fstr( "-dDEVICEWIDTHPOINTS=%d",  Width() * scale ),
-    usr::fstr( "-dDEVICEHEIGHTPOINTS=%d", Height() * scale ),
-    "-dAutoRotatePages=/None",            // Don't attempt to rotate
-    "-dUseCropBox",                       // Trimming the PDF file
-    "-f",
-    tmppath };
+    "-sDEVICE=pngalpha",          usr::fstr(
+      "-sOutputFile=%s",
+      filepath.string() ),
+    usr::fstr( "-r%d",            dpi ),
+    usr::fstr(
+      "-dDEVICEWIDTHPOINTS=%d",
+      Width() * scale ),          usr::fstr(
+      "-dDEVICEHEIGHTPOINTS=%d",
+      Height() * scale ),
+    "-dAutoRotatePages=/None",    // Don't attempt to rotate
+    "-dUseCropBox",               // Trimming the PDF file
+    "-f",                         tmppath };
 
   if( run_ghostscript( gs_png ) ){
     fs::remove( tmppath );
@@ -280,7 +286,7 @@ Canvas::SaveAsPNG( const fs::path& filepath, const unsigned dpi )
  * should be used to identify the canvas object in the root file has to be
  * explicitly specified during the save call. The .root file (and parent
  * directory) would be created if it doesn't already exits. If an object with
- *the
+ * the
  * specified name already exists in the .root file, the object would be
  * overwritten.
  */
@@ -288,7 +294,7 @@ void
 Canvas::SaveToROOT( const fs::path& filepath, const std::string& objname )
 {
   Finalize( filepath );
-  TFile* my_file = TFile::Open( filepath.c_str(), "UPDATE" );
+  TFile*my_file = TFile::Open( filepath.c_str(), "UPDATE" );
   TCanvas_().Write( objname.c_str(), TFile::kOverwrite );
   my_file->Close();
   delete my_file;
@@ -307,10 +313,10 @@ void
 Canvas::SaveAsCPP( const fs::path& filepath )
 {
   Finalize( filepath );
-  const std::string tempfile
-    = usr::fstr( "/tmp/%s_%s.cxx",
-                 RandomString( 6 ),
-                 filepath.stem().string() );
+  const std::string tempfile = usr::fstr( "/tmp/%s_%s.cxx",
+                                          RandomString(
+                                            6 ),
+                                          filepath.stem().string() );
   TCanvas_().SaveAs( tempfile.c_str() );
   fs::copy( tempfile, filepath, fs::copy_options::overwrite_existing  );
   fs::remove( tempfile );
@@ -328,7 +334,8 @@ fs::path
 Canvas::SaveTempPDF( const fs::path& finalpath )
 {
   const std::string temppdf = usr::fstr( "/tmp/%s_%s.pdf",
-                                         usr::RandomString( 6 ),
+                                         usr::RandomString(
+                                           6 ),
                                          finalpath.stem().string() );
   TCanvas_().SaveAs( temppdf.c_str() );
   return temppdf;
@@ -356,11 +363,11 @@ Canvas::SaveTempPDF( const fs::path& finalpath )
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
-  void*        gs_inst    = nullptr;
-  int          gs_status  = 0;
-  int          gs_status1 = 0;
-  int          gs_argc    = args.size();
-  const char** gs_argv    = new const char*[args.size()];
+  void*       gs_inst    = nullptr;
+  int         gs_status  = 0;
+  int         gs_status1 = 0;
+  int         gs_argc    = args.size();
+  const char**gs_argv    = new const char*[args.size()];
 
   for( unsigned i = 0; i < args.size(); ++i ){
     gs_argv[i] = args.at( i ).c_str();
@@ -379,9 +386,8 @@ run_ghostscript( const std::vector<std::string>& args )
     return false;
   }
 
-  gs_status = gsapi_init_with_args( gs_inst,
-                                    gs_argc,
-                                    const_cast<char**>( gs_argv ) );
+  gs_status =
+    gsapi_init_with_args( gs_inst, gs_argc, const_cast<char**>( gs_argv ) );
   gs_status1 = gsapi_exit( gs_inst );
   if( gs_status == 0 || gs_status1 == gs_error_Quit ){
     gs_status = gs_status1;
@@ -401,6 +407,7 @@ run_ghostscript( const std::vector<std::string>& args )
 #else
 
 #include <cstdlib>
+
 /**
  * @brief Using system which to check for command availability.
  */
@@ -418,10 +425,9 @@ has_ghostscript()
 bool
 run_ghostscript( const std::vector<std::string>& args )
 {
-  static const char legalchar[] = "abcdefghijklmnopqrstuvwxyz"
-                                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                  "0123456789"
-                                  "._-=/ (){}\n\"";
+  static const char legalchar[] =
+    "abcdefghijklmnopqrstuvwxyz" "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "0123456789"
+    "._-=/ (){}\n\"";
   std::string cmd;
 
   for( const auto arg : args ){
@@ -439,8 +445,7 @@ run_ghostscript( const std::vector<std::string>& args )
                                    cmd[ cmd.find_first_not_of( legalchar ) ] ) );
     return false;
   } else if( !has_ghostscript() ){
-    usr::log::PrintLog( usr::log::INTERNAL,
-                        "Ghostscript is not available." );
+    usr::log::PrintLog( usr::log::INTERNAL, "Ghostscript is not available." );
     return false;
   } else {
     usr::GetCMDSTDOutput( cmd );

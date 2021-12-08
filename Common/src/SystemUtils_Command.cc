@@ -53,6 +53,7 @@ GetCMDOutput( const std::string& cmd )
 {
   static const unsigned MAXBUFFER = 65536;
   static unsigned       callcount = 0;
+
   // Main reference
   std::array<char, MAXBUFFER> buffer;
   std::string                 result;
@@ -78,7 +79,6 @@ std::string
 GetCMDSTDOutput( const std::string& cmd )
 {
   return GetCMDOutput( cmd+" 2> /dev/null" );
-
 }
 
 
@@ -107,7 +107,8 @@ HasProcess( const std::string& cmd, const std::string& exclude )
   static const std::string common     = "ps -U ${USER} | awk '{print $4}' ";
   static const std::string count      = " | wc --lines";
   const std::string        grepcmd    = " | grep "+cmd;
-  const std::string        excludecmd = exclude == "" ? "" :
+  const std::string        excludecmd = exclude == "" ?
+                                        "" :
                                         " | grep --invert-match "+exclude;
 
   const std::string ans = GetCMDOutput( common+grepcmd+excludecmd+count );
@@ -134,12 +135,12 @@ WaitProcess( const std::string& x,
 
     if( proc_count == 0 ){ break; }
 
-    cout <<
-      usr::fstr( "\r[%s|%s] %d instance(s) of [%s]...",
-                 GetEnv( "HOSTNAME" ),
-                 time_string,
-                 proc_count,
-                 x )
+    cout << usr::fstr( "\r[%s|%s] %d instance(s) of [%s]...",
+                       GetEnv(
+                         "HOSTNAME" ),
+                       time_string,
+                       proc_count,
+                       x )
          << flush;
 
     SleepMillSec( sleeptime );

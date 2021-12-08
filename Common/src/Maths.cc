@@ -280,8 +280,7 @@ StdDev( const std::vector<double>& vec )
 
   std::transform( vec.begin(),
                   vec.end(),
-                  diff.begin(),
-                  [mean]( const double x ){
+                  diff.begin(), [mean]( const double x ){
       return x-mean;
     } );
   const double sq = std::inner_product( diff.begin(),
@@ -311,7 +310,6 @@ Median( const std::vector<double>& vec )
   } else {
     return dup.at( ( dup.size()-1 ) / 2 );
   }
-
 }
 
 
@@ -372,6 +370,7 @@ LinSpace( const double start, const double end, const size_t num )
 
   // Special case for num == 0
   if( num == 0 ){ return ans; }
+
   // Special case for num == 1
   if( num == 1 ){ ans.push_back( start ); return ans; }
 

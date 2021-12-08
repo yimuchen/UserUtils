@@ -17,10 +17,8 @@ ParseEvent( const std::string& input  )
       const std::string run  = match[1];
       const std::string lumi = match[2];
       const std::string evt  = match[3];
-      return edm::EventID( std::stoi( run )
-                           ,
-                           std::stoi( lumi )
-                           ,
+      return edm::EventID( std::stoi( run ),
+                           std::stoi( lumi ),
                            std::stoi( evt ) );
     } else {
       return defret;
@@ -29,10 +27,8 @@ ParseEvent( const std::string& input  )
     if( match.size() == 3 ){
       const std::string lumi_str = match[1];
       const std::string evt_str  = match[2];
-      return edm::EventID( 1
-                           ,
-                           std::stoi( lumi_str )
-                           ,
+      return edm::EventID( 1,
+                           std::stoi( lumi_str ),
                            std::stoi( evt_str ) );
     } else {
       return defret;

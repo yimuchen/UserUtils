@@ -73,14 +73,14 @@ public:
    */
   TH1D& PlotHist( TH1D&, const std::vector<RooCmdArg>& );
   inline TH1D&
-  PlotHist( TH1D* x, const std::vector<RooCmdArg>& list )
+  PlotHist( TH1D*x, const std::vector<RooCmdArg>& list )
   {
     return PlotHist( *x, list );
   }
 
 
   inline TH1D& PlotHist( TH1D& x ){ return PlotHist( &x, {} ); }
-  inline TH1D& PlotHist( TH1D* x ){ return PlotHist( x, {} ); }
+  inline TH1D& PlotHist( TH1D*x ){ return PlotHist( x, {} ); }
   template<typename ... Args>
   inline TH1D&
   PlotHist( TH1D& x, const RooCmdArg & arg1, Args ... args )
@@ -91,7 +91,7 @@ public:
 
   template<typename ... Args>
   inline TH1D&
-  PlotHist( TH1D* x, const RooCmdArg & arg1, Args ... args )
+  PlotHist( TH1D*x, const RooCmdArg & arg1, Args ... args )
   {
     return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -105,14 +105,14 @@ public:
    */
   TH1D& PlotProfile( TProfile&, const std::vector<RooCmdArg>& );
   inline TH1D&
-  PlotProfile( TProfile* x, const std::vector<RooCmdArg>& list )
+  PlotProfile( TProfile*x, const std::vector<RooCmdArg>& list )
   {
     return PlotProfile( *x, list );
   }
 
 
   inline TH1D& PlotProfile( TProfile& x ){ return PlotProfile( x, {} ); }
-  inline TH1D& PlotProfile( TProfile* x ){ return PlotProfile( *x, {} );}
+  inline TH1D& PlotProfile( TProfile*x ){ return PlotProfile( *x, {} );}
   template<typename ... Args>
   inline TH1D&
   PlotProfile( TProfile& x, const RooCmdArg& arg1, Args ... args )
@@ -123,7 +123,7 @@ public:
 
   template<typename ... Args>
   inline TH1D&
-  PlotProfile( TProfile* x, const RooCmdArg& arg1, Args ... args )
+  PlotProfile( TProfile*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotProfile( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -137,14 +137,14 @@ public:
    */
   TEfficiency& PlotEff( TEfficiency&, const std::vector<RooCmdArg>& );
   inline TEfficiency&
-  PlotEff( TEfficiency* x, const std::vector<RooCmdArg>& list )
+  PlotEff( TEfficiency*x, const std::vector<RooCmdArg>& list )
   {
     return PlotEff( *x, list );
   }
 
 
   inline TEfficiency& PlotEff( TEfficiency& x ){ return PlotEff( x, {} ); }
-  inline TEfficiency& PlotEff( TEfficiency* x ){ return PlotEff( *x, {} );}
+  inline TEfficiency& PlotEff( TEfficiency*x ){ return PlotEff( *x, {} );}
   template<typename ... Args>
   inline TEfficiency&
   PlotEff( TEfficiency& x, const RooCmdArg& arg1, Args ... args )
@@ -155,7 +155,7 @@ public:
 
   template<typename ... Args>
   inline TEfficiency&
-  PlotEff( TEfficiency* x, const RooCmdArg& arg1, Args ... args )
+  PlotEff( TEfficiency*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotEff( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -169,14 +169,14 @@ public:
    */
   TGraph& PlotGraph( TGraph&, const std::vector<RooCmdArg>& );
   inline TGraph&
-  PlotGraph( TGraph* x, const std::vector<RooCmdArg>& list )
+  PlotGraph( TGraph*x, const std::vector<RooCmdArg>& list )
   {
     return PlotGraph( *x, list );
   }
 
 
   inline TGraph& PlotGraph( TGraph& x ){ return PlotGraph( x, {} ); }
-  inline TGraph& PlotGraph( TGraph* x ){ return PlotGraph( x, {} );}
+  inline TGraph& PlotGraph( TGraph*x ){ return PlotGraph( x, {} );}
   template<typename ... Args>
   inline TGraph&
   PlotGraph( TGraph& x, const RooCmdArg& arg1, Args ... args )
@@ -187,7 +187,7 @@ public:
 
   template<typename ... Args>
   inline TGraph&
-  PlotGraph( TGraph* x, const RooCmdArg& arg1, Args ... args )
+  PlotGraph( TGraph*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -201,14 +201,14 @@ public:
    */
   TGraph& PlotFunc( TF1&, const std::vector<RooCmdArg>& );
   inline TGraph&
-  PlotFunc( TF1* x, const std::vector<RooCmdArg>& list )
+  PlotFunc( TF1*x, const std::vector<RooCmdArg>& list )
   {
     return PlotFunc( *x, list );
   }
 
 
   inline TGraph& PlotFunc( TF1& x ){ return PlotFunc( x, {} ); }
-  inline TGraph& PlotFunc( TF1* x ){ return PlotFunc( x, {} );}
+  inline TGraph& PlotFunc( TF1*x ){ return PlotFunc( x, {} );}
   template<typename ... Args>
   inline TGraph&
   PlotFunc( TF1& x, const RooCmdArg& arg1, Args ... args )
@@ -219,7 +219,7 @@ public:
 
   template<typename ... Args>
   inline TGraph&
-  PlotFunc( TF1* x, const RooCmdArg& arg1, Args ... args )
+  PlotFunc( TF1*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -233,7 +233,7 @@ public:
    */
   TGraphAsymmErrors& PlotData( RooAbsData&, const std::vector<RooCmdArg>& );
   inline TGraphAsymmErrors&
-  PlotData( RooAbsData* x, const std::vector<RooCmdArg>& list )
+  PlotData( RooAbsData*x, const std::vector<RooCmdArg>& list )
   {
     return PlotData( *x, list );
   }
@@ -244,11 +244,15 @@ public:
   {
     return PlotData( x, {} );
   }
+
+
   inline TGraphAsymmErrors&
-  PlotData( RooAbsData* x )
+  PlotData( RooAbsData*x )
   {
     return PlotData( x, {} );
   }
+
+
   template<typename ... Args>
   inline TGraphAsymmErrors&
   PlotData( RooAbsData& x, const RooCmdArg& arg1, Args ... args )
@@ -259,7 +263,7 @@ public:
 
   template<typename ... Args>
   inline TGraphAsymmErrors&
-  PlotData( RooAbsData* x, const RooCmdArg& arg1, Args ... args )
+  PlotData( RooAbsData*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotData( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -274,14 +278,14 @@ public:
    */
   TGraph& PlotPdf( RooAbsPdf&, const std::vector<RooCmdArg>& );
   inline TGraph&
-  PlotPdf( RooAbsPdf* x, const std::vector<RooCmdArg>& list )
+  PlotPdf( RooAbsPdf*x, const std::vector<RooCmdArg>& list )
   {
     return PlotPdf( *x, list );
   }
 
 
   inline TGraph& PlotPdf( RooAbsPdf& x ){ return PlotPdf( x, {} ); }
-  inline TGraph& PlotPdf( RooAbsPdf* x ){ return PlotPdf( x, {} );}
+  inline TGraph& PlotPdf( RooAbsPdf*x ){ return PlotPdf( x, {} );}
   template<typename ... Args>
   inline TGraph&
   PlotPdf( RooAbsPdf& x, const RooCmdArg& arg1, Args ... args )
@@ -292,7 +296,7 @@ public:
 
   template<typename ... Args>
   inline TGraph&
-  PlotPdf( RooAbsPdf* x, const RooCmdArg& arg1, Args ... args )
+  PlotPdf( RooAbsPdf*x, const RooCmdArg& arg1, Args ... args )
   {
     return PlotPdf( x, MakeVector<RooCmdArg>( arg1, args ... ) );
   }
@@ -380,6 +384,7 @@ public:
    * @brief enum for specifying y range adjustment type.
    */
   enum rangetype { hist, graph, ratio, pull, aut };
+
   void AutoSetYRange( const rangetype = aut );
   void SetLogy( int );
   void SetLogx( int );
@@ -391,23 +396,19 @@ public:
   void FinalizeLegend( const align x );
 
   /** @brief returning reference to internal legend object. */
-  inline TLegend&
-  Legend(){ return _legend; }
+  inline TLegend&Legend(){ return _legend; }
 
   /** @brief returning reference to internal Roo1DFrame object. */
-  inline RooFrame&
-  FrameObj(){ return _frame; }
+  inline RooFrame&FrameObj(){ return _frame; }
 
   /** @brief returning reference to internal Roo1DFrame object. */
   inline const RooFrame&
   FrameObj() const { return _frame; }
 
   /** @brief returning the stored y range adjustment type */
-  inline rangetype&
-  RangeType(){ return _prevrangetype; }
+  inline rangetype&RangeType(){ return _prevrangetype; }
 
 protected:
-
   /**
    * @brief RooPlot object used for generating graphs for ROOFIT objects
    */
@@ -417,11 +418,12 @@ protected:
    * @brief Internal @ROOT{THStack} object for assisting with stacked histogram
    * plots.
    */
-  THStack* _workingstack;
+  THStack*_workingstack;
 
   /** @{ @brief  tracking the min/max values of the data plotted on the pad  */
   double _datamax;
   double _datamin;
+
   /** @} */
 
   /** @brief
@@ -439,10 +441,9 @@ protected:
   /** @brief list of lines that need finalizing just before plot is finalized */
   std::vector<TLine*> _linelist;
 
-  static
-  void SetAxisTitle( TAxis&,
-                     const std::string& title,
-                     const std::string& unit = "" );
+  static void SetAxisTitle( TAxis&,
+                            const std::string& title,
+                            const std::string& unit = "" );
 
   void AutoSetYRangeHist();
   void AutoSetYRangeGraph();
@@ -459,8 +460,7 @@ protected:
   void    TrackObjectY( const TObject& obj, const int tracky );
   TGraph& MakePdfGraph( RooAbsPdf&             pdf,
                         const RooArgContainer& arglist );
-  TGraph& MakeTF1Graph( TF1&,
-                        const RooArgContainer& arglist );
+  TGraph&            MakeTF1Graph( TF1&, const RooArgContainer& arglist );
   TGraphAsymmErrors& MakeDataGraph( RooAbsData&            data,
                                     const RooArgContainer& arglist );
   TGraphAsymmErrors& GenGraph( RooAbsData& data, RooLinkedList& arglist );
@@ -475,6 +475,7 @@ protected:
   void CreateAxisObject( const TGraph&, const RooArgContainer&  );
   void CreateAxisObject( const TF1&, const RooArgContainer&  );
   void CreateAxisObject( const TEfficiency&, const RooArgContainer&  );
+
   // Common call function to be called by the CreateAxisObject calls
   void PlotCreatedAxisObject( TH1D& );
 };

@@ -59,28 +59,18 @@ MakeMinos( const ROOT::Math::IMultiGenFunction& nllfunction,
   double upperbound;
   double lowerbound;
 
-  usr::stat::MinosError( nllfunction
-                         ,
-                         varfunction
-                         ,
-                         initguess
-                         ,
-                         central
-                         ,
-                         lowerbound
-                         ,
-                         upperbound
-                         ,
-                         confidencelevel
-                         ,
-                         upperguess
-                         ,
+  usr::stat::MinosError( nllfunction,
+                         varfunction,
+                         initguess,
+                         central,
+                         lowerbound,
+                         upperbound,
+                         confidencelevel,
+                         upperguess,
                          lowerguess );
 
-  return Measurement( central
-                      ,
-                      fabs( upperbound-central )
-                      ,
+  return Measurement( central,
+                      fabs( upperbound-central ),
                       fabs( central-lowerbound ) );
 }
 
@@ -110,7 +100,7 @@ MakeMinos( const ROOT::Math::IMultiGenFunction& nllfunction,
  *   used instead for the linear function for the denominator in the @NLL
  *   function when x is past half-way from the central value to the original
  *   singular point, such that the approximation would be extended to an
- *infinite
+ * infinite
  *   domain. The exponential function is designed such that the denominator and
  *   its derivative is continuous.
  */
@@ -169,12 +159,13 @@ LinearVarianceNLL( const double x, const Measurement& m )
  * usr::LazyEvaluateUncorrelated method.
  */
 extern Measurement
-EvaluateUncorrelated( const std::vector<Measurement>& m_list,
+EvaluateUncorrelated( const std::vector<Measurement>&      m_list,
                       const ROOT::Math::IMultiGenFunction& varfunction,
-                      const double confidencelevel,
-                      double (* nll )( double, const Measurement& ) )
+                      const double                         confidencelevel,
+                      double (*                            nll )( double,
+                                       const Measurement& ) )
 {
-  auto masternll = [&m_list, nll]( const double* x )->double {
+  auto masternll = [&m_list, nll]( const double*x )->double {
                      double ans = 0;
 
                      for( unsigned i = 0; i < m_list.size(); ++i ){
@@ -195,10 +186,8 @@ EvaluateUncorrelated( const std::vector<Measurement>& m_list,
   }
 
   for( unsigned i = 0; i < m_list.size(); ++i  ){
-    const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                     ,
-                                                     init.data(),
-                                                     i );
+    const double diff =
+      ROOT::Math::Derivator::Eval( varfunction, init.data(), i );
     diff_sqsum += diff * diff;
   }
 
@@ -207,10 +196,8 @@ EvaluateUncorrelated( const std::vector<Measurement>& m_list,
   // Guess for the boundaries for the input required for getting the upper and
   // lower uncertainties based on the derivatives of the variable function.
   for( unsigned i = 0; i < m_list.size(); ++i ){
-    const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                     ,
-                                                     init.data(),
-                                                     i );
+    const double diff =
+      ROOT::Math::Derivator::Eval( varfunction, init.data(), i );
     const double w = fabs( diff / diff_sqsum );
     if( diff > 0 ){
       upperguess.push_back( init.at( i )+w * m_list.at( i ).AbsUpperError() );
@@ -221,16 +208,11 @@ EvaluateUncorrelated( const std::vector<Measurement>& m_list,
     }
   }
 
-  return MakeMinos( nllfunction
-                    ,
-                    varfunction
-                    ,
-                    init.data()
-                    ,
-                    confidencelevel
-                    ,
-                    upperguess.data()
-                    ,
+  return MakeMinos( nllfunction,
+                    varfunction,
+                    init.data(),
+                    confidencelevel,
+                    upperguess.data(),
                     lowerguess.data() );
 }
 
@@ -245,11 +227,12 @@ EvaluateUncorrelated( const std::vector<Measurement>& m_list,
  */
 Measurement
 SumUncorrelated( const vector<Measurement>& m_list,
-                 const double confidencelevel,
-                 double (* nll )( double, const Measurement& ) )
+                 const double               confidencelevel,
+                 double (*                  nll )( double,
+                                  const Measurement& ) )
 {
   const unsigned dim = m_list.size();
-  auto           Sum = [dim]( const double* x ){
+  auto           Sum = [dim]( const double*x ){
                          double ans = 0;
 
                          for( unsigned i = 0; i < dim; ++i ){
@@ -259,12 +242,9 @@ SumUncorrelated( const vector<Measurement>& m_list,
                          return ans;
                        };
 
-  return EvaluateUncorrelated( m_list
-                               ,
-                               ROOT::Math::Functor( Sum, dim )
-                               ,
-                               confidencelevel
-                               ,
+  return EvaluateUncorrelated( m_list,
+                               ROOT::Math::Functor( Sum, dim ),
+                               confidencelevel,
                                nll );
 }
 
@@ -279,11 +259,12 @@ SumUncorrelated( const vector<Measurement>& m_list,
  */
 Measurement
 ProdUncorrelated( const std::vector<Measurement>& m_list,
-                  const double confidencelevel,
-                  double (* nll )( double, const Measurement& ) )
+                  const double                    confidencelevel,
+                  double (*                       nll )( double,
+                                   const Measurement& ) )
 {
   const unsigned dim = m_list.size();
-  auto           Prod = [dim]( const double* x ){
+  auto           Prod = [dim]( const double*x ){
                           double ans = 1;
 
                           for( unsigned i = 0; i < dim; ++i ){
@@ -301,12 +282,9 @@ ProdUncorrelated( const std::vector<Measurement>& m_list,
     normlist.push_back( p.NormParam() );
   }
 
-  return prod * EvaluateUncorrelated( normlist
-                                      ,
-                                      ROOT::Math::Functor( Prod, dim )
-                                      ,
-                                      confidencelevel
-                                      ,
+  return prod * EvaluateUncorrelated( normlist,
+                                      ROOT::Math::Functor( Prod, dim ),
+                                      confidencelevel,
                                       nll );
 }
 
@@ -361,8 +339,7 @@ LazyEvaluateUncorrelated( const std::vector<Measurement>&      paramlist,
   }
 
   for( unsigned i = 0; i < paramlist.size(); ++i ){
-    const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                     ,
+    const double diff = ROOT::Math::Derivator::Eval( varfunction,
                                                      center.data(),
                                                      i );
     diff_sqsum += diff * diff;
@@ -371,8 +348,7 @@ LazyEvaluateUncorrelated( const std::vector<Measurement>&      paramlist,
   diff_sqsum = std::sqrt( diff_sqsum );
 
   for( unsigned i = 0; i < paramlist.size(); ++i ){
-    const double diff = ROOT::Math::Derivator::Eval( varfunction
-                                                     ,
+    const double diff = ROOT::Math::Derivator::Eval( varfunction,
                                                      center.data(),
                                                      i );
     const double w = fabs( diff / diff_sqsum );
