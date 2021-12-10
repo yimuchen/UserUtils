@@ -375,10 +375,11 @@ public:
   // Histogram axis title setting
   static const double autobinwidth;
   static const double forcevarbinwidth;
-  void                SetHistAxisTitles( const std::string& title,
-                                         const std::string& unit          = "",
-                                         const std::string& ytitle        = "Events",
-                                         const double       forcebinwidth = autobinwidth );
+
+  void SetHistAxisTitles( const std::string& title,
+                          const std::string& unit          = "",
+                          const std::string& ytitle        = "Events",
+                          const double       forcebinwidth = autobinwidth );
 
   /**
    * @brief enum for specifying y range adjustment type.
@@ -396,17 +397,34 @@ public:
   void FinalizeLegend( const align x );
 
   /** @brief returning reference to internal legend object. */
-  inline TLegend&Legend(){ return _legend; }
+  inline TLegend& Legend(){ return _legend; }
 
   /** @brief returning reference to internal Roo1DFrame object. */
-  inline RooFrame&FrameObj(){ return _frame; }
+  inline RooFrame& FrameObj(){ return _frame; }
 
   /** @brief returning reference to internal Roo1DFrame object. */
   inline const RooFrame&
   FrameObj() const { return _frame; }
 
   /** @brief returning the stored y range adjustment type */
-  inline rangetype&RangeType(){ return _prevrangetype; }
+  inline rangetype& RangeType(){ return _prevrangetype; }
+
+  /**
+   * @{
+   * @brief Helper functions for converting functions into TGraphs for
+   * plotting. Declaring as static function for simpler debugging.
+   */
+  static TGraph* MakeTF1GraphCentral( const TF1&   func,
+                                      const double precision );
+  static TGraphAsymmErrors* MakeTF1GraphNoCorr( const TF1&   func,
+                                                const double precision,
+                                                const double z );
+  static TGraphAsymmErrors* MakeTF1GraphMatrix( const TF1&         func,
+                                                const TMatrixDSym& corr,
+                                                const double       precision,
+                                                const double       z );
+
+  /** @} */
 
 protected:
   /**

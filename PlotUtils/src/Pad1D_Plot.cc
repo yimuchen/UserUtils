@@ -22,10 +22,12 @@
 
 #include "CmdSetAttr.hpp"
 
+#include "Math/SpecFunc.h"
 #include "TDecompChol.h"
 #include "TFitResult.h"
 #include "TGraphErrors.h"
 #include "TList.h"
+#include "TMatrixDEigen.h"
 #include "TStyle.h"
 
 // static variables for new object generation
@@ -436,97 +438,177 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 
 
 /**
+ * @brief  Making the central value of the function into a TGraph in
+ * preparation for plotting.
+ *
+ * Notice that the caller of this function should handle the ownership of the
+ * generated TGraph object.
+ */
+TGraph*
+Pad1D::MakeTF1GraphCentral( const TF1& func, const double precision )
+{
+  TF1            f       = func; // Making a copy of the function
+  const double   xmax    = f.GetXmax();
+  const double   xmin    = f.GetXmin();
+  const unsigned xsample = 1 / ( precision )+1;
+
+  std::vector<double> x( xsample );
+  std::vector<double> y( xsample );
+
+  // Getting common elements for graph generation
+  for( unsigned i = 0; i < xsample; ++i ){
+    const double xval = xmin+i * ( xmax-xmin ) * precision;
+    const double yval = f.Eval( xval );
+    x[i] = xval;
+    y[i] = yval;
+  }
+
+  TGraph* ans = new TGraph( x.size(), x.data(), y.data() );
+  ans->SetName( ( func.GetName()+std::string( "_gengraph" )
+                  +usr::RandomString( 6 )).c_str() );
+  return ans;
+}
+
+
+/**
+ * @brief Creating the TF1 with uncertainty, ignoring the correlation between
+ * the various fitting parameters.
+ *
+ * Here we will simply call the MakeTF1GraphMatrix method, with a perfectly
+ * diagonal covariance matrix.
+ */
+TGraphAsymmErrors*
+Pad1D::MakeTF1GraphNoCorr( const TF1&   func,
+                           const double precision,
+                           const double z )
+{
+  // Constructing the diagonal covariance matrix
+  TMatrixDSym corr( func.GetNpar() );
+  for( int i = 0 ; i < func.GetNpar(); ++i  ){
+    corr[i][i] = func.GetParError( i ) * func.GetParError( i );
+  }
+
+  return MakeTF1GraphMatrix( func, corr, precision, z );
+}
+
+
+/**
+ * @brief Creating the TF1 with uncertainty, given the covariance matrix of the
+ * fitting paramters.
+ *
+ * Here we are assuming that the fit results gives  a sufficiently
+ * ellipsoid-like uncertainty for the fit paramters around the function fit
+ * values. The principle radii of the ellipsoid is then given by the eigenvalue
+ * and eigenvector of the covariance matrix. We then take a sample of parameter
+ * points on this ellipsoid (scaled by the desired "sigma interval"),  and use
+ * this to compute an envelope of the function given the fit result.
+ *
+ * For fixed parameters, the default components along the fixed parameter index
+ * will be zero. As this breaks the eigenvector decomposition function, we will
+ * construct the matrix such that the diagonal value will always be non-zero,
+ */
+TGraphAsymmErrors*
+Pad1D::MakeTF1GraphMatrix( const TF1&         func,
+                           const TMatrixDSym& _corr,
+                           const double       precision,
+                           const double       z )
+{
+  std::unique_ptr<TGraph> central( MakeTF1GraphCentral( func, precision ));
+
+  // Making a duplicate of the original function object.
+  TF1         f    = func;
+  TMatrixDSym corr = _corr;
+
+  // Making sure the matrix is not sigular
+  assert( f.GetNpar() == corr.GetNcols() );
+  for( int i = 0 ; i < f.GetNpar() ; ++i ){
+    if( corr[i][i] == 0 ){
+      corr[i][i] = 0.000001;
+    }
+  }
+
+  const unsigned      npar = f.GetNpar();
+  const TMatrixDEigen eigen( corr );
+
+  for( unsigned i = 0 ; i < npar ; ++i ){
+    if( eigen.GetEigenValuesIm()[i] != 0 ){
+      usr::log::PrintLog(
+        usr::log::INTERNAL,
+        "Warning! Covariance matrix generated imaginary eigenvalue components!"
+        "Reverting to uncorrelated version of function generation" );
+      return MakeTF1GraphNoCorr( func, precision, z );
+    }
+  }
+
+  TMatrixD radii = eigen.GetEigenValues();
+  radii.Sqrt();
+
+  // preparing container for uncertainties.
+  std::vector<double>       yerrhi( central->GetN(), 0.0 );
+  std::vector<double>       yerrlo( central->GetN(), 0.0 );
+  const std::vector<double> zeros( central->GetN(), 0.0 );
+
+  // calculating number of samples based on the surface area of an n-sphere:
+  double nsamples = 400;
+  nsamples *= TMath::Power( TMath::Pi(), double(npar) / 2 );
+  nsamples /= TMath::Gamma( double(npar) / 2 );
+
+  for( unsigned i = 0 ; i < nsamples ; ++i ){
+    const TVectorD shift = ( radii * eigen.GetEigenVectors()).T()
+                           * usr::RandomOnSphere( npar ) * z;
+
+    // Shifting the paramters
+    for( unsigned j = 0 ; j < npar; ++j  ){
+      f.SetParameter( j, func.GetParameter( j )+shift[j] );
+    }
+
+    // Evaluating the various function values
+    for( int j = 0 ; j < central->GetN(); ++j ){
+      const double x      = central->GetX()[j];
+      const double cent_y = central->GetY()[j];
+      const double test_y = f.Eval( x );
+
+      yerrhi[j] = std::max( test_y-cent_y, yerrhi.at( j ));
+      yerrlo[j] = std::max( cent_y-test_y, yerrlo.at( j ));
+    }
+  }
+
+  TGraphAsymmErrors* ans = new TGraphAsymmErrors( central->GetN(),
+                                                  central->GetX(),
+                                                  central->GetY(),
+                                                  zeros.data(),
+                                                  zeros.data(),
+                                                  yerrlo.data(),
+                                                  yerrhi.data());
+  ans->SetName( ( func.GetName()+std::string( "_gengraph" )
+                  +usr::RandomString( 6 )).c_str() );
+  return ans;
+}
+
+
+/**
  * @brief Generating a graph representation of the TF1 object.
  */
 TGraph&
 Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 {
-  static const unsigned psample   = 300;
-  const std::string     graphname = func.GetName()
-                                    +std::string( "_gengraph" )
-                                    +RandomString( 6 );
+  const double precision = args.GetDouble( "Precision" );
 
-  TF1            f       = func; // Making a copy of the function
-  const double   xmax    = f.GetXmax();
-  const double   xmin    = f.GetXmin();
-  const double   xspace  = args.Get( "Precision" ).getDouble( 0 );
-  const unsigned xsample = 1 / ( xspace )+1;
-
-  std::vector<double> x( xsample );
-  std::vector<double> y( xsample );
-  std::vector<double> yerrhi( xsample );
-  std::vector<double> yerrlo( xsample );
-  std::vector<double> zero( xsample );
-
-  // Getting common elements for graph generation
-  for( unsigned i = 0; i < xsample; ++i ){
-    const double xval = xmin+i * ( xmax-xmin ) * xspace;
-    const double yval = f.Eval( xval );
-
-    x[i]      = xval;
-    y[i]      = yval;
-    yerrlo[i] = 0;
-    yerrhi[i] = 0;
-    zero[i]   = 0;
-  }
-
+  TGraph* g;
   if( !args.Has( "VisualizeError" ) ){
-    TGraph& graph = MakeObj<TGraph>( x.size(), x.data(), y.data() );
-    graph.SetName( graphname.c_str() );
-    return graph;
+    g = MakeTF1GraphCentral( func, precision );
   } else {
     const TFitResult& fit =
       dynamic_cast<const TFitResult&>( args.GetObj( "VisualizeError" ) );
     const double zval = args.GetDouble( "VisualizeError" );
+    const int    corr = args.GetInt( "VisualizeError" );
 
-    const std::vector<double> bestfit_param = fit.Parameters();
-
-    // Getting matrix for random parameter generation
-    const TMatrixDSym cormatrix = fit.GetCovarianceMatrix();
-    const TMatrixD    tmatrix   = usr::DecompCorvariance( cormatrix );
-
-    TVectorD                 vec( tmatrix.GetNrows() );
-    std::mt19937             gen;
-    std::normal_distribution pdf( 0.0, 1.0 );
-
-    // Random sample for parameter space
-    for( unsigned i = 0; i < psample; ++i ){
-
-      // Generating random variation using gaussian
-      for( int j = 0; j < vec.GetNrows(); ++j ){
-        vec[j] = pdf( gen );
-      }
-
-      // Forcing the vector onto unit sphere, then transforming according to
-      // the covariance matrix
-      vec = ( zval / sqrt( vec.Norm2Sqr() ) ) * vec;
-      vec = tmatrix * vec;
-
-      // Shifting to central value of function.
-      for( int j = 0; j < vec.GetNrows(); ++j ){
-        f.SetParameter( j, vec[j]+bestfit_param[j] );
-      }
-
-      // Finding evelope of randomly generated parameter values
-      for( unsigned j = 0; j < xsample; ++j ){
-        const double xval = x.at( j );
-        const double yerr = f.Eval( xval )-y.at( j );
-        yerrhi[j] = std::max( yerr, yerrhi.at( j ) );
-        yerrlo[j] = std::max( -yerr, yerrlo.at( j ) );
-      }
-    }
-
-    TGraphAsymmErrors& graph = MakeObj<TGraphAsymmErrors>( x.size(),
-                                                           x.data(),
-                                                           y.data(),
-                                                           zero.data(),
-                                                           zero.data(),
-                                                           yerrlo.data(),
-                                                           yerrhi.data() );
-
-    graph.SetName( graphname.c_str() );
-    return graph;
+    g = corr ?
+        MakeTF1GraphMatrix( func, fit.GetCovarianceMatrix(), precision, zval ) :
+        MakeTF1GraphNoCorr( func, precision, zval );
   }
+  ClaimObject( g );
+  return *g;
 }
 
 
@@ -685,7 +767,7 @@ TGraph&
 Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
 {
   const RooArgContainer args( arglist, {// Defining default arguments
-        TrackY( tracky::max ),// Default track y: only top
+        TrackY( tracky::max ), // Default track y: only top
         RooArgContainer::CheckList( arglist, "VisualizeError" ) ?
         PlotType( fittedfunc ) :
         PlotType( simplefunc )                         // default plot style.
@@ -789,10 +871,6 @@ Pad1D::MakePdfGraph( RooAbsPdf& pdf, const RooArgContainer& args )
   }
 }
 
-
-// ------------------------------------------------------------------------------
-// Private Helper functions
-// ------------------------------------------------------------------------------
 
 /**
  * @brief Helper function for generating RooAbsPdf plots onto a Pad.
