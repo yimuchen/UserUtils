@@ -49,20 +49,20 @@ Canvas::Canvas( const length_t width,
 
 /**
  * @brief Delete the contained TCanvas object
+ *
+ * We cannot explicitly delete the canvas directly when running this library in
+ * python, as PyROOT has ownership of the TCanvas instance, resulting in a
+ * segmentation fault when the python session exits before explicitly deleting
+ * the object python side (due to the black magic that is involved with how
+ * ROOT works in python, I cannot investigate more, but I guess it has
+ * something to do with the sequence in which python objects are released).
+ *
+ * Since having explicitly calling `del` in python is extremely non-pythonic
+ * for the user, we will the use the kIsOnHeap flag of the canvas to detect
+ * when the canvas can be deleted.
  */
 Canvas::~Canvas()
 {
-  // We cannot explicitly delete the canvas directly when running this library
-  // in
-  // python, as PyROOT has ownership of the TCanvas instance, resulting in a
-  // segmentation fault when the python session exits before explicitly deleting
-  // the object python side (due to the black magic that is involved with how
-  // ROOT works in python, I cannot investigate more, but I guess it has
-  // something to do with the sequence in which python objects are released).
-
-  // Since having explicitly calling `del` in python is extremely non-pythonic
-  // for the user, we will the use the kIsOnHeap flag of the canvas to detect
-  // when the canvas can be deleted.
   if( _canvas->IsOnHeap() ){
     delete _canvas;// TCanvas::Delete cannot be used directly
   }
