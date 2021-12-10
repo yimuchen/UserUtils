@@ -150,9 +150,8 @@ ArgumentExtender::AddOptions( const opt::options_description& desc )
  *
  * Adding the commonly used option for adjusting the verbose level of the main
  * program. The user can also provide the default log level. Notice that the
- * user
- * will not need to set the Log level, that will the handled by the automatic
- * parsing options.
+ * user will not need to set the Log level, that will the handled by the
+ * automatic parsing options.
  */
 ArgumentExtender&
 ArgumentExtender::AddVerboseOpt( const unsigned level )
@@ -214,8 +213,7 @@ ArgumentExtender::ParseFile( const std::string& argfile )
 {
   try {
     std::ifstream f( argfile, std::ios::in );
-    opt::store( opt::parse_config_file( f, Description() ),
-                Args() );
+    opt::store( opt::parse_config_file( f, Description() ), Args() );
     opt::notify( Args() );
   } catch( boost::exception& e ){
     std::cerr << "Error parsing command!" << std::endl <<
