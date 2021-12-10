@@ -344,8 +344,8 @@ Pad1D::AutoSetYRangeRatio()
 
   // rounding to the closest .1 to avoid weird axis tick labels
   const double opdiff = std::ceil( diff * 10 ) / 10.;
-  SetYaxisMax( 1+opdiff * 1.05 );
-  SetYaxisMin( 1-opdiff * 1.05 );
+  SetYaxisMax( 1+opdiff );
+  SetYaxisMin( 1-opdiff );
 }
 
 

@@ -31,7 +31,7 @@ Pad1D::Pad1D( Canvas*c, const PadSize& size, const RangeByVar& range ) :
   _frame         ( range ),
   _workingstack  ( nullptr ),
   _datamax       ( 0 ),
-  _datamin       ( 0.3 ),
+  _datamin       ( 0.95 ),
   _prevrangetype ( rangetype::aut ),
   _legendposition( align::top_right )
 {
@@ -52,7 +52,7 @@ Pad1D::Pad1D( Canvas*        c,
   _frame         ( min, max ),
   _workingstack  ( nullptr ),
   _datamax       ( 0 ),
-  _datamin       ( 0.3 ),
+  _datamin       ( 0.95 ),
   _prevrangetype ( rangetype::aut ),
   _legendposition( align::top_right )
 {
@@ -72,7 +72,7 @@ Pad1D::Pad1D( Canvas*c, const PadSize& size ) :
   PadBase        ( c, size ),
   _workingstack  ( nullptr ),
   _datamax       ( 0 ),
-  _datamin       ( 0.3 ),
+  _datamin       ( 0.95 ),
   _prevrangetype ( rangetype::aut ),
   _legendposition( align::top_right )
 {
