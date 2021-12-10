@@ -185,9 +185,15 @@ enum plot2df
 RooCmdArg Plot2DF( const int );
 RooCmdArg Plot2DF( const std::string& );
 
-RooCmdArg VisualizeError( const TFitResultPtr&, const double z = 1 );
-RooCmdArg VisualizeError( const TFitResult*, const double z    = 1 );
-RooCmdArg VisualizeError( const TFitResult&, const double z    = 1 );
+RooCmdArg VisualizeError( const TFitResultPtr&,
+                          const double z           = 1,
+                          const bool   ignore_corr = false );
+RooCmdArg VisualizeError( const TFitResult*,
+                          const double z           = 1,
+                          const bool   ignore_corr = false );
+RooCmdArg VisualizeError( const TFitResult&,
+                          const double z           = 1,
+                          const bool   ignore_corr = false );
 
 template<typename ... Args>
 inline RooCmdArg

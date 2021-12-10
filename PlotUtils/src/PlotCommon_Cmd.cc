@@ -226,26 +226,33 @@ USERUTILS_COMMON_REGISTERCMD( ScaleY );
 
 /**
  * @brief Switch for presenting fit uncertainty in fit.
+ *
+ * In addition to the "sigma interval" parameter that is already present in
+ * RooFit, we provide an additional ignore_correlation argument, such that we
+ * don't attempt to create the computation of parameter scan based on the
+ * covariance matrix obtained in the TFitResult.
  */
 RooCmdArg
-VisualizeError( const TFitResultPtr& fit, const double z )
+VisualizeError( const TFitResultPtr& fit,
+                const double         z,
+                const bool           ignore_corr )
 {
-  return VisualizeError( *fit, z );
+  return VisualizeError( *fit, z, ignore_corr );
 }
 
 
 RooCmdArg
-VisualizeError( const TFitResult& fit, const double z )
+VisualizeError( const TFitResult& fit, const double z, const bool ignore_corr )
 {
-  return VisualizeError( &fit, z );
+  return VisualizeError( &fit, z, ignore_corr );
 }
 
 
 RooCmdArg
-VisualizeError( const TFitResult*fit, const double z )
+VisualizeError( const TFitResult*fit, const double z, const bool ignore_corr  )
 {
   return RooCmdArg( "VisualizeError",
-                    0,
+                    ignore_corr,
                     0,// int
                     z,
                     0,// double
