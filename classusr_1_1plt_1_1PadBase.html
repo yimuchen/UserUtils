@@ -109,6 +109,7 @@ Inheritance diagram for usr::plt::PadBase:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7f55b5c7425cf36549fa5dc2258cc7e8"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1PadBase.html#a7f55b5c7425cf36549fa5dc2258cc7e8">~PadBase</a> ()</td></tr>
+<tr class="memdesc:a7f55b5c7425cf36549fa5dc2258cc7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleting the internal TPad object.  <a href="classusr_1_1plt_1_1PadBase.html#a7f55b5c7425cf36549fa5dc2258cc7e8">More...</a><br /></td></tr>
 <tr class="separator:a7f55b5c7425cf36549fa5dc2258cc7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83e17a1d972bde423f8f6478c6524861"><td class="memItemLeft" align="right" valign="top"><a id="a83e17a1d972bde423f8f6478c6524861" name="a83e17a1d972bde423f8f6478c6524861"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PadBase</b> (const <a class="el" href="classusr_1_1plt_1_1PadBase.html">PadBase</a> &amp;)=delete</td></tr>
@@ -336,7 +337,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Canvas</b></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p >Deleting the internal TPad object </p>
+<p >The TPad here should only be declared directly associated with a TCanvas instance, in which case the ownership of the TPad instance is handled by the ROOT memory manager instead of our class. Currently, I have NO solution to have this behave properly. </p>
 
 </div>
 </div>

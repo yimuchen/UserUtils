@@ -210,16 +210,15 @@ RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::Plot2D
 RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::Plot2DF</b> (const std::string &amp;opt)</td></tr>
 <tr class="memdesc:ga9366349731358f138b4aa5703e52dfc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">defining plot type via ROOT draw strings <br /></td></tr>
 <tr class="separator:ga9366349731358f138b4aa5703e52dfc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9806576fc2b9bb494c8756ab7ca33bc2"><td class="memItemLeft" align="right" valign="top"><a id="ga9806576fc2b9bb494c8756ab7ca33bc2" name="ga9806576fc2b9bb494c8756ab7ca33bc2"></a>
-RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::VisualizeError</b> (const TFitResultPtr &amp;fit, const double z)</td></tr>
-<tr class="memdesc:ga9806576fc2b9bb494c8756ab7ca33bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switch for presenting fit uncertainty in fit. <br /></td></tr>
-<tr class="separator:ga9806576fc2b9bb494c8756ab7ca33bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga69c3ce469254ee251cb22bf6ec702618"><td class="memItemLeft" align="right" valign="top"><a id="ga69c3ce469254ee251cb22bf6ec702618" name="ga69c3ce469254ee251cb22bf6ec702618"></a>
-RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::VisualizeError</b> (const TFitResult *, const double z=1)</td></tr>
-<tr class="separator:ga69c3ce469254ee251cb22bf6ec702618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf6a36a9a958c0cef6b33458596e1c5fe"><td class="memItemLeft" align="right" valign="top"><a id="gaf6a36a9a958c0cef6b33458596e1c5fe" name="gaf6a36a9a958c0cef6b33458596e1c5fe"></a>
-RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::VisualizeError</b> (const TFitResult &amp;, const double z=1)</td></tr>
-<tr class="separator:gaf6a36a9a958c0cef6b33458596e1c5fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga84f7c426ba67387cfb421eb6fe333f8f"><td class="memItemLeft" align="right" valign="top">RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PlotUtilsArgument.html#ga84f7c426ba67387cfb421eb6fe333f8f">usr::plt::VisualizeError</a> (const TFitResultPtr &amp;fit, const double z, const bool ignore_corr)</td></tr>
+<tr class="memdesc:ga84f7c426ba67387cfb421eb6fe333f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switch for presenting fit uncertainty in fit.  <a href="group__PlotUtilsArgument.html#ga84f7c426ba67387cfb421eb6fe333f8f">More...</a><br /></td></tr>
+<tr class="separator:ga84f7c426ba67387cfb421eb6fe333f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2c5204ec1c2d7f9ddc8c5cf63a21764"><td class="memItemLeft" align="right" valign="top"><a id="gab2c5204ec1c2d7f9ddc8c5cf63a21764" name="gab2c5204ec1c2d7f9ddc8c5cf63a21764"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::VisualizeError</b> (const TFitResult *, const double z=1, const bool ignore_corr=false)</td></tr>
+<tr class="separator:gab2c5204ec1c2d7f9ddc8c5cf63a21764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaa0b129a60955916335577f122482159"><td class="memItemLeft" align="right" valign="top"><a id="gaaa0b129a60955916335577f122482159" name="gaaa0b129a60955916335577f122482159"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::VisualizeError</b> (const TFitResult &amp;, const double z=1, const bool ignore_corr=false)</td></tr>
+<tr class="separator:gaaa0b129a60955916335577f122482159"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga031a029fd66c899e83ee3eb953797c99"><td class="memTemplParams" colspan="2"><a id="ga031a029fd66c899e83ee3eb953797c99" name="ga031a029fd66c899e83ee3eb953797c99"></a>
 template&lt;typename ... Args&gt; </td></tr>
 <tr class="memitem:ga031a029fd66c899e83ee3eb953797c99"><td class="memTemplItemLeft" align="right" valign="top">RooCmdArg&#160;</td><td class="memTemplItemRight" valign="bottom"><b>usr::plt::VisualizeError</b> (const RooFitResult &amp;fit, Args ... args)</td></tr>
@@ -248,6 +247,41 @@ RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::Extrap
       </table>
 </div><div class="memdoc">
 <p >Useful is the plot object is just a data container, and we want to leave some margin at the ends for aesthetic reasons. </p>
+
+</div>
+</div>
+<a id="ga84f7c426ba67387cfb421eb6fe333f8f" name="ga84f7c426ba67387cfb421eb6fe333f8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga84f7c426ba67387cfb421eb6fe333f8f">&#9670;&nbsp;</a></span>VisualizeError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RooCmdArg usr::plt::VisualizeError </td>
+          <td>(</td>
+          <td class="paramtype">const TFitResultPtr &amp;&#160;</td>
+          <td class="paramname"><em>fit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>ignore_corr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >In addition to the "sigma interval" parameter that is already present in RooFit, we provide an additional ignore_correlation argument, such that we don't attempt to create the computation of parameter scan based on the covariance matrix obtained in the TFitResult. </p>
 
 </div>
 </div>

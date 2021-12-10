@@ -98,6 +98,9 @@ Functions</h2></td></tr>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::GetEffectiveEvents</b> (const TH1 *hist, const int bin)</td></tr>
 <tr class="memdesc:gaa4ab83a0ebee498a3a80cb294ae85a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer interface of GetEffectiveEvents function. <br /></td></tr>
 <tr class="separator:gaa4ab83a0ebee498a3a80cb294ae85a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1e04364dc072379c63fadc171c27e1cf"><td class="memItemLeft" align="right" valign="top">TVectorD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__mathmisc.html#ga1e04364dc072379c63fadc171c27e1cf">usr::RandomOnSphere</a> (const unsigned n)</td></tr>
+<tr class="memdesc:ga1e04364dc072379c63fadc171c27e1cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generating a random point on an n-sphere.  <a href="group__mathmisc.html#ga1e04364dc072379c63fadc171c27e1cf">More...</a><br /></td></tr>
+<tr class="separator:ga1e04364dc072379c63fadc171c27e1cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga48d7681696bbe8523a84be2f98846e80" name="ga48d7681696bbe8523a84be2f98846e80"></a>
@@ -234,6 +237,25 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::GetEffectiveEv
       </table>
 </div><div class="memdoc">
 <p >Given four points \(A(p1x,p1y)\), \(B(p2x,p2y)\), \(C(p3x,p3y)\), and \(D(p4x,p4y)\). The function checks if segments AB and CD intersect. If yes, store results in intx, and inty return true; return false otherwise. </p>
+
+</div>
+</div>
+<a id="ga1e04364dc072379c63fadc171c27e1cf" name="ga1e04364dc072379c63fadc171c27e1cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1e04364dc072379c63fadc171c27e1cf">&#9670;&nbsp;</a></span>RandomOnSphere()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TVectorD usr::RandomOnSphere </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Here we are first generating n independent random Gaussian variables, the normalizing onto the unit sphere. </p>
 
 </div>
 </div>
