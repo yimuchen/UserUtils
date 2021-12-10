@@ -208,12 +208,12 @@ Ratio1DCanvas::MakeBottomAxis()
     TH1F*hist = dynamic_cast<TH1F*>( TopPad().GetAxisObject()->Clone() );
     hist->Reset();
     BottomPad().PlotObj( hist, "AXIS" );
-    BottomPad().FrameObj().addObject( hist );
+    BottomPad().ClaimObject( hist );
   } else if( TopPad().GetAxisObject()->InheritsFrom( TH1D::Class() ) ){
     TH1D*hist = dynamic_cast<TH1D*>( TopPad().GetAxisObject()->Clone() );
     hist->Reset();
     BottomPad().PlotObj( hist, "AXIS" );
-    BottomPad().FrameObj().addObject( hist );
+    BottomPad().ClaimObject( hist );
   }
 
   BottomPad().SetAxisFont();
@@ -234,7 +234,7 @@ Ratio1DCanvas::PlotScale( const TH1D&                   num,
                           const std::vector<RooCmdArg>& arglist )
 {
   TH1D*ans = ScaleDivide( &num, &den );
-  BottomPad().FrameObj().addObject( ans );
+  BottomPad().ClaimObject( ans );
 
   // Parsing arguments.
   const RooArgContainer args( arglist, {
@@ -268,11 +268,11 @@ Ratio1DCanvas::PlotScale( const TH1D&                   num,
       } );
 
   // Generating the scaled histogram object
-  TH1D*ans =
+  TH1D* ans =
     ScaleDivide( &num, &den, 1.0, args.GetInt( "ExtrapolateInRatio" ) );
 
   // Plotting.
-  BottomPad().FrameObj().addObject( ans );
+  BottomPad().ClaimObject( ans );
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
   BottomPad().PlotHist( ans, args );
 
@@ -298,10 +298,10 @@ Ratio1DCanvas::PlotScale( const TGraph&                 num,
         ExtrapolateInRatio( kFALSE )
       } );
 
-  TGraphAsymmErrors*ans =
+  TGraphAsymmErrors* ans =
     ScaleDivide( &num, &den, 1.0, args.GetInt( "ExtrapolateInRatio" ) );
 
-  BottomPad().FrameObj().addObject( ans );
+  BottomPad().ClaimObject( ans );
   BottomPad().RangeType() = Pad1D::rangetype::ratio;
   BottomPad().PlotGraph( ans, args );
 
@@ -325,9 +325,9 @@ Ratio1DCanvas::PlotPull( const TGraph&                 num,
         PlotType( scatter ), TrackY( tracky::both )
       } );
 
-  TGraphAsymmErrors*ans = PullDivide( &num, &den );
+  TGraphAsymmErrors* ans = PullDivide( &num, &den );
 
-  BottomPad().FrameObj().addObject( ans );
+  BottomPad().ClaimObject( ans );
   BottomPad().RangeType() = Pad1D::rangetype::pull;
   BottomPad().PlotGraph( ans, args );
 
@@ -354,7 +354,7 @@ Ratio1DCanvas::PlotPull( const TGraph&                 num,
 TH1D*
 Ratio1DCanvas::ScaleDivide( const TH1D*num, const TH1D*den, const double cen )
 {
-  TH1D*ans = new TH1D( *num );
+  TH1D* ans = new TH1D( *num );
 
   for( int i = 0; i < num->GetNcells(); ++i ){
     const double n = num->GetBinContent( i );
@@ -403,7 +403,7 @@ Ratio1DCanvas::ScaleDivide( const TH1D*  num,
                             const double cen,
                             const bool   extrapolate )
 {
-  TH1D*ans = new TH1D( *num );
+  TH1D* ans = new TH1D( *num );
 
   const double xmin = GetXmin( den );
   const double xmax = GetXmax( den );
@@ -538,7 +538,7 @@ Ratio1DCanvas::PullDivide( const TGraph*num,
                            const TGraph*den,
                            const double cen )
 {
-  TGraphAsymmErrors*ans = new TGraphAsymmErrors( num->GetN() );
+  TGraphAsymmErrors* ans = new TGraphAsymmErrors( num->GetN() );
 
   // Making error graphs for interpolation
   TGraph denerrup   = TGraph( den->GetN() );

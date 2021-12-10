@@ -43,15 +43,15 @@ PadBase::PadBase( Canvas*c, const PadSize& size ) :
 
 
 /**
- * Deleting the internal TPad object
+ * @brief Deleting the internal TPad object
+ *
+ * The TPad here should only be declared directly associated with a TCanvas
+ * instance, in which case the ownership of the TPad instance is handled by the
+ * ROOT memory manager instead of our class. Currently, I have NO solution to
+ * have this behave properly.
  */
 PadBase::~PadBase()
 {
-  // The TPad here should only be declared directly associated with a TCanvas
-  // instance, in which case the ownership of the TPad instance is handled by
-  // the
-  // ROOT memory manager instead of our class. Currently, I have NO solution to
-  // have this behave properly.
   for( auto obj : _generated_objects ){
     if( obj->IsOnHeap() ){
       obj->Delete();
