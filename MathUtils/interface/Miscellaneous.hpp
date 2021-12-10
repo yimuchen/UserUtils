@@ -36,6 +36,8 @@ extern TMatrixD DecompCorvariance( const TMatrixDSym& m );
 extern double GetEffectiveEvents( const TH1&, const int );
 extern double GetEffectiveEvents( const TH1*, const int );
 
+extern TVectorD RandomOnSphere( const unsigned i );
+
 /** @} */
 
 }/* usr */

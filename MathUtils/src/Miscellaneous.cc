@@ -5,12 +5,16 @@
  */
 
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/SystemUtils/Time.hpp"
 #include "UserUtils/MathUtils/interface/Miscellaneous.hpp"
 #else
+#include "UserUtils/Common/SystemUtils/Time.hpp"
 #include "UserUtils/MathUtils/Miscellaneous.hpp"
 #endif
 
 #include "TMath.h"
+#include "TRandom3.h"
+#include "TVectorD.h"
 #include <cmath>
 
 namespace usr
@@ -177,6 +181,29 @@ extern double
 GetEffectiveEvents( const TH1*hist, const int bin )
 {
   return GetEffectiveEvents( *hist, bin );
+}
+
+
+/**
+ * @brief Generating a random point on an n-sphere.
+ *
+ * Here we are first generating n independent random Gaussian variables, the
+ * normalizing onto the unit sphere.
+ */
+extern TVectorD
+RandomOnSphere( const unsigned n )
+{
+  TVectorD ans( n );
+  TRandom3 rand;
+  rand.SetSeed( usr::CurrentTimeInNanSec() );
+
+  for( unsigned i = 0 ; i < n ; ++i ){
+    ans[i] = rand.Gaus( 0, 1 );
+  }
+
+  ans *= 1 / TMath::Sqrt( ans.Norm2Sqr() );
+
+  return ans;
 }
 
 }/* usr */
