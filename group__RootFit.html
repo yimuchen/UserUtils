@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>UserUtils: /github/workspace/MathUtils/interface/RootMathTools.hpp Source File</title>
+<title>UserUtils: RootFit</title>
 <!-- Overriding the tabs css with our own -->
 <!--link href="tabs.css" rel="stylesheet" type="text/css"/-->
 <script type="text/javascript" src="jquery.js"></script>
@@ -60,6 +60,7 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -74,31 +75,19 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_127510de0871dc00e36bc7f855ff3c60.html">MathUtils</a></li><li class="navelem"><a class="el" href="dir_8a323cdf984fc7006cdca9348c4a45f8.html">interface</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">RootMathTools.hpp</div></div>
+  <div class="headertitle"><div class="title">RootFit</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="RootMathTools_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef USERUTILS_MATHTUTILS_ROOTMATHTOOLS_HPP</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define USERUTILS_MATHTUTILS_ROOTMATHTOOLS_HPP</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#ifdef CMSSW_GIT_HASH</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/interface/RootMathTools/DefaultEngines.hpp&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/interface/RootMathTools/TemplateFit.hpp&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/interface/RootMathTools/RootFit.hpp&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/RootMathTools/DefaultEngines.hpp&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/RootMathTools/TemplateFit.hpp&quot;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/RootMathTools/RootFit.hpp&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#endif</span></div>
-</div><!-- fragment --></div><!-- contents -->
+<p >The fitting routine in vanilla ROOT is rather unwieldy, with the use of non-descriptive single character based string literals used to specify the fit routine, while also having the fitting routines for different classes use different strings, all in all making the code overly non-verbose. The functions provided here wrap up the vanilla ROOT fitting routines into a More RooFit like experience with a the fitting routines specified via list of arguments.</p>
+<p >A few general notes:</p>
+<ul>
+<li>All functions will return the fit results in the form of a TFitResult object. This avoids ambiguity with vanilla ROOT, where a global object is used to keep track of the latest fit result.</li>
+<li>Options for storing the fit function into the data object will not be exposed, as this should be something to avoided in favor of the better plotting interface provided in the PlotUtils subpackage.</li>
+<li>The function will always expect the fit functions to be provided in the form a TF1 derived object, as defining functions with string literals is very problematic and difficult to debug. This package always wants to promote good coding styling rather than quick-and-dirty methods used for one-off scripts.</li>
+<li>Functions will all use reference interfaces, as this is typically a better way to write modern C++ code. </li>
+</ul>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/>
