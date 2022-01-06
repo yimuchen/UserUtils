@@ -10,9 +10,11 @@
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/MathUtils/interface/RootMathTools/DefaultEngines.hpp"
 #include "UserUtils/MathUtils/interface/RootMathTools/TemplateFit.hpp"
+#include "UserUtils/MathUtils/interface/RootMathTools/RootFit.hpp"
 #else
 #include "UserUtils/MathUtils/RootMathTools/DefaultEngines.hpp"
 #include "UserUtils/MathUtils/RootMathTools/TemplateFit.hpp"
+#include "UserUtils/MathUtils/RootMathTools/RootFit.hpp"
 #endif
 
 #endif
