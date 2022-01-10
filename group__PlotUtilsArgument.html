@@ -199,6 +199,9 @@ RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::PlotTy
 RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::PlotType</b> (const std::string &amp;opt)</td></tr>
 <tr class="memdesc:ga62c03fcc0588832adcc714e3511e983b"><td class="mdescLeft">&#160;</td><td class="mdescRight">defining plot type via ROOT draw strings <br /></td></tr>
 <tr class="separator:ga62c03fcc0588832adcc714e3511e983b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9976d97b7b939622abd05c9c7c632c63"><td class="memItemLeft" align="right" valign="top"><a id="ga9976d97b7b939622abd05c9c7c632c63" name="ga9976d97b7b939622abd05c9c7c632c63"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::ColGroup</b> (const double, const bool)</td></tr>
+<tr class="separator:ga9976d97b7b939622abd05c9c7c632c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6e458f117ddb9db2fe8e7d43b6db2b8"><td class="memItemLeft" align="right" valign="top"><a id="gad6e458f117ddb9db2fe8e7d43b6db2b8" name="gad6e458f117ddb9db2fe8e7d43b6db2b8"></a>
 RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::ScaleY</b> (const double x)</td></tr>
 <tr class="separator:gad6e458f117ddb9db2fe8e7d43b6db2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,6 +232,9 @@ RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::Extrap
 <tr class="memitem:ga09500606ddeac9eb5e0c87130dfb5f66"><td class="memItemLeft" align="right" valign="top">RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PlotUtilsArgument.html#ga09500606ddeac9eb5e0c87130dfb5f66">usr::plt::ExtendXRange</a> (const bool flag)</td></tr>
 <tr class="memdesc:ga09500606ddeac9eb5e0c87130dfb5f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to extend the x-range of plotting based on the data.  <a href="group__PlotUtilsArgument.html#ga09500606ddeac9eb5e0c87130dfb5f66">More...</a><br /></td></tr>
 <tr class="separator:ga09500606ddeac9eb5e0c87130dfb5f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf46f0788976f102afaafe517dcddec6c"><td class="memItemLeft" align="right" valign="top">RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PlotUtilsArgument.html#gaf46f0788976f102afaafe517dcddec6c">usr::plt::Precision</a> (const double p, const bool log_spacing)</td></tr>
+<tr class="memdesc:gaf46f0788976f102afaafe517dcddec6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defining the sampling precision of the function.  <a href="group__PlotUtilsArgument.html#gaf46f0788976f102afaafe517dcddec6c">More...</a><br /></td></tr>
+<tr class="separator:gaf46f0788976f102afaafe517dcddec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga09500606ddeac9eb5e0c87130dfb5f66" name="ga09500606ddeac9eb5e0c87130dfb5f66"></a>
@@ -247,6 +253,35 @@ RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::Extrap
       </table>
 </div><div class="memdoc">
 <p >Useful is the plot object is just a data container, and we want to leave some margin at the ends for aesthetic reasons. </p>
+
+</div>
+</div>
+<a id="gaf46f0788976f102afaafe517dcddec6c" name="gaf46f0788976f102afaafe517dcddec6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf46f0788976f102afaafe517dcddec6c">&#9670;&nbsp;</a></span>Precision()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RooCmdArg usr::plt::Precision </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>log_spacing</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >While RooFit::Precision already exists, here we add an additional option for allow for log-spacing, which speeds up plots with log scale x axis that spans many orders of magnitude. </p>
 
 </div>
 </div>

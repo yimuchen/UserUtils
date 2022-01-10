@@ -150,6 +150,9 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>usr::OrderedHash3
 <tr class="memitem:ga64cdb675f9350b7acb3dd78a114c47e9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__STLMaths.html#ga64cdb675f9350b7acb3dd78a114c47e9">usr::LinSpace</a> (const double start, const double end, const size_t num)</td></tr>
 <tr class="memdesc:ga64cdb675f9350b7acb3dd78a114c47e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector containing numbers spaced linearly from the given start and end.  <a href="group__STLMaths.html#ga64cdb675f9350b7acb3dd78a114c47e9">More...</a><br /></td></tr>
 <tr class="separator:ga64cdb675f9350b7acb3dd78a114c47e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4373df19806e9af58ada5df1cbfba0c1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__STLMaths.html#ga4373df19806e9af58ada5df1cbfba0c1">usr::LogSpace</a> (const double start, const double end, const size_t num)</td></tr>
+<tr class="memdesc:ga4373df19806e9af58ada5df1cbfba0c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector containing numbers spaced linearly from the given start and end.  <a href="group__STLMaths.html#ga4373df19806e9af58ada5df1cbfba0c1">More...</a><br /></td></tr>
+<tr class="separator:ga4373df19806e9af58ada5df1cbfba0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga0e0e3a783572ec80fbdcba0d56ec1317" name="ga0e0e3a783572ec80fbdcba0d56ec1317"></a>
@@ -308,7 +311,48 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>usr::OrderedHash3
         </tr>
       </table>
 </div><div class="memdoc">
-<p >The vector returned will always have size num. The first element of the vector would be identical to start, the end will be identical to end (if num &gt; 1), the remaining elements will be numbers spanning the interval of [start,end] in a linear spacing (equally spaced). </p>
+<p >The vector returned will always have size num. The first element of the vector would be identical to start, the end will be identical to end (if num </p><blockquote class="doxtable">
+<p >1), the remaining elements will be numbers spanning the interval of </p>
+</blockquote>
+<p>[start,end] in a linear spacing (equally spaced). </p>
+
+</div>
+</div>
+<a id="ga4373df19806e9af58ada5df1cbfba0c1" name="ga4373df19806e9af58ada5df1cbfba0c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4373df19806e9af58ada5df1cbfba0c1">&#9670;&nbsp;</a></span>LogSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; usr::LogSpace </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >The vector returned will always have size num. The first element of the vector would be identical to start, the end will be identical to end (if num </p><blockquote class="doxtable">
+<p >1), the remaining elements will be numbers spanning the interval of </p>
+</blockquote>
+<p>[start,end] in a linear spacing (equally spaced). </p>
 
 </div>
 </div>

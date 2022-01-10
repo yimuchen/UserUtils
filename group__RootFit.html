@@ -76,9 +76,13 @@ $(function() {
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">RootFit</div></div>
+  <div class="summary">
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">RootFit<div class="ingroups"><a class="el" href="group__MathUtils.html">MathUtils</a></div></div></div>
 </div><!--header-->
 <div class="contents">
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >The fitting routine in vanilla ROOT is rather unwieldy, with the use of non-descriptive single character based string literals used to specify the fit routine, while also having the fitting routines for different classes use different strings, all in all making the code overly non-verbose. The functions provided here wrap up the vanilla ROOT fitting routines into a More RooFit like experience with a the fitting routines specified via list of arguments.</p>
 <p >A few general notes:</p>
 <ul>
@@ -87,6 +91,201 @@ $(function() {
 <li>The function will always expect the fit functions to be provided in the form a TF1 derived object, as defining functions with string literals is very problematic and difficult to debug. This package always wants to promote good coding styling rather than quick-and-dirty methods used for one-off scripts.</li>
 <li>Functions will all use reference interfaces, as this is typically a better way to write modern C++ code. </li>
 </ul>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga4428f5c1c08d4a6c5bfed353baf8b699"><td class="memItemLeft" align="right" valign="top"><a id="ga4428f5c1c08d4a6c5bfed353baf8b699" name="ga4428f5c1c08d4a6c5bfed353baf8b699"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>verbose</b> { <b>QUITE</b> = 0
+, <b>INTERMEDIATE</b> = 1
+, <b>VERBOSE</b> = 2
+ }</td></tr>
+<tr class="separator:ga4428f5c1c08d4a6c5bfed353baf8b699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad5109858b8cde2123482a183a11ccaf3"><td class="memItemLeft" align="right" valign="top"><a id="gad5109858b8cde2123482a183a11ccaf3" name="gad5109858b8cde2123482a183a11ccaf3"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>gerrortype</b> { <b>DEFAULT</b> = 0
+, <b>IGNORE_X</b> = 1
+, <b>IGNORE_ALL</b> = 2
+ }</td></tr>
+<tr class="separator:gad5109858b8cde2123482a183a11ccaf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gabc92ae9a5aea07f08e7bd1baf26c368d"><td class="memItemLeft" align="right" valign="top"><a id="gabc92ae9a5aea07f08e7bd1baf26c368d" name="gabc92ae9a5aea07f08e7bd1baf26c368d"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::fit::FitVerboseLevel</b> (const verbose level)</td></tr>
+<tr class="memdesc:gabc92ae9a5aea07f08e7bd1baf26c368d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Options for specifing verbose level for ROOT fits. <br /></td></tr>
+<tr class="separator:gabc92ae9a5aea07f08e7bd1baf26c368d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf08188ae4d26b7441ca366e80fa90379"><td class="memItemLeft" align="right" valign="top"><a id="gaf08188ae4d26b7441ca366e80fa90379" name="gaf08188ae4d26b7441ca366e80fa90379"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::fit::RunMinos</b> (const bool run)</td></tr>
+<tr class="memdesc:gaf08188ae4d26b7441ca366e80fa90379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to run the minos estimator. <br /></td></tr>
+<tr class="separator:gaf08188ae4d26b7441ca366e80fa90379"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga48153afe0b999008a9f0143c976671b3"><td class="memItemLeft" align="right" valign="top"><a id="ga48153afe0b999008a9f0143c976671b3" name="ga48153afe0b999008a9f0143c976671b3"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::fit::RunImprove</b> (const bool run)</td></tr>
+<tr class="memdesc:ga48153afe0b999008a9f0143c976671b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to run the phase space improver. <br /></td></tr>
+<tr class="separator:ga48153afe0b999008a9f0143c976671b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8cf0b459bb0ab875d1634a14678ead1e"><td class="memItemLeft" align="right" valign="top"><a id="ga8cf0b459bb0ab875d1634a14678ead1e" name="ga8cf0b459bb0ab875d1634a14678ead1e"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::fit::GraphErrorType</b> (const gerrortype x)</td></tr>
+<tr class="memdesc:ga8cf0b459bb0ab875d1634a14678ead1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifying the fitting error type. <br /></td></tr>
+<tr class="separator:ga8cf0b459bb0ab875d1634a14678ead1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9ff495755511db19e24a639f2c080195"><td class="memItemLeft" align="right" valign="top"><a id="ga9ff495755511db19e24a639f2c080195" name="ga9ff495755511db19e24a639f2c080195"></a>
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::fit::GraphXRange</b> (const double x, const double y)</td></tr>
+<tr class="memdesc:ga9ff495755511db19e24a639f2c080195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifing the fit range. <br /></td></tr>
+<tr class="separator:ga9ff495755511db19e24a639f2c080195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabbdfe0ee6c145948c085ffec72fdb314"><td class="memItemLeft" align="right" valign="top">TFitResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__RootFit.html#gabbdfe0ee6c145948c085ffec72fdb314">usr::fit::FitGraph</a> (TGraph &amp;, TF1 &amp;, const std::vector&lt; RooCmdArg &gt; &amp;)</td></tr>
+<tr class="memdesc:gabbdfe0ee6c145948c085ffec72fdb314"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fitting TGraphs to a functions.  <a href="group__RootFit.html#gabbdfe0ee6c145948c085ffec72fdb314">More...</a><br /></td></tr>
+<tr class="separator:gabbdfe0ee6c145948c085ffec72fdb314"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga04ec9405d7a27584b4088d289ab7571c"><td class="memItemLeft" align="right" valign="top">TFitResult&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__RootFit.html#ga04ec9405d7a27584b4088d289ab7571c">usr::fit::FitGraph</a> (TGraph &amp;g, TF1 &amp;f)</td></tr>
+<tr class="memdesc:ga04ec9405d7a27584b4088d289ab7571c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fitting TGraphs to a functions.  <a href="group__RootFit.html#ga04ec9405d7a27584b4088d289ab7571c">More...</a><br /></td></tr>
+<tr class="separator:ga04ec9405d7a27584b4088d289ab7571c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaceaec97343837f0ddad998da3ac28a43"><td class="memTemplParams" colspan="2">template&lt;typename ... Args&gt; </td></tr>
+<tr class="memitem:gaceaec97343837f0ddad998da3ac28a43"><td class="memTemplItemLeft" align="right" valign="top">TFitResult&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__RootFit.html#gaceaec97343837f0ddad998da3ac28a43">usr::fit::FitGraph</a> (TGraph &amp;g, TF1 &amp;f, const RooCmdArg &amp;arg1, Args ... args)</td></tr>
+<tr class="memdesc:gaceaec97343837f0ddad998da3ac28a43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fitting TGraphs to a functions.  <a href="group__RootFit.html#gaceaec97343837f0ddad998da3ac28a43">More...</a><br /></td></tr>
+<tr class="separator:gaceaec97343837f0ddad998da3ac28a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gabbdfe0ee6c145948c085ffec72fdb314" name="gabbdfe0ee6c145948c085ffec72fdb314"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabbdfe0ee6c145948c085ffec72fdb314">&#9670;&nbsp;</a></span>FitGraph() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TFitResult usr::fit::FitGraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraph &amp;&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TF1 &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; RooCmdArg &gt; &amp;&#160;</td>
+          <td class="paramname"><em>arglist</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Here we unfold the RooCmdArgs into the standard strings of the vanilla ROOT fit routine:</p>
+<ul>
+<li>The save string "S" will always be present.</li>
+<li>Depending on the FitVerboseLevel argument, "Q", "V" or "" will be added (defaults to "Q")</li>
+<li>Depending of the RunMinosImprovement "E" and "M" may be added (default adds both)</li>
+<li>Depending on the GraphErrorType method, either "", "W" or "EXO" will be added (defaults to "")</li>
+</ul>
+<p >The Fit Range is also now specified by an argument</p>
+<p >All other options strings will be omitted. </p>
+
+</div>
+</div>
+<a id="ga04ec9405d7a27584b4088d289ab7571c" name="ga04ec9405d7a27584b4088d289ab7571c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga04ec9405d7a27584b4088d289ab7571c">&#9670;&nbsp;</a></span>FitGraph() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TFitResult usr::fit::FitGraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraph &amp;&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TF1 &amp;&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Here we unfold the RooCmdArgs into the standard strings of the vanilla ROOT fit routine:</p>
+<ul>
+<li>The save string "S" will always be present.</li>
+<li>Depending on the FitVerboseLevel argument, "Q", "V" or "" will be added (defaults to "Q")</li>
+<li>Depending of the RunMinosImprovement "E" and "M" may be added (default adds both)</li>
+<li>Depending on the GraphErrorType method, either "", "W" or "EXO" will be added (defaults to "")</li>
+</ul>
+<p >The Fit Range is also now specified by an argument</p>
+<p >All other options strings will be omitted. </p>
+
+</div>
+</div>
+<a id="gaceaec97343837f0ddad998da3ac28a43" name="gaceaec97343837f0ddad998da3ac28a43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaceaec97343837f0ddad998da3ac28a43">&#9670;&nbsp;</a></span>FitGraph() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TFitResult usr::fit::FitGraph </td>
+          <td>(</td>
+          <td class="paramtype">TGraph &amp;&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TF1 &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const RooCmdArg &amp;&#160;</td>
+          <td class="paramname"><em>arg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args ...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Here we unfold the RooCmdArgs into the standard strings of the vanilla ROOT fit routine:</p>
+<ul>
+<li>The save string "S" will always be present.</li>
+<li>Depending on the FitVerboseLevel argument, "Q", "V" or "" will be added (defaults to "Q")</li>
+<li>Depending of the RunMinosImprovement "E" and "M" may be added (default adds both)</li>
+<li>Depending on the GraphErrorType method, either "", "W" or "EXO" will be added (defaults to "")</li>
+</ul>
+<p >The Fit Range is also now specified by an argument</p>
+<p >All other options strings will be omitted. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->

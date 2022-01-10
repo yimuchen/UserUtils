@@ -81,7 +81,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">Simple1DCanvas.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -98,10 +99,164 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Simple1DCanvas.html">usr::plt::Simple1DCanvas</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classusr_1_1plt_1_1Canvas.html" title="Extending the TCanvas class for better saving and pad–canvas hierarchy relations.">Canvas</a> with exactly 1 <a class="el" href="classusr_1_1plt_1_1Pad1D.html" title="Specialized class for 1D data plotting.">Pad1D</a> instance.  <a href="classusr_1_1plt_1_1Simple1DCanvas.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ac97beb6eaa09bc10ba40eb0c82364383"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Simple1DCanvas_8hpp.html#ac97beb6eaa09bc10ba40eb0c82364383">DEFINE_PLOTTING</a>(OTYPE,  FNAME)</td></tr>
+<tr class="separator:ac97beb6eaa09bc10ba40eb0c82364383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6af4a2d3ad30cded4f466c05737304ec"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Simple1DCanvas_8hpp.html#a6af4a2d3ad30cded4f466c05737304ec">DEFINE_PLOTTING_RET</a>(OTYPE,  RTYPE,  FNAME)</td></tr>
+<tr class="separator:a6af4a2d3ad30cded4f466c05737304ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54a5880d3cfb7e598a15c808c4f89c45"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Simple1DCanvas_8hpp.html#a54a5880d3cfb7e598a15c808c4f89c45">PASSTHROUGH_VOID</a>(FNAME)</td></tr>
+<tr class="separator:a54a5880d3cfb7e598a15c808c4f89c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e094904f8624a362c9c8af33b5066b5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Simple1DCanvas_8hpp.html#a1e094904f8624a362c9c8af33b5066b5">PASSTHROUGH_RET</a>(FNAME,  RTYPE)</td></tr>
+<tr class="separator:a1e094904f8624a362c9c8af33b5066b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd><a href="https://github.com/yimuchen">Yi-Mu "Enoch" Chen</a> </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ac97beb6eaa09bc10ba40eb0c82364383" name="ac97beb6eaa09bc10ba40eb0c82364383"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac97beb6eaa09bc10ba40eb0c82364383">&#9670;&nbsp;</a></span>DEFINE_PLOTTING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PLOTTING</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OTYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">FNAME&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  ;          \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE &amp; x )                \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x );                      \</div>
+<div class="line">  }                                               \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE * x )                \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x );                      \</div>
+<div class="line">  }                                               \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                     \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE &amp; x, Args ... args ) \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x, args ... );            \</div>
+<div class="line">  }                                               \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                     \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE * x, Args ... args ) \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x, args ... );            \</div>
+<div class="line">  }                                               \</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a6af4a2d3ad30cded4f466c05737304ec" name="a6af4a2d3ad30cded4f466c05737304ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6af4a2d3ad30cded4f466c05737304ec">&#9670;&nbsp;</a></span>DEFINE_PLOTTING_RET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PLOTTING_RET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OTYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">RTYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">FNAME&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  ; \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE &amp; x )                   \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x );                        \</div>
+<div class="line">  }                                                 \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE * x )                   \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x );                        \</div>
+<div class="line">  }                                                 \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                       \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE &amp; x, Args ... args )    \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x, args ... );              \</div>
+<div class="line">  }                                                 \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                       \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE * x, Args ... args )    \</div>
+<div class="line">  { <span class="keywordflow">return</span> Pad().FNAME( x, args ...  );             \</div>
+<div class="line">  }                                                 \</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a1e094904f8624a362c9c8af33b5066b5" name="a1e094904f8624a362c9c8af33b5066b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e094904f8624a362c9c8af33b5066b5">&#9670;&nbsp;</a></span>PASSTHROUGH_RET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PASSTHROUGH_RET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">FNAME, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">RTYPE&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... Args&gt;           \</div>
+<div class="line">  inline RTYPE FNAME( Args ... args ){ <span class="keywordflow">return</span> Pad().FNAME( args ... ); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a54a5880d3cfb7e598a15c808c4f89c45" name="a54a5880d3cfb7e598a15c808c4f89c45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54a5880d3cfb7e598a15c808c4f89c45">&#9670;&nbsp;</a></span>PASSTHROUGH_VOID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PASSTHROUGH_VOID</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">FNAME</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... Args&gt;     \</div>
+<div class="line">  inline <span class="keywordtype">void</span> FNAME( Args ... args ){ Pad().FNAME( args ... ); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/>

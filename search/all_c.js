@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['large_0',['large',['../classusr_1_1plt_1_1font.html#ac3cd16dffb4356946973532d00f58b88',1,'usr::plt::font']]],
-  ['large_1',['LARGE',['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font']]],
-  ['large_2',['Large',['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font']]],
+  ['large_0',['Large',['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font']]],
+  ['large_1',['large',['../classusr_1_1plt_1_1font.html#ac3cd16dffb4356946973532d00f58b88',1,'usr::plt::font']]],
+  ['large_2',['LARGE',['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font']]],
   ['lastplot_3',['LastPlot',['../classusr_1_1plt_1_1RooFrame.html#aacf81698befd036fda1a67f55efc7cee',1,'usr::plt::RooFrame']]],
   ['lavender_4',['lavender',['../group__PlotUtilsConstants.html#ga9f791ac6190cbf3660105cc935456c75',1,'usr::plt::col']]],
   ['lavenderblush_5',['lavenderblush',['../group__PlotUtilsConstants.html#ga409e5966eb43986fd848b6e5b763f354',1,'usr::plt::col']]],
@@ -42,5 +42,6 @@ var searchData=
   ['linshortdash_39',['linshortdash',['../group__PlotUtilsConstants.html#gafe36a61b0f7fa922b7048e3f305d5368',1,'usr::plt::sty']]],
   ['linsolid_40',['linsolid',['../group__PlotUtilsConstants.html#ga557b40ad95546630bb5d6f870c4c993b',1,'usr::plt::sty']]],
   ['linspace_41',['LinSpace',['../group__STLMaths.html#ga64cdb675f9350b7acb3dd78a114c47e9',1,'usr']]],
-  ['listfromfile_42',['ListFromFile',['../group__VecUtils.html#ga0131b901499263d2a00c600f82a5ac7f',1,'usr']]]
+  ['listfromfile_42',['ListFromFile',['../group__VecUtils.html#ga0131b901499263d2a00c600f82a5ac7f',1,'usr']]],
+  ['logspace_43',['LogSpace',['../group__STLMaths.html#ga4373df19806e9af58ada5df1cbfba0c1',1,'usr']]]
 ];

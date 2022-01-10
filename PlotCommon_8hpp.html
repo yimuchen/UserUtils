@@ -94,6 +94,7 @@ $(function() {
 <code>#include &quot;RooRealVar.h&quot;</code><br />
 <code>#include &quot;TEfficiency.h&quot;</code><br />
 <code>#include &quot;TGraph.h&quot;</code><br />
+<code>#include &quot;TGraph2D.h&quot;</code><br />
 <code>#include &quot;TH1D.h&quot;</code><br />
 <code>#include &quot;THStack.h&quot;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -182,6 +183,9 @@ RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::PlotTy
 RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::PlotType</b> (const std::string &amp;opt)</td></tr>
 <tr class="memdesc:ga62c03fcc0588832adcc714e3511e983b"><td class="mdescLeft">&#160;</td><td class="mdescRight">defining plot type via ROOT draw strings <br /></td></tr>
 <tr class="separator:ga62c03fcc0588832adcc714e3511e983b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9976d97b7b939622abd05c9c7c632c63"><td class="memItemLeft" align="right" valign="top">
+RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::ColGroup</b> (const double, const bool)</td></tr>
+<tr class="separator:ga9976d97b7b939622abd05c9c7c632c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6e458f117ddb9db2fe8e7d43b6db2b8"><td class="memItemLeft" align="right" valign="top">
 RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::ScaleY</b> (const double x)</td></tr>
 <tr class="separator:gad6e458f117ddb9db2fe8e7d43b6db2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,6 +216,9 @@ RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::Extrap
 <tr class="memitem:ga09500606ddeac9eb5e0c87130dfb5f66"><td class="memItemLeft" align="right" valign="top">RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PlotUtilsArgument.html#ga09500606ddeac9eb5e0c87130dfb5f66">usr::plt::ExtendXRange</a> (const bool flag)</td></tr>
 <tr class="memdesc:ga09500606ddeac9eb5e0c87130dfb5f66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not to extend the x-range of plotting based on the data.  <a href="group__PlotUtilsArgument.html#ga09500606ddeac9eb5e0c87130dfb5f66">More...</a><br /></td></tr>
 <tr class="separator:ga09500606ddeac9eb5e0c87130dfb5f66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf46f0788976f102afaafe517dcddec6c"><td class="memItemLeft" align="right" valign="top">RooCmdArg&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PlotUtilsArgument.html#gaf46f0788976f102afaafe517dcddec6c">usr::plt::Precision</a> (const double p, const bool log_spacing)</td></tr>
+<tr class="memdesc:gaf46f0788976f102afaafe517dcddec6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defining the sampling precision of the function.  <a href="group__PlotUtilsArgument.html#gaf46f0788976f102afaafe517dcddec6c">More...</a><br /></td></tr>
+<tr class="separator:gaf46f0788976f102afaafe517dcddec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac7dec40ac9333b6b3469929ab03a10b1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PlotUtilsHelper.html#gac7dec40ac9333b6b3469929ab03a10b1">usr::plt::GetYmax</a> (const TH1D &amp;hist)</td></tr>
 <tr class="memdesc:gac7dec40ac9333b6b3469929ab03a10b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the maximum y value of a histogram.  <a href="group__PlotUtilsHelper.html#gac7dec40ac9333b6b3469929ab03a10b1">More...</a><br /></td></tr>
 <tr class="separator:gac7dec40ac9333b6b3469929ab03a10b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,6 +255,32 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetXmax</
 <tr class="memitem:ga6c21f70f30fd9bfec02240e64f6847ee"><td class="memItemLeft" align="right" valign="top">
 double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetXmin</b> (const TGraph *x)</td></tr>
 <tr class="separator:ga6c21f70f30fd9bfec02240e64f6847ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabd440234674f4f08936d35eced205b6c"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetXmax</b> (const TGraph2D &amp;x)</td></tr>
+<tr class="memdesc:gabd440234674f4f08936d35eced205b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the minimum x value of a 2d graph. <br /></td></tr>
+<tr class="separator:gabd440234674f4f08936d35eced205b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae0489105fc8f00ca6c4568944a5dde11"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetXmin</b> (const TGraph2D &amp;)</td></tr>
+<tr class="separator:gae0489105fc8f00ca6c4568944a5dde11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8cd2329f4c293ae65f514ebb8acc01b4"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetYmax</b> (const TGraph2D &amp;x)</td></tr>
+<tr class="memdesc:ga8cd2329f4c293ae65f514ebb8acc01b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the minimum x value of a 2d graph. <br /></td></tr>
+<tr class="separator:ga8cd2329f4c293ae65f514ebb8acc01b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga48d35167017dc873164e5135851c854e"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetYmin</b> (const TGraph2D &amp;)</td></tr>
+<tr class="separator:ga48d35167017dc873164e5135851c854e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga625e4b7be9f847c0aef50f1892b9ac68"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetXmax</b> (const TGraph2D *x)</td></tr>
+<tr class="separator:ga625e4b7be9f847c0aef50f1892b9ac68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf0b69eb38a78e374b427552d73984c9e"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetXmin</b> (const TGraph2D *x)</td></tr>
+<tr class="separator:gaf0b69eb38a78e374b427552d73984c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafd527f488cd0e3d4cea0b1bc270ba7d1"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetYmax</b> (const TGraph2D *x)</td></tr>
+<tr class="separator:gafd527f488cd0e3d4cea0b1bc270ba7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8a05075c44da5c8e5ee063962e60d735"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>usr::plt::GetYmin</b> (const TGraph2D *x)</td></tr>
+<tr class="separator:ga8a05075c44da5c8e5ee063962e60d735"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaccd838c2f8206ddf5505db2547bf45a8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__PlotUtilsHelper.html#gaccd838c2f8206ddf5505db2547bf45a8">usr::plt::GetYmax</a> (const TEfficiency &amp;x)</td></tr>
 <tr class="memdesc:gaccd838c2f8206ddf5505db2547bf45a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum y value of the TEfficiency object.  <a href="group__PlotUtilsHelper.html#gaccd838c2f8206ddf5505db2547bf45a8">More...</a><br /></td></tr>
 <tr class="separator:gaccd838c2f8206ddf5505db2547bf45a8"><td class="memSeparator" colspan="2">&#160;</td></tr>

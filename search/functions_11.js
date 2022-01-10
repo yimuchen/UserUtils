@@ -16,9 +16,11 @@ var searchData=
   ['reqvalue_13',['reqvalue',['../ArgumentExtender_8hpp.html#aa3dc55098a555ed95acf74862b57de57',1,'boost::program_options']]],
   ['resultpath_14',['resultpath',['../group__filesys.html#ga8b670e24d9b4e4ea6dae399d09979760',1,'usr']]],
   ['rooargcontainer_15',['RooArgContainer',['../classusr_1_1RooArgContainer.html#aa6d07353c669c49bf7a31bc998574ebc',1,'usr::RooArgContainer']]],
-  ['rooframe_16',['RooFrame',['../classusr_1_1plt_1_1RooFrame.html#a93c3bb71e9a53f0024fbaa432b1ac471',1,'usr::plt::RooFrame::RooFrame(const RangeByVar &amp;)'],['../classusr_1_1plt_1_1RooFrame.html#a61772121e82803c1dab1fcea21ee7f93',1,'usr::plt::RooFrame::RooFrame(const double xmin, const double xmax, const double ymin, const double ymax)'],['../classusr_1_1plt_1_1RooFrame.html#ab6e08b6d62b09e8d6397c610980da542',1,'usr::plt::RooFrame::RooFrame(const double min, const double max)'],['../classusr_1_1plt_1_1RooFrame.html#a5c0d7fa5db19f1eaa718b0b9127733b6',1,'usr::plt::RooFrame::RooFrame()']]],
+  ['rooframe_16',['RooFrame',['../classusr_1_1plt_1_1RooFrame.html#ab6e08b6d62b09e8d6397c610980da542',1,'usr::plt::RooFrame::RooFrame(const double min, const double max)'],['../classusr_1_1plt_1_1RooFrame.html#a61772121e82803c1dab1fcea21ee7f93',1,'usr::plt::RooFrame::RooFrame(const double xmin, const double xmax, const double ymin, const double ymax)'],['../classusr_1_1plt_1_1RooFrame.html#a93c3bb71e9a53f0024fbaa432b1ac471',1,'usr::plt::RooFrame::RooFrame(const RangeByVar &amp;)'],['../classusr_1_1plt_1_1RooFrame.html#a5c0d7fa5db19f1eaa718b0b9127733b6',1,'usr::plt::RooFrame::RooFrame()']]],
   ['rounddown_17',['RoundDown',['../group__STLMaths.html#gafd806f19b1fc6c57036a60c27e0a115b',1,'usr']]],
   ['roundto_18',['RoundTo',['../group__STLMaths.html#gace5981b8d902b95b0c410c8ff531d921',1,'usr']]],
   ['roundup_19',['RoundUp',['../group__STLMaths.html#gab707c5398d4d470cdd0d83176d5edf4e',1,'usr']]],
-  ['rounduptop2_20',['RoundUpToP2',['../group__STLMaths.html#gab97dd3aa34a578528319bbfc3ee279a2',1,'usr']]]
+  ['rounduptop2_20',['RoundUpToP2',['../group__STLMaths.html#gab97dd3aa34a578528319bbfc3ee279a2',1,'usr']]],
+  ['runimprove_21',['RunImprove',['../group__RootFit.html#ga48153afe0b999008a9f0143c976671b3',1,'usr::fit']]],
+  ['runminos_22',['RunMinos',['../group__RootFit.html#gaf08188ae4d26b7441ca366e80fa90379',1,'usr::fit']]]
 ];

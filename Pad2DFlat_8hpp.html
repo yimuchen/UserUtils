@@ -81,7 +81,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">Pad2DFlat.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -103,12 +104,106 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classusr_1_1plt_1_1Pad2DFlat.html">usr::plt::Pad2DFlat</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialized class for 2D data object representation in x-y plane projections.  <a href="classusr_1_1plt_1_1Pad2DFlat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ac97beb6eaa09bc10ba40eb0c82364383"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Pad2DFlat_8hpp.html#ac97beb6eaa09bc10ba40eb0c82364383">DEFINE_PLOTTING</a>(OTYPE,  FNAME)</td></tr>
+<tr class="separator:ac97beb6eaa09bc10ba40eb0c82364383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6af4a2d3ad30cded4f466c05737304ec"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Pad2DFlat_8hpp.html#a6af4a2d3ad30cded4f466c05737304ec">DEFINE_PLOTTING_RET</a>(OTYPE,  RTYPE,  FNAME)</td></tr>
+<tr class="separator:a6af4a2d3ad30cded4f466c05737304ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Yi-Mu "Enoch" Chen</dd>
 <dd>
 your name (<a href="#" onclick="location.href='mai'+'lto:'+'you'+'@d'+'oma'+'in'+'.co'+'m'; return false;">you@d<span style="display: none;">.nosp@m.</span>omai<span style="display: none;">.nosp@m.</span>n.com</a>) </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ac97beb6eaa09bc10ba40eb0c82364383" name="ac97beb6eaa09bc10ba40eb0c82364383"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac97beb6eaa09bc10ba40eb0c82364383">&#9670;&nbsp;</a></span>DEFINE_PLOTTING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PLOTTING</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OTYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">FNAME&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  OTYPE &amp; FNAME( OTYPE&amp;, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt;&amp; );                 \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE * x, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt;&amp; args )    \</div>
+<div class="line">  { <span class="keywordflow">return</span> FNAME( *x, args );                                             \</div>
+<div class="line">  }                                                                       \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE &amp; x ){ <span class="keywordflow">return</span> FNAME( x, {} ); }              \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE * x ){ <span class="keywordflow">return</span> FNAME( x, {} ); }              \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                             \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE &amp; x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ) \</div>
+<div class="line">  { <span class="keywordflow">return</span> FNAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); }         \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                             \</div>
+<div class="line">  inline OTYPE&amp; FNAME( OTYPE * x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ) \</div>
+<div class="line">  { <span class="keywordflow">return</span> FNAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a6af4a2d3ad30cded4f466c05737304ec" name="a6af4a2d3ad30cded4f466c05737304ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6af4a2d3ad30cded4f466c05737304ec">&#9670;&nbsp;</a></span>DEFINE_PLOTTING_RET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEFINE_PLOTTING_RET</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">OTYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">RTYPE, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">FNAME&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  RTYPE FNAME( OTYPE&amp;, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt;&amp; );                  \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE * x, <span class="keyword">const</span> std::vector&lt;RooCmdArg&gt;&amp; args )    \</div>
+<div class="line">  { <span class="keywordflow">return</span> FNAME( *x, args );                                            \</div>
+<div class="line">  }                                                                      \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE &amp; x ){ <span class="keywordflow">return</span> FNAME( x, {} ); }              \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE * x ){ <span class="keywordflow">return</span> FNAME( x, {} ); }              \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                            \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE &amp; x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ) \</div>
+<div class="line">  { <span class="keywordflow">return</span> FNAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); }        \</div>
+<div class="line">  template&lt;<span class="keyword">typename</span> ... Args&gt;                                            \</div>
+<div class="line">  inline RTYPE FNAME( OTYPE * x, <span class="keyword">const</span> RooCmdArg &amp; arg1, Args ... args ) \</div>
+<div class="line">  { <span class="keywordflow">return</span> FNAME( x, MakeVector&lt;RooCmdArg&gt;( arg1, args ... ) ); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
 <hr class="footer"/>
