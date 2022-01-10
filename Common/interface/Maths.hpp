@@ -113,6 +113,7 @@ extern double RoundDown( const double x, const double target );
  *  Calculation vectors
    --------------------------------------------------------------------------*/
 std::vector<double> LinSpace( double start, double end, size_t num );
+std::vector<double> LogSpace( double start, double end, size_t num );
 
 
 /** @} */

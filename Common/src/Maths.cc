@@ -357,11 +357,9 @@ RoundDown( const double x, const double target )
  * start and end.
  *
  * The vector returned will always have size num. The first element of the
- * vector
- * would be identical to start, the end will be identical to end (if num > 1),
- * the remaining elements will be numbers spanning the interval of [start,end]
- * in
- * a linear spacing (equally spaced).
+ * vector would be identical to start, the end will be identical to end (if num
+ * > 1), the remaining elements will be numbers spanning the interval of
+ * [start,end] in a linear spacing (equally spaced).
  */
 std::vector<double>
 LinSpace( const double start, const double end, const size_t num )
@@ -384,6 +382,37 @@ LinSpace( const double start, const double end, const size_t num )
   ans[num-1] = end;// ensuring the last element matches the given end.
 
   return ans;
+}
+
+
+/**
+ * @brief Returns a vector containing numbers spaced linearly from the given
+ * start and end.
+ *
+ * The vector returned will always have size num. The first element of the
+ * vector would be identical to start, the end will be identical to end (if num
+ * > 1), the remaining elements will be numbers spanning the interval of
+ * [start,end] in a linear spacing (equally spaced).
+ */
+std::vector<double>
+LogSpace( const double start, const double end, const size_t num )
+{
+  const double        logstart = std::log( start );
+  const double        logstop  = std::log( end );
+  std::vector<double> logspace = LinSpace( logstart, logstop, num );
+
+  std::transform( logspace.begin(),
+                  logspace.end(),
+                  logspace.begin(),
+                  []( const double x ){return std::exp( x );} );
+
+  if( num > 0 ){
+    logspace[0] = start;
+  }
+  if( num > 1 ){
+    logspace[num-1] = end;
+  }
+  return logspace;
 }
 
 }/* usr */
