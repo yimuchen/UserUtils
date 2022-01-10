@@ -75,7 +75,7 @@ Pad1D::SetAxisFont()
 
 
 #define AXISOBJ_ACCESS( ACTION, DEFAULT )                 \
-  TObject*axisobj = GetAxisObject();                      \
+  TObject* axisobj = GetAxisObject();                     \
   if( !axisobj ){                                         \
     return DEFAULT;                                       \
   } else if( axisobj->InheritsFrom( TH1::Class() ) ){     \
@@ -89,7 +89,7 @@ Pad1D::SetAxisFont()
   }
 
 #define AXISOBJ_ADJUST( ACTION )                          \
-  TObject*axisobj = GetAxisObject();                      \
+  TObject* axisobj = GetAxisObject();                     \
   if( !axisobj ){                                         \
     return;                                               \
   } else if( axisobj->InheritsFrom( TH1::Class() ) ){     \

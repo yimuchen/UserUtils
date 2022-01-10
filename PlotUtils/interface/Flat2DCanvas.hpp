@@ -37,72 +37,57 @@ public:
   inline const Pad2DFlat&
   Pad() const { return GetPad<Pad2DFlat>( 0 ); }
 
+#define DEFINE_PLOTTING( OTYPE, FNAME );          \
+  inline OTYPE& FNAME( OTYPE & x )                \
+  { return Pad().FNAME( x );                      \
+  }                                               \
+  inline OTYPE& FNAME( OTYPE * x )                \
+  { return Pad().FNAME( x );                      \
+  }                                               \
+  template<typename ... Args>                     \
+  inline OTYPE& FNAME( OTYPE & x, Args ... args ) \
+  { return Pad().FNAME( x, args ... );            \
+  }                                               \
+  template<typename ... Args>                     \
+  inline OTYPE& FNAME( OTYPE * x, Args ... args ) \
+  { return Pad().FNAME( x, args ... );            \
+  }                                               \
+
+#define DEFINE_PLOTTING_RET( OTYPE, RTYPE, FNAME ); \
+  inline RTYPE FNAME( OTYPE & x )                   \
+  { return Pad().FNAME( x );                        \
+  }                                                 \
+  inline RTYPE FNAME( OTYPE * x )                   \
+  { return Pad().FNAME( x );                        \
+  }                                                 \
+  template<typename ... Args>                       \
+  inline RTYPE FNAME( OTYPE & x, Args ... args )    \
+  { return Pad().FNAME( x, args ... );              \
+  }                                                 \
+  template<typename ... Args>                       \
+  inline RTYPE FNAME( OTYPE * x, Args ... args )    \
+  { return Pad().FNAME( x, args ...  );             \
+  }                                                 \
+
+
   /**
    * @{
    * @brief passing through for Pad2DFlat plotting function so that user can
    * 'plot' on this canvas type.
+   *
    * @details See Pad2DFlats plot functions for details. Require explicitly
    * defining two interfaces to avoid compile time reference errors.
    */
-  template<typename ... Args>
-  inline TH2D&
-  PlotHist( TH2D& x, Args ... args )
-  {
-    return Pad().PlotHist( x, args ... );
-  }
-  template<typename ... Args>
-  inline TH2D&
-  PlotHist( TH2D*x, Args ... args )
-  {
-    return Pad().PlotHist( x, args ... );
-  }
-
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotFunc( TF2& x, Args ... args )
-  {
-    return Pad().PlotFunc( x, args ... );
-  }
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotFunc( TF2*x, Args ... args )
-  {
-    return Pad().PlotFunc( x, args ... );
-  }
-
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotGraph( TGraph2D& x, Args ... args )
-  {
-    return Pad().PlotGraph( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotGraph( TGraph2D*x, Args ... args )
-  {
-    return Pad().PlotGraph( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  Plot1DGraph( TGraph& x, Args ... args )
-  {
-    return Pad().Plot1DGraph( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  Plot1DGraph( TGraph*x, Args ... args )
-  {
-    return Pad().Plot1DGraph( x, args ... );
-  }
-
+  DEFINE_PLOTTING( TH2D, PlotHist );
+  DEFINE_PLOTTING_RET( TF2, TGraph2D&, PlotFunc );
+  DEFINE_PLOTTING( TGraph2D, PlotGraph );
+  DEFINE_PLOTTING( TGraph, Plot1DGraph );
+  DEFINE_PLOTTING_RET( TGraph2D, TList&,  PlotColGraph );
 
   /** @} */
+
+#undef DEFINE_PLOTTING
+#undef DEFINE_PLOTTING_RET
 
   /**
    * @{

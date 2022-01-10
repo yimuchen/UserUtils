@@ -42,145 +42,76 @@ public:
   inline const Pad1D&
   Pad() const { return GetPad<Pad1D>( 0 ); }
 
+#define DEFINE_PLOTTING( OTYPE, FNAME );          \
+  inline OTYPE& FNAME( OTYPE & x )                \
+  { return Pad().FNAME( x );                      \
+  }                                               \
+  inline OTYPE& FNAME( OTYPE * x )                \
+  { return Pad().FNAME( x );                      \
+  }                                               \
+  template<typename ... Args>                     \
+  inline OTYPE& FNAME( OTYPE & x, Args ... args ) \
+  { return Pad().FNAME( x, args ... );            \
+  }                                               \
+  template<typename ... Args>                     \
+  inline OTYPE& FNAME( OTYPE * x, Args ... args ) \
+  { return Pad().FNAME( x, args ... );            \
+  }                                               \
+
+#define DEFINE_PLOTTING_RET( OTYPE, RTYPE, FNAME ); \
+  inline RTYPE FNAME( OTYPE & x )                   \
+  { return Pad().FNAME( x );                        \
+  }                                                 \
+  inline RTYPE FNAME( OTYPE * x )                   \
+  { return Pad().FNAME( x );                        \
+  }                                                 \
+  template<typename ... Args>                       \
+  inline RTYPE FNAME( OTYPE & x, Args ... args )    \
+  { return Pad().FNAME( x, args ... );              \
+  }                                                 \
+  template<typename ... Args>                       \
+  inline RTYPE FNAME( OTYPE * x, Args ... args )    \
+  { return Pad().FNAME( x, args ...  );             \
+  }                                                 \
+
+
   /**
    * @{
    * @brief passing through for Pad1D plotting function so that user can 'plot'
    * on this canvas type. (Require explicitly defining the interface to avoid
    * compile time type ambiguities of reference type.)
    */
-  template<typename ... Args>
-  inline TH1D&
-  PlotHist( TH1D& x, Args ... args )
-  {
-    return Pad().PlotHist( x, args ... );
-  }
-  template<typename ... Args>
-  inline TH1D&
-  PlotHist( TH1D*x, Args ... args )
-  {
-    return Pad().PlotHist( x, args ... );
-  }
+  DEFINE_PLOTTING( TH1D, PlotHist );
+  DEFINE_PLOTTING( TGraph, PlotGraph );
+  DEFINE_PLOTTING( TEfficiency, PlotEff );
+  DEFINE_PLOTTING_RET( TF1, TGraph&, PlotFunc );
+  DEFINE_PLOTTING_RET( RooAbsData, TGraphAsymmErrors&, PlotData );
+  DEFINE_PLOTTING_RET( RooAbsPdf, TGraph&, PlotPdf );
 
-  template<typename ... Args>
-  inline TGraph&
-  PlotFunc( TF1& x, Args ... args )
-  {
-    return Pad().PlotFunc( x, args ... );
-  }
-  template<typename ... Args>
-  inline TGraph&
-  PlotFunc( TF1*x, Args ... args )
-  {
-    return Pad().PlotFunc( x, args ... );
-  }
-
-  template<typename ... Args>
-  inline TGraph&
-  PlotGraph( TGraph& x, Args ... args )
-  {
-    return Pad().PlotGraph( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  PlotGraph( TGraph*x, Args ... args )
-  {
-    return Pad().PlotGraph( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TEfficiency&
-  PlotEff( TEfficiency& x, Args ... args )
-  {
-    return Pad().PlotEff( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TEfficiency&
-  PlotEff( TEfficiency*x, Args ... args )
-  {
-    return Pad().PlotEff( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TGraphAsymmErrors&
-  PlotData( RooAbsData& x, Args ... args )
-  {
-    return Pad().PlotData( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TGraphAsymmErrors&
-  PlotData( RooAbsData*x, Args ... args )
-  {
-    return Pad().PlotData( x, args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  PlotPdf( RooAbsPdf& x, Args ... args )
-  {
-    return Pad().PlotPdf( x, args ... );
-  }
-  template<typename ... Args>
-  inline TGraph&
-  PlotPdf( RooAbsPdf*x, Args ... args )
-  {
-    return Pad().PlotPdf( x, args ... );
-  }
+#undef DEFINE_PLOTTING
+#undef DEFINE_PLOTTING_RET
 
   /** @} */
+
+#define PASSTHROUGH_VOID( FNAME ) \
+  template<typename ... Args>     \
+  inline void FNAME( Args ... args ){ Pad().FNAME( args ... ); }
+#define PASSTHROUGH_RET( FNAME, RTYPE ) \
+  template<typename ... Args>           \
+  inline RTYPE FNAME( Args ... args ){ return Pad().FNAME( args ... ); }
 
   /**
    * @{
    * @brief passing through addition Pad1D functions. Using variadic template to
    * future proof interface.
    */
-  template<typename ... Args>
-  inline void DrawCMSLabel( Args ... args ){ Pad().DrawCMSLabel( args ... ); }
-  template<typename ... Args>
-  inline void
-  DrawLuminosity( Args ... args )
-  {
-    Pad().DrawLuminosity( args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TLine&
-  DrawHLine( Args ... args )
-  {
-    return Pad().DrawHLine( args ... );
-  }
-
-
-  template<typename ... Args>
-  inline TLine&
-  DrawVLine( Args ... args )
-  {
-    return Pad().DrawVLine( args ... );
-  }
-
-
-  template<typename ... Args>
-  inline void SetLogy( Args ... args ){ Pad().SetLogy( args ... ); }
-  template<typename ... Args>
-  inline PadBase&
-  WriteLine( Args ... args )
-  {
-    return Pad().WriteLine( args ... );
-  }
-
-
-  template<typename ... Args>
-  inline void SetHistAxisTitles( Args ... args )
-  { Pad().SetHistAxisTitles( args ... ); }
+  PASSTHROUGH_VOID( DrawCMSLabel );
+  PASSTHROUGH_VOID( DrawLuminosity );
+  PASSTHROUGH_RET( DrawHLine, TLine& );
+  PASSTHROUGH_RET( DrawVLine, TLine& );
+  PASSTHROUGH_VOID( SetLogy );
+  PASSTHROUGH_RET( WriteLine, PadBase& );
+  PASSTHROUGH_VOID( SetHistAxisTitles );
 
   /** @} */
 

@@ -57,35 +57,39 @@ public:
   // Pad2DFlat() {} // Needed for reflex should never be used by
   Pad2DFlat( const Pad2DFlat& ) = delete;
 
+#define DEFINE_PLOTTING( OTYPE, FNAME )                                   \
+  OTYPE & FNAME( OTYPE&, const std::vector<RooCmdArg>& );                 \
+  inline OTYPE& FNAME( OTYPE * x, const std::vector<RooCmdArg>& args )    \
+  { return FNAME( *x, args );                                             \
+  }                                                                       \
+  inline OTYPE& FNAME( OTYPE & x ){ return FNAME( x, {} ); }              \
+  inline OTYPE& FNAME( OTYPE * x ){ return FNAME( x, {} ); }              \
+  template<typename ... Args>                                             \
+  inline OTYPE& FNAME( OTYPE & x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }         \
+  template<typename ... Args>                                             \
+  inline OTYPE& FNAME( OTYPE * x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }
+
+#define DEFINE_PLOTTING_RET( OTYPE, RTYPE, FNAME )                       \
+  RTYPE FNAME( OTYPE&, const std::vector<RooCmdArg>& );                  \
+  inline RTYPE FNAME( OTYPE * x, const std::vector<RooCmdArg>& args )    \
+  { return FNAME( *x, args );                                            \
+  }                                                                      \
+  inline RTYPE FNAME( OTYPE & x ){ return FNAME( x, {} ); }              \
+  inline RTYPE FNAME( OTYPE * x ){ return FNAME( x, {} ); }              \
+  template<typename ... Args>                                            \
+  inline RTYPE FNAME( OTYPE & x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }        \
+  template<typename ... Args>                                            \
+  inline RTYPE FNAME( OTYPE * x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }
+
   /**
    * @{
    * @brief Plotting 2D histogram object
    */
-  TH2D& PlotHist( TH2D&, const std::vector<RooCmdArg>& );
-  inline TH2D&
-  PlotHist( TH2D*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotHist( *x, list );
-  }
-
-
-  inline TH2D& PlotHist( TH2D& x ){ return PlotHist( x, {} );}
-  inline TH2D& PlotHist( TH2D*x ){ return PlotHist( *x, {} );}
-  template<typename ... Args>
-  inline TH2D&
-  PlotHist( TH2D& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TH2D&
-  PlotHist( TH2D*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotHist( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING( TH2D, PlotHist );
 
   // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotHist, TH2D, TH2D& );
 
@@ -95,31 +99,7 @@ public:
    * @{
    * @brief Plotting 2D function object
    */
-  TGraph2D& PlotFunc( TF2&, const std::vector<RooCmdArg>& );
-  inline TGraph2D&
-  PlotFunc( TF2*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotFunc( *x, list );
-  }
-
-
-  inline TGraph2D& PlotFunc( TF2& x ){ return PlotFunc( x, {} );}
-  inline TGraph2D& PlotFunc( TF2*x ){ return PlotFunc( *x, {} );}
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotFunc( TF2& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotFunc( TF2*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotFunc( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING_RET( TF2, TGraph2D&,  PlotFunc );
 
   // DECLARE_PAD2DFLAT_PLOT_FUNCTIONS( PlotFunc, TF2, TGraph2D& );
 
@@ -129,30 +109,7 @@ public:
    * @{
    * @brief Plotting 2D graph object
    */
-  TGraph2D& PlotGraph( TGraph2D&, const std::vector<RooCmdArg>& );
-  inline TGraph2D&
-  PlotGraph( TGraph2D*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotGraph( *x, list );
-  }
-
-
-  inline TGraph2D& PlotGraph( TGraph2D& x ){ return PlotGraph( x, {} );}
-  inline TGraph2D& PlotGraph( TGraph2D*x ){ return PlotGraph( *x, {} );}
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotGraph( TGraph2D& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph2D&
-  PlotGraph( TGraph2D*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
+  DEFINE_PLOTTING( TGraph2D, PlotGraph );
 
 
   /** @} */
@@ -161,33 +118,20 @@ public:
    * @{
    * @brief Plotting 1D graph object
    */
-  TGraph& Plot1DGraph( TGraph&, const std::vector<RooCmdArg>& );
-  inline TGraph&
-  Plot1DGraph( TGraph*x, const std::vector<RooCmdArg>& list )
-  {
-    return Plot1DGraph( *x, list );
-  }
-
-
-  inline TGraph& Plot1DGraph( TGraph& x ){ return Plot1DGraph( x, {} );}
-  inline TGraph& Plot1DGraph( TGraph*x ){ return Plot1DGraph( *x, {} );}
-  template<typename ... Args>
-  inline TGraph&
-  Plot1DGraph( TGraph& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return Plot1DGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  Plot1DGraph( TGraph*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return Plot1DGraph( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING( TGraph, Plot1DGraph );
 
   /** @} */
+
+  /**
+   * @{
+   * @brief Plotting 2D with z values as colors
+   */
+  DEFINE_PLOTTING_RET( TGraph2D, TList&, PlotColGraph );
+
+  /** @} */
+
+#undef DEFINE_PLOTTING
+#undef DEFINE_PLOTTING_RET
 
   TObject*     GetAxisObject() const;
   TAxis&       Xaxis();
@@ -218,10 +162,10 @@ public:
   inline void SetLogz( int x = 1  ){ TPad_().SetLogz( x ); }
 
 private:
-  TLegend  _legend;
+  TLegend _legend;
   RooFrame _frame;
-  void     init_legend();
-  void     MakeLegend();
+  void init_legend();
+  void MakeLegend();
 };
 
 }/* plt */

@@ -21,7 +21,7 @@ namespace plt
  **/
 length_t Flat2DCanvas::default_width  = 1.0  * len::a4textwidth_default();
 length_t Flat2DCanvas::default_height = 0.65 * len::a4textwidth_default();
-FontSet  Flat2DCanvas::default_font   = FontSet();
+FontSet  Flat2DCanvas::default_font   = FontSet( 11 );
 
 /** @} */
 

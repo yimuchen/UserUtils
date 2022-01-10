@@ -63,39 +63,42 @@ protected:
 
 public:
   virtual ~Pad1D ();
-  Pad1D() = delete;
-  // Pad1D(){};// Needed for reflex, should never be used!
+  Pad1D()               = delete;
   Pad1D( const Pad1D& ) = delete;
+
+#define DEFINE_PLOTTING( OTYPE, FNAME )                                   \
+  OTYPE & FNAME( OTYPE&, const std::vector<RooCmdArg>& );                 \
+  inline OTYPE& FNAME( OTYPE * x, const std::vector<RooCmdArg>& args )    \
+  { return FNAME( *x, args );                                             \
+  }                                                                       \
+  inline OTYPE& FNAME( OTYPE & x ){ return FNAME( x, {} ); }              \
+  inline OTYPE& FNAME( OTYPE * x ){ return FNAME( x, {} ); }              \
+  template<typename ... Args>                                             \
+  inline OTYPE& FNAME( OTYPE & x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }         \
+  template<typename ... Args>                                             \
+  inline OTYPE& FNAME( OTYPE * x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }
+
+#define DEFINE_PLOTTING_RET( OTYPE, RTYPE, FNAME )                       \
+  RTYPE FNAME( OTYPE&, const std::vector<RooCmdArg>& );                  \
+  inline RTYPE FNAME( OTYPE * x, const std::vector<RooCmdArg>& args )    \
+  { return FNAME( *x, args );                                            \
+  }                                                                      \
+  inline RTYPE FNAME( OTYPE & x ){ return FNAME( x, {} ); }              \
+  inline RTYPE FNAME( OTYPE * x ){ return FNAME( x, {} ); }              \
+  template<typename ... Args>                                            \
+  inline RTYPE FNAME( OTYPE & x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }        \
+  template<typename ... Args>                                            \
+  inline RTYPE FNAME( OTYPE * x, const RooCmdArg & arg1, Args ... args ) \
+  { return FNAME( x, MakeVector<RooCmdArg>( arg1, args ... ) ); }
 
   /**
    * @{
    * @brief Plotting 1D histogram objects
    */
-  TH1D& PlotHist( TH1D&, const std::vector<RooCmdArg>& );
-  inline TH1D&
-  PlotHist( TH1D*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotHist( *x, list );
-  }
-
-
-  inline TH1D& PlotHist( TH1D& x ){ return PlotHist( &x, {} ); }
-  inline TH1D& PlotHist( TH1D*x ){ return PlotHist( x, {} ); }
-  template<typename ... Args>
-  inline TH1D&
-  PlotHist( TH1D& x, const RooCmdArg & arg1, Args ... args )
-  {
-    return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TH1D&
-  PlotHist( TH1D*x, const RooCmdArg & arg1, Args ... args )
-  {
-    return PlotHist( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING( TH1D, PlotHist );
 
   /** @} */
 
@@ -103,31 +106,7 @@ public:
    * @{
    * @brief Special case for TProfile plotting
    */
-  TH1D& PlotProfile( TProfile&, const std::vector<RooCmdArg>& );
-  inline TH1D&
-  PlotProfile( TProfile*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotProfile( *x, list );
-  }
-
-
-  inline TH1D& PlotProfile( TProfile& x ){ return PlotProfile( x, {} ); }
-  inline TH1D& PlotProfile( TProfile*x ){ return PlotProfile( *x, {} );}
-  template<typename ... Args>
-  inline TH1D&
-  PlotProfile( TProfile& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotProfile( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TH1D&
-  PlotProfile( TProfile*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotProfile( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING_RET( TProfile, TH1D&, PlotProfile );
 
   /** @} */
 
@@ -135,31 +114,7 @@ public:
    * @{
    * @brief Plotting TEfficiency objects
    */
-  TEfficiency& PlotEff( TEfficiency&, const std::vector<RooCmdArg>& );
-  inline TEfficiency&
-  PlotEff( TEfficiency*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotEff( *x, list );
-  }
-
-
-  inline TEfficiency& PlotEff( TEfficiency& x ){ return PlotEff( x, {} ); }
-  inline TEfficiency& PlotEff( TEfficiency*x ){ return PlotEff( *x, {} );}
-  template<typename ... Args>
-  inline TEfficiency&
-  PlotEff( TEfficiency& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotEff( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TEfficiency&
-  PlotEff( TEfficiency*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotEff( *x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING( TEfficiency, PlotEff );
 
   /** @} */
 
@@ -167,31 +122,7 @@ public:
    * @{
    * @brief Plotting x-y scatter graph objects
    */
-  TGraph& PlotGraph( TGraph&, const std::vector<RooCmdArg>& );
-  inline TGraph&
-  PlotGraph( TGraph*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotGraph( *x, list );
-  }
-
-
-  inline TGraph& PlotGraph( TGraph& x ){ return PlotGraph( x, {} ); }
-  inline TGraph& PlotGraph( TGraph*x ){ return PlotGraph( x, {} );}
-  template<typename ... Args>
-  inline TGraph&
-  PlotGraph( TGraph& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  PlotGraph( TGraph*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotGraph( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING( TGraph, PlotGraph );
 
   /** @} */
 
@@ -199,31 +130,7 @@ public:
    * @{
    * @brief Plotting ROOT flavoured 1D function
    */
-  TGraph& PlotFunc( TF1&, const std::vector<RooCmdArg>& );
-  inline TGraph&
-  PlotFunc( TF1*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotFunc( *x, list );
-  }
-
-
-  inline TGraph& PlotFunc( TF1& x ){ return PlotFunc( x, {} ); }
-  inline TGraph& PlotFunc( TF1*x ){ return PlotFunc( x, {} );}
-  template<typename ... Args>
-  inline TGraph&
-  PlotFunc( TF1& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  PlotFunc( TF1*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotFunc( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING_RET( TF1, TGraph&, PlotFunc );
 
   /** @} */
 
@@ -231,79 +138,22 @@ public:
    * @{
    * @brief Plotting RooFit's @ROOT{RooAbsData}s
    */
-  TGraphAsymmErrors& PlotData( RooAbsData&, const std::vector<RooCmdArg>& );
-  inline TGraphAsymmErrors&
-  PlotData( RooAbsData*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotData( *x, list );
-  }
-
-
-  inline TGraphAsymmErrors&
-  PlotData( RooAbsData& x )
-  {
-    return PlotData( x, {} );
-  }
-
-
-  inline TGraphAsymmErrors&
-  PlotData( RooAbsData*x )
-  {
-    return PlotData( x, {} );
-  }
-
-
-  template<typename ... Args>
-  inline TGraphAsymmErrors&
-  PlotData( RooAbsData& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotData( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TGraphAsymmErrors&
-  PlotData( RooAbsData*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotData( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
+  DEFINE_PLOTTING_RET( RooAbsData, TGraphAsymmErrors&, PlotData );
 
   /** @} */
 
   /**
    * @{
-   * @brief
-   * Plotting RooFit's @ROOT{RooAbsPdf}s
+   * @brief Plotting RooFit's @ROOT{RooAbsPdf}s
    */
-  TGraph& PlotPdf( RooAbsPdf&, const std::vector<RooCmdArg>& );
-  inline TGraph&
-  PlotPdf( RooAbsPdf*x, const std::vector<RooCmdArg>& list )
-  {
-    return PlotPdf( *x, list );
-  }
-
-
-  inline TGraph& PlotPdf( RooAbsPdf& x ){ return PlotPdf( x, {} ); }
-  inline TGraph& PlotPdf( RooAbsPdf*x ){ return PlotPdf( x, {} );}
-  template<typename ... Args>
-  inline TGraph&
-  PlotPdf( RooAbsPdf& x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotPdf( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
-
-
-  template<typename ... Args>
-  inline TGraph&
-  PlotPdf( RooAbsPdf*x, const RooCmdArg& arg1, Args ... args )
-  {
-    return PlotPdf( x, MakeVector<RooCmdArg>( arg1, args ... ) );
-  }
+  DEFINE_PLOTTING_RET( RooAbsPdf, TGraph&, PlotPdf );
 
 
   /** @} */
 
+
+#undef DEFINE_PLOTTING
+#undef DEFINE_PLOTTING_RET
 
   /**
    * @{
@@ -415,13 +265,16 @@ public:
    * plotting. Declaring as static function for simpler debugging.
    */
   static TGraph* MakeTF1GraphCentral( const TF1&   func,
-                                      const double precision );
+                                      const double precision,
+                                      const int    log_space  );
   static TGraphAsymmErrors* MakeTF1GraphNoCorr( const TF1&   func,
                                                 const double precision,
+                                                const int    log_space,
                                                 const double z );
   static TGraphAsymmErrors* MakeTF1GraphMatrix( const TF1&         func,
                                                 const TMatrixDSym& corr,
                                                 const double       precision,
+                                                const int          log_space,
                                                 const double       z );
 
   /** @} */

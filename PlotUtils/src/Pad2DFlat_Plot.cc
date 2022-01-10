@@ -1,15 +1,20 @@
 #ifdef CMSSW_GIT_HASH
+#include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Pad2DFlat.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #else
+#include "UserUtils/Common/Maths.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/Pad2DFlat.hpp"
 #include "UserUtils/PlotUtils/PlotCommon.hpp"
 #endif
 
 #include "CmdSetAttr.hpp"
+#include "TColor.h"
+#include "TGraphErrors.h"
 #include "TLegendEntry.h"
+#include "TStyle.h"
 
 namespace usr
 {
@@ -278,6 +283,115 @@ Pad2DFlat::Plot1DGraph( TGraph& graph, const std::vector<RooCmdArg>& arglist )
   SetMarkAttr( graph, args );
 
   return graph;
+}
+
+
+/**
+ * @details Given a TGraph2D, the z coordinates will be used to modify the
+ * color of the plots. As the TGraph2D PCOL plotting methods will for the
+ * creation of a 3D plot, we will not be using that method. Rather we will be
+ * grouping the creating a list of TGraphs each of their colors assigned
+ * individually. As this method is potentially memory intensive, users are
+ * advised to not use this method for very large data sets.
+ *
+ * Grouping of the z values is done by getting the maximum and minimum z values
+ * of the TGraph2D data points (errors are omitted), then binning according to
+ * the number of color values available in the current color pallet (typically
+ * 255), these values of then uses as the edge values for separating the bin
+ * values.
+ *
+ *
+ */
+TList&
+Pad2DFlat::PlotColGraph( TGraph2D& g, const std::vector<RooCmdArg>& arglist )
+{
+  const RooArgContainer args( arglist,
+                              { MarkerStyle( sty::mkrcircle ),
+                                MarkerSize( 0.2 )} );
+
+  // Setting up the data points for
+  const auto                palette = TColor::GetPalette();
+  const unsigned            n_color = palette.GetSize();
+  const double              zmin    = g.GetZmin();
+  const double              zmax    = g.GetZmax();
+  const std::vector<double> edges   = LinSpace( zmin, zmax, n_color );
+
+  // Data for grouping
+  std::vector<std::vector<double> > x_group( n_color, std::vector<double>() );
+  std::vector<std::vector<double> > ex_group( n_color, std::vector<double>() );
+  std::vector<std::vector<double> > y_group( n_color, std::vector<double>());
+  std::vector<std::vector<double> > ey_group( n_color, std::vector<double>() );
+
+  // Looping over original data set and grouping.
+  for( int i = 0 ; i < g.GetN(); ++i ){
+    const double   z   = g.GetZ()[i];
+    const unsigned bin =
+      std::lower_bound( edges.begin(), edges.end(), z )-edges.begin();
+    x_group[bin].push_back( g.GetX()[i] );
+    y_group[bin].push_back( g.GetY()[i] );
+    if( g.GetEX() ){
+
+      ex_group[bin].push_back( g.GetEX()[i] );
+      ey_group[bin].push_back( g.GetEY()[i] );
+    } else {
+      ex_group[bin].push_back( 0 );
+      ey_group[bin].push_back( 0 );
+    }
+  }
+
+  // Before plotting anything else, we will need to setup to axis object:
+  if( !GetAxisObject() ){
+    TH2D& axishist = MakeObj<TH2D>(
+      ( "HISTAXIS"+RandomString( 6 ) ).c_str(),
+      "",
+      2,
+      g.GetXminE(),
+      g.GetXmaxE(),
+      2,
+      g.GetYminE(),
+      g.GetYmaxE() );
+    axishist.Reset();
+    axishist.SetStats( 0 );
+    axishist.Fill( g.GetXmaxE()+10, g.GetYminE()+10, g.GetZmax() );
+    PlotObj( axishist, "COLZ" );
+    axishist.SetMaximum( g.GetZmax() );
+    axishist.SetMinimum( g.GetZmin() );
+    this->SetAxisFont();
+    if( args.Has( "EntryText" ) ){
+      _legend.AddEntry( &axishist,
+                        args.Get( "EntryText" ).getString(
+                          0 ),
+                        "" );
+    }
+  }
+
+  // Looping over the non-trivial grouping results and plotting
+  TList& ans = MakeObj<TList>();
+
+  for( unsigned i = 0 ; i < n_color; ++i ){
+    if( x_group[i].size() == 0 ){ continue; }
+    TGraphErrors* sg = new TGraphErrors(
+      x_group[i].size(),
+      x_group[i].data(),
+      y_group[i].data(),
+      ex_group[i].data(),
+      ey_group[i].data() );
+
+    std::vector<RooCmdArg> single_args;
+    for( const auto a : args ){
+      if( a.GetName() == std::string( "EntryText" ) ){ continue; }
+      single_args.push_back( a );
+    }
+    single_args.push_back( PlotType( scatter ));
+    single_args.push_back( LineColor( palette[i] ));
+    single_args.push_back( MarkerColor( palette[i] ));
+
+    Plot1DGraph( sg, single_args );
+
+    ans.Add( sg );
+  }
+
+  return ans;
 }
 
 

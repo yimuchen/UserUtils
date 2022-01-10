@@ -421,12 +421,11 @@ TGraph&
 Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
 {
   const RooArgContainer args( arglist, {
-        PlotType(// Inserting default plotting style
-          RooArgContainer::CheckList( arglist, "VisualizeError" ) ?
-          fittedfunc :
-          simplefunc ), RooFit::Precision( 1e-3 )
-      }
-                              );
+        // Inserting default plotting style
+        PlotType( RooArgContainer::CheckList( arglist, "VisualizeError" ) ?
+                  fittedfunc :
+                  simplefunc ), usr::plt::Precision( 1e-3, false )
+      } );
 
   // If no axis are available. Generating a TH1 object for axis:
   if( !GetAxisObject() ){
@@ -445,7 +444,9 @@ Pad1D::PlotFunc( TF1& func, const std::vector<RooCmdArg>& arglist )
  * generated TGraph object.
  */
 TGraph*
-Pad1D::MakeTF1GraphCentral( const TF1& func, const double precision )
+Pad1D::MakeTF1GraphCentral( const TF1&   func,
+                            const double precision,
+                            const int    logspace )
 {
   TF1            f       = func; // Making a copy of the function
   const double   xmax    = f.GetXmax();
@@ -457,7 +458,11 @@ Pad1D::MakeTF1GraphCentral( const TF1& func, const double precision )
 
   // Getting common elements for graph generation
   for( unsigned i = 0; i < xsample; ++i ){
-    const double xval = xmin+i * ( xmax-xmin ) * precision;
+
+    const double xval = logspace ?
+                        xmin * TMath::Exp( TMath::Log(
+                                             xmax / xmin ) * precision * i ) :
+                        xmin+i * ( xmax-xmin ) * precision;
     const double yval = f.Eval( xval );
     x[i] = xval;
     y[i] = yval;
@@ -480,6 +485,7 @@ Pad1D::MakeTF1GraphCentral( const TF1& func, const double precision )
 TGraphAsymmErrors*
 Pad1D::MakeTF1GraphNoCorr( const TF1&   func,
                            const double precision,
+                           const int    logspace,
                            const double z )
 {
   // Constructing the diagonal covariance matrix
@@ -488,7 +494,7 @@ Pad1D::MakeTF1GraphNoCorr( const TF1&   func,
     corr[i][i] = func.GetParError( i ) * func.GetParError( i );
   }
 
-  return MakeTF1GraphMatrix( func, corr, precision, z );
+  return MakeTF1GraphMatrix( func, corr, precision, logspace, z );
 }
 
 
@@ -511,9 +517,12 @@ TGraphAsymmErrors*
 Pad1D::MakeTF1GraphMatrix( const TF1&         func,
                            const TMatrixDSym& _corr,
                            const double       precision,
+                           const int          logspace,
                            const double       z )
 {
-  std::unique_ptr<TGraph> central( MakeTF1GraphCentral( func, precision ));
+  std::unique_ptr<TGraph> central( MakeTF1GraphCentral( func,
+                                                        precision,
+                                                        logspace ));
 
   // Making a duplicate of the original function object.
   TF1         f    = func;
@@ -536,7 +545,7 @@ Pad1D::MakeTF1GraphMatrix( const TF1&         func,
         usr::log::INTERNAL,
         "Warning! Covariance matrix generated imaginary eigenvalue components!"
         "Reverting to uncorrelated version of function generation" );
-      return MakeTF1GraphNoCorr( func, precision, z );
+      return MakeTF1GraphNoCorr( func, precision, logspace, z );
     }
   }
 
@@ -593,10 +602,11 @@ TGraph&
 Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
 {
   const double precision = args.GetDouble( "Precision" );
+  const bool   logspace  = args.GetInt( "Precision" );
 
   TGraph* g;
   if( !args.Has( "VisualizeError" ) ){
-    g = MakeTF1GraphCentral( func, precision );
+    g = MakeTF1GraphCentral( func, precision, logspace );
   } else {
     const TFitResult& fit =
       dynamic_cast<const TFitResult&>( args.GetObj( "VisualizeError" ) );
@@ -604,8 +614,12 @@ Pad1D::MakeTF1Graph( TF1& func, const RooArgContainer& args  )
     const int    corr = args.GetInt( "VisualizeError" );
 
     g = corr ?
-        MakeTF1GraphMatrix( func, fit.GetCovarianceMatrix(), precision, zval ) :
-        MakeTF1GraphNoCorr( func, precision, zval );
+        MakeTF1GraphMatrix( func,
+                            fit.GetCovarianceMatrix(),
+                            precision,
+                            logspace,
+                            zval ) :
+        MakeTF1GraphNoCorr( func, precision, logspace, zval );
   }
   ClaimObject( g );
   return *g;
@@ -733,16 +747,16 @@ Pad1D::MakeDataGraph( RooAbsData& data, const RooArgContainer& args )
 
 
 /**
- * Plotting of RooAbsPdf objects by generating the TGraphs using a RooPlot
- * object
- * and plotting the graphs onto the TPad. The supported options are:
+ * @brief Plotting of RooAbsPdf objects by generating the TGraphs using a
+ * RooPlot object and plotting the graphs onto the TPad. The supported options
+ * are:
  *
  * - *Any* RooCmdArg supported by the RooAbsData::plotOn function. These will
  *   take precedence to custom defined options, with the excpetion of the
  *   RooFit::DrawOptions method.
  *
- * - PlotType: Specifying the representation for the data object on the Pad. Any
- *   of the types valid for the PlotGraph functions would be valid. If not
+ * - PlotType: Specifying the representation for the data object on the Pad.
+ *   Any of the types valid for the PlotGraph functions would be valid. If not
  *   specified, the simplefunc or fittedfunc methods will be used, depending on
  *   if the RooFit::VisualizeError is used.
  *
@@ -751,17 +765,16 @@ Pad1D::MakeDataGraph( RooAbsData& data, const RooArgContainer& args )
  *   that the attributes to display in the legend would be generated from the
  *   PlotType used.
  *
- * - TrackY: Whether or not the y-axis range should be adjusted according to the
- *   newly added graph. By default, RooPdf objects would not be used to adjust
- *   the axis range.
+ * - TrackY: Whether or not the y-axis range should be adjusted according to
+ *   the newly added graph. By default, RooPdf objects would not be used to
+ *   adjust the axis range.
  *
  * Additional automation of options include additional generation for
  * RooFit::VisualizeError. The stock RooPlot generates are contour line for the
- * uncertainty range rather than a line with error, making styling of a PDF with
- * uncertainty rather tedious. This functions takes the generated TGraphs by the
- * RooPlot and recalculated a TGraph with uncertainty. The newly calculated
- * graph
- * will be placed under the ownership of the Pad.
+ * uncertainty range rather than a line with error, making styling of a PDF
+ * with uncertainty rather tedious. This functions takes the generated TGraphs
+ * by the RooPlot and recalculated a TGraph with uncertainty. The newly
+ * calculated graph will be placed under the ownership of the Pad.
  */
 TGraph&
 Pad1D::PlotPdf( RooAbsPdf& pdf, const std::vector<RooCmdArg>& arglist )
@@ -883,7 +896,7 @@ Pad1D::GenGraph( RooAbsPdf& pdf, RooLinkedList& arglist )
   // Suppressing plotting messages
   RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
 
-  RooPlot*test = pdf.plotOn( &_frame, arglist );
+  RooPlot* test = pdf.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(
             "Bad argument list or object, plotting failed" );
@@ -918,7 +931,7 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
   RooMsgService::instance().setGlobalKillBelow( RooFit::WARNING );
 
   // Generating plotting information
-  RooPlot*test = data.plotOn( &_frame, arglist );
+  RooPlot* test = data.plotOn( &_frame, arglist );
   if( !test ){
     throw std::invalid_argument(
             "Bad argument list or object, plotting failed" );
@@ -932,8 +945,7 @@ Pad1D::GenGraph( RooAbsData& data, RooLinkedList& arglist )
  * object
  *
  * Moving to a private helper function to reduce verbosity in main
- * implementation
- * function
+ * implementation function
  */
 void
 Pad1D::TrackObjectY( const TObject& obj, const int tracky )
@@ -944,6 +956,8 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
                            GetYmin( &dynamic_cast<const TH1D&>( obj ) ) :
                            obj.InheritsFrom( TGraph::Class() ) ?
                            GetYmin( &dynamic_cast<const TGraph&>( obj ) ) :
+                           obj.InheritsFrom( TGraph2D::Class() ) ?
+                           GetYmin( &dynamic_cast<const TGraph2D&>( obj ) ) :
                            obj.InheritsFrom( THStack::Class() ) ?
                            GetYmin( &dynamic_cast<const THStack&>( obj ) ) :
                            obj.InheritsFrom( TEfficiency::Class() ) ?
@@ -958,6 +972,8 @@ Pad1D::TrackObjectY( const TObject& obj, const int tracky )
                            GetYmax( &dynamic_cast<const TH1D&>( obj ) ) :
                            obj.InheritsFrom( TGraph::Class() ) ?
                            GetYmax( &dynamic_cast<const TGraph&>( obj ) ) :
+                           obj.InheritsFrom( TGraph2D::Class() ) ?
+                           GetYmax( &dynamic_cast<const TGraph2D&>( obj ) ) :
                            obj.InheritsFrom( THStack::Class() ) ?
                            GetYmax( &dynamic_cast<const THStack&>( obj ) ) :
                            obj.InheritsFrom( TEfficiency::Class() ) ?
