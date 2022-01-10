@@ -252,12 +252,12 @@ RooCmdArg
 VisualizeError( const TFitResult*fit, const double z, const bool ignore_corr  )
 {
   return RooCmdArg( "VisualizeError",
-                    ignore_corr,
-                    0,// int
-                    z,
-                    0,// double
+                    ignore_corr, // int
                     0,
-                    0,// c_string
+                    z, // double
+                    0,
+                    0, // c_string
+                    0,
                     dynamic_cast<const TObject*>( fit ) );
 }
 
@@ -279,6 +279,22 @@ RooCmdArg ExtendXRange( const bool flag  )
 { return RooCmdArg( "ExtendXRange", flag ); }
 
 USERUTILS_COMMON_REGISTERCMD( ExtendXRange );
+
+
+// ---------------------------------------------------------------------------//
+
+/**
+ * @brief Defining the sampling precision of the function.
+ *
+ * While RooFit::Precision already exists, here we add an additional option for
+ * allow for log-spacing, which speeds up plots with log scale x axis that spans
+ * many orders of magnitude.
+ */
+RooCmdArg
+Precision( const double p, const bool log_spacing )
+{
+  return RooCmdArg( "Precision", log_spacing, 0, p );
+}
 
 
 /** @} */

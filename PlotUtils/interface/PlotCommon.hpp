@@ -13,6 +13,7 @@
 
 #include "TEfficiency.h"
 #include "TGraph.h"
+#include "TGraph2D.h"
 #include "TH1D.h"
 #include "THStack.h"
 
@@ -164,6 +165,9 @@ enum plottype
 RooCmdArg PlotType( const int );
 RooCmdArg PlotType( const std::string& );
 
+RooCmdArg ColGroup( const double, const bool  );
+// RooCmdArg ColGroup( const double, const bool );
+
 
 RooCmdArg ScaleY( const double x );
 
@@ -207,6 +211,8 @@ RooCmdArg ExtrapolateInRatio( const int flag = true );
 
 RooCmdArg ExtendXRange( const bool flat = true );
 
+RooCmdArg Precision( const double x, const bool log_spacing = false );
+
 /**  @} */
 
 /**
@@ -227,6 +233,15 @@ inline double GetYmax( const TGraph*x ){ return GetYmax( *x ); }
 inline double GetYmin( const TGraph*x ){ return GetYmin( *x ); }
 inline double GetXmax( const TGraph*x ){ return GetXmax( *x ); }
 inline double GetXmin( const TGraph*x ){ return GetXmin( *x ); }
+
+extern double GetXmax( const TGraph2D& );
+extern double GetXmin( const TGraph2D& );
+extern double GetYmax( const TGraph2D& );
+extern double GetYmin( const TGraph2D& );
+inline double GetXmax( const TGraph2D* x ){ return GetXmax( *x ); }
+inline double GetXmin( const TGraph2D* x ){ return GetXmin( *x ); }
+inline double GetYmax( const TGraph2D* x ){ return GetXmax( *x ); }
+inline double GetYmin( const TGraph2D* x ){ return GetXmin( *x ); }
 
 extern double GetYmax( const TEfficiency& );
 extern double GetYmin( const TEfficiency& );
