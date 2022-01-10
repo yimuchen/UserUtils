@@ -27,7 +27,7 @@ find_package( LibLZMA REQUIRED )
 find_path( GHOSTSCRIPT_INCLUDES
     NAMES ghostscript/ierrors.h ghostscript/iapi.h )
 find_library(GHOSTSCRIPT_LIBRARIES
-    NAMES gs)
+     NAMES gs)
 
 # Declaring make directory
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/lib )
@@ -41,4 +41,3 @@ execute_process(COMMAND ${CMAKE_HOME_DIRECTORY}/GenReflex.sh)
 add_subdirectory(Common)
 add_subdirectory(MathUtils)
 add_subdirectory(PlotUtils)
-add_subdirectory(python)
