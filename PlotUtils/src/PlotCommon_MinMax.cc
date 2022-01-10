@@ -156,6 +156,65 @@ GetXmax( const TGraph& x )
 
 
 /**
+ * @brief Get the minimum x value of a 2d graph.
+ *
+ */
+double
+GetXmax( const TGraph2D& x )
+{
+  double ans = -std::numeric_limits<double>::max();
+
+  for( int i = 0 ; i < x.GetN(); ++i ){
+    ans = std::max( ans, x.GetX()[i] );
+  }
+
+  return ans;
+}
+
+
+double
+GetXmin( const TGraph2D& x )
+{
+  double ans = std::numeric_limits<double>::max();
+
+  for( int i = 0 ; i < x.GetN(); ++i ){
+    ans = std::min( ans, x.GetX()[i] );
+  }
+
+  return ans;
+}
+
+/**
+ * @brief Get the minimum x value of a 2d graph.
+ *
+ */
+double
+GetYmax( const TGraph2D& x )
+{
+  double ans = -std::numeric_limits<double>::max();
+
+  for( int i = 0 ; i < x.GetN(); ++i ){
+    ans = std::max( ans, x.GetY()[i] );
+  }
+
+  return ans;
+}
+
+
+double
+GetYmin( const TGraph2D& x )
+{
+  double ans = std::numeric_limits<double>::max();
+
+  for( int i = 0 ; i < x.GetN(); ++i ){
+    ans = std::min( ans, x.GetY()[i] );
+  }
+
+  return ans;
+}
+
+
+/**
  * @brief Get the minimum y value of the TEfficiency object
  *
  * This function also takes into account the bin uncertainties which is helpful
