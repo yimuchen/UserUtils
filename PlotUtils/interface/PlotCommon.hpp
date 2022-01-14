@@ -166,6 +166,7 @@ RooCmdArg PlotType( const int );
 RooCmdArg PlotType( const std::string& );
 
 RooCmdArg ColGroup( const double, const bool  );
+
 // RooCmdArg ColGroup( const double, const bool );
 
 
@@ -190,14 +191,14 @@ RooCmdArg Plot2DF( const int );
 RooCmdArg Plot2DF( const std::string& );
 
 RooCmdArg VisualizeError( const TFitResultPtr&,
-                          const double z           = 1,
-                          const bool   ignore_corr = false );
+                          const double z    = 1,
+                          const bool   corr = true );
 RooCmdArg VisualizeError( const TFitResult*,
-                          const double z           = 1,
-                          const bool   ignore_corr = false );
+                          const double z    = 1,
+                          const bool   corr = true );
 RooCmdArg VisualizeError( const TFitResult&,
-                          const double z           = 1,
-                          const bool   ignore_corr = false );
+                          const double z    = 1,
+                          const bool   corr = true );
 
 template<typename ... Args>
 inline RooCmdArg
