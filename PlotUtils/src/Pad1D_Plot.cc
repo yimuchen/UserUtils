@@ -532,7 +532,7 @@ Pad1D::MakeTF1GraphMatrix( const TF1&         func,
   assert( f.GetNpar() == corr.GetNcols() );
   for( int i = 0 ; i < f.GetNpar() ; ++i ){
     if( corr[i][i] == 0 ){
-      corr[i][i] = 0.000001;
+      corr[i][i] = 1e-40;
     }
   }
 
@@ -549,8 +549,9 @@ Pad1D::MakeTF1GraphMatrix( const TF1&         func,
     }
   }
 
-  TMatrixD radii = eigen.GetEigenValues();
-  radii.Sqrt();
+  auto shiftv = eigen.GetEigenValues();
+  shiftv.Sqrt();
+  const auto shift = eigen.GetEigenVectors() * shiftv;
 
   // preparing container for uncertainties.
   std::vector<double>       yerrhi( central->GetN(), 0.0 );
@@ -563,12 +564,12 @@ Pad1D::MakeTF1GraphMatrix( const TF1&         func,
   nsamples /= TMath::Gamma( double(npar) / 2 );
 
   for( unsigned i = 0 ; i < nsamples ; ++i ){
-    const TVectorD shift = ( radii * eigen.GetEigenVectors()).T()
-                           * usr::RandomOnSphere( npar ) * z;
+    // Generating a randomixed shift
+    const TVectorD rshift = shift * usr::RandomOnSphere( npar ) * z;
 
     // Shifting the paramters
     for( unsigned j = 0 ; j < npar; ++j  ){
-      f.SetParameter( j, func.GetParameter( j )+shift[j] );
+      f.SetParameter( j, func.GetParameter( j )+rshift[j] );
     }
 
     // Evaluating the various function values
