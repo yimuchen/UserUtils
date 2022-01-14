@@ -75,6 +75,20 @@ protected:
 
 
   /**
+   * @brief Construction for a handle.
+   */
+  template<typename TYPE>
+  inline edm::Handle<TYPE>
+  MakeHandle( const edm::Event& event, const edm::EDGetToken tok )
+  {
+    edm::Handle<TYPE> handle;
+    event.getByToken( tok, handle );
+    assert( handle.isValid() );
+    return handle;
+  }
+
+
+  /**
    * @brief getting a clone of an object described in a file. See static
    *        function for full documentation.
    */
