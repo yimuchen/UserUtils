@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['large_0',['Large',['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font']]],
+  ['large_0',['LARGE',['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font']]],
   ['large_1',['large',['../classusr_1_1plt_1_1font.html#ac3cd16dffb4356946973532d00f58b88',1,'usr::plt::font']]],
-  ['large_2',['LARGE',['../classusr_1_1plt_1_1font.html#a394c13dba81f4b7c6c2a87d94249add2',1,'usr::plt::font']]],
+  ['large_2',['Large',['../classusr_1_1plt_1_1font.html#ac8ea497154eec96e02c9a9829da2503b',1,'usr::plt::font']]],
   ['lastplot_3',['LastPlot',['../classusr_1_1plt_1_1RooFrame.html#aacf81698befd036fda1a67f55efc7cee',1,'usr::plt::RooFrame']]],
   ['lavender_4',['lavender',['../group__PlotUtilsConstants.html#ga9f791ac6190cbf3660105cc935456c75',1,'usr::plt::col']]],
   ['lavenderblush_5',['lavenderblush',['../group__PlotUtilsConstants.html#ga409e5966eb43986fd848b6e5b763f354',1,'usr::plt::col']]],
@@ -34,8 +34,8 @@ var searchData=
   ['line_31',['line',['../group__PlotUtilsConstants.html#ga3bb30df1c30a3d0a6ab5ad0d15780f38',1,'usr::plt::sty']]],
   ['linearvariancenll_32',['LinearVarianceNLL',['../group__StatUtils.html#gab032f76ddbdaeb1673ba7b506ffc7dc4',1,'usr']]],
   ['linecolor_33',['LineColor',['../group__PlotUtilsArgument.html#ga0ca2672da7d0cd8b4aff5c5b11fb0cf1',1,'usr::plt']]],
-  ['lineheight_34',['lineheight',['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font']]],
-  ['lineheight_35',['LineHeight',['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase']]],
+  ['lineheight_34',['LineHeight',['../classusr_1_1plt_1_1PadBase.html#a444bbeb5e3ee34fc7f0b115348cd20b4',1,'usr::plt::PadBase']]],
+  ['lineheight_35',['lineheight',['../classusr_1_1plt_1_1font.html#a8fbb0a91e32c0b3c77507d9efdaa84c3',1,'usr::plt::font']]],
   ['linen_36',['linen',['../group__PlotUtilsConstants.html#ga3894b9b9b38d30d560059009d8bb0126',1,'usr::plt::col']]],
   ['linestyle_37',['LineStyle',['../group__PlotUtilsArgument.html#ga4e4e0f0345091c58d7d491e53c6f9016',1,'usr::plt']]],
   ['linewidth_38',['LineWidth',['../group__PlotUtilsArgument.html#ga75eaa4bd82d210e6b22c930b8fd9c86b',1,'usr::plt']]],
