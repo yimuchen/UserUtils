@@ -233,26 +233,24 @@ USERUTILS_COMMON_REGISTERCMD( ScaleY );
  * covariance matrix obtained in the TFitResult.
  */
 RooCmdArg
-VisualizeError( const TFitResultPtr& fit,
-                const double         z,
-                const bool           ignore_corr )
+VisualizeError( const TFitResultPtr& fit, const double z, const bool corr )
 {
-  return VisualizeError( *fit, z, ignore_corr );
+  return VisualizeError( *fit, z, corr );
 }
 
 
 RooCmdArg
-VisualizeError( const TFitResult& fit, const double z, const bool ignore_corr )
+VisualizeError( const TFitResult& fit, const double z, const bool corr )
 {
-  return VisualizeError( &fit, z, ignore_corr );
+  return VisualizeError( &fit, z, corr );
 }
 
 
 RooCmdArg
-VisualizeError( const TFitResult*fit, const double z, const bool ignore_corr  )
+VisualizeError( const TFitResult*fit, const double z, const bool corr  )
 {
   return RooCmdArg( "VisualizeError",
-                    ignore_corr, // int
+                    corr, // int
                     0,
                     z, // double
                     0,
