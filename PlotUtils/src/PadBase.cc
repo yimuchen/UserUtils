@@ -206,6 +206,7 @@ PadBase::WriteLine( const std::string&            line,
   auto& newlatex = MakeObj<TLatex>( _latex );
   newlatex.SetNDC( true );
   newlatex.SetText( _latex_cursorx, _latex_cursory, line.c_str() );
+  newlatex.SetTextFont( FontFace() );
   SetTextAttr( newlatex, args );
   PlotObj( newlatex, "" );
 

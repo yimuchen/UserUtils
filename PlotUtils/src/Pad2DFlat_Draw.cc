@@ -31,15 +31,14 @@ namespace plt
 void
 Pad2DFlat::DrawCMSLabel( const std::string& tag, const std::string& main )
 {
-  const float tmp     = FontSize();
   const float ymargin = 0.25 * Xaxis().GetTickLength();
   const float cursorx = GetLeftMargin();
   const float cursory = 1-GetTopMargin()+ymargin;
-  _latex.SetTextSize( Font().large() );
 
   SetTextCursor( cursorx, cursory, font::bottom_left );
-  WriteLine( usr::fstr( "#bf{%s} #it{%s}", main, tag ) );
-  _latex.SetTextSize( tmp );
+  WriteLine( usr::fstr( "#bf{%s} #it{%s}", main, tag ),
+             TextSize(
+               Font().large() ) );
 }
 
 
