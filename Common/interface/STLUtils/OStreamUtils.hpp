@@ -15,7 +15,8 @@
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
-namespace usr {
+namespace usr
+{
 
 /**
  * @defgroup ostreamutils ostream Helpers
@@ -44,7 +45,7 @@ public:
 class separator
 {
 private:
-  char token;
+  char   token;
   size_t n;
 
 public:
@@ -53,15 +54,19 @@ public:
   friend std::ostream& operator<<( std::ostream&, const separator& );
 };
 
+void print_progress( const std::string& header,
+                     const unsigned     current,
+                     const unsigned     total,
+                     const unsigned     interval = 1 );
+
 /**
  * @brief Variadic interface for printf like stream output
  *
  * Details are implemented in the usr::fstr  function
  */
 template<typename ... ARGS>
-inline
-std::ostream&
-fout( ARGS... args )
+inline std::ostream&
+fout( ARGS ... args )
 {
   return std::cout << usr::fstr( std::forward<ARGS>( args )... ) << std::flush;
 }
@@ -70,16 +75,13 @@ fout( ARGS... args )
 /**
  * @brief Simple function for generating logs.
  */
-namespace log {
+namespace log
+{
 
 enum level: short
 {
-  INTERNAL = 0,
-  DEBUG    = 1,
-  INFO     = 2,
-  WARNING  = 3,
-  ERROR    = 4,
-  FATAL    = 5
+  INTERNAL = 0, DEBUG    = 1, INFO     = 2, WARNING  = 3, ERROR    = 4,
+  FATAL = 5
 };
 
 /**
@@ -100,7 +102,8 @@ void PrintLog( const short        i,
 
 }/* usr */
 
-namespace std {
+namespace std
+{
 
 /**
  * @brief Default interface for ostreaming a vector.
@@ -108,8 +111,7 @@ namespace std {
  * Is required to be in namespace std for boost::program options to use this.
  */
 template<typename T>
-inline
-std::ostream&
+inline std::ostream&
 operator<<( std::ostream& os, const std::vector<T>& vec )
 {
   os << "[";

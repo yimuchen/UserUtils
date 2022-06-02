@@ -53,6 +53,23 @@ operator<<( std::ostream& os, const separator& x )
 }
 
 
+void
+print_progress( const std::string& header,
+                const unsigned     current,
+                const unsigned     total,
+                const unsigned     interval )
+{
+  if( (( current % interval ) == 0 ) | ( current == total ) ){
+    std::cout <<
+      fstr( "\r[%s] %u/%u (%.1f%%)",
+            header,
+            current,
+            total,
+            ((float)current / (float)total ) * 100. );
+  }
+}
+
+
 /**
  * @brief Very simple function for generating the print level control.
  *

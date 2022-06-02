@@ -27,13 +27,21 @@ protected:
   std::map<std::string, std::unique_ptr<std::vector<int> > >  _int_collection;
   std::map<std::string, std::unique_ptr<std::vector<bool> > > _bool_collection;
 
+  std::map<std::string, std::unique_ptr<float> > _float_map;
+  std::map<std::string, std::unique_ptr<int>  >  _int_map;
+  std::map<std::string, std::unique_ptr<bool> >  _bool_map;
+
   template<typename>
   void AddCollection( const std::string& );
 
   template<typename T>
   std::vector<T>& Col( const std::string& );
 
-  //
+  template<typename>
+  void AddValue( const std::string& );
+
+  template<typename T>
+  void SetValue( const std::string&, const T );
 
 private:
   void         analyze( const edm::Event&, const edm::EventSetup& ) final;
