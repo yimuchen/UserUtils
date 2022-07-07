@@ -142,8 +142,9 @@ void
 EDNtupleProducer::analyze( const edm::Event& i, const edm::EventSetup& j )
 {
   clear_collections();
-  np_analyze( i, j );
-  tree->Fill();
+  if( np_analyze( i, j ) ){
+    tree->Fill();
+  }
 }
 
 

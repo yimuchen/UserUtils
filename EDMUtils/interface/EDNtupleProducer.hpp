@@ -45,7 +45,7 @@ protected:
 
 private:
   void         analyze( const edm::Event&, const edm::EventSetup& ) final;
-  virtual void np_analyze( const edm::Event&, const edm::EventSetup& ) = 0;
+  virtual bool np_analyze( const edm::Event&, const edm::EventSetup& ) = 0;
   void         clear_collections();
 };
 
